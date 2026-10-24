@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["prisma"],
+  "exclude": ["node_modules", "test", "dist"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}

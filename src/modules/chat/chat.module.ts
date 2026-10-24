@@ -7,10 +7,12 @@ import { ChatRepository } from './repository/chat.repository';
 import { ChatsController } from './chat.controller';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { WsJwtAuthGuard } from '../auth/guards/ws-jwt.guard';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
     PrismaModule,
+    NotificationsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

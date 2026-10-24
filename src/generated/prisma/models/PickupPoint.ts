@@ -299,6 +299,7 @@ export type PickupPointWhereInput = {
   destTrips?: Prisma.TripListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }
 
 export type PickupPointOrderByWithRelationInput = {
@@ -321,6 +322,7 @@ export type PickupPointOrderByWithRelationInput = {
   destTrips?: Prisma.TripOrderByRelationAggregateInput
   checkpointsLogs?: Prisma.CheckpointsLogOrderByRelationAggregateInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionOrderByRelationAggregateInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   _relevance?: Prisma.PickupPointOrderByRelevanceInput
 }
 
@@ -347,6 +349,7 @@ export type PickupPointWhereUniqueInput = Prisma.AtLeast<{
   destTrips?: Prisma.TripListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }, "id" | "qrCodePos">
 
 export type PickupPointOrderByWithAggregationInput = {
@@ -404,6 +407,7 @@ export type PickupPointCreateInput = {
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateInput = {
@@ -423,6 +427,7 @@ export type PickupPointUncheckedCreateInput = {
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUpdateInput = {
@@ -442,6 +447,7 @@ export type PickupPointUpdateInput = {
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateInput = {
@@ -461,6 +467,7 @@ export type PickupPointUncheckedUpdateInput = {
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointCreateManyInput = {
@@ -762,6 +769,20 @@ export type PickupPointUpdateOneRequiredWithoutCheckpointsLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PickupPointUpdateToOneWithWhereWithoutCheckpointsLogsInput, Prisma.PickupPointUpdateWithoutCheckpointsLogsInput>, Prisma.PickupPointUncheckedUpdateWithoutCheckpointsLogsInput>
 }
 
+export type PickupPointCreateNestedOneWithoutNoShowAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.PickupPointCreateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.PickupPointCreateOrConnectWithoutNoShowAuditLogsInput
+  connect?: Prisma.PickupPointWhereUniqueInput
+}
+
+export type PickupPointUpdateOneRequiredWithoutNoShowAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.PickupPointCreateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.PickupPointCreateOrConnectWithoutNoShowAuditLogsInput
+  upsert?: Prisma.PickupPointUpsertWithoutNoShowAuditLogsInput
+  connect?: Prisma.PickupPointWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PickupPointUpdateToOneWithWhereWithoutNoShowAuditLogsInput, Prisma.PickupPointUpdateWithoutNoShowAuditLogsInput>, Prisma.PickupPointUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
 export type PickupPointCreateNestedOneWithoutMerchandiseRedemptionsInput = {
   create?: Prisma.XOR<Prisma.PickupPointCreateWithoutMerchandiseRedemptionsInput, Prisma.PickupPointUncheckedCreateWithoutMerchandiseRedemptionsInput>
   connectOrCreate?: Prisma.PickupPointCreateOrConnectWithoutMerchandiseRedemptionsInput
@@ -794,6 +815,7 @@ export type PickupPointCreateWithoutRegionInput = {
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutRegionInput = {
@@ -812,6 +834,7 @@ export type PickupPointUncheckedCreateWithoutRegionInput = {
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutRegionInput = {
@@ -874,6 +897,7 @@ export type PickupPointCreateWithoutCityInput = {
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutCityInput = {
@@ -892,6 +916,7 @@ export type PickupPointUncheckedCreateWithoutCityInput = {
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutCityInput = {
@@ -936,6 +961,7 @@ export type PickupPointCreateWithoutOperatorInput = {
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutOperatorInput = {
@@ -954,6 +980,7 @@ export type PickupPointUncheckedCreateWithoutOperatorInput = {
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutOperatorInput = {
@@ -998,6 +1025,7 @@ export type PickupPointCreateWithoutOriginTripsInput = {
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutOriginTripsInput = {
@@ -1016,6 +1044,7 @@ export type PickupPointUncheckedCreateWithoutOriginTripsInput = {
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutOriginTripsInput = {
@@ -1039,6 +1068,7 @@ export type PickupPointCreateWithoutDestTripsInput = {
   originTrips?: Prisma.TripCreateNestedManyWithoutOriginPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutDestTripsInput = {
@@ -1057,6 +1087,7 @@ export type PickupPointUncheckedCreateWithoutDestTripsInput = {
   originTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOriginPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutDestTripsInput = {
@@ -1091,6 +1122,7 @@ export type PickupPointUpdateWithoutOriginTripsInput = {
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutOriginTripsInput = {
@@ -1109,6 +1141,7 @@ export type PickupPointUncheckedUpdateWithoutOriginTripsInput = {
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUpsertWithoutDestTripsInput = {
@@ -1138,6 +1171,7 @@ export type PickupPointUpdateWithoutDestTripsInput = {
   originTrips?: Prisma.TripUpdateManyWithoutOriginPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutDestTripsInput = {
@@ -1156,6 +1190,7 @@ export type PickupPointUncheckedUpdateWithoutDestTripsInput = {
   originTrips?: Prisma.TripUncheckedUpdateManyWithoutOriginPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointCreateWithoutCheckpointsLogsInput = {
@@ -1174,6 +1209,7 @@ export type PickupPointCreateWithoutCheckpointsLogsInput = {
   originTrips?: Prisma.TripCreateNestedManyWithoutOriginPointInput
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -1192,6 +1228,7 @@ export type PickupPointUncheckedCreateWithoutCheckpointsLogsInput = {
   originTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOriginPointInput
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -1226,6 +1263,7 @@ export type PickupPointUpdateWithoutCheckpointsLogsInput = {
   originTrips?: Prisma.TripUpdateManyWithoutOriginPointNestedInput
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -1243,6 +1281,99 @@ export type PickupPointUncheckedUpdateWithoutCheckpointsLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originTrips?: Prisma.TripUncheckedUpdateManyWithoutOriginPointNestedInput
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
+}
+
+export type PickupPointCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  name: string
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodePos: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region: Prisma.RegionCreateNestedOneWithoutPickupPointsInput
+  city: Prisma.CityCreateNestedOneWithoutPickupPointsInput
+  operator?: Prisma.UserCreateNestedOneWithoutAssignedPickupPointsInput
+  originTrips?: Prisma.TripCreateNestedManyWithoutOriginPointInput
+  destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutPickupPosInput
+}
+
+export type PickupPointUncheckedCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  regionId: bigint | number
+  cityId: bigint | number
+  operatorId?: bigint | number | null
+  name: string
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodePos: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  originTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOriginPointInput
+  destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutPickupPosInput
+}
+
+export type PickupPointCreateOrConnectWithoutNoShowAuditLogsInput = {
+  where: Prisma.PickupPointWhereUniqueInput
+  create: Prisma.XOR<Prisma.PickupPointCreateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedCreateWithoutNoShowAuditLogsInput>
+}
+
+export type PickupPointUpsertWithoutNoShowAuditLogsInput = {
+  update: Prisma.XOR<Prisma.PickupPointUpdateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedUpdateWithoutNoShowAuditLogsInput>
+  create: Prisma.XOR<Prisma.PickupPointCreateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedCreateWithoutNoShowAuditLogsInput>
+  where?: Prisma.PickupPointWhereInput
+}
+
+export type PickupPointUpdateToOneWithWhereWithoutNoShowAuditLogsInput = {
+  where?: Prisma.PickupPointWhereInput
+  data: Prisma.XOR<Prisma.PickupPointUpdateWithoutNoShowAuditLogsInput, Prisma.PickupPointUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
+export type PickupPointUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodePos?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneRequiredWithoutPickupPointsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutPickupPointsNestedInput
+  operator?: Prisma.UserUpdateOneWithoutAssignedPickupPointsNestedInput
+  originTrips?: Prisma.TripUpdateManyWithoutOriginPointNestedInput
+  destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+}
+
+export type PickupPointUncheckedUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  cityId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  operatorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodePos?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  originTrips?: Prisma.TripUncheckedUpdateManyWithoutOriginPointNestedInput
+  destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
 }
 
@@ -1262,6 +1393,7 @@ export type PickupPointCreateWithoutMerchandiseRedemptionsInput = {
   originTrips?: Prisma.TripCreateNestedManyWithoutOriginPointInput
   destTrips?: Prisma.TripCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointUncheckedCreateWithoutMerchandiseRedemptionsInput = {
@@ -1280,6 +1412,7 @@ export type PickupPointUncheckedCreateWithoutMerchandiseRedemptionsInput = {
   originTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOriginPointInput
   destTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDestinationPointInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutPosInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutPosInput
 }
 
 export type PickupPointCreateOrConnectWithoutMerchandiseRedemptionsInput = {
@@ -1314,6 +1447,7 @@ export type PickupPointUpdateWithoutMerchandiseRedemptionsInput = {
   originTrips?: Prisma.TripUpdateManyWithoutOriginPointNestedInput
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
@@ -1332,6 +1466,7 @@ export type PickupPointUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
   originTrips?: Prisma.TripUncheckedUpdateManyWithoutOriginPointNestedInput
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointCreateManyRegionInput = {
@@ -1364,6 +1499,7 @@ export type PickupPointUpdateWithoutRegionInput = {
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutRegionInput = {
@@ -1382,6 +1518,7 @@ export type PickupPointUncheckedUpdateWithoutRegionInput = {
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateManyWithoutRegionInput = {
@@ -1428,6 +1565,7 @@ export type PickupPointUpdateWithoutCityInput = {
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutCityInput = {
@@ -1446,6 +1584,7 @@ export type PickupPointUncheckedUpdateWithoutCityInput = {
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateManyWithoutCityInput = {
@@ -1492,6 +1631,7 @@ export type PickupPointUpdateWithoutOperatorInput = {
   destTrips?: Prisma.TripUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateWithoutOperatorInput = {
@@ -1510,6 +1650,7 @@ export type PickupPointUncheckedUpdateWithoutOperatorInput = {
   destTrips?: Prisma.TripUncheckedUpdateManyWithoutDestinationPointNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutPosNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutPickupPosNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutPosNestedInput
 }
 
 export type PickupPointUncheckedUpdateManyWithoutOperatorInput = {
@@ -1536,6 +1677,7 @@ export type PickupPointCountOutputType = {
   destTrips: number
   checkpointsLogs: number
   merchandiseRedemptions: number
+  noShowAuditLogs: number
 }
 
 export type PickupPointCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1543,6 +1685,7 @@ export type PickupPointCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   destTrips?: boolean | PickupPointCountOutputTypeCountDestTripsArgs
   checkpointsLogs?: boolean | PickupPointCountOutputTypeCountCheckpointsLogsArgs
   merchandiseRedemptions?: boolean | PickupPointCountOutputTypeCountMerchandiseRedemptionsArgs
+  noShowAuditLogs?: boolean | PickupPointCountOutputTypeCountNoShowAuditLogsArgs
 }
 
 /**
@@ -1583,6 +1726,13 @@ export type PickupPointCountOutputTypeCountMerchandiseRedemptionsArgs<ExtArgs ex
   where?: Prisma.MerchandiseRedemptionWhereInput
 }
 
+/**
+ * PickupPointCountOutputType without action
+ */
+export type PickupPointCountOutputTypeCountNoShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NoShowAuditLogWhereInput
+}
+
 
 export type PickupPointSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1604,6 +1754,7 @@ export type PickupPointSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   destTrips?: boolean | Prisma.PickupPoint$destTripsArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.PickupPoint$checkpointsLogsArgs<ExtArgs>
   merchandiseRedemptions?: boolean | Prisma.PickupPoint$merchandiseRedemptionsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.PickupPoint$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.PickupPointCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pickupPoint"]>
 
@@ -1633,6 +1784,7 @@ export type PickupPointInclude<ExtArgs extends runtime.Types.Extensions.Internal
   destTrips?: boolean | Prisma.PickupPoint$destTripsArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.PickupPoint$checkpointsLogsArgs<ExtArgs>
   merchandiseRedemptions?: boolean | Prisma.PickupPoint$merchandiseRedemptionsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.PickupPoint$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.PickupPointCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1646,6 +1798,7 @@ export type $PickupPointPayload<ExtArgs extends runtime.Types.Extensions.Interna
     destTrips: Prisma.$TripPayload<ExtArgs>[]
     checkpointsLogs: Prisma.$CheckpointsLogPayload<ExtArgs>[]
     merchandiseRedemptions: Prisma.$MerchandiseRedemptionPayload<ExtArgs>[]
+    noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -2007,6 +2160,7 @@ export interface Prisma__PickupPointClient<T, Null = never, ExtArgs extends runt
   destTrips<T extends Prisma.PickupPoint$destTripsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPoint$destTripsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkpointsLogs<T extends Prisma.PickupPoint$checkpointsLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPoint$checkpointsLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckpointsLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   merchandiseRedemptions<T extends Prisma.PickupPoint$merchandiseRedemptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPoint$merchandiseRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchandiseRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  noShowAuditLogs<T extends Prisma.PickupPoint$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPoint$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2508,6 +2662,30 @@ export type PickupPoint$merchandiseRedemptionsArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.MerchandiseRedemptionScalarFieldEnum | Prisma.MerchandiseRedemptionScalarFieldEnum[]
+}
+
+/**
+ * PickupPoint.noShowAuditLogs
+ */
+export type PickupPoint$noShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NoShowAuditLog
+   */
+  select?: Prisma.NoShowAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NoShowAuditLog
+   */
+  omit?: Prisma.NoShowAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoShowAuditLogInclude<ExtArgs> | null
+  where?: Prisma.NoShowAuditLogWhereInput
+  orderBy?: Prisma.NoShowAuditLogOrderByWithRelationInput | Prisma.NoShowAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.NoShowAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NoShowAuditLogScalarFieldEnum | Prisma.NoShowAuditLogScalarFieldEnum[]
 }
 
 /**

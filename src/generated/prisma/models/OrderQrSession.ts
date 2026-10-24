@@ -486,10 +486,6 @@ export type NullableEnumScanTypeFieldUpdateOperationsInput = {
   set?: $Enums.ScanType | null
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type OrderQrSessionCreateWithoutOrderInput = {
   id?: bigint | number
   qrToken: string

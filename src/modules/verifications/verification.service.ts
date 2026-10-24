@@ -10,10 +10,14 @@ import { SumbitVerificationDto } from './dto/submit-verification.dto';
 import { ReviewVerificationDto } from './dto/review-verification.dto';
 import { VerificationMapper } from './mappers/verification.mapper';
 import { Role, VerificationStatus } from '../../generated/prisma/enums';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 @Injectable()
 export class VerificationService {
-  constructor(private readonly verificationRepo: VerificationRepository) {}
+  constructor(
+    private readonly verificationRepo: VerificationRepository,
+    private readonly notificationHelper: NotificationHelperService,
+  ) {}
 
   private safeParseBigInt(id: string): bigint {
     try {
@@ -131,6 +135,19 @@ export class VerificationService {
       dto.status,
       dto.rejectionReason,
     );
+
+    if (dto.status === VerificationStatus.approved) {
+      await this.notificationHelper.notifyVerificationApproved(
+        updated.userId.toString(),
+        updated.type,
+      );
+    } else if (dto.status === VerificationStatus.rejected) {
+      await this.notificationHelper.notifyVerificationRejected(
+        updated.userId.toString(),
+        updated.type,
+        dto.rejectionReason || 'Dokumen tidak memenuhi persyaratan',
+      );
+    }
 
     return VerificationMapper.toResponse(updated);
   }

@@ -15,6 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { DisputeNoShowDto } from '../checkpoints/dto/dispute-no-show.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -84,5 +85,24 @@ export class OrdersController {
   @ApiResponse({ status: 404, description: 'Order tidak ditemukan' })
   async cancelOrder(@GetUser() user: any, @Param('id') id: string) {
     return this.ordersService.cancelOrder(user, id);
+  }
+
+  @Post(':id/dispute-no-show')
+  @Roles(Role.customer)
+  @ApiOperation({
+    summary: 'Ajukan keberatan untuk penumpang no-show',
+  })
+  @ApiResponse({ status: 200, description: 'Keberatan berhasil diajukan' })
+  @ApiResponse({
+    status: 400,
+    description: 'Jendela keberatan sudah berakhir atau order bukan no_show',
+  })
+  @ApiResponse({ status: 404, description: 'Order tidak ditemukan' })
+  async disputeNoShow(
+    @GetUser('id') user: string,
+    @Param('id') id: string,
+    @Body() dto: DisputeNoShowDto,
+  ) {
+    return this.ordersService.disputeNoShow(String(user), id, dto.reason);
   }
 }

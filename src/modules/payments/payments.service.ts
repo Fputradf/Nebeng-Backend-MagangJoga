@@ -13,6 +13,7 @@ import { CheckoutPaymentDto } from './dto/checkout-payment.dto';
 import { OrderStatus, Role, ServiceType } from '../../generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 @Injectable()
 export class PaymentsService {
@@ -20,6 +21,7 @@ export class PaymentsService {
     private readonly paymentsRepository: PaymentsRepository,
     private readonly ordersRepository: OrdersRepository,
     private readonly prisma: PrismaService,
+    private readonly notificationHelper: NotificationHelperService,
   ) {}
 
   private safeParseBigInt(id: string): bigint | null {
@@ -112,6 +114,16 @@ export class PaymentsService {
         adminFeeAmount,
         netMitraAmount,
       );
+
+    await this.notificationHelper.notifyOrderPaid(
+      userIdStr,
+      dto.orderId,
+    );
+
+    await this.notificationHelper.notifyPaymentSuccess(
+      userIdStr,
+      totalPrice,
+    );
 
     return {
       message:

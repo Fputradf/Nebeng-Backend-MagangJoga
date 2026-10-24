@@ -32,7 +32,7 @@ export class BannersRepository {
     imageUrl: string;
     linkUrl?: string;
     isActive?: boolean;
-    targetRole?: Role;
+    targetRole?: Role | null;
   }) {
     return this.prisma.banner.create({
       data,
@@ -46,7 +46,7 @@ export class BannersRepository {
       imageUrl?: string;
       linkUrl?: string;
       isActive?: boolean;
-      targetRole?: Role;
+      targetRole?: Role | null;
     },
   ) {
     return this.prisma.banner.update({

@@ -63,6 +63,7 @@ enum TripStatus {
   arrived_dest_pos
   completed
   cancelled
+  mitra_no_show
 }
 
 enum OrderType {
@@ -78,6 +79,7 @@ enum OrderStatus {
   arrived_destination
   completed
   cancelled
+  no_show
 }
 
 enum EscrowStatus {
@@ -127,6 +129,11 @@ enum RedemptionStatus {
   completed
   cancelled
   rejected
+}
+
+enum NoShowAuditType {
+  passenger_no_show
+  mitra_no_show
 }
 
 // ------------------------------------------------------
@@ -181,6 +188,8 @@ model User {
   statusVerification VerificationStatus @default(unverified) @map("status_verification")
   pinHash            String?            @map("pin_hash")
   refreshToken       String?            @map("refresh_token") @db.Text
+  passwordResetToken String?            @map("password_reset_token")
+  passwordResetTokenExpiresAt DateTime? @map("password_reset_token_expires_at")
   avatar             String?
   rewardPoints       Int                @default(0) @map("reward_points")
   createdAt          DateTime           @default(now()) @map("created_at")
@@ -202,6 +211,14 @@ model User {
   reviewsReceived         TripReview[]            @relation("ReviewsReceived")
   vehicles                Vehicle[]
   merchandiseRedemptions  MerchandiseRedemption[]
+  notificationPreference  NotificationPreference?
+  deviceTokens            DeviceToken[]
+  notificationLogs        NotificationLog[]
+  userNotifications      UserNotification[]
+  noShowMarkedOrders      Order[]                 @relation("NoShowMarkedBy")
+  mitraNoShowMarkedTrips  Trip[]                  @relation("MitraNoShowMarkedBy")
+  noShowAuditLogsOperator NoShowAuditLog[]        @relation("NoShowAuditOperator")
+  pushSubscriptions       PushSubscription[]      @relation("PushSubscriptions")
 
   @@index([role])
   @@index([status])
@@ -280,6 +297,7 @@ model PickupPoint {
   destTrips              Trip[]                  @relation("DestPickupPoint")
   checkpointsLogs        CheckpointsLog[]
   merchandiseRedemptions MerchandiseRedemption[]
+  noShowAuditLogs        NoShowAuditLog[]         @relation("NoShowAuditLogs")
 
   @@map("pickup_points")
 }
@@ -329,12 +347,20 @@ model Trip {
   createdAt                 DateTime    @default(now()) @map("created_at")
   updatedAt                 DateTime    @updatedAt @map("updated_at")
 
+  // Mitra No-Show Audit Fields
+  mitraNoShowMarkedAt       DateTime?   @map("mitra_no_show_marked_at")
+  mitraNoShowMarkedBy       BigInt?     @map("mitra_no_show_marked_by")
+  mitraNoShowMarkedByUser   User?       @relation("MitraNoShowMarkedBy", fields: [mitraNoShowMarkedBy], references: [id])
+  mitraNoShowReason         String?     @map("mitra_no_show_reason") @db.Text
+  mitraNoShowEvidenceUrl    String?     @map("mitra_no_show_evidence_url") @db.Text
+
   orders          Order[]
   checkpointsLogs CheckpointsLog[]
   qrSessions      TripQrSession[]
   trackings       TripTracking[]
   conversations   Conversation[]
   reviews         TripReview[]
+  noShowAuditLogs NoShowAuditLog[]
 
   @@index([departureDate, status])
   @@index([originPointId, destinationPointId])
@@ -361,11 +387,20 @@ model Order {
   createdAt          DateTime     @default(now()) @map("created_at")
   updatedAt          DateTime     @updatedAt @map("updated_at")
 
+  // Passenger No-Show Audit Fields
+  noShowMarkedAt     DateTime?    @map("no_show_marked_at")
+  noShowMarkedBy     BigInt?      @map("no_show_marked_by")
+  noShowMarkedByUser User?        @relation("NoShowMarkedBy", fields: [noShowMarkedBy], references: [id])
+  noShowReason       String?      @map("no_show_reason") @db.Text
+  disputeDeadline    DateTime?    @map("dispute_deadline")
+  isDisputed         Boolean      @default(false) @map("is_disputed")
+
   itemOrders         ItemOrder[]
   checkpointsLogs    CheckpointsLog[]
   qrSessions         OrderQrSession[]
   payments           Payment[]
   walletTransactions WalletTransaction[]
+  noShowAuditLogs    NoShowAuditLog[]
 
   @@index([status, escrowStatus])
   @@map("orders")
@@ -411,6 +446,41 @@ model CheckpointsLog {
   @@map("checkpoints_log")
 }
 
+model NoShowAuditLog {
+  id              BigInt        @id @default(autoincrement())
+  type            NoShowAuditType
+  orderId         BigInt?       @map("order_id")
+  order           Order?        @relation(fields: [orderId], references: [id])
+  tripId          BigInt?       @map("trip_id")
+  trip            Trip?         @relation(fields: [tripId], references: [id])
+  posId           BigInt        @map("pos_id")
+  pos             PickupPoint   @relation("NoShowAuditLogs", fields: [posId], references: [id])
+  operatorId      BigInt        @map("operator_id")
+  operator        User          @relation("NoShowAuditOperator", fields: [operatorId], references: [id])
+  reason          String        @db.Text
+  evidenceUrl     String?       @map("evidence_url") @db.Text
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  @@index([type, createdAt])
+  @@index([posId, createdAt])
+  @@map("no_show_audit_logs")
+}
+
+model PushSubscription {
+  id              BigInt    @id @default(autoincrement())
+  userId          BigInt    @map("user_id")
+  user            User      @relation("PushSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  endpoint        String    @unique
+  p256dh          String    @map("p256dh")
+  auth             String
+  userAgent       String?   @map("user_agent")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  lastUsedAt      DateTime? @map("last_used_at")
+
+  @@index([userId, endpoint])
+  @@map("push_subscriptions")
+}
+
 model TripQrSession {
   id        BigInt   @id @default(autoincrement())
   tripId    BigInt   @map("trip_id")
@@ -445,9 +515,31 @@ model TripTracking {
   trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   latitude   Decimal  @db.Decimal(10, 8)
   longitude  Decimal  @db.Decimal(11, 8)
+  altitude   Decimal? @db.Decimal(8, 2)
+  speed      Decimal? @db.Decimal(8, 2)
+  heading    Decimal? @db.Decimal(6, 2)
+  accuracy   Decimal? @db.Decimal(6, 2)
   recordedAt DateTime @default(now()) @map("recorded_at")
 
+  @@index([tripId, recordedAt])
   @@map("trip_trackings")
+}
+
+model OsmRouteCache {
+  id              BigInt   @id @default(autoincrement())
+  originLat       Decimal  @map("origin_lat") @db.Decimal(10, 8)
+  originLng       Decimal  @map("origin_lng") @db.Decimal(11, 8)
+  destLat         Decimal  @map("dest_lat") @db.Decimal(10, 8)
+  destLng         Decimal  @map("dest_lng") @db.Decimal(11, 8)
+  distanceKm      Decimal  @map("distance_km") @db.Decimal(10, 2)
+  durationMinutes Decimal  @map("duration_minutes") @db.Decimal(8, 2)
+  polyline        String   @db.Text
+  cachedAt        DateTime @default(now()) @map("cached_at")
+  expiresAt       DateTime @map("expires_at")
+
+  @@unique([originLat, originLng, destLat, destLng])
+  @@index([expiresAt])
+  @@map("osm_route_cache")
 }
 
 // ------------------------------------------------------
@@ -632,4 +724,108 @@ model Banner {
   updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("banners")
+}
+
+// ------------------------------------------------------
+// 10. PUSH NOTIFICATIONS
+// ------------------------------------------------------
+
+enum NotificationType {
+  order_created
+  order_paid
+  order_cancelled
+  trip_started
+  trip_arrived
+  trip_completed
+  checkpoint_scanned
+  chat_message
+  payment_success
+  payment_failed
+  escrow_released
+  reward_earned
+  reward_redeemed
+  verification_approved
+  verification_rejected
+  trip_booking_request
+  generic
+}
+
+enum NotificationStatus {
+  pending
+  sent
+  failed
+}
+
+model NotificationPreference {
+  id                      BigInt              @id @default(autoincrement())
+  userId                  BigInt              @unique @map("user_id")
+  user                    User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enablePushNotifications Boolean              @default(true) @map("enable_push_notifications")
+  enableEmailNotifications Boolean             @default(true) @map("enable_email_notifications")
+  orderNotifications      Boolean              @default(true) @map("order_notifications")
+  tripNotifications       Boolean              @default(true) @map("trip_notifications")
+  chatNotifications       Boolean              @default(true) @map("chat_notifications")
+  paymentNotifications     Boolean              @default(true) @map("payment_notifications")
+  promotionNotifications   Boolean              @default(false) @map("promotion_notifications")
+  createdAt                DateTime            @default(now()) @map("created_at")
+  updatedAt                DateTime            @updatedAt @map("updated_at")
+
+  @@map("notification_preferences")
+}
+
+model DeviceToken {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  platform  String   @default("android")
+  userAgent String?   @map("user_agent")
+  isActive  Boolean  @default(true) @map("is_active")
+  lastUsedAt DateTime? @map("last_used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  notificationLogs NotificationLog[]
+
+  @@index([userId, isActive])
+  @@map("device_tokens")
+}
+
+model NotificationLog {
+  id          BigInt              @id @default(autoincrement())
+  userId      BigInt              @map("user_id")
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  title       String
+  body        String              @db.Text
+  data        String?             @db.Text
+  status      NotificationStatus  @default(pending)
+  deviceId    BigInt?             @map("device_id")
+  device      DeviceToken?        @relation(fields: [deviceId], references: [id], onDelete: SetNull)
+  errorMessage String?            @map("error_message") @db.Text
+  sentAt      DateTime?           @map("sent_at")
+  createdAt   DateTime            @default(now()) @map("created_at")
+
+  @@index([userId, status])
+  @@index([createdAt])
+  @@map("notification_logs")
+}
+
+model UserNotification {
+  id             BigInt          @id @default(autoincrement())
+  userId         BigInt          @map("user_id")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           NotificationType
+  title          String
+  body           String          @db.Text
+  data           String?         @db.Text
+  isRead         Boolean         @default(false) @map("is_read")
+  conversationId BigInt?         @map("conversation_id")
+  readAt         DateTime?       @map("read_at")
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@index([conversationId])
+  @@map("user_notifications")
 }

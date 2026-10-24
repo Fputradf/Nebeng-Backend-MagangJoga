@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.9.1
- * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
+ * Prisma Client JS version: 7.10.1
+ * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.9.1",
-  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
+  client: "7.10.1",
+  engine: "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8"
 }
 
 /**
@@ -409,9 +409,12 @@ export const ModelName = {
   Order: 'Order',
   ItemOrder: 'ItemOrder',
   CheckpointsLog: 'CheckpointsLog',
+  NoShowAuditLog: 'NoShowAuditLog',
+  PushSubscription: 'PushSubscription',
   TripQrSession: 'TripQrSession',
   OrderQrSession: 'OrderQrSession',
   TripTracking: 'TripTracking',
+  OsmRouteCache: 'OsmRouteCache',
   Payment: 'Payment',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
@@ -422,7 +425,11 @@ export const ModelName = {
   Vehicle: 'Vehicle',
   MerchandiseItem: 'MerchandiseItem',
   MerchandiseRedemption: 'MerchandiseRedemption',
-  Banner: 'Banner'
+  Banner: 'Banner',
+  NotificationPreference: 'NotificationPreference',
+  DeviceToken: 'DeviceToken',
+  NotificationLog: 'NotificationLog',
+  UserNotification: 'UserNotification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -438,7 +445,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "tripQrSession" | "orderQrSession" | "tripTracking" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1234,6 +1241,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    NoShowAuditLog: {
+      payload: Prisma.$NoShowAuditLogPayload<ExtArgs>
+      fields: Prisma.NoShowAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NoShowAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NoShowAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.NoShowAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NoShowAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.NoShowAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.NoShowAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.NoShowAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.NoShowAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        update: {
+          args: Prisma.NoShowAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.NoShowAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NoShowAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.NoShowAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NoShowAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.NoShowAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNoShowAuditLog>
+        }
+        groupBy: {
+          args: Prisma.NoShowAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NoShowAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NoShowAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NoShowAuditLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    PushSubscription: {
+      payload: Prisma.$PushSubscriptionPayload<ExtArgs>
+      fields: Prisma.PushSubscriptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        findFirst: {
+          args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        findMany: {
+          args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+        }
+        create: {
+          args: Prisma.PushSubscriptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        createMany: {
+          args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        update: {
+          args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+        }
+        aggregate: {
+          args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePushSubscription>
+        }
+        groupBy: {
+          args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PushSubscriptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionCountAggregateOutputType> | number
+        }
+      }
+    }
     TripQrSession: {
       payload: Prisma.$TripQrSessionPayload<ExtArgs>
       fields: Prisma.TripQrSessionFieldRefs
@@ -1429,6 +1568,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TripTrackingCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TripTrackingCountAggregateOutputType> | number
+        }
+      }
+    }
+    OsmRouteCache: {
+      payload: Prisma.$OsmRouteCachePayload<ExtArgs>
+      fields: Prisma.OsmRouteCacheFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OsmRouteCacheFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OsmRouteCacheFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        findFirst: {
+          args: Prisma.OsmRouteCacheFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OsmRouteCacheFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        findMany: {
+          args: Prisma.OsmRouteCacheFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>[]
+        }
+        create: {
+          args: Prisma.OsmRouteCacheCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        createMany: {
+          args: Prisma.OsmRouteCacheCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OsmRouteCacheDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        update: {
+          args: Prisma.OsmRouteCacheUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        deleteMany: {
+          args: Prisma.OsmRouteCacheDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OsmRouteCacheUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OsmRouteCacheUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OsmRouteCachePayload>
+        }
+        aggregate: {
+          args: Prisma.OsmRouteCacheAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOsmRouteCache>
+        }
+        groupBy: {
+          args: Prisma.OsmRouteCacheGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OsmRouteCacheGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OsmRouteCacheCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OsmRouteCacheCountAggregateOutputType> | number
         }
       }
     }
@@ -2158,6 +2363,270 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    NotificationPreference: {
+      payload: Prisma.$NotificationPreferencePayload<ExtArgs>
+      fields: Prisma.NotificationPreferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationPreferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationPreferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationPreferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        findMany: {
+          args: Prisma.NotificationPreferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+        }
+        create: {
+          args: Prisma.NotificationPreferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        createMany: {
+          args: Prisma.NotificationPreferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.NotificationPreferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        update: {
+          args: Prisma.NotificationPreferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationPreferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationPreferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.NotificationPreferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationPreferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotificationPreference>
+        }
+        groupBy: {
+          args: Prisma.NotificationPreferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationPreferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationPreferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationPreferenceCountAggregateOutputType> | number
+        }
+      }
+    }
+    DeviceToken: {
+      payload: Prisma.$DeviceTokenPayload<ExtArgs>
+      fields: Prisma.DeviceTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DeviceTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DeviceTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.DeviceTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DeviceTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findMany: {
+          args: Prisma.DeviceTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        create: {
+          args: Prisma.DeviceTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        createMany: {
+          args: Prisma.DeviceTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DeviceTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        update: {
+          args: Prisma.DeviceTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.DeviceTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DeviceTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DeviceTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.DeviceTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDeviceToken>
+        }
+        groupBy: {
+          args: Prisma.DeviceTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DeviceTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenCountAggregateOutputType> | number
+        }
+      }
+    }
+    NotificationLog: {
+      payload: Prisma.$NotificationLogPayload<ExtArgs>
+      fields: Prisma.NotificationLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        findMany: {
+          args: Prisma.NotificationLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>[]
+        }
+        create: {
+          args: Prisma.NotificationLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        createMany: {
+          args: Prisma.NotificationLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.NotificationLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        update: {
+          args: Prisma.NotificationLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.NotificationLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationLogPayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotificationLog>
+        }
+        groupBy: {
+          args: Prisma.NotificationLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserNotification: {
+      payload: Prisma.$UserNotificationPayload<ExtArgs>
+      fields: Prisma.UserNotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserNotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserNotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.UserNotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserNotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        findMany: {
+          args: Prisma.UserNotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>[]
+        }
+        create: {
+          args: Prisma.UserNotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        createMany: {
+          args: Prisma.UserNotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UserNotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        update: {
+          args: Prisma.UserNotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserNotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserNotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UserNotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserNotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.UserNotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserNotification>
+        }
+        groupBy: {
+          args: Prisma.UserNotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserNotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserNotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserNotificationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2237,6 +2706,8 @@ export const UserScalarFieldEnum = {
   statusVerification: 'statusVerification',
   pinHash: 'pinHash',
   refreshToken: 'refreshToken',
+  passwordResetToken: 'passwordResetToken',
+  passwordResetTokenExpiresAt: 'passwordResetTokenExpiresAt',
   avatar: 'avatar',
   rewardPoints: 'rewardPoints',
   createdAt: 'createdAt',
@@ -2343,7 +2814,11 @@ export const TripScalarFieldEnum = {
   serviceType: 'serviceType',
   mapsPolyline: 'mapsPolyline',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
+  mitraNoShowMarkedBy: 'mitraNoShowMarkedBy',
+  mitraNoShowReason: 'mitraNoShowReason',
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
 } as const
 
 export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
@@ -2365,7 +2840,12 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   escrowStatus: 'escrowStatus',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  noShowMarkedAt: 'noShowMarkedAt',
+  noShowMarkedBy: 'noShowMarkedBy',
+  noShowReason: 'noShowReason',
+  disputeDeadline: 'disputeDeadline',
+  isDisputed: 'isDisputed'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -2404,6 +2884,35 @@ export const CheckpointsLogScalarFieldEnum = {
 export type CheckpointsLogScalarFieldEnum = (typeof CheckpointsLogScalarFieldEnum)[keyof typeof CheckpointsLogScalarFieldEnum]
 
 
+export const NoShowAuditLogScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  orderId: 'orderId',
+  tripId: 'tripId',
+  posId: 'posId',
+  operatorId: 'operatorId',
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type NoShowAuditLogScalarFieldEnum = (typeof NoShowAuditLogScalarFieldEnum)[keyof typeof NoShowAuditLogScalarFieldEnum]
+
+
+export const PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt',
+  lastUsedAt: 'lastUsedAt'
+} as const
+
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
 export const TripQrSessionScalarFieldEnum = {
   id: 'id',
   tripId: 'tripId',
@@ -2436,10 +2945,30 @@ export const TripTrackingScalarFieldEnum = {
   tripId: 'tripId',
   latitude: 'latitude',
   longitude: 'longitude',
+  altitude: 'altitude',
+  speed: 'speed',
+  heading: 'heading',
+  accuracy: 'accuracy',
   recordedAt: 'recordedAt'
 } as const
 
 export type TripTrackingScalarFieldEnum = (typeof TripTrackingScalarFieldEnum)[keyof typeof TripTrackingScalarFieldEnum]
+
+
+export const OsmRouteCacheScalarFieldEnum = {
+  id: 'id',
+  originLat: 'originLat',
+  originLng: 'originLng',
+  destLat: 'destLat',
+  destLng: 'destLng',
+  distanceKm: 'distanceKm',
+  durationMinutes: 'durationMinutes',
+  polyline: 'polyline',
+  cachedAt: 'cachedAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type OsmRouteCacheScalarFieldEnum = (typeof OsmRouteCacheScalarFieldEnum)[keyof typeof OsmRouteCacheScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -2594,6 +3123,71 @@ export const BannerScalarFieldEnum = {
 export type BannerScalarFieldEnum = (typeof BannerScalarFieldEnum)[keyof typeof BannerScalarFieldEnum]
 
 
+export const NotificationPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  enablePushNotifications: 'enablePushNotifications',
+  enableEmailNotifications: 'enableEmailNotifications',
+  orderNotifications: 'orderNotifications',
+  tripNotifications: 'tripNotifications',
+  chatNotifications: 'chatNotifications',
+  paymentNotifications: 'paymentNotifications',
+  promotionNotifications: 'promotionNotifications',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
+
+
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  userAgent: 'userAgent',
+  isActive: 'isActive',
+  lastUsedAt: 'lastUsedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
+
+
+export const NotificationLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  status: 'status',
+  deviceId: 'deviceId',
+  errorMessage: 'errorMessage',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationLogScalarFieldEnum = (typeof NotificationLogScalarFieldEnum)[keyof typeof NotificationLogScalarFieldEnum]
+
+
+export const UserNotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  isRead: 'isRead',
+  conversationId: 'conversationId',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserNotificationScalarFieldEnum = (typeof UserNotificationScalarFieldEnum)[keyof typeof UserNotificationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2634,6 +3228,7 @@ export const UserOrderByRelevanceFieldEnum = {
   password: 'password',
   pinHash: 'pinHash',
   refreshToken: 'refreshToken',
+  passwordResetToken: 'passwordResetToken',
   avatar: 'avatar'
 } as const
 
@@ -2679,7 +3274,9 @@ export type PickupPointOrderByRelevanceFieldEnum = (typeof PickupPointOrderByRel
 
 export const TripOrderByRelevanceFieldEnum = {
   qrCodeTrip: 'qrCodeTrip',
-  mapsPolyline: 'mapsPolyline'
+  mapsPolyline: 'mapsPolyline',
+  mitraNoShowReason: 'mitraNoShowReason',
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
 } as const
 
 export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnum)[keyof typeof TripOrderByRelevanceFieldEnum]
@@ -2688,7 +3285,8 @@ export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnu
 export const OrderOrderByRelevanceFieldEnum = {
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
-  readinessStatus: 'readinessStatus'
+  readinessStatus: 'readinessStatus',
+  noShowReason: 'noShowReason'
 } as const
 
 export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
@@ -2706,6 +3304,24 @@ export const ItemOrderOrderByRelevanceFieldEnum = {
 export type ItemOrderOrderByRelevanceFieldEnum = (typeof ItemOrderOrderByRelevanceFieldEnum)[keyof typeof ItemOrderOrderByRelevanceFieldEnum]
 
 
+export const NoShowAuditLogOrderByRelevanceFieldEnum = {
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl'
+} as const
+
+export type NoShowAuditLogOrderByRelevanceFieldEnum = (typeof NoShowAuditLogOrderByRelevanceFieldEnum)[keyof typeof NoShowAuditLogOrderByRelevanceFieldEnum]
+
+
+export const PushSubscriptionOrderByRelevanceFieldEnum = {
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  userAgent: 'userAgent'
+} as const
+
+export type PushSubscriptionOrderByRelevanceFieldEnum = (typeof PushSubscriptionOrderByRelevanceFieldEnum)[keyof typeof PushSubscriptionOrderByRelevanceFieldEnum]
+
+
 export const TripQrSessionOrderByRelevanceFieldEnum = {
   qrToken: 'qrToken',
   purpose: 'purpose'
@@ -2719,6 +3335,13 @@ export const OrderQrSessionOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrderQrSessionOrderByRelevanceFieldEnum = (typeof OrderQrSessionOrderByRelevanceFieldEnum)[keyof typeof OrderQrSessionOrderByRelevanceFieldEnum]
+
+
+export const OsmRouteCacheOrderByRelevanceFieldEnum = {
+  polyline: 'polyline'
+} as const
+
+export type OsmRouteCacheOrderByRelevanceFieldEnum = (typeof OsmRouteCacheOrderByRelevanceFieldEnum)[keyof typeof OsmRouteCacheOrderByRelevanceFieldEnum]
 
 
 export const PaymentOrderByRelevanceFieldEnum = {
@@ -2792,6 +3415,34 @@ export const BannerOrderByRelevanceFieldEnum = {
 } as const
 
 export type BannerOrderByRelevanceFieldEnum = (typeof BannerOrderByRelevanceFieldEnum)[keyof typeof BannerOrderByRelevanceFieldEnum]
+
+
+export const DeviceTokenOrderByRelevanceFieldEnum = {
+  token: 'token',
+  platform: 'platform',
+  userAgent: 'userAgent'
+} as const
+
+export type DeviceTokenOrderByRelevanceFieldEnum = (typeof DeviceTokenOrderByRelevanceFieldEnum)[keyof typeof DeviceTokenOrderByRelevanceFieldEnum]
+
+
+export const NotificationLogOrderByRelevanceFieldEnum = {
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  errorMessage: 'errorMessage'
+} as const
+
+export type NotificationLogOrderByRelevanceFieldEnum = (typeof NotificationLogOrderByRelevanceFieldEnum)[keyof typeof NotificationLogOrderByRelevanceFieldEnum]
+
+
+export const UserNotificationOrderByRelevanceFieldEnum = {
+  title: 'title',
+  body: 'body',
+  data: 'data'
+} as const
+
+export type UserNotificationOrderByRelevanceFieldEnum = (typeof UserNotificationOrderByRelevanceFieldEnum)[keyof typeof UserNotificationOrderByRelevanceFieldEnum]
 
 
 
@@ -2927,6 +3578,13 @@ export type EnumScanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'NoShowAuditType'
+ */
+export type EnumNoShowAuditTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NoShowAuditType'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentStatus'
  */
 export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
@@ -2951,6 +3609,20 @@ export type EnumRewardTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'RedemptionStatus'
  */
 export type EnumRedemptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RedemptionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'NotificationType'
+ */
+export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+/**
+ * Reference to a field of type 'NotificationStatus'
+ */
+export type EnumNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationStatus'>
     
 
 
@@ -3123,9 +3795,12 @@ export type GlobalOmitConfig = {
   order?: Prisma.OrderOmit
   itemOrder?: Prisma.ItemOrderOmit
   checkpointsLog?: Prisma.CheckpointsLogOmit
+  noShowAuditLog?: Prisma.NoShowAuditLogOmit
+  pushSubscription?: Prisma.PushSubscriptionOmit
   tripQrSession?: Prisma.TripQrSessionOmit
   orderQrSession?: Prisma.OrderQrSessionOmit
   tripTracking?: Prisma.TripTrackingOmit
+  osmRouteCache?: Prisma.OsmRouteCacheOmit
   payment?: Prisma.PaymentOmit
   wallet?: Prisma.WalletOmit
   walletTransaction?: Prisma.WalletTransactionOmit
@@ -3137,6 +3812,10 @@ export type GlobalOmitConfig = {
   merchandiseItem?: Prisma.MerchandiseItemOmit
   merchandiseRedemption?: Prisma.MerchandiseRedemptionOmit
   banner?: Prisma.BannerOmit
+  notificationPreference?: Prisma.NotificationPreferenceOmit
+  deviceToken?: Prisma.DeviceTokenOmit
+  notificationLog?: Prisma.NotificationLogOmit
+  userNotification?: Prisma.UserNotificationOmit
 }
 
 /* Types for Logging */

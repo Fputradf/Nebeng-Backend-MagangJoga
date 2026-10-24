@@ -63,9 +63,12 @@ export const ModelName = {
   Order: 'Order',
   ItemOrder: 'ItemOrder',
   CheckpointsLog: 'CheckpointsLog',
+  NoShowAuditLog: 'NoShowAuditLog',
+  PushSubscription: 'PushSubscription',
   TripQrSession: 'TripQrSession',
   OrderQrSession: 'OrderQrSession',
   TripTracking: 'TripTracking',
+  OsmRouteCache: 'OsmRouteCache',
   Payment: 'Payment',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
@@ -76,7 +79,11 @@ export const ModelName = {
   Vehicle: 'Vehicle',
   MerchandiseItem: 'MerchandiseItem',
   MerchandiseRedemption: 'MerchandiseRedemption',
-  Banner: 'Banner'
+  Banner: 'Banner',
+  NotificationPreference: 'NotificationPreference',
+  DeviceToken: 'DeviceToken',
+  NotificationLog: 'NotificationLog',
+  UserNotification: 'UserNotification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -135,6 +142,8 @@ export const UserScalarFieldEnum = {
   statusVerification: 'statusVerification',
   pinHash: 'pinHash',
   refreshToken: 'refreshToken',
+  passwordResetToken: 'passwordResetToken',
+  passwordResetTokenExpiresAt: 'passwordResetTokenExpiresAt',
   avatar: 'avatar',
   rewardPoints: 'rewardPoints',
   createdAt: 'createdAt',
@@ -241,7 +250,11 @@ export const TripScalarFieldEnum = {
   serviceType: 'serviceType',
   mapsPolyline: 'mapsPolyline',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
+  mitraNoShowMarkedBy: 'mitraNoShowMarkedBy',
+  mitraNoShowReason: 'mitraNoShowReason',
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
 } as const
 
 export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
@@ -263,7 +276,12 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   escrowStatus: 'escrowStatus',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  noShowMarkedAt: 'noShowMarkedAt',
+  noShowMarkedBy: 'noShowMarkedBy',
+  noShowReason: 'noShowReason',
+  disputeDeadline: 'disputeDeadline',
+  isDisputed: 'isDisputed'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -302,6 +320,35 @@ export const CheckpointsLogScalarFieldEnum = {
 export type CheckpointsLogScalarFieldEnum = (typeof CheckpointsLogScalarFieldEnum)[keyof typeof CheckpointsLogScalarFieldEnum]
 
 
+export const NoShowAuditLogScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  orderId: 'orderId',
+  tripId: 'tripId',
+  posId: 'posId',
+  operatorId: 'operatorId',
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type NoShowAuditLogScalarFieldEnum = (typeof NoShowAuditLogScalarFieldEnum)[keyof typeof NoShowAuditLogScalarFieldEnum]
+
+
+export const PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt',
+  lastUsedAt: 'lastUsedAt'
+} as const
+
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
 export const TripQrSessionScalarFieldEnum = {
   id: 'id',
   tripId: 'tripId',
@@ -334,10 +381,30 @@ export const TripTrackingScalarFieldEnum = {
   tripId: 'tripId',
   latitude: 'latitude',
   longitude: 'longitude',
+  altitude: 'altitude',
+  speed: 'speed',
+  heading: 'heading',
+  accuracy: 'accuracy',
   recordedAt: 'recordedAt'
 } as const
 
 export type TripTrackingScalarFieldEnum = (typeof TripTrackingScalarFieldEnum)[keyof typeof TripTrackingScalarFieldEnum]
+
+
+export const OsmRouteCacheScalarFieldEnum = {
+  id: 'id',
+  originLat: 'originLat',
+  originLng: 'originLng',
+  destLat: 'destLat',
+  destLng: 'destLng',
+  distanceKm: 'distanceKm',
+  durationMinutes: 'durationMinutes',
+  polyline: 'polyline',
+  cachedAt: 'cachedAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type OsmRouteCacheScalarFieldEnum = (typeof OsmRouteCacheScalarFieldEnum)[keyof typeof OsmRouteCacheScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -492,6 +559,71 @@ export const BannerScalarFieldEnum = {
 export type BannerScalarFieldEnum = (typeof BannerScalarFieldEnum)[keyof typeof BannerScalarFieldEnum]
 
 
+export const NotificationPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  enablePushNotifications: 'enablePushNotifications',
+  enableEmailNotifications: 'enableEmailNotifications',
+  orderNotifications: 'orderNotifications',
+  tripNotifications: 'tripNotifications',
+  chatNotifications: 'chatNotifications',
+  paymentNotifications: 'paymentNotifications',
+  promotionNotifications: 'promotionNotifications',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
+
+
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  userAgent: 'userAgent',
+  isActive: 'isActive',
+  lastUsedAt: 'lastUsedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
+
+
+export const NotificationLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  status: 'status',
+  deviceId: 'deviceId',
+  errorMessage: 'errorMessage',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationLogScalarFieldEnum = (typeof NotificationLogScalarFieldEnum)[keyof typeof NotificationLogScalarFieldEnum]
+
+
+export const UserNotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  isRead: 'isRead',
+  conversationId: 'conversationId',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserNotificationScalarFieldEnum = (typeof UserNotificationScalarFieldEnum)[keyof typeof UserNotificationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -532,6 +664,7 @@ export const UserOrderByRelevanceFieldEnum = {
   password: 'password',
   pinHash: 'pinHash',
   refreshToken: 'refreshToken',
+  passwordResetToken: 'passwordResetToken',
   avatar: 'avatar'
 } as const
 
@@ -577,7 +710,9 @@ export type PickupPointOrderByRelevanceFieldEnum = (typeof PickupPointOrderByRel
 
 export const TripOrderByRelevanceFieldEnum = {
   qrCodeTrip: 'qrCodeTrip',
-  mapsPolyline: 'mapsPolyline'
+  mapsPolyline: 'mapsPolyline',
+  mitraNoShowReason: 'mitraNoShowReason',
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
 } as const
 
 export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnum)[keyof typeof TripOrderByRelevanceFieldEnum]
@@ -586,7 +721,8 @@ export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnu
 export const OrderOrderByRelevanceFieldEnum = {
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
-  readinessStatus: 'readinessStatus'
+  readinessStatus: 'readinessStatus',
+  noShowReason: 'noShowReason'
 } as const
 
 export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
@@ -604,6 +740,24 @@ export const ItemOrderOrderByRelevanceFieldEnum = {
 export type ItemOrderOrderByRelevanceFieldEnum = (typeof ItemOrderOrderByRelevanceFieldEnum)[keyof typeof ItemOrderOrderByRelevanceFieldEnum]
 
 
+export const NoShowAuditLogOrderByRelevanceFieldEnum = {
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl'
+} as const
+
+export type NoShowAuditLogOrderByRelevanceFieldEnum = (typeof NoShowAuditLogOrderByRelevanceFieldEnum)[keyof typeof NoShowAuditLogOrderByRelevanceFieldEnum]
+
+
+export const PushSubscriptionOrderByRelevanceFieldEnum = {
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  userAgent: 'userAgent'
+} as const
+
+export type PushSubscriptionOrderByRelevanceFieldEnum = (typeof PushSubscriptionOrderByRelevanceFieldEnum)[keyof typeof PushSubscriptionOrderByRelevanceFieldEnum]
+
+
 export const TripQrSessionOrderByRelevanceFieldEnum = {
   qrToken: 'qrToken',
   purpose: 'purpose'
@@ -617,6 +771,13 @@ export const OrderQrSessionOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrderQrSessionOrderByRelevanceFieldEnum = (typeof OrderQrSessionOrderByRelevanceFieldEnum)[keyof typeof OrderQrSessionOrderByRelevanceFieldEnum]
+
+
+export const OsmRouteCacheOrderByRelevanceFieldEnum = {
+  polyline: 'polyline'
+} as const
+
+export type OsmRouteCacheOrderByRelevanceFieldEnum = (typeof OsmRouteCacheOrderByRelevanceFieldEnum)[keyof typeof OsmRouteCacheOrderByRelevanceFieldEnum]
 
 
 export const PaymentOrderByRelevanceFieldEnum = {
@@ -690,4 +851,32 @@ export const BannerOrderByRelevanceFieldEnum = {
 } as const
 
 export type BannerOrderByRelevanceFieldEnum = (typeof BannerOrderByRelevanceFieldEnum)[keyof typeof BannerOrderByRelevanceFieldEnum]
+
+
+export const DeviceTokenOrderByRelevanceFieldEnum = {
+  token: 'token',
+  platform: 'platform',
+  userAgent: 'userAgent'
+} as const
+
+export type DeviceTokenOrderByRelevanceFieldEnum = (typeof DeviceTokenOrderByRelevanceFieldEnum)[keyof typeof DeviceTokenOrderByRelevanceFieldEnum]
+
+
+export const NotificationLogOrderByRelevanceFieldEnum = {
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  errorMessage: 'errorMessage'
+} as const
+
+export type NotificationLogOrderByRelevanceFieldEnum = (typeof NotificationLogOrderByRelevanceFieldEnum)[keyof typeof NotificationLogOrderByRelevanceFieldEnum]
+
+
+export const UserNotificationOrderByRelevanceFieldEnum = {
+  title: 'title',
+  body: 'body',
+  data: 'data'
+} as const
+
+export type UserNotificationOrderByRelevanceFieldEnum = (typeof UserNotificationOrderByRelevanceFieldEnum)[keyof typeof UserNotificationOrderByRelevanceFieldEnum]
 

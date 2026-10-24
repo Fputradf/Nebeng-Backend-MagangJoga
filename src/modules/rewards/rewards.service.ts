@@ -9,10 +9,14 @@ import { EarnRewardDto } from './dto/earn-reward.dto';
 import { RedeemRewardDto } from './dto/redeem-reward.dto';
 import { RewardMapper } from './mappers/reward.mapper';
 import { Role } from '../../generated/prisma/enums';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 @Injectable()
 export class RewardsService {
-  constructor(private readonly rewardsRepository: RewardsRepository) {}
+  constructor(
+    private readonly rewardsRepository: RewardsRepository,
+    private readonly notificationHelper: NotificationHelperService,
+  ) {}
 
   async earnPoints(currentUser: any, dto: EarnRewardDto) {
     if (dto.points <= 0) {
@@ -47,6 +51,12 @@ export class RewardsService {
         dto.description || 'Penambahan poin reward manual oleh admin',
     });
 
+    await this.notificationHelper.notifyRewardEarned(
+      dto.userId,
+      dto.points,
+      dto.description || 'Penambahan poin reward manual oleh admin',
+    );
+
     return RewardMapper.toTransactionResponse(transaction);
   }
 
@@ -74,6 +84,12 @@ export class RewardsService {
       points: dto.points,
       description: dto.description || 'Penukaran poin reward',
     });
+
+    await this.notificationHelper.notifyRewardEarned(
+      currentUserId,
+      dto.points,
+      dto.description || 'Penukaran poin reward',
+    );
 
     return RewardMapper.toTransactionResponse(transaction);
   }

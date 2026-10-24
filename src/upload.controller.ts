@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   Res,
-  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -131,7 +130,6 @@ export class UploadController {
   getVerificationFile(
     @Param('filename') filename: string,
     @Res() res: Response,
-    @Req() req: any,
   ) {
     const filePath = path.join(
       process.cwd(),

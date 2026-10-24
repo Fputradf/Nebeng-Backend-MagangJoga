@@ -89,4 +89,32 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(roomName).emit('new_message', messagePayload);
     }
   }
+
+  isUserInConversationRoom(userId: string, conversationId: string): boolean {
+    try {
+      if (!this.server) return false;
+      const roomName = `conversation_${conversationId}`;
+
+      // For namespace: try adapter directly first, then fallback to sockets.adapter
+      const adapter = (this.server as any).adapter || (this.server.sockets as any)?.adapter;
+      if (!adapter) return false;
+
+      const room = adapter.rooms.get(roomName);
+      if (!room) return false;
+
+      // Iterate through socket IDs in the room
+      for (const socketId of room) {
+        // Get socket from the appropriate map
+        const socket = (this.server.sockets as any).get(socketId);
+        if (socket) {
+          const socketUserId = String(socket?.user?.id || socket?.user?.sub);
+          if (socketUserId === userId) return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      this.logger.error(`[ChatGateway] Error checking user in room: ${error.message}`);
+      return false; // Return false on error so push will still be sent
+    }
+  }
 }

@@ -37,6 +37,7 @@ export type TripAvgAggregateOutputType = {
   seatAvailable: number | null
   maxWeightCapacityKg: runtime.Decimal | null
   remainingWeightCapacityKg: runtime.Decimal | null
+  mitraNoShowMarkedBy: number | null
 }
 
 export type TripSumAggregateOutputType = {
@@ -50,6 +51,7 @@ export type TripSumAggregateOutputType = {
   seatAvailable: number | null
   maxWeightCapacityKg: runtime.Decimal | null
   remainingWeightCapacityKg: runtime.Decimal | null
+  mitraNoShowMarkedBy: bigint | null
 }
 
 export type TripMinAggregateOutputType = {
@@ -72,6 +74,10 @@ export type TripMinAggregateOutputType = {
   mapsPolyline: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  mitraNoShowMarkedAt: Date | null
+  mitraNoShowMarkedBy: bigint | null
+  mitraNoShowReason: string | null
+  mitraNoShowEvidenceUrl: string | null
 }
 
 export type TripMaxAggregateOutputType = {
@@ -94,6 +100,10 @@ export type TripMaxAggregateOutputType = {
   mapsPolyline: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  mitraNoShowMarkedAt: Date | null
+  mitraNoShowMarkedBy: bigint | null
+  mitraNoShowReason: string | null
+  mitraNoShowEvidenceUrl: string | null
 }
 
 export type TripCountAggregateOutputType = {
@@ -116,6 +126,10 @@ export type TripCountAggregateOutputType = {
   mapsPolyline: number
   createdAt: number
   updatedAt: number
+  mitraNoShowMarkedAt: number
+  mitraNoShowMarkedBy: number
+  mitraNoShowReason: number
+  mitraNoShowEvidenceUrl: number
   _all: number
 }
 
@@ -131,6 +145,7 @@ export type TripAvgAggregateInputType = {
   seatAvailable?: true
   maxWeightCapacityKg?: true
   remainingWeightCapacityKg?: true
+  mitraNoShowMarkedBy?: true
 }
 
 export type TripSumAggregateInputType = {
@@ -144,6 +159,7 @@ export type TripSumAggregateInputType = {
   seatAvailable?: true
   maxWeightCapacityKg?: true
   remainingWeightCapacityKg?: true
+  mitraNoShowMarkedBy?: true
 }
 
 export type TripMinAggregateInputType = {
@@ -166,6 +182,10 @@ export type TripMinAggregateInputType = {
   mapsPolyline?: true
   createdAt?: true
   updatedAt?: true
+  mitraNoShowMarkedAt?: true
+  mitraNoShowMarkedBy?: true
+  mitraNoShowReason?: true
+  mitraNoShowEvidenceUrl?: true
 }
 
 export type TripMaxAggregateInputType = {
@@ -188,6 +208,10 @@ export type TripMaxAggregateInputType = {
   mapsPolyline?: true
   createdAt?: true
   updatedAt?: true
+  mitraNoShowMarkedAt?: true
+  mitraNoShowMarkedBy?: true
+  mitraNoShowReason?: true
+  mitraNoShowEvidenceUrl?: true
 }
 
 export type TripCountAggregateInputType = {
@@ -210,6 +234,10 @@ export type TripCountAggregateInputType = {
   mapsPolyline?: true
   createdAt?: true
   updatedAt?: true
+  mitraNoShowMarkedAt?: true
+  mitraNoShowMarkedBy?: true
+  mitraNoShowReason?: true
+  mitraNoShowEvidenceUrl?: true
   _all?: true
 }
 
@@ -319,6 +347,10 @@ export type TripGroupByOutputType = {
   mapsPolyline: string | null
   createdAt: Date
   updatedAt: Date
+  mitraNoShowMarkedAt: Date | null
+  mitraNoShowMarkedBy: bigint | null
+  mitraNoShowReason: string | null
+  mitraNoShowEvidenceUrl: string | null
   _count: TripCountAggregateOutputType | null
   _avg: TripAvgAggregateOutputType | null
   _sum: TripSumAggregateOutputType | null
@@ -364,16 +396,22 @@ export type TripWhereInput = {
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
+  mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.BigIntNullableFilter<"Trip"> | bigint | number | null
+  mitraNoShowReason?: Prisma.StringNullableFilter<"Trip"> | string | null
+  mitraNoShowEvidenceUrl?: Prisma.StringNullableFilter<"Trip"> | string | null
   mitra?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleScalarRelationFilter, Prisma.VehicleWhereInput>
   originPoint?: Prisma.XOR<Prisma.PickupPointScalarRelationFilter, Prisma.PickupPointWhereInput>
   destinationPoint?: Prisma.XOR<Prisma.PickupPointScalarRelationFilter, Prisma.PickupPointWhereInput>
+  mitraNoShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   orders?: Prisma.OrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.TripQrSessionListRelationFilter
   trackings?: Prisma.TripTrackingListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
   reviews?: Prisma.TripReviewListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }
 
 export type TripOrderByWithRelationInput = {
@@ -396,16 +434,22 @@ export type TripOrderByWithRelationInput = {
   mapsPolyline?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  mitraNoShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowEvidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   mitra?: Prisma.UserOrderByWithRelationInput
   vehicle?: Prisma.VehicleOrderByWithRelationInput
   originPoint?: Prisma.PickupPointOrderByWithRelationInput
   destinationPoint?: Prisma.PickupPointOrderByWithRelationInput
+  mitraNoShowMarkedByUser?: Prisma.UserOrderByWithRelationInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
   checkpointsLogs?: Prisma.CheckpointsLogOrderByRelationAggregateInput
   qrSessions?: Prisma.TripQrSessionOrderByRelationAggregateInput
   trackings?: Prisma.TripTrackingOrderByRelationAggregateInput
   conversations?: Prisma.ConversationOrderByRelationAggregateInput
   reviews?: Prisma.TripReviewOrderByRelationAggregateInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   _relevance?: Prisma.TripOrderByRelevanceInput
 }
 
@@ -432,16 +476,22 @@ export type TripWhereUniqueInput = Prisma.AtLeast<{
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
+  mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.BigIntNullableFilter<"Trip"> | bigint | number | null
+  mitraNoShowReason?: Prisma.StringNullableFilter<"Trip"> | string | null
+  mitraNoShowEvidenceUrl?: Prisma.StringNullableFilter<"Trip"> | string | null
   mitra?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleScalarRelationFilter, Prisma.VehicleWhereInput>
   originPoint?: Prisma.XOR<Prisma.PickupPointScalarRelationFilter, Prisma.PickupPointWhereInput>
   destinationPoint?: Prisma.XOR<Prisma.PickupPointScalarRelationFilter, Prisma.PickupPointWhereInput>
+  mitraNoShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   orders?: Prisma.OrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.TripQrSessionListRelationFilter
   trackings?: Prisma.TripTrackingListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
   reviews?: Prisma.TripReviewListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }, "id" | "qrCodeTrip">
 
 export type TripOrderByWithAggregationInput = {
@@ -464,6 +514,10 @@ export type TripOrderByWithAggregationInput = {
   mapsPolyline?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  mitraNoShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  mitraNoShowEvidenceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TripCountOrderByAggregateInput
   _avg?: Prisma.TripAvgOrderByAggregateInput
   _max?: Prisma.TripMaxOrderByAggregateInput
@@ -494,6 +548,10 @@ export type TripScalarWhereWithAggregatesInput = {
   mapsPolyline?: Prisma.StringNullableWithAggregatesFilter<"Trip"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
+  mitraNoShowMarkedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Trip"> | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Trip"> | bigint | number | null
+  mitraNoShowReason?: Prisma.StringNullableWithAggregatesFilter<"Trip"> | string | null
+  mitraNoShowEvidenceUrl?: Prisma.StringNullableWithAggregatesFilter<"Trip"> | string | null
 }
 
 export type TripCreateInput = {
@@ -512,16 +570,21 @@ export type TripCreateInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateInput = {
@@ -544,12 +607,17 @@ export type TripUncheckedCreateInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripUpdateInput = {
@@ -568,16 +636,21 @@ export type TripUpdateInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateInput = {
@@ -600,12 +673,17 @@ export type TripUncheckedUpdateInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateManyInput = {
@@ -628,6 +706,10 @@ export type TripCreateManyInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
 }
 
 export type TripUpdateManyMutationInput = {
@@ -646,6 +728,9 @@ export type TripUpdateManyMutationInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripUncheckedUpdateManyInput = {
@@ -668,6 +753,10 @@ export type TripUncheckedUpdateManyInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripListRelationFilter = {
@@ -706,6 +795,10 @@ export type TripCountOrderByAggregateInput = {
   mapsPolyline?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  mitraNoShowMarkedAt?: Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrder
+  mitraNoShowReason?: Prisma.SortOrder
+  mitraNoShowEvidenceUrl?: Prisma.SortOrder
 }
 
 export type TripAvgOrderByAggregateInput = {
@@ -719,6 +812,7 @@ export type TripAvgOrderByAggregateInput = {
   seatAvailable?: Prisma.SortOrder
   maxWeightCapacityKg?: Prisma.SortOrder
   remainingWeightCapacityKg?: Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrder
 }
 
 export type TripMaxOrderByAggregateInput = {
@@ -741,6 +835,10 @@ export type TripMaxOrderByAggregateInput = {
   mapsPolyline?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  mitraNoShowMarkedAt?: Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrder
+  mitraNoShowReason?: Prisma.SortOrder
+  mitraNoShowEvidenceUrl?: Prisma.SortOrder
 }
 
 export type TripMinOrderByAggregateInput = {
@@ -763,6 +861,10 @@ export type TripMinOrderByAggregateInput = {
   mapsPolyline?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  mitraNoShowMarkedAt?: Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrder
+  mitraNoShowReason?: Prisma.SortOrder
+  mitraNoShowEvidenceUrl?: Prisma.SortOrder
 }
 
 export type TripSumOrderByAggregateInput = {
@@ -776,11 +878,17 @@ export type TripSumOrderByAggregateInput = {
   seatAvailable?: Prisma.SortOrder
   maxWeightCapacityKg?: Prisma.SortOrder
   remainingWeightCapacityKg?: Prisma.SortOrder
+  mitraNoShowMarkedBy?: Prisma.SortOrder
 }
 
 export type TripScalarRelationFilter = {
   is?: Prisma.TripWhereInput
   isNot?: Prisma.TripWhereInput
+}
+
+export type TripNullableScalarRelationFilter = {
+  is?: Prisma.TripWhereInput | null
+  isNot?: Prisma.TripWhereInput | null
 }
 
 export type TripCreateNestedManyWithoutMitraInput = {
@@ -790,10 +898,24 @@ export type TripCreateNestedManyWithoutMitraInput = {
   connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
 }
 
+export type TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput> | Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput[] | Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput | Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput[]
+  createMany?: Prisma.TripCreateManyMitraNoShowMarkedByUserInputEnvelope
+  connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+}
+
 export type TripUncheckedCreateNestedManyWithoutMitraInput = {
   create?: Prisma.XOR<Prisma.TripCreateWithoutMitraInput, Prisma.TripUncheckedCreateWithoutMitraInput> | Prisma.TripCreateWithoutMitraInput[] | Prisma.TripUncheckedCreateWithoutMitraInput[]
   connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraInput | Prisma.TripCreateOrConnectWithoutMitraInput[]
   createMany?: Prisma.TripCreateManyMitraInputEnvelope
+  connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+}
+
+export type TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput> | Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput[] | Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput | Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput[]
+  createMany?: Prisma.TripCreateManyMitraNoShowMarkedByUserInputEnvelope
   connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
 }
 
@@ -811,6 +933,20 @@ export type TripUpdateManyWithoutMitraNestedInput = {
   deleteMany?: Prisma.TripScalarWhereInput | Prisma.TripScalarWhereInput[]
 }
 
+export type TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput> | Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput[] | Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput | Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput[]
+  upsert?: Prisma.TripUpsertWithWhereUniqueWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpsertWithWhereUniqueWithoutMitraNoShowMarkedByUserInput[]
+  createMany?: Prisma.TripCreateManyMitraNoShowMarkedByUserInputEnvelope
+  set?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  disconnect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  delete?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  update?: Prisma.TripUpdateWithWhereUniqueWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpdateWithWhereUniqueWithoutMitraNoShowMarkedByUserInput[]
+  updateMany?: Prisma.TripUpdateManyWithWhereWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpdateManyWithWhereWithoutMitraNoShowMarkedByUserInput[]
+  deleteMany?: Prisma.TripScalarWhereInput | Prisma.TripScalarWhereInput[]
+}
+
 export type TripUncheckedUpdateManyWithoutMitraNestedInput = {
   create?: Prisma.XOR<Prisma.TripCreateWithoutMitraInput, Prisma.TripUncheckedCreateWithoutMitraInput> | Prisma.TripCreateWithoutMitraInput[] | Prisma.TripUncheckedCreateWithoutMitraInput[]
   connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraInput | Prisma.TripCreateOrConnectWithoutMitraInput[]
@@ -822,6 +958,20 @@ export type TripUncheckedUpdateManyWithoutMitraNestedInput = {
   connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
   update?: Prisma.TripUpdateWithWhereUniqueWithoutMitraInput | Prisma.TripUpdateWithWhereUniqueWithoutMitraInput[]
   updateMany?: Prisma.TripUpdateManyWithWhereWithoutMitraInput | Prisma.TripUpdateManyWithWhereWithoutMitraInput[]
+  deleteMany?: Prisma.TripScalarWhereInput | Prisma.TripScalarWhereInput[]
+}
+
+export type TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput> | Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput[] | Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput | Prisma.TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput[]
+  upsert?: Prisma.TripUpsertWithWhereUniqueWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpsertWithWhereUniqueWithoutMitraNoShowMarkedByUserInput[]
+  createMany?: Prisma.TripCreateManyMitraNoShowMarkedByUserInputEnvelope
+  set?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  disconnect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  delete?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  connect?: Prisma.TripWhereUniqueInput | Prisma.TripWhereUniqueInput[]
+  update?: Prisma.TripUpdateWithWhereUniqueWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpdateWithWhereUniqueWithoutMitraNoShowMarkedByUserInput[]
+  updateMany?: Prisma.TripUpdateManyWithWhereWithoutMitraNoShowMarkedByUserInput | Prisma.TripUpdateManyWithWhereWithoutMitraNoShowMarkedByUserInput[]
   deleteMany?: Prisma.TripScalarWhereInput | Prisma.TripScalarWhereInput[]
 }
 
@@ -945,6 +1095,22 @@ export type TripUpdateOneRequiredWithoutCheckpointsLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TripUpdateToOneWithWhereWithoutCheckpointsLogsInput, Prisma.TripUpdateWithoutCheckpointsLogsInput>, Prisma.TripUncheckedUpdateWithoutCheckpointsLogsInput>
 }
 
+export type TripCreateNestedOneWithoutNoShowAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutNoShowAuditLogsInput
+  connect?: Prisma.TripWhereUniqueInput
+}
+
+export type TripUpdateOneWithoutNoShowAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutNoShowAuditLogsInput
+  upsert?: Prisma.TripUpsertWithoutNoShowAuditLogsInput
+  disconnect?: Prisma.TripWhereInput | boolean
+  delete?: Prisma.TripWhereInput | boolean
+  connect?: Prisma.TripWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TripUpdateToOneWithWhereWithoutNoShowAuditLogsInput, Prisma.TripUpdateWithoutNoShowAuditLogsInput>, Prisma.TripUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
 export type TripCreateNestedOneWithoutQrSessionsInput = {
   create?: Prisma.XOR<Prisma.TripCreateWithoutQrSessionsInput, Prisma.TripUncheckedCreateWithoutQrSessionsInput>
   connectOrCreate?: Prisma.TripCreateOrConnectWithoutQrSessionsInput
@@ -1059,15 +1225,20 @@ export type TripCreateWithoutMitraInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutMitraInput = {
@@ -1089,12 +1260,17 @@ export type TripUncheckedCreateWithoutMitraInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutMitraInput = {
@@ -1104,6 +1280,80 @@ export type TripCreateOrConnectWithoutMitraInput = {
 
 export type TripCreateManyMitraInputEnvelope = {
   data: Prisma.TripCreateManyMitraInput | Prisma.TripCreateManyMitraInput[]
+  skipDuplicates?: boolean
+}
+
+export type TripCreateWithoutMitraNoShowMarkedByUserInput = {
+  id?: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType?: $Enums.ServiceType
+  mapsPolyline?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
+  vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
+  originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
+  destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
+}
+
+export type TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  vehicleId: bigint | number
+  originPointId: bigint | number
+  destinationPointId: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType?: $Enums.ServiceType
+  mapsPolyline?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
+}
+
+export type TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput = {
+  where: Prisma.TripWhereUniqueInput
+  create: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput>
+}
+
+export type TripCreateManyMitraNoShowMarkedByUserInputEnvelope = {
+  data: Prisma.TripCreateManyMitraNoShowMarkedByUserInput | Prisma.TripCreateManyMitraNoShowMarkedByUserInput[]
   skipDuplicates?: boolean
 }
 
@@ -1146,6 +1396,26 @@ export type TripScalarWhereInput = {
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
+  mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.BigIntNullableFilter<"Trip"> | bigint | number | null
+  mitraNoShowReason?: Prisma.StringNullableFilter<"Trip"> | string | null
+  mitraNoShowEvidenceUrl?: Prisma.StringNullableFilter<"Trip"> | string | null
+}
+
+export type TripUpsertWithWhereUniqueWithoutMitraNoShowMarkedByUserInput = {
+  where: Prisma.TripWhereUniqueInput
+  update: Prisma.XOR<Prisma.TripUpdateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput>
+  create: Prisma.XOR<Prisma.TripCreateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput>
+}
+
+export type TripUpdateWithWhereUniqueWithoutMitraNoShowMarkedByUserInput = {
+  where: Prisma.TripWhereUniqueInput
+  data: Prisma.XOR<Prisma.TripUpdateWithoutMitraNoShowMarkedByUserInput, Prisma.TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput>
+}
+
+export type TripUpdateManyWithWhereWithoutMitraNoShowMarkedByUserInput = {
+  where: Prisma.TripScalarWhereInput
+  data: Prisma.XOR<Prisma.TripUpdateManyMutationInput, Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserInput>
 }
 
 export type TripCreateWithoutOriginPointInput = {
@@ -1164,15 +1434,20 @@ export type TripCreateWithoutOriginPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutOriginPointInput = {
@@ -1194,12 +1469,17 @@ export type TripUncheckedCreateWithoutOriginPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutOriginPointInput = {
@@ -1228,15 +1508,20 @@ export type TripCreateWithoutDestinationPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutDestinationPointInput = {
@@ -1258,12 +1543,17 @@ export type TripUncheckedCreateWithoutDestinationPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutDestinationPointInput = {
@@ -1324,15 +1614,20 @@ export type TripCreateWithoutOrdersInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutOrdersInput = {
@@ -1355,11 +1650,16 @@ export type TripUncheckedCreateWithoutOrdersInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutOrdersInput = {
@@ -1394,15 +1694,20 @@ export type TripUpdateWithoutOrdersInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutOrdersInput = {
@@ -1425,11 +1730,16 @@ export type TripUncheckedUpdateWithoutOrdersInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutCheckpointsLogsInput = {
@@ -1448,15 +1758,20 @@ export type TripCreateWithoutCheckpointsLogsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -1479,11 +1794,16 @@ export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -1518,15 +1838,20 @@ export type TripUpdateWithoutCheckpointsLogsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -1549,7 +1874,156 @@ export type TripUncheckedUpdateWithoutCheckpointsLogsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
+}
+
+export type TripCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType?: $Enums.ServiceType
+  mapsPolyline?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
+  vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
+  originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
+  destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+}
+
+export type TripUncheckedCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  vehicleId: bigint | number
+  originPointId: bigint | number
+  destinationPointId: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType?: $Enums.ServiceType
+  mapsPolyline?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+}
+
+export type TripCreateOrConnectWithoutNoShowAuditLogsInput = {
+  where: Prisma.TripWhereUniqueInput
+  create: Prisma.XOR<Prisma.TripCreateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedCreateWithoutNoShowAuditLogsInput>
+}
+
+export type TripUpsertWithoutNoShowAuditLogsInput = {
+  update: Prisma.XOR<Prisma.TripUpdateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedUpdateWithoutNoShowAuditLogsInput>
+  create: Prisma.XOR<Prisma.TripCreateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedCreateWithoutNoShowAuditLogsInput>
+  where?: Prisma.TripWhereInput
+}
+
+export type TripUpdateToOneWithWhereWithoutNoShowAuditLogsInput = {
+  where?: Prisma.TripWhereInput
+  data: Prisma.XOR<Prisma.TripUpdateWithoutNoShowAuditLogsInput, Prisma.TripUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
+export type TripUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
+  vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
+  originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
+  destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+}
+
+export type TripUncheckedUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  destinationPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
@@ -1572,15 +2046,20 @@ export type TripCreateWithoutQrSessionsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutQrSessionsInput = {
@@ -1603,11 +2082,16 @@ export type TripUncheckedCreateWithoutQrSessionsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutQrSessionsInput = {
@@ -1642,15 +2126,20 @@ export type TripUpdateWithoutQrSessionsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutQrSessionsInput = {
@@ -1673,11 +2162,16 @@ export type TripUncheckedUpdateWithoutQrSessionsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutTrackingsInput = {
@@ -1696,15 +2190,20 @@ export type TripCreateWithoutTrackingsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutTrackingsInput = {
@@ -1727,11 +2226,16 @@ export type TripUncheckedCreateWithoutTrackingsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutTrackingsInput = {
@@ -1766,15 +2270,20 @@ export type TripUpdateWithoutTrackingsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutTrackingsInput = {
@@ -1797,11 +2306,16 @@ export type TripUncheckedUpdateWithoutTrackingsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutConversationsInput = {
@@ -1820,15 +2334,20 @@ export type TripCreateWithoutConversationsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutConversationsInput = {
@@ -1851,11 +2370,16 @@ export type TripUncheckedCreateWithoutConversationsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutConversationsInput = {
@@ -1890,15 +2414,20 @@ export type TripUpdateWithoutConversationsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutConversationsInput = {
@@ -1921,11 +2450,16 @@ export type TripUncheckedUpdateWithoutConversationsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutReviewsInput = {
@@ -1944,15 +2478,20 @@ export type TripCreateWithoutReviewsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutReviewsInput = {
@@ -1975,11 +2514,16 @@ export type TripUncheckedCreateWithoutReviewsInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutReviewsInput = {
@@ -2014,15 +2558,20 @@ export type TripUpdateWithoutReviewsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutReviewsInput = {
@@ -2045,11 +2594,16 @@ export type TripUncheckedUpdateWithoutReviewsInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutVehicleInput = {
@@ -2068,15 +2622,20 @@ export type TripCreateWithoutVehicleInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
   originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
   destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
   orders?: Prisma.OrderCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutVehicleInput = {
@@ -2098,12 +2657,17 @@ export type TripUncheckedCreateWithoutVehicleInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
   qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
   trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutVehicleInput = {
@@ -2151,6 +2715,35 @@ export type TripCreateManyMitraInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+}
+
+export type TripCreateManyMitraNoShowMarkedByUserInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  vehicleId: bigint | number
+  originPointId: bigint | number
+  destinationPointId: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType?: $Enums.ServiceType
+  mapsPolyline?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
 }
 
 export type TripUpdateWithoutMitraInput = {
@@ -2169,15 +2762,20 @@ export type TripUpdateWithoutMitraInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutMitraInput = {
@@ -2199,12 +2797,17 @@ export type TripUncheckedUpdateWithoutMitraInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutMitraInput = {
@@ -2226,6 +2829,99 @@ export type TripUncheckedUpdateManyWithoutMitraInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TripUpdateWithoutMitraNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
+  vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
+  originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
+  destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
+}
+
+export type TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  destinationPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
+}
+
+export type TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  destinationPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripCreateManyOriginPointInput = {
@@ -2247,6 +2943,10 @@ export type TripCreateManyOriginPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
 }
 
 export type TripCreateManyDestinationPointInput = {
@@ -2268,6 +2968,10 @@ export type TripCreateManyDestinationPointInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
 }
 
 export type TripUpdateWithoutOriginPointInput = {
@@ -2286,15 +2990,20 @@ export type TripUpdateWithoutOriginPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutOriginPointInput = {
@@ -2316,12 +3025,17 @@ export type TripUncheckedUpdateWithoutOriginPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutOriginPointInput = {
@@ -2343,6 +3057,10 @@ export type TripUncheckedUpdateManyWithoutOriginPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripUpdateWithoutDestinationPointInput = {
@@ -2361,15 +3079,20 @@ export type TripUpdateWithoutDestinationPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutDestinationPointInput = {
@@ -2391,12 +3114,17 @@ export type TripUncheckedUpdateWithoutDestinationPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutDestinationPointInput = {
@@ -2418,6 +3146,10 @@ export type TripUncheckedUpdateManyWithoutDestinationPointInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripCreateManyVehicleInput = {
@@ -2439,6 +3171,10 @@ export type TripCreateManyVehicleInput = {
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
 }
 
 export type TripUpdateWithoutVehicleInput = {
@@ -2457,15 +3193,20 @@ export type TripUpdateWithoutVehicleInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
   originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
   destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
   orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutVehicleInput = {
@@ -2487,12 +3228,17 @@ export type TripUncheckedUpdateWithoutVehicleInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
   qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
   trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutVehicleInput = {
@@ -2514,6 +3260,10 @@ export type TripUncheckedUpdateManyWithoutVehicleInput = {
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -2528,6 +3278,7 @@ export type TripCountOutputType = {
   trackings: number
   conversations: number
   reviews: number
+  noShowAuditLogs: number
 }
 
 export type TripCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2537,6 +3288,7 @@ export type TripCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   trackings?: boolean | TripCountOutputTypeCountTrackingsArgs
   conversations?: boolean | TripCountOutputTypeCountConversationsArgs
   reviews?: boolean | TripCountOutputTypeCountReviewsArgs
+  noShowAuditLogs?: boolean | TripCountOutputTypeCountNoShowAuditLogsArgs
 }
 
 /**
@@ -2591,6 +3343,13 @@ export type TripCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.TripReviewWhereInput
 }
 
+/**
+ * TripCountOutputType without action
+ */
+export type TripCountOutputTypeCountNoShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NoShowAuditLogWhereInput
+}
+
 
 export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2612,16 +3371,22 @@ export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   mapsPolyline?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  mitraNoShowMarkedAt?: boolean
+  mitraNoShowMarkedBy?: boolean
+  mitraNoShowReason?: boolean
+  mitraNoShowEvidenceUrl?: boolean
   mitra?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleDefaultArgs<ExtArgs>
   originPoint?: boolean | Prisma.PickupPointDefaultArgs<ExtArgs>
   destinationPoint?: boolean | Prisma.PickupPointDefaultArgs<ExtArgs>
+  mitraNoShowMarkedByUser?: boolean | Prisma.Trip$mitraNoShowMarkedByUserArgs<ExtArgs>
   orders?: boolean | Prisma.Trip$ordersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Trip$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Trip$qrSessionsArgs<ExtArgs>
   trackings?: boolean | Prisma.Trip$trackingsArgs<ExtArgs>
   conversations?: boolean | Prisma.Trip$conversationsArgs<ExtArgs>
   reviews?: boolean | Prisma.Trip$reviewsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.Trip$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.TripCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trip"]>
 
@@ -2647,20 +3412,26 @@ export type TripSelectScalar = {
   mapsPolyline?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  mitraNoShowMarkedAt?: boolean
+  mitraNoShowMarkedBy?: boolean
+  mitraNoShowReason?: boolean
+  mitraNoShowEvidenceUrl?: boolean
 }
 
-export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mitraId" | "vehicleId" | "originPointId" | "destinationPointId" | "vehicleType" | "departureDate" | "departureTime" | "price" | "seatTotal" | "seatAvailable" | "maxWeightCapacityKg" | "remainingWeightCapacityKg" | "qrCodeTrip" | "status" | "serviceType" | "mapsPolyline" | "createdAt" | "updatedAt", ExtArgs["result"]["trip"]>
+export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mitraId" | "vehicleId" | "originPointId" | "destinationPointId" | "vehicleType" | "departureDate" | "departureTime" | "price" | "seatTotal" | "seatAvailable" | "maxWeightCapacityKg" | "remainingWeightCapacityKg" | "qrCodeTrip" | "status" | "serviceType" | "mapsPolyline" | "createdAt" | "updatedAt" | "mitraNoShowMarkedAt" | "mitraNoShowMarkedBy" | "mitraNoShowReason" | "mitraNoShowEvidenceUrl", ExtArgs["result"]["trip"]>
 export type TripInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mitra?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleDefaultArgs<ExtArgs>
   originPoint?: boolean | Prisma.PickupPointDefaultArgs<ExtArgs>
   destinationPoint?: boolean | Prisma.PickupPointDefaultArgs<ExtArgs>
+  mitraNoShowMarkedByUser?: boolean | Prisma.Trip$mitraNoShowMarkedByUserArgs<ExtArgs>
   orders?: boolean | Prisma.Trip$ordersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Trip$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Trip$qrSessionsArgs<ExtArgs>
   trackings?: boolean | Prisma.Trip$trackingsArgs<ExtArgs>
   conversations?: boolean | Prisma.Trip$conversationsArgs<ExtArgs>
   reviews?: boolean | Prisma.Trip$reviewsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.Trip$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.TripCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2671,12 +3442,14 @@ export type $TripPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     vehicle: Prisma.$VehiclePayload<ExtArgs>
     originPoint: Prisma.$PickupPointPayload<ExtArgs>
     destinationPoint: Prisma.$PickupPointPayload<ExtArgs>
+    mitraNoShowMarkedByUser: Prisma.$UserPayload<ExtArgs> | null
     orders: Prisma.$OrderPayload<ExtArgs>[]
     checkpointsLogs: Prisma.$CheckpointsLogPayload<ExtArgs>[]
     qrSessions: Prisma.$TripQrSessionPayload<ExtArgs>[]
     trackings: Prisma.$TripTrackingPayload<ExtArgs>[]
     conversations: Prisma.$ConversationPayload<ExtArgs>[]
     reviews: Prisma.$TripReviewPayload<ExtArgs>[]
+    noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -2698,6 +3471,10 @@ export type $TripPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     mapsPolyline: string | null
     createdAt: Date
     updatedAt: Date
+    mitraNoShowMarkedAt: Date | null
+    mitraNoShowMarkedBy: bigint | null
+    mitraNoShowReason: string | null
+    mitraNoShowEvidenceUrl: string | null
   }, ExtArgs["result"]["trip"]>
   composites: {}
 }
@@ -3042,12 +3819,14 @@ export interface Prisma__TripClient<T, Null = never, ExtArgs extends runtime.Typ
   vehicle<T extends Prisma.VehicleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VehicleDefaultArgs<ExtArgs>>): Prisma.Prisma__VehicleClient<runtime.Types.Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   originPoint<T extends Prisma.PickupPointDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPointDefaultArgs<ExtArgs>>): Prisma.Prisma__PickupPointClient<runtime.Types.Result.GetResult<Prisma.$PickupPointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   destinationPoint<T extends Prisma.PickupPointDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PickupPointDefaultArgs<ExtArgs>>): Prisma.Prisma__PickupPointClient<runtime.Types.Result.GetResult<Prisma.$PickupPointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mitraNoShowMarkedByUser<T extends Prisma.Trip$mitraNoShowMarkedByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$mitraNoShowMarkedByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   orders<T extends Prisma.Trip$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkpointsLogs<T extends Prisma.Trip$checkpointsLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$checkpointsLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckpointsLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrSessions<T extends Prisma.Trip$qrSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$qrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripQrSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trackings<T extends Prisma.Trip$trackingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$trackingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripTrackingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversations<T extends Prisma.Trip$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Trip$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  noShowAuditLogs<T extends Prisma.Trip$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3096,6 +3875,10 @@ export interface TripFieldRefs {
   readonly mapsPolyline: Prisma.FieldRef<"Trip", 'String'>
   readonly createdAt: Prisma.FieldRef<"Trip", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Trip", 'DateTime'>
+  readonly mitraNoShowMarkedAt: Prisma.FieldRef<"Trip", 'DateTime'>
+  readonly mitraNoShowMarkedBy: Prisma.FieldRef<"Trip", 'BigInt'>
+  readonly mitraNoShowReason: Prisma.FieldRef<"Trip", 'String'>
+  readonly mitraNoShowEvidenceUrl: Prisma.FieldRef<"Trip", 'String'>
 }
     
 
@@ -3444,6 +4227,25 @@ export type TripDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Trip.mitraNoShowMarkedByUser
+ */
+export type Trip$mitraNoShowMarkedByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Trip.orders
  */
 export type Trip$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3585,6 +4387,30 @@ export type Trip$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.TripReviewScalarFieldEnum | Prisma.TripReviewScalarFieldEnum[]
+}
+
+/**
+ * Trip.noShowAuditLogs
+ */
+export type Trip$noShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NoShowAuditLog
+   */
+  select?: Prisma.NoShowAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NoShowAuditLog
+   */
+  omit?: Prisma.NoShowAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoShowAuditLogInclude<ExtArgs> | null
+  where?: Prisma.NoShowAuditLogWhereInput
+  orderBy?: Prisma.NoShowAuditLogOrderByWithRelationInput | Prisma.NoShowAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.NoShowAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NoShowAuditLogScalarFieldEnum | Prisma.NoShowAuditLogScalarFieldEnum[]
 }
 
 /**

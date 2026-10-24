@@ -768,6 +768,90 @@
         ]
       }
     },
+    "/api/auth/forgot-password": {
+      "post": {
+        "operationId": "AuthController_forgotPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kode OTP dikirim ke email (jika terdaftar). Response selalu generic."
+          },
+          "400": {
+            "description": "Data inputan tidak valid"
+          }
+        },
+        "summary": "Meminta kode OTP reset password via email",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/verify-otp": {
+      "post": {
+        "operationId": "AuthController_verifyOtp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyOtpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP valid, lanjut ke pembuatan password baru"
+          },
+          "401": {
+            "description": "OTP tidak valid, sudah digunakan, atau sudah kedaluwarsa"
+          }
+        },
+        "summary": "Verifikasi kode OTP reset password",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password berhasil diubah"
+          },
+          "401": {
+            "description": "Token tidak valid, hilang, atau sudah kedaluwarsa"
+          }
+        },
+        "summary": "Mengubah password menggunakan kode OTP (setelah verifikasi OTP)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/verifications/submit": {
       "post": {
         "operationId": "VerificationController_submit",
@@ -933,6 +1017,340 @@
         "summary": "Approve atau Reject dokumen verifikasi",
         "tags": [
           "Verifications"
+        ]
+      }
+    },
+    "/api/notifications/register-device": {
+      "post": {
+        "operationId": "NotificationsController_registerDevice",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDeviceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/unregister-device": {
+      "post": {
+        "operationId": "NotificationsController_unregisterDevice",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/preferences": {
+      "put": {
+        "operationId": "NotificationsController_updatePreferences",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      },
+      "get": {
+        "operationId": "NotificationsController_getPreferences",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/history": {
+      "get": {
+        "operationId": "NotificationsController_getNotificationHistory",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/test": {
+      "post": {
+        "operationId": "NotificationsController_testNotification",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/test/order-created": {
+      "post": {
+        "operationId": "NotificationsController_testOrderCreated",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/test/chat-message": {
+      "post": {
+        "operationId": "NotificationsController_testChatMessage",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/test/payment-success": {
+      "post": {
+        "operationId": "NotificationsController_testPaymentSuccess",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/unread-count": {
+      "get": {
+        "operationId": "NotificationsController_getUnreadCount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/read-all": {
+      "patch": {
+        "operationId": "NotificationsController_markAllAsRead",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/read-by-conversation/{conversationId}": {
+      "patch": {
+        "operationId": "NotificationsController_markConversationAsRead",
+        "parameters": [
+          {
+            "name": "conversationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/{id}/read": {
+      "patch": {
+        "operationId": "NotificationsController_markAsRead",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications": {
+      "get": {
+        "operationId": "NotificationsController_getUserNotifications",
+        "parameters": [
+          {
+            "name": "type",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/push/public-key": {
+      "get": {
+        "operationId": "NotificationsController_getPublicKey",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/notifications/push/subscribe": {
+      "post": {
+        "operationId": "NotificationsController_subscribeToPush",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushSubscribeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
+        ]
+      },
+      "delete": {
+        "operationId": "NotificationsController_unsubscribeFromPush",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushUnsubscribeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notifications"
         ]
       }
     },
@@ -1566,7 +1984,8 @@
                 "in_transit",
                 "arrived_dest_pos",
                 "completed",
-                "cancelled"
+                "cancelled",
+                "mitra_no_show"
               ]
             }
           },
@@ -1710,7 +2129,8 @@
                 "in_transit",
                 "arrived_dest_pos",
                 "completed",
-                "cancelled"
+                "cancelled",
+                "mitra_no_show"
               ]
             }
           },
@@ -1991,6 +2411,51 @@
           }
         ],
         "summary": "Membatalkan pesanan dan mengembalikan kuota kursi/bagasi trip",
+        "tags": [
+          "Orders"
+        ]
+      }
+    },
+    "/api/orders/{id}/dispute-no-show": {
+      "post": {
+        "operationId": "OrdersController_disputeNoShow",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisputeNoShowDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Keberatan berhasil diajukan"
+          },
+          "400": {
+            "description": "Jendela keberatan sudah berakhir atau order bukan no_show"
+          },
+          "404": {
+            "description": "Order tidak ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Ajukan keberatan untuk penumpang no-show",
         "tags": [
           "Orders"
         ]
@@ -2301,6 +2766,370 @@
         "summary": "Intervensi Darurat: Force Complete & Release Escrow manual oleh Operator Pos (HP Mitra Rusak)",
         "tags": [
           "Checkpoints"
+        ]
+      }
+    },
+    "/api/checkpoints/passenger-no-show": {
+      "post": {
+        "deprecated": true,
+        "operationId": "CheckpointsController_passengerNoShow",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Penumpang no-show berhasil dicatat"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "[DEPRECATED] Catat Penumpang No-Show (Tidak Datang) - Gunakan endpoint passenger-no-show-by-id",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/api/checkpoints/mitra-no-show": {
+      "post": {
+        "deprecated": true,
+        "operationId": "CheckpointsController_mitraNoShow",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Mitra no-show berhasil dicatat"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "[DEPRECATED] Catat Mitra No-Show (Tidak Datang ke Pos) - Gunakan endpoint mitra-no-show-by-id",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/api/checkpoints/manifest": {
+      "get": {
+        "operationId": "CheckpointsController_getManifest",
+        "parameters": [
+          {
+            "name": "date",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "posId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Manifest berhasil diambil"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get Manifest Pos - Daftar trip dan penumpang untuk operator",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/api/checkpoints/passenger-no-show-by-id": {
+      "post": {
+        "operationId": "CheckpointsController_passengerNoShowById",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PassengerNoShowDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Penumpang no-show berhasil dicatat"
+          },
+          "400": {
+            "description": "Status order tidak valid atau trip belum check-in"
+          },
+          "403": {
+            "description": "Operator tidak berhak di pos tersebut"
+          },
+          "404": {
+            "description": "Order tidak ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Catat Penumpang No-Show (Tidak Datang) berdasarkan Order ID - Tiket hangus tanpa refund",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/api/checkpoints/mitra-no-show-by-id": {
+      "post": {
+        "operationId": "CheckpointsController_mitraNoShowById",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MitraNoShowDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mitra no-show berhasil dicatat"
+          },
+          "400": {
+            "description": "Status trip tidak valid atau trip sudah melewati pos lain"
+          },
+          "403": {
+            "description": "Operator tidak berhak di pos tersebut"
+          },
+          "404": {
+            "description": "Trip tidak ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Catat Mitra No-Show (Tidak Datang ke Pos) berdasarkan Trip ID - Trip dibatalkan, semua penumpang di-refund",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/api/tracking/route": {
+      "get": {
+        "operationId": "TrackingController_calculateRoute",
+        "parameters": [
+          {
+            "name": "originLat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "originLng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destLat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destLng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/eta/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_getETA",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/geofence/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_checkGeofencing",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/deviation/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_detectDeviation",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/history/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_getTripHistory",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/geocode": {
+      "get": {
+        "operationId": "TrackingController_geocode",
+        "parameters": [
+          {
+            "name": "address",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/reverse-geocode": {
+      "get": {
+        "operationId": "TrackingController_reverseGeocode",
+        "parameters": [
+          {
+            "name": "lat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/cleanup": {
+      "post": {
+        "operationId": "TrackingController_cleanupOldData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
         ]
       }
     },
@@ -3691,6 +4520,62 @@
           "refreshToken"
         ]
       },
+      "ForgotPasswordDto": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "Email atau nomor telepon pengguna"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "Email pengguna (opsional jika identifier diisi)"
+          }
+        }
+      },
+      "VerifyOtpDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "otp": {
+            "type": "string",
+            "example": "123456",
+            "description": "Kode OTP 6-digit"
+          }
+        },
+        "required": [
+          "email",
+          "otp"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "otp": {
+            "type": "string",
+            "example": "123456",
+            "description": "Kode OTP 6-digit"
+          },
+          "newPassword": {
+            "type": "string",
+            "example": "Af^dfa1212daG"
+          }
+        },
+        "required": [
+          "email",
+          "otp",
+          "newPassword"
+        ]
+      },
       "VerifiactionFileDto": {
         "type": "object",
         "properties": {
@@ -3769,6 +4654,22 @@
         "required": [
           "status"
         ]
+      },
+      "RegisterDeviceDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdatePreferenceDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "PushSubscribeDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "PushUnsubscribeDto": {
+        "type": "object",
+        "properties": {}
       },
       "CreateRegionDto": {
         "type": "object",
@@ -4123,7 +5024,8 @@
               "in_transit",
               "arrived_dest_pos",
               "completed",
-              "cancelled"
+              "cancelled",
+              "mitra_no_show"
             ]
           },
           "departureDate": {
@@ -4225,6 +5127,18 @@
         "required": [
           "tripId",
           "type"
+        ]
+      },
+      "DisputeNoShowDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Reason for dispute"
+          }
+        },
+        "required": [
+          "reason"
         ]
       },
       "WithdrawWalletDto": {
@@ -4329,6 +5243,51 @@
           "qrCodeTicket",
           "posId",
           "scanType"
+        ]
+      },
+      "PassengerNoShowDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Order ID"
+          },
+          "posId": {
+            "type": "string",
+            "description": "Pos ID where the no-show is being marked"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for no-show"
+          }
+        },
+        "required": [
+          "orderId"
+        ]
+      },
+      "MitraNoShowDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "string",
+            "description": "Trip ID"
+          },
+          "posId": {
+            "type": "string",
+            "description": "Pos ID where the no-show is being marked"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for no-show (required)"
+          },
+          "evidenceUrl": {
+            "type": "string",
+            "description": "Evidence URL (photo proof)"
+          }
+        },
+        "required": [
+          "tripId",
+          "reason"
         ]
       },
       "CreateConversationDto": {

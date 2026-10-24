@@ -6,10 +6,13 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../users/users.module';
+import { MailModule } from '../../mail/mail.module';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
     UserModule,
+    MailModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -27,7 +30,7 @@ import { UserModule } from '../users/users.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
-  exports: [AuthService, JwtStrategy, PassportModule],
+  providers: [AuthService, JwtStrategy, RolesGuard],
+  exports: [AuthService, JwtStrategy, PassportModule, RolesGuard, JwtModule],
 })
 export class AuthModule {}

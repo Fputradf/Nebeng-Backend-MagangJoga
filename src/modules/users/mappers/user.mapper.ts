@@ -11,7 +11,7 @@ export class UserMapper {
       user.assignedPickupPoints && user.assignedPickupPoints.length > 0
         ? user.assignedPickupPoints[0].id.toString()
         : null;
-        
+
     const assignedPosName =
       user.assignedPickupPoints && user.assignedPickupPoints.length > 0
         ? user.assignedPickupPoints[0].name

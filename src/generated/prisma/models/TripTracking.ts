@@ -31,6 +31,10 @@ export type TripTrackingAvgAggregateOutputType = {
   tripId: number | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
+  altitude: runtime.Decimal | null
+  speed: runtime.Decimal | null
+  heading: runtime.Decimal | null
+  accuracy: runtime.Decimal | null
 }
 
 export type TripTrackingSumAggregateOutputType = {
@@ -38,6 +42,10 @@ export type TripTrackingSumAggregateOutputType = {
   tripId: bigint | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
+  altitude: runtime.Decimal | null
+  speed: runtime.Decimal | null
+  heading: runtime.Decimal | null
+  accuracy: runtime.Decimal | null
 }
 
 export type TripTrackingMinAggregateOutputType = {
@@ -45,6 +53,10 @@ export type TripTrackingMinAggregateOutputType = {
   tripId: bigint | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
+  altitude: runtime.Decimal | null
+  speed: runtime.Decimal | null
+  heading: runtime.Decimal | null
+  accuracy: runtime.Decimal | null
   recordedAt: Date | null
 }
 
@@ -53,6 +65,10 @@ export type TripTrackingMaxAggregateOutputType = {
   tripId: bigint | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
+  altitude: runtime.Decimal | null
+  speed: runtime.Decimal | null
+  heading: runtime.Decimal | null
+  accuracy: runtime.Decimal | null
   recordedAt: Date | null
 }
 
@@ -61,6 +77,10 @@ export type TripTrackingCountAggregateOutputType = {
   tripId: number
   latitude: number
   longitude: number
+  altitude: number
+  speed: number
+  heading: number
+  accuracy: number
   recordedAt: number
   _all: number
 }
@@ -71,6 +91,10 @@ export type TripTrackingAvgAggregateInputType = {
   tripId?: true
   latitude?: true
   longitude?: true
+  altitude?: true
+  speed?: true
+  heading?: true
+  accuracy?: true
 }
 
 export type TripTrackingSumAggregateInputType = {
@@ -78,6 +102,10 @@ export type TripTrackingSumAggregateInputType = {
   tripId?: true
   latitude?: true
   longitude?: true
+  altitude?: true
+  speed?: true
+  heading?: true
+  accuracy?: true
 }
 
 export type TripTrackingMinAggregateInputType = {
@@ -85,6 +113,10 @@ export type TripTrackingMinAggregateInputType = {
   tripId?: true
   latitude?: true
   longitude?: true
+  altitude?: true
+  speed?: true
+  heading?: true
+  accuracy?: true
   recordedAt?: true
 }
 
@@ -93,6 +125,10 @@ export type TripTrackingMaxAggregateInputType = {
   tripId?: true
   latitude?: true
   longitude?: true
+  altitude?: true
+  speed?: true
+  heading?: true
+  accuracy?: true
   recordedAt?: true
 }
 
@@ -101,6 +137,10 @@ export type TripTrackingCountAggregateInputType = {
   tripId?: true
   latitude?: true
   longitude?: true
+  altitude?: true
+  speed?: true
+  heading?: true
+  accuracy?: true
   recordedAt?: true
   _all?: true
 }
@@ -196,6 +236,10 @@ export type TripTrackingGroupByOutputType = {
   tripId: bigint
   latitude: runtime.Decimal
   longitude: runtime.Decimal
+  altitude: runtime.Decimal | null
+  speed: runtime.Decimal | null
+  heading: runtime.Decimal | null
+  accuracy: runtime.Decimal | null
   recordedAt: Date
   _count: TripTrackingCountAggregateOutputType | null
   _avg: TripTrackingAvgAggregateOutputType | null
@@ -227,6 +271,10 @@ export type TripTrackingWhereInput = {
   tripId?: Prisma.BigIntFilter<"TripTracking"> | bigint | number
   latitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFilter<"TripTracking"> | Date | string
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }
@@ -236,6 +284,10 @@ export type TripTrackingOrderByWithRelationInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  speed?: Prisma.SortOrderInput | Prisma.SortOrder
+  heading?: Prisma.SortOrderInput | Prisma.SortOrder
+  accuracy?: Prisma.SortOrderInput | Prisma.SortOrder
   recordedAt?: Prisma.SortOrder
   trip?: Prisma.TripOrderByWithRelationInput
 }
@@ -248,6 +300,10 @@ export type TripTrackingWhereUniqueInput = Prisma.AtLeast<{
   tripId?: Prisma.BigIntFilter<"TripTracking"> | bigint | number
   latitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFilter<"TripTracking"> | Date | string
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }, "id">
@@ -257,6 +313,10 @@ export type TripTrackingOrderByWithAggregationInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  speed?: Prisma.SortOrderInput | Prisma.SortOrder
+  heading?: Prisma.SortOrderInput | Prisma.SortOrder
+  accuracy?: Prisma.SortOrderInput | Prisma.SortOrder
   recordedAt?: Prisma.SortOrder
   _count?: Prisma.TripTrackingCountOrderByAggregateInput
   _avg?: Prisma.TripTrackingAvgOrderByAggregateInput
@@ -273,6 +333,10 @@ export type TripTrackingScalarWhereWithAggregatesInput = {
   tripId?: Prisma.BigIntWithAggregatesFilter<"TripTracking"> | bigint | number
   latitude?: Prisma.DecimalWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.DecimalNullableWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.DecimalNullableWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.DecimalNullableWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.DecimalNullableWithAggregatesFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeWithAggregatesFilter<"TripTracking"> | Date | string
 }
 
@@ -280,6 +344,10 @@ export type TripTrackingCreateInput = {
   id?: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
   trip: Prisma.TripCreateNestedOneWithoutTrackingsInput
 }
@@ -289,6 +357,10 @@ export type TripTrackingUncheckedCreateInput = {
   tripId: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
 }
 
@@ -296,6 +368,10 @@ export type TripTrackingUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trip?: Prisma.TripUpdateOneRequiredWithoutTrackingsNestedInput
 }
@@ -305,6 +381,10 @@ export type TripTrackingUncheckedUpdateInput = {
   tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -313,6 +393,10 @@ export type TripTrackingCreateManyInput = {
   tripId: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
 }
 
@@ -320,6 +404,10 @@ export type TripTrackingUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -328,6 +416,10 @@ export type TripTrackingUncheckedUpdateManyInput = {
   tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -346,6 +438,10 @@ export type TripTrackingCountOrderByAggregateInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrder
+  speed?: Prisma.SortOrder
+  heading?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   recordedAt?: Prisma.SortOrder
 }
 
@@ -354,6 +450,10 @@ export type TripTrackingAvgOrderByAggregateInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrder
+  speed?: Prisma.SortOrder
+  heading?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
 }
 
 export type TripTrackingMaxOrderByAggregateInput = {
@@ -361,6 +461,10 @@ export type TripTrackingMaxOrderByAggregateInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrder
+  speed?: Prisma.SortOrder
+  heading?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   recordedAt?: Prisma.SortOrder
 }
 
@@ -369,6 +473,10 @@ export type TripTrackingMinOrderByAggregateInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrder
+  speed?: Prisma.SortOrder
+  heading?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   recordedAt?: Prisma.SortOrder
 }
 
@@ -377,6 +485,10 @@ export type TripTrackingSumOrderByAggregateInput = {
   tripId?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
+  altitude?: Prisma.SortOrder
+  speed?: Prisma.SortOrder
+  heading?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
 }
 
 export type TripTrackingCreateNestedManyWithoutTripInput = {
@@ -425,6 +537,10 @@ export type TripTrackingCreateWithoutTripInput = {
   id?: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
 }
 
@@ -432,6 +548,10 @@ export type TripTrackingUncheckedCreateWithoutTripInput = {
   id?: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
 }
 
@@ -469,6 +589,10 @@ export type TripTrackingScalarWhereInput = {
   tripId?: Prisma.BigIntFilter<"TripTracking"> | bigint | number
   latitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.DecimalNullableFilter<"TripTracking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFilter<"TripTracking"> | Date | string
 }
 
@@ -476,6 +600,10 @@ export type TripTrackingCreateManyTripInput = {
   id?: bigint | number
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Date | string
 }
 
@@ -483,6 +611,10 @@ export type TripTrackingUpdateWithoutTripInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -490,6 +622,10 @@ export type TripTrackingUncheckedUpdateWithoutTripInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -497,6 +633,10 @@ export type TripTrackingUncheckedUpdateManyWithoutTripInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  altitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  speed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  heading?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  accuracy?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   recordedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -507,6 +647,10 @@ export type TripTrackingSelect<ExtArgs extends runtime.Types.Extensions.Internal
   tripId?: boolean
   latitude?: boolean
   longitude?: boolean
+  altitude?: boolean
+  speed?: boolean
+  heading?: boolean
+  accuracy?: boolean
   recordedAt?: boolean
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tripTracking"]>
@@ -518,10 +662,14 @@ export type TripTrackingSelectScalar = {
   tripId?: boolean
   latitude?: boolean
   longitude?: boolean
+  altitude?: boolean
+  speed?: boolean
+  heading?: boolean
+  accuracy?: boolean
   recordedAt?: boolean
 }
 
-export type TripTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "latitude" | "longitude" | "recordedAt", ExtArgs["result"]["tripTracking"]>
+export type TripTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "latitude" | "longitude" | "altitude" | "speed" | "heading" | "accuracy" | "recordedAt", ExtArgs["result"]["tripTracking"]>
 export type TripTrackingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }
@@ -536,6 +684,10 @@ export type $TripTrackingPayload<ExtArgs extends runtime.Types.Extensions.Intern
     tripId: bigint
     latitude: runtime.Decimal
     longitude: runtime.Decimal
+    altitude: runtime.Decimal | null
+    speed: runtime.Decimal | null
+    heading: runtime.Decimal | null
+    accuracy: runtime.Decimal | null
     recordedAt: Date
   }, ExtArgs["result"]["tripTracking"]>
   composites: {}
@@ -911,6 +1063,10 @@ export interface TripTrackingFieldRefs {
   readonly tripId: Prisma.FieldRef<"TripTracking", 'BigInt'>
   readonly latitude: Prisma.FieldRef<"TripTracking", 'Decimal'>
   readonly longitude: Prisma.FieldRef<"TripTracking", 'Decimal'>
+  readonly altitude: Prisma.FieldRef<"TripTracking", 'Decimal'>
+  readonly speed: Prisma.FieldRef<"TripTracking", 'Decimal'>
+  readonly heading: Prisma.FieldRef<"TripTracking", 'Decimal'>
+  readonly accuracy: Prisma.FieldRef<"TripTracking", 'Decimal'>
   readonly recordedAt: Prisma.FieldRef<"TripTracking", 'DateTime'>
 }
     

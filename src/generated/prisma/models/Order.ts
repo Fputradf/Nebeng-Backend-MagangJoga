@@ -35,6 +35,7 @@ export type OrderAvgAggregateOutputType = {
   totalWeightKg: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  noShowMarkedBy: number | null
 }
 
 export type OrderSumAggregateOutputType = {
@@ -46,6 +47,7 @@ export type OrderSumAggregateOutputType = {
   totalWeightKg: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  noShowMarkedBy: bigint | null
 }
 
 export type OrderMinAggregateOutputType = {
@@ -65,6 +67,11 @@ export type OrderMinAggregateOutputType = {
   escrowStatus: $Enums.EscrowStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  noShowMarkedAt: Date | null
+  noShowMarkedBy: bigint | null
+  noShowReason: string | null
+  disputeDeadline: Date | null
+  isDisputed: boolean | null
 }
 
 export type OrderMaxAggregateOutputType = {
@@ -84,6 +91,11 @@ export type OrderMaxAggregateOutputType = {
   escrowStatus: $Enums.EscrowStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  noShowMarkedAt: Date | null
+  noShowMarkedBy: bigint | null
+  noShowReason: string | null
+  disputeDeadline: Date | null
+  isDisputed: boolean | null
 }
 
 export type OrderCountAggregateOutputType = {
@@ -103,6 +115,11 @@ export type OrderCountAggregateOutputType = {
   escrowStatus: number
   createdAt: number
   updatedAt: number
+  noShowMarkedAt: number
+  noShowMarkedBy: number
+  noShowReason: number
+  disputeDeadline: number
+  isDisputed: number
   _all: number
 }
 
@@ -116,6 +133,7 @@ export type OrderAvgAggregateInputType = {
   totalWeightKg?: true
   totalPrice?: true
   adminFeePercentage?: true
+  noShowMarkedBy?: true
 }
 
 export type OrderSumAggregateInputType = {
@@ -127,6 +145,7 @@ export type OrderSumAggregateInputType = {
   totalWeightKg?: true
   totalPrice?: true
   adminFeePercentage?: true
+  noShowMarkedBy?: true
 }
 
 export type OrderMinAggregateInputType = {
@@ -146,6 +165,11 @@ export type OrderMinAggregateInputType = {
   escrowStatus?: true
   createdAt?: true
   updatedAt?: true
+  noShowMarkedAt?: true
+  noShowMarkedBy?: true
+  noShowReason?: true
+  disputeDeadline?: true
+  isDisputed?: true
 }
 
 export type OrderMaxAggregateInputType = {
@@ -165,6 +189,11 @@ export type OrderMaxAggregateInputType = {
   escrowStatus?: true
   createdAt?: true
   updatedAt?: true
+  noShowMarkedAt?: true
+  noShowMarkedBy?: true
+  noShowReason?: true
+  disputeDeadline?: true
+  isDisputed?: true
 }
 
 export type OrderCountAggregateInputType = {
@@ -184,6 +213,11 @@ export type OrderCountAggregateInputType = {
   escrowStatus?: true
   createdAt?: true
   updatedAt?: true
+  noShowMarkedAt?: true
+  noShowMarkedBy?: true
+  noShowReason?: true
+  disputeDeadline?: true
+  isDisputed?: true
   _all?: true
 }
 
@@ -290,6 +324,11 @@ export type OrderGroupByOutputType = {
   escrowStatus: $Enums.EscrowStatus
   createdAt: Date
   updatedAt: Date
+  noShowMarkedAt: Date | null
+  noShowMarkedBy: bigint | null
+  noShowReason: string | null
+  disputeDeadline: Date | null
+  isDisputed: boolean
   _count: OrderCountAggregateOutputType | null
   _avg: OrderAvgAggregateOutputType | null
   _sum: OrderSumAggregateOutputType | null
@@ -332,13 +371,20 @@ export type OrderWhereInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFilter<"Order"> | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  noShowMarkedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  noShowMarkedBy?: Prisma.BigIntNullableFilter<"Order"> | bigint | number | null
+  noShowReason?: Prisma.StringNullableFilter<"Order"> | string | null
+  disputeDeadline?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  isDisputed?: Prisma.BoolFilter<"Order"> | boolean
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  noShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   itemOrders?: Prisma.ItemOrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.OrderQrSessionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }
 
 export type OrderOrderByWithRelationInput = {
@@ -358,13 +404,20 @@ export type OrderOrderByWithRelationInput = {
   escrowStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  noShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  noShowReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  disputeDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDisputed?: Prisma.SortOrder
   trip?: Prisma.TripOrderByWithRelationInput
   customer?: Prisma.UserOrderByWithRelationInput
+  noShowMarkedByUser?: Prisma.UserOrderByWithRelationInput
   itemOrders?: Prisma.ItemOrderOrderByRelationAggregateInput
   checkpointsLogs?: Prisma.CheckpointsLogOrderByRelationAggregateInput
   qrSessions?: Prisma.OrderQrSessionOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   walletTransactions?: Prisma.WalletTransactionOrderByRelationAggregateInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   _relevance?: Prisma.OrderOrderByRelevanceInput
 }
 
@@ -388,13 +441,20 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   escrowStatus?: Prisma.EnumEscrowStatusFilter<"Order"> | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  noShowMarkedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  noShowMarkedBy?: Prisma.BigIntNullableFilter<"Order"> | bigint | number | null
+  noShowReason?: Prisma.StringNullableFilter<"Order"> | string | null
+  disputeDeadline?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  isDisputed?: Prisma.BoolFilter<"Order"> | boolean
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  noShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   itemOrders?: Prisma.ItemOrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.OrderQrSessionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
+  noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
 }, "id" | "qrCodeTicket">
 
 export type OrderOrderByWithAggregationInput = {
@@ -414,6 +474,11 @@ export type OrderOrderByWithAggregationInput = {
   escrowStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  noShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  noShowReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  disputeDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  isDisputed?: Prisma.SortOrder
   _count?: Prisma.OrderCountOrderByAggregateInput
   _avg?: Prisma.OrderAvgOrderByAggregateInput
   _max?: Prisma.OrderMaxOrderByAggregateInput
@@ -441,6 +506,11 @@ export type OrderScalarWhereWithAggregatesInput = {
   escrowStatus?: Prisma.EnumEscrowStatusWithAggregatesFilter<"Order"> | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
+  noShowMarkedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  noShowMarkedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Order"> | bigint | number | null
+  noShowReason?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  disputeDeadline?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  isDisputed?: Prisma.BoolWithAggregatesFilter<"Order"> | boolean
 }
 
 export type OrderCreateInput = {
@@ -458,13 +528,19 @@ export type OrderCreateInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateInput = {
@@ -484,11 +560,17 @@ export type OrderUncheckedCreateInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUpdateInput = {
@@ -506,13 +588,19 @@ export type OrderUpdateInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateInput = {
@@ -532,11 +620,17 @@ export type OrderUncheckedUpdateInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyInput = {
@@ -556,6 +650,11 @@ export type OrderCreateManyInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
 }
 
 export type OrderUpdateManyMutationInput = {
@@ -573,6 +672,10 @@ export type OrderUpdateManyMutationInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type OrderUncheckedUpdateManyInput = {
@@ -592,6 +695,11 @@ export type OrderUncheckedUpdateManyInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type OrderListRelationFilter = {
@@ -627,6 +735,11 @@ export type OrderCountOrderByAggregateInput = {
   escrowStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  noShowMarkedAt?: Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrder
+  noShowReason?: Prisma.SortOrder
+  disputeDeadline?: Prisma.SortOrder
+  isDisputed?: Prisma.SortOrder
 }
 
 export type OrderAvgOrderByAggregateInput = {
@@ -638,6 +751,7 @@ export type OrderAvgOrderByAggregateInput = {
   totalWeightKg?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrder
 }
 
 export type OrderMaxOrderByAggregateInput = {
@@ -657,6 +771,11 @@ export type OrderMaxOrderByAggregateInput = {
   escrowStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  noShowMarkedAt?: Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrder
+  noShowReason?: Prisma.SortOrder
+  disputeDeadline?: Prisma.SortOrder
+  isDisputed?: Prisma.SortOrder
 }
 
 export type OrderMinOrderByAggregateInput = {
@@ -676,6 +795,11 @@ export type OrderMinOrderByAggregateInput = {
   escrowStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  noShowMarkedAt?: Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrder
+  noShowReason?: Prisma.SortOrder
+  disputeDeadline?: Prisma.SortOrder
+  isDisputed?: Prisma.SortOrder
 }
 
 export type OrderSumOrderByAggregateInput = {
@@ -687,6 +811,7 @@ export type OrderSumOrderByAggregateInput = {
   totalWeightKg?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  noShowMarkedBy?: Prisma.SortOrder
 }
 
 export type OrderScalarRelationFilter = {
@@ -706,10 +831,24 @@ export type OrderCreateNestedManyWithoutCustomerInput = {
   connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
 }
 
+export type OrderCreateNestedManyWithoutNoShowMarkedByUserInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput> | Prisma.OrderCreateWithoutNoShowMarkedByUserInput[] | Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput | Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput[]
+  createMany?: Prisma.OrderCreateManyNoShowMarkedByUserInputEnvelope
+  connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+}
+
 export type OrderUncheckedCreateNestedManyWithoutCustomerInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCustomerInput, Prisma.OrderUncheckedCreateWithoutCustomerInput> | Prisma.OrderCreateWithoutCustomerInput[] | Prisma.OrderUncheckedCreateWithoutCustomerInput[]
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCustomerInput | Prisma.OrderCreateOrConnectWithoutCustomerInput[]
   createMany?: Prisma.OrderCreateManyCustomerInputEnvelope
+  connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+}
+
+export type OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput> | Prisma.OrderCreateWithoutNoShowMarkedByUserInput[] | Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput | Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput[]
+  createMany?: Prisma.OrderCreateManyNoShowMarkedByUserInputEnvelope
   connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
 }
 
@@ -727,6 +866,20 @@ export type OrderUpdateManyWithoutCustomerNestedInput = {
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
 }
 
+export type OrderUpdateManyWithoutNoShowMarkedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput> | Prisma.OrderCreateWithoutNoShowMarkedByUserInput[] | Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput | Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput[]
+  upsert?: Prisma.OrderUpsertWithWhereUniqueWithoutNoShowMarkedByUserInput | Prisma.OrderUpsertWithWhereUniqueWithoutNoShowMarkedByUserInput[]
+  createMany?: Prisma.OrderCreateManyNoShowMarkedByUserInputEnvelope
+  set?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  disconnect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  delete?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  update?: Prisma.OrderUpdateWithWhereUniqueWithoutNoShowMarkedByUserInput | Prisma.OrderUpdateWithWhereUniqueWithoutNoShowMarkedByUserInput[]
+  updateMany?: Prisma.OrderUpdateManyWithWhereWithoutNoShowMarkedByUserInput | Prisma.OrderUpdateManyWithWhereWithoutNoShowMarkedByUserInput[]
+  deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
+}
+
 export type OrderUncheckedUpdateManyWithoutCustomerNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCustomerInput, Prisma.OrderUncheckedCreateWithoutCustomerInput> | Prisma.OrderCreateWithoutCustomerInput[] | Prisma.OrderUncheckedCreateWithoutCustomerInput[]
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCustomerInput | Prisma.OrderCreateOrConnectWithoutCustomerInput[]
@@ -738,6 +891,20 @@ export type OrderUncheckedUpdateManyWithoutCustomerNestedInput = {
   connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
   update?: Prisma.OrderUpdateWithWhereUniqueWithoutCustomerInput | Prisma.OrderUpdateWithWhereUniqueWithoutCustomerInput[]
   updateMany?: Prisma.OrderUpdateManyWithWhereWithoutCustomerInput | Prisma.OrderUpdateManyWithWhereWithoutCustomerInput[]
+  deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
+}
+
+export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput> | Prisma.OrderCreateWithoutNoShowMarkedByUserInput[] | Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput[]
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput | Prisma.OrderCreateOrConnectWithoutNoShowMarkedByUserInput[]
+  upsert?: Prisma.OrderUpsertWithWhereUniqueWithoutNoShowMarkedByUserInput | Prisma.OrderUpsertWithWhereUniqueWithoutNoShowMarkedByUserInput[]
+  createMany?: Prisma.OrderCreateManyNoShowMarkedByUserInputEnvelope
+  set?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  disconnect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  delete?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  connect?: Prisma.OrderWhereUniqueInput | Prisma.OrderWhereUniqueInput[]
+  update?: Prisma.OrderUpdateWithWhereUniqueWithoutNoShowMarkedByUserInput | Prisma.OrderUpdateWithWhereUniqueWithoutNoShowMarkedByUserInput[]
+  updateMany?: Prisma.OrderUpdateManyWithWhereWithoutNoShowMarkedByUserInput | Prisma.OrderUpdateManyWithWhereWithoutNoShowMarkedByUserInput[]
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
 }
 
@@ -823,6 +990,22 @@ export type OrderUpdateOneRequiredWithoutCheckpointsLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutCheckpointsLogsInput, Prisma.OrderUpdateWithoutCheckpointsLogsInput>, Prisma.OrderUncheckedUpdateWithoutCheckpointsLogsInput>
 }
 
+export type OrderCreateNestedOneWithoutNoShowAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowAuditLogsInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneWithoutNoShowAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedCreateWithoutNoShowAuditLogsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNoShowAuditLogsInput
+  upsert?: Prisma.OrderUpsertWithoutNoShowAuditLogsInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutNoShowAuditLogsInput, Prisma.OrderUpdateWithoutNoShowAuditLogsInput>, Prisma.OrderUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
 export type OrderCreateNestedOneWithoutQrSessionsInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutQrSessionsInput, Prisma.OrderUncheckedCreateWithoutQrSessionsInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutQrSessionsInput
@@ -882,12 +1065,18 @@ export type OrderCreateWithoutCustomerInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCustomerInput = {
@@ -906,11 +1095,17 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCustomerInput = {
@@ -920,6 +1115,74 @@ export type OrderCreateOrConnectWithoutCustomerInput = {
 
 export type OrderCreateManyCustomerInputEnvelope = {
   data: Prisma.OrderCreateManyCustomerInput | Prisma.OrderCreateManyCustomerInput[]
+  skipDuplicates?: boolean
+}
+
+export type OrderCreateWithoutNoShowMarkedByUserInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutNoShowMarkedByUserInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput>
+}
+
+export type OrderCreateManyNoShowMarkedByUserInputEnvelope = {
+  data: Prisma.OrderCreateManyNoShowMarkedByUserInput | Prisma.OrderCreateManyNoShowMarkedByUserInput[]
   skipDuplicates?: boolean
 }
 
@@ -959,6 +1222,27 @@ export type OrderScalarWhereInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFilter<"Order"> | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  noShowMarkedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  noShowMarkedBy?: Prisma.BigIntNullableFilter<"Order"> | bigint | number | null
+  noShowReason?: Prisma.StringNullableFilter<"Order"> | string | null
+  disputeDeadline?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  isDisputed?: Prisma.BoolFilter<"Order"> | boolean
+}
+
+export type OrderUpsertWithWhereUniqueWithoutNoShowMarkedByUserInput = {
+  where: Prisma.OrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedUpdateWithoutNoShowMarkedByUserInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedCreateWithoutNoShowMarkedByUserInput>
+}
+
+export type OrderUpdateWithWhereUniqueWithoutNoShowMarkedByUserInput = {
+  where: Prisma.OrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutNoShowMarkedByUserInput, Prisma.OrderUncheckedUpdateWithoutNoShowMarkedByUserInput>
+}
+
+export type OrderUpdateManyWithWhereWithoutNoShowMarkedByUserInput = {
+  where: Prisma.OrderScalarWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateManyMutationInput, Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput>
 }
 
 export type OrderCreateWithoutTripInput = {
@@ -976,12 +1260,18 @@ export type OrderCreateWithoutTripInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutTripInput = {
@@ -1000,11 +1290,17 @@ export type OrderUncheckedCreateWithoutTripInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutTripInput = {
@@ -1048,12 +1344,18 @@ export type OrderCreateWithoutItemOrdersInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutItemOrdersInput = {
@@ -1073,10 +1375,16 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutItemOrdersInput = {
@@ -1110,12 +1418,18 @@ export type OrderUpdateWithoutItemOrdersInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutItemOrdersInput = {
@@ -1135,10 +1449,16 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutCheckpointsLogsInput = {
@@ -1156,12 +1476,18 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -1181,10 +1507,16 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -1218,12 +1550,18 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -1243,7 +1581,145 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutNoShowAuditLogsInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedCreateWithoutNoShowAuditLogsInput>
+}
+
+export type OrderUpsertWithoutNoShowAuditLogsInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedUpdateWithoutNoShowAuditLogsInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedCreateWithoutNoShowAuditLogsInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutNoShowAuditLogsInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutNoShowAuditLogsInput, Prisma.OrderUncheckedUpdateWithoutNoShowAuditLogsInput>
+}
+
+export type OrderUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
@@ -1264,12 +1740,18 @@ export type OrderCreateWithoutQrSessionsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutQrSessionsInput = {
@@ -1289,10 +1771,16 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutQrSessionsInput = {
@@ -1326,12 +1814,18 @@ export type OrderUpdateWithoutQrSessionsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutQrSessionsInput = {
@@ -1351,10 +1845,16 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutPaymentsInput = {
@@ -1372,12 +1872,18 @@ export type OrderCreateWithoutPaymentsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutPaymentsInput = {
@@ -1397,10 +1903,16 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutPaymentsInput = {
@@ -1434,12 +1946,18 @@ export type OrderUpdateWithoutPaymentsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutPaymentsInput = {
@@ -1459,10 +1977,16 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutWalletTransactionsInput = {
@@ -1480,12 +2004,18 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
@@ -1505,10 +2035,16 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutWalletTransactionsInput = {
@@ -1542,12 +2078,18 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -1567,10 +2109,16 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyCustomerInput = {
@@ -1589,6 +2137,34 @@ export type OrderCreateManyCustomerInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+}
+
+export type OrderCreateManyNoShowMarkedByUserInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
 }
 
 export type OrderUpdateWithoutCustomerInput = {
@@ -1606,12 +2182,18 @@ export type OrderUpdateWithoutCustomerInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCustomerInput = {
@@ -1630,11 +2212,17 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutCustomerInput = {
@@ -1653,6 +2241,92 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type OrderUpdateWithoutNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type OrderCreateManyTripInput = {
@@ -1671,6 +2345,11 @@ export type OrderCreateManyTripInput = {
   escrowStatus?: $Enums.EscrowStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
 }
 
 export type OrderUpdateWithoutTripInput = {
@@ -1688,12 +2367,18 @@ export type OrderUpdateWithoutTripInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutTripInput = {
@@ -1712,11 +2397,17 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutTripInput = {
@@ -1735,6 +2426,11 @@ export type OrderUncheckedUpdateManyWithoutTripInput = {
   escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -1748,6 +2444,7 @@ export type OrderCountOutputType = {
   qrSessions: number
   payments: number
   walletTransactions: number
+  noShowAuditLogs: number
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1756,6 +2453,7 @@ export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   qrSessions?: boolean | OrderCountOutputTypeCountQrSessionsArgs
   payments?: boolean | OrderCountOutputTypeCountPaymentsArgs
   walletTransactions?: boolean | OrderCountOutputTypeCountWalletTransactionsArgs
+  noShowAuditLogs?: boolean | OrderCountOutputTypeCountNoShowAuditLogsArgs
 }
 
 /**
@@ -1803,6 +2501,13 @@ export type OrderCountOutputTypeCountWalletTransactionsArgs<ExtArgs extends runt
   where?: Prisma.WalletTransactionWhereInput
 }
 
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountNoShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NoShowAuditLogWhereInput
+}
+
 
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1821,13 +2526,20 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   escrowStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  noShowMarkedAt?: boolean
+  noShowMarkedBy?: boolean
+  noShowReason?: boolean
+  disputeDeadline?: boolean
+  isDisputed?: boolean
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  noShowMarkedByUser?: boolean | Prisma.Order$noShowMarkedByUserArgs<ExtArgs>
   itemOrders?: boolean | Prisma.Order$itemOrdersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Order$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Order$qrSessionsArgs<ExtArgs>
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
 
@@ -1850,17 +2562,24 @@ export type OrderSelectScalar = {
   escrowStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  noShowMarkedAt?: boolean
+  noShowMarkedBy?: boolean
+  noShowReason?: boolean
+  disputeDeadline?: boolean
+  isDisputed?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "totalPrice" | "adminFeePercentage" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "totalPrice" | "adminFeePercentage" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt" | "noShowMarkedAt" | "noShowMarkedBy" | "noShowReason" | "disputeDeadline" | "isDisputed", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  noShowMarkedByUser?: boolean | Prisma.Order$noShowMarkedByUserArgs<ExtArgs>
   itemOrders?: boolean | Prisma.Order$itemOrdersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Order$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Order$qrSessionsArgs<ExtArgs>
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
+  noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1869,11 +2588,13 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     trip: Prisma.$TripPayload<ExtArgs>
     customer: Prisma.$UserPayload<ExtArgs>
+    noShowMarkedByUser: Prisma.$UserPayload<ExtArgs> | null
     itemOrders: Prisma.$ItemOrderPayload<ExtArgs>[]
     checkpointsLogs: Prisma.$CheckpointsLogPayload<ExtArgs>[]
     qrSessions: Prisma.$OrderQrSessionPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
+    noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -1892,6 +2613,11 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     escrowStatus: $Enums.EscrowStatus
     createdAt: Date
     updatedAt: Date
+    noShowMarkedAt: Date | null
+    noShowMarkedBy: bigint | null
+    noShowReason: string | null
+    disputeDeadline: Date | null
+    isDisputed: boolean
   }, ExtArgs["result"]["order"]>
   composites: {}
 }
@@ -2234,11 +2960,13 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  noShowMarkedByUser<T extends Prisma.Order$noShowMarkedByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$noShowMarkedByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   itemOrders<T extends Prisma.Order$itemOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$itemOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkpointsLogs<T extends Prisma.Order$checkpointsLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$checkpointsLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckpointsLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrSessions<T extends Prisma.Order$qrSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$qrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderQrSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Order$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   walletTransactions<T extends Prisma.Order$walletTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  noShowAuditLogs<T extends Prisma.Order$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2284,6 +3012,11 @@ export interface OrderFieldRefs {
   readonly escrowStatus: Prisma.FieldRef<"Order", 'EscrowStatus'>
   readonly createdAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly noShowMarkedAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly noShowMarkedBy: Prisma.FieldRef<"Order", 'BigInt'>
+  readonly noShowReason: Prisma.FieldRef<"Order", 'String'>
+  readonly disputeDeadline: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly isDisputed: Prisma.FieldRef<"Order", 'Boolean'>
 }
     
 
@@ -2632,6 +3365,25 @@ export type OrderDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Order.noShowMarkedByUser
+ */
+export type Order$noShowMarkedByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Order.itemOrders
  */
 export type Order$itemOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2749,6 +3501,30 @@ export type Order$walletTransactionsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.WalletTransactionScalarFieldEnum | Prisma.WalletTransactionScalarFieldEnum[]
+}
+
+/**
+ * Order.noShowAuditLogs
+ */
+export type Order$noShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NoShowAuditLog
+   */
+  select?: Prisma.NoShowAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NoShowAuditLog
+   */
+  omit?: Prisma.NoShowAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoShowAuditLogInclude<ExtArgs> | null
+  where?: Prisma.NoShowAuditLogWhereInput
+  orderBy?: Prisma.NoShowAuditLogOrderByWithRelationInput | Prisma.NoShowAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.NoShowAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NoShowAuditLogScalarFieldEnum | Prisma.NoShowAuditLogScalarFieldEnum[]
 }
 
 /**

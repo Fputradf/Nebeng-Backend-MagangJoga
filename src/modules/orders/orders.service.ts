@@ -12,12 +12,14 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderMapper } from './mappers/order.mapper';
 import {
   OrderType,
+  OrderStatus,
   ParcelSize,
   ServiceType,
   TripStatus,
   Role,
 } from '../../generated/prisma/enums';
 import { randomBytes, randomInt } from 'crypto';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 @Injectable()
 export class OrdersService {
@@ -25,6 +27,7 @@ export class OrdersService {
     private readonly ordersRepository: OrdersRepository,
     private readonly tripsRepository: TripsRepository,
     private readonly prisma: PrismaService,
+    private readonly notificationHelper: NotificationHelperService,
   ) {}
 
   private async generateUniqueTicketQr(): Promise<string> {
@@ -247,6 +250,24 @@ export class OrdersService {
       totalWeightKg,
     );
 
+    if (order) {
+      await this.notificationHelper.notifyOrderCreated(
+        customerIdStr,
+        order.id.toString(),
+        {
+          origin: trip.originPoint.name,
+          destination: trip.destinationPoint.name,
+          departureDate: trip.departureDate,
+        },
+      );
+
+      await this.notificationHelper.notifyTripBookingRequest(
+        trip.mitraId.toString(),
+        order.id.toString(),
+        trip.mitra.name,
+      );
+    }
+
     return OrderMapper.toResponse(order);
   }
 
@@ -290,7 +311,9 @@ export class OrdersService {
       ) {
         const totalPrice = Number(order.totalPrice);
         const adminFeePercentage = Number(order.adminFeePercentage || 10);
-        const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
+        const adminFeeAmount = Math.round(
+          (totalPrice * adminFeePercentage) / 100,
+        );
         const netMitraAmount = totalPrice - adminFeeAmount;
 
         // a. Refund Customer
@@ -299,7 +322,11 @@ export class OrdersService {
         });
         if (!customerWallet) {
           customerWallet = await tx.wallet.create({
-            data: { userId: order.customerId, balance: 0, heldEscrowBalance: 0 },
+            data: {
+              userId: order.customerId,
+              balance: 0,
+              heldEscrowBalance: 0,
+            },
           });
         }
         await tx.wallet.update({
@@ -459,5 +486,58 @@ export class OrdersService {
 
     return OrderMapper.toResponse(order);
   }
-}
 
+  async disputeNoShow(customerIdStr: string, orderIdStr: string, reason: string) {
+    const order = await this.ordersRepository.findById(orderIdStr);
+    if (!order) {
+      throw new NotFoundException('Order tidak ditemukan');
+    }
+
+    const currentUserId = String(customerIdStr);
+    if (order.customerId.toString() !== currentUserId) {
+      throw new ForbiddenException(
+        'Anda tidak berhak mengajukan keberatan untuk order ini.',
+      );
+    }
+
+    if (order.status !== OrderStatus.no_show) {
+      throw new BadRequestException(
+        'Keberatan hanya dapat diajukan untuk order dengan status no_show',
+      );
+    }
+
+    if (order.isDisputed) {
+      throw new BadRequestException(
+        'Keberatan sudah pernah diajukan untuk order ini',
+      );
+    }
+
+    if (!order.disputeDeadline) {
+      throw new BadRequestException(
+        'Jendela keberatan tidak tersedia untuk order ini',
+      );
+    }
+
+    const now = new Date();
+    if (now > order.disputeDeadline) {
+      throw new BadRequestException(
+        'Jendela keberatan sudah berakhir. Tidak dapat mengajukan keberatan.',
+      );
+    }
+
+    const updatedOrder = await this.prisma.order.update({
+      where: { id: order.id },
+      data: {
+        isDisputed: true,
+      },
+    });
+
+    // TODO: Kirim notifikasi ke admin untuk review
+    // await this.notificationHelper.notifyDisputeSubmitted(...);
+
+    return {
+      message: 'Keberatan berhasil diajukan. Tim admin akan meninjau kasus Anda.',
+      order: OrderMapper.toResponse(updatedOrder),
+    };
+  }
+}

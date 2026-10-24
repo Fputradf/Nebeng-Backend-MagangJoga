@@ -57,6 +57,42 @@ export class UserRepository {
     });
   }
 
+  async updateResetToken(
+    id: string,
+    token: string,
+    expiresAt: Date,
+  ): Promise<User> {
+    const parseId = this.safeParseBigInt(id);
+    if (!parseId) throw new BadRequestException('Format ID tidak valid');
+
+    return this.prisma.user.update({
+      where: { id: parseId },
+      data: {
+        passwordResetToken: token,
+        passwordResetTokenExpiresAt: expiresAt,
+      },
+    });
+  }
+
+  async findResetToken(token: string): Promise<User | null> {
+    return this.prisma.user.findFirst({
+      where: { passwordResetToken: token },
+    });
+  }
+
+  async resetToken(id: string): Promise<User> {
+    const parseId = this.safeParseBigInt(id);
+    if (!parseId) throw new BadRequestException('Format ID tidak valid');
+
+    return this.prisma.user.update({
+      where: { id: parseId },
+      data: {
+        passwordResetToken: null,
+        passwordResetTokenExpiresAt: null,
+      },
+    });
+  }
+
   async findByPhone(phone: string): Promise<User | null> {
     if (!phone) return null;
     return this.prisma.user.findUnique({

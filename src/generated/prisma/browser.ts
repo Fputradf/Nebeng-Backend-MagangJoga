@@ -78,6 +78,16 @@ export type ItemOrder = Prisma.ItemOrderModel
  */
 export type CheckpointsLog = Prisma.CheckpointsLogModel
 /**
+ * Model NoShowAuditLog
+ * 
+ */
+export type NoShowAuditLog = Prisma.NoShowAuditLogModel
+/**
+ * Model PushSubscription
+ * 
+ */
+export type PushSubscription = Prisma.PushSubscriptionModel
+/**
  * Model TripQrSession
  * 
  */
@@ -92,6 +102,11 @@ export type OrderQrSession = Prisma.OrderQrSessionModel
  * 
  */
 export type TripTracking = Prisma.TripTrackingModel
+/**
+ * Model OsmRouteCache
+ * 
+ */
+export type OsmRouteCache = Prisma.OsmRouteCacheModel
 /**
  * Model Payment
  * 
@@ -147,3 +162,23 @@ export type MerchandiseRedemption = Prisma.MerchandiseRedemptionModel
  * 
  */
 export type Banner = Prisma.BannerModel
+/**
+ * Model NotificationPreference
+ * 
+ */
+export type NotificationPreference = Prisma.NotificationPreferenceModel
+/**
+ * Model DeviceToken
+ * 
+ */
+export type DeviceToken = Prisma.DeviceTokenModel
+/**
+ * Model NotificationLog
+ * 
+ */
+export type NotificationLog = Prisma.NotificationLogModel
+/**
+ * Model UserNotification
+ * 
+ */
+export type UserNotification = Prisma.UserNotificationModel

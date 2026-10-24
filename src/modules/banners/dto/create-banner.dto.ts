@@ -1,15 +1,21 @@
-import { IsString, IsUrl, IsOptional, IsBoolean, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsUrl,
+  IsOptional,
+  IsBoolean,
+  IsEnum,
+} from 'class-validator';
 import { Role } from '../../../generated/prisma/enums';
 
 export class CreateBannerDto {
   @IsString()
   title: string;
 
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   imageUrl: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   linkUrl?: string;
 
   @IsOptional()
@@ -18,5 +24,5 @@ export class CreateBannerDto {
 
   @IsOptional()
   @IsEnum(Role)
-  targetRole?: Role;
+  targetRole?: Role | null;
 }

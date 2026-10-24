@@ -24,7 +24,9 @@ async function bootstrap() {
     fs.mkdirSync(uploadDir, { recursive: true });
   }
 
-  app.useStaticAssets(path.join(process.cwd(), 'uploads'), { prefix: '/uploads' });
+  app.useStaticAssets(path.join(process.cwd(), 'uploads'), {
+    prefix: '/uploads',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

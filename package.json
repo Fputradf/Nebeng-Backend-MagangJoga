@@ -27,21 +27,26 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.2.1",
+    "@nestjs/schedule": "^12.0.2",
     "@nestjs/swagger": "^11.4.6",
     "@nestjs/throttler": "^6.5.0",
     "@nestjs/websockets": "^11.2.1",
-    "@prisma/adapter-mariadb": "^7.9.1",
+    "@prisma/adapter-mariadb": "^7.10.1",
     "@prisma/client": "^7.9.1",
     "@types/bcrypt": "^6.0.0",
+    "@types/nodemailer": "^8.0.2",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "firebase-admin": "^14.5.0",
     "mariadb": "^3.5.3",
+    "nodemailer": "^10.1.7",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -90,5 +95,13 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node --require dotenv/config prisma/seed.ts"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "prisma@7.10.1": true,
+    "@prisma/engines@7.10.1": true
   }
 }

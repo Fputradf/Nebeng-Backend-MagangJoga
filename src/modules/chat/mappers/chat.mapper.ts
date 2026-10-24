@@ -51,6 +51,7 @@ export class ChatMapper {
         ? {
             id: conversation.customer.id.toString(),
             name: conversation.customer.name,
+            phone: conversation.customer.phone || null,
             avatar: conversation.customer.avatar || null,
           }
         : undefined,
@@ -58,6 +59,7 @@ export class ChatMapper {
         ? {
             id: conversation.mitra.id.toString(),
             name: conversation.mitra.name,
+            phone: conversation.mitra.phone || null,
             avatar: conversation.mitra.avatar || null,
           }
         : undefined,

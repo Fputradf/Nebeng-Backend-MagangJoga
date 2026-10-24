@@ -27,6 +27,7 @@ import { TrackingModule } from './modules/tracking/tracking.module';
 import { UploadController } from './upload.controller';
 import { MerchandiseModule } from './modules/merchandises/merchandise.module';
 import { BannersModule } from './modules/banners/banners.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,7 +36,7 @@ import { BannersModule } from './modules/banners/banners.module';
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 100,
+        limit: 300,
       },
     ]),
     PrismaModule,
@@ -57,6 +58,7 @@ import { BannersModule } from './modules/banners/banners.module';
     TrackingModule,
     MerchandiseModule,
     BannersModule,
+    NotificationsModule,
   ],
   controllers: [AppController, UploadController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -114,7 +114,7 @@ export class UserController {
 
   @Post('me/pin/verify')
   @UseGuards(JwtAuthGuard)
-  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Memverifikasi PIN keamanan untuk transaksi' })
   verifyPin(@Request() req: any, @Body() verifyPinDto: VerifyPinDto) {

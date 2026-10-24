@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { ChatRepository } from './repository/chat.repository';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -11,14 +12,26 @@ import { SendMessageDto } from './dto/send-message.dto';
 import { ChatMapper } from './mappers/chat.mapper';
 import { ChatGateway } from './chat.gateway';
 import { TripStatus } from '../../generated/prisma/enums';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { PushService } from '../notifications/push.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ChatService {
+  private readonly logger = new Logger(ChatService.name);
+  private readonly useWebPush: boolean;
+
   constructor(
     private readonly chatRepository: ChatRepository,
     private readonly prisma: PrismaService,
     private readonly chatGateway: ChatGateway,
-  ) {}
+    private readonly notificationHelper: NotificationHelperService,
+    private readonly pushService: PushService,
+    private readonly configService: ConfigService,
+  ) {
+    this.useWebPush = this.configService.get<string>('USE_WEB_PUSH', 'false') === 'true';
+    this.logger.log(`Web Push enabled: ${this.useWebPush}`);
+  }
 
   private safeParseBigInt(id: string): bigint | null {
     try {
@@ -143,6 +156,27 @@ export class ChatService {
       );
     }
 
+    // Rate Limiting: 15 detik jeda per pesan dari pengguna yang sama dalam percakapan ini
+    const lastUserMessage = await this.prisma.message.findFirst({
+      where: {
+        conversationId: BigInt(conversationId),
+        senderId: BigInt(currentUserId),
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { createdAt: true },
+    });
+
+    if (lastUserMessage) {
+      const elapsedSeconds = (Date.now() - new Date(lastUserMessage.createdAt).getTime()) / 1000;
+      const cooldownSeconds = 15;
+      if (elapsedSeconds < cooldownSeconds) {
+        const remainingSeconds = Math.ceil(cooldownSeconds - elapsedSeconds);
+        throw new BadRequestException(
+          `Mohon tunggu ${remainingSeconds} detik sebelum mengirim pesan berikutnya untuk menghindari spam.`,
+        );
+      }
+    }
+
     const message = await this.chatRepository.createMessage({
       conversationIdStr: conversationId,
       senderIdStr: currentUserId,
@@ -152,6 +186,61 @@ export class ChatService {
     const responsePayload = ChatMapper.toMessageResponse(message);
 
     this.chatGateway.emitNewMessage(conversationId, responsePayload);
+
+    const recipientId =
+      conversation.customerId.toString() === currentUserId
+        ? conversation.mitraId.toString()
+        : conversation.customerId.toString();
+
+    const senderName = conversation.customerId.toString() === currentUserId
+      ? conversation.customer.name
+      : conversation.mitra.name;
+
+    // Send in-app socket notification
+    try {
+      await this.notificationHelper.notifyChatMessage(
+        recipientId,
+        conversationId,
+        senderName,
+      );
+    } catch (notifErr: any) {
+      // Don't let notification errors fail the message sending
+      console.error('[Chat] Failed to send chat notification:', notifErr?.message || notifErr);
+    }
+
+    // Send web push if recipient is not online in the conversation room
+    try {
+      if (!this.useWebPush) {
+        this.logger.log(`[Chat] Web Push disabled via USE_WEB_PUSH flag, skipping web push`);
+        return responsePayload;
+      }
+
+      const isRecipientOnline = this.chatGateway.isUserInConversationRoom(
+        recipientId,
+        conversationId,
+      );
+
+      this.logger.log(`[Chat] Recipient ${recipientId} in conversation room: ${isRecipientOnline}`);
+
+      if (!isRecipientOnline) {
+        const messagePreview = dto.messageText.length > 100
+          ? dto.messageText.substring(0, 100) + '...'
+          : dto.messageText;
+
+        this.logger.log(`[Chat] Sending web push to user ${recipientId}`);
+        await this.pushService.sendToUser(BigInt(recipientId), {
+          title: senderName,
+          body: messagePreview,
+          url: `/chat/${conversationId}`,
+          tag: `chat-${conversationId}`,
+        });
+      } else {
+        this.logger.log(`[Chat] Skipping web push - recipient is online in conversation room`);
+      }
+    } catch (pushErr: any) {
+      // Don't let push notification errors fail the message sending
+      console.error('[Chat] Failed to send push notification:', pushErr?.message || pushErr);
+    }
 
     return responsePayload;
   }

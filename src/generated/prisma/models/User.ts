@@ -50,6 +50,8 @@ export type UserMinAggregateOutputType = {
   statusVerification: $Enums.VerificationStatus | null
   pinHash: string | null
   refreshToken: string | null
+  passwordResetToken: string | null
+  passwordResetTokenExpiresAt: Date | null
   avatar: string | null
   rewardPoints: number | null
   createdAt: Date | null
@@ -68,6 +70,8 @@ export type UserMaxAggregateOutputType = {
   statusVerification: $Enums.VerificationStatus | null
   pinHash: string | null
   refreshToken: string | null
+  passwordResetToken: string | null
+  passwordResetTokenExpiresAt: Date | null
   avatar: string | null
   rewardPoints: number | null
   createdAt: Date | null
@@ -86,6 +90,8 @@ export type UserCountAggregateOutputType = {
   statusVerification: number
   pinHash: number
   refreshToken: number
+  passwordResetToken: number
+  passwordResetTokenExpiresAt: number
   avatar: number
   rewardPoints: number
   createdAt: number
@@ -118,6 +124,8 @@ export type UserMinAggregateInputType = {
   statusVerification?: true
   pinHash?: true
   refreshToken?: true
+  passwordResetToken?: true
+  passwordResetTokenExpiresAt?: true
   avatar?: true
   rewardPoints?: true
   createdAt?: true
@@ -136,6 +144,8 @@ export type UserMaxAggregateInputType = {
   statusVerification?: true
   pinHash?: true
   refreshToken?: true
+  passwordResetToken?: true
+  passwordResetTokenExpiresAt?: true
   avatar?: true
   rewardPoints?: true
   createdAt?: true
@@ -154,6 +164,8 @@ export type UserCountAggregateInputType = {
   statusVerification?: true
   pinHash?: true
   refreshToken?: true
+  passwordResetToken?: true
+  passwordResetTokenExpiresAt?: true
   avatar?: true
   rewardPoints?: true
   createdAt?: true
@@ -259,6 +271,8 @@ export type UserGroupByOutputType = {
   statusVerification: $Enums.VerificationStatus
   pinHash: string | null
   refreshToken: string | null
+  passwordResetToken: string | null
+  passwordResetTokenExpiresAt: Date | null
   avatar: string | null
   rewardPoints: number
   createdAt: Date
@@ -300,6 +314,8 @@ export type UserWhereInput = {
   statusVerification?: Prisma.EnumVerificationStatusFilter<"User"> | $Enums.VerificationStatus
   pinHash?: Prisma.StringNullableFilter<"User"> | string | null
   refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetTokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   rewardPoints?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -321,6 +337,14 @@ export type UserWhereInput = {
   reviewsReceived?: Prisma.TripReviewListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionListRelationFilter
+  notificationPreference?: Prisma.XOR<Prisma.NotificationPreferenceNullableScalarRelationFilter, Prisma.NotificationPreferenceWhereInput> | null
+  deviceTokens?: Prisma.DeviceTokenListRelationFilter
+  notificationLogs?: Prisma.NotificationLogListRelationFilter
+  userNotifications?: Prisma.UserNotificationListRelationFilter
+  noShowMarkedOrders?: Prisma.OrderListRelationFilter
+  mitraNoShowMarkedTrips?: Prisma.TripListRelationFilter
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogListRelationFilter
+  pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -335,6 +359,8 @@ export type UserOrderByWithRelationInput = {
   statusVerification?: Prisma.SortOrder
   pinHash?: Prisma.SortOrderInput | Prisma.SortOrder
   refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -356,6 +382,14 @@ export type UserOrderByWithRelationInput = {
   reviewsReceived?: Prisma.TripReviewOrderByRelationAggregateInput
   vehicles?: Prisma.VehicleOrderByRelationAggregateInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionOrderByRelationAggregateInput
+  notificationPreference?: Prisma.NotificationPreferenceOrderByWithRelationInput
+  deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
+  notificationLogs?: Prisma.NotificationLogOrderByRelationAggregateInput
+  userNotifications?: Prisma.UserNotificationOrderByRelationAggregateInput
+  noShowMarkedOrders?: Prisma.OrderOrderByRelationAggregateInput
+  mitraNoShowMarkedTrips?: Prisma.TripOrderByRelationAggregateInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
+  pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -374,6 +408,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   statusVerification?: Prisma.EnumVerificationStatusFilter<"User"> | $Enums.VerificationStatus
   pinHash?: Prisma.StringNullableFilter<"User"> | string | null
   refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetTokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   rewardPoints?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -395,6 +431,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviewsReceived?: Prisma.TripReviewListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionListRelationFilter
+  notificationPreference?: Prisma.XOR<Prisma.NotificationPreferenceNullableScalarRelationFilter, Prisma.NotificationPreferenceWhereInput> | null
+  deviceTokens?: Prisma.DeviceTokenListRelationFilter
+  notificationLogs?: Prisma.NotificationLogListRelationFilter
+  userNotifications?: Prisma.UserNotificationListRelationFilter
+  noShowMarkedOrders?: Prisma.OrderListRelationFilter
+  mitraNoShowMarkedTrips?: Prisma.TripListRelationFilter
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogListRelationFilter
+  pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -409,6 +453,8 @@ export type UserOrderByWithAggregationInput = {
   statusVerification?: Prisma.SortOrder
   pinHash?: Prisma.SortOrderInput | Prisma.SortOrder
   refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -435,6 +481,8 @@ export type UserScalarWhereWithAggregatesInput = {
   statusVerification?: Prisma.EnumVerificationStatusWithAggregatesFilter<"User"> | $Enums.VerificationStatus
   pinHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   refreshToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordResetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordResetTokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   rewardPoints?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -452,6 +500,8 @@ export type UserCreateInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -473,6 +523,14 @@ export type UserCreateInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -487,6 +545,8 @@ export type UserUncheckedCreateInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -507,6 +567,14 @@ export type UserUncheckedCreateInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -520,6 +588,8 @@ export type UserUpdateInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -541,6 +611,14 @@ export type UserUpdateInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -555,6 +633,8 @@ export type UserUncheckedUpdateInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -575,6 +655,14 @@ export type UserUncheckedUpdateInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -589,6 +677,8 @@ export type UserCreateManyInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -606,6 +696,8 @@ export type UserUpdateManyMutationInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -624,6 +716,8 @@ export type UserUncheckedUpdateManyInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -658,6 +752,8 @@ export type UserCountOrderByAggregateInput = {
   statusVerification?: Prisma.SortOrder
   pinHash?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  passwordResetToken?: Prisma.SortOrder
+  passwordResetTokenExpiresAt?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -682,6 +778,8 @@ export type UserMaxOrderByAggregateInput = {
   statusVerification?: Prisma.SortOrder
   pinHash?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  passwordResetToken?: Prisma.SortOrder
+  passwordResetTokenExpiresAt?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -700,6 +798,8 @@ export type UserMinOrderByAggregateInput = {
   statusVerification?: Prisma.SortOrder
   pinHash?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  passwordResetToken?: Prisma.SortOrder
+  passwordResetTokenExpiresAt?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -774,6 +874,10 @@ export type EnumUserStatusFieldUpdateOperationsInput = {
 
 export type EnumVerificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.VerificationStatus
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -858,6 +962,12 @@ export type UserCreateNestedOneWithoutTripsAsMitraInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraNoShowMarkedTripsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutTripsAsMitraNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTripsAsMitraInput, Prisma.UserUncheckedCreateWithoutTripsAsMitraInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTripsAsMitraInput
@@ -866,9 +976,25 @@ export type UserUpdateOneRequiredWithoutTripsAsMitraNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTripsAsMitraInput, Prisma.UserUpdateWithoutTripsAsMitraInput>, Prisma.UserUncheckedUpdateWithoutTripsAsMitraInput>
 }
 
+export type UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraNoShowMarkedTripsInput
+  upsert?: Prisma.UserUpsertWithoutMitraNoShowMarkedTripsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMitraNoShowMarkedTripsInput, Prisma.UserUpdateWithoutMitraNoShowMarkedTripsInput>, Prisma.UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput>
+}
+
 export type UserCreateNestedOneWithoutOrdersAsCustomerInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersAsCustomerInput, Prisma.UserUncheckedCreateWithoutOrdersAsCustomerInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersAsCustomerInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutNoShowMarkedOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedCreateWithoutNoShowMarkedOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNoShowMarkedOrdersInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
@@ -878,6 +1004,16 @@ export type UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput = {
   upsert?: Prisma.UserUpsertWithoutOrdersAsCustomerInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersAsCustomerInput, Prisma.UserUpdateWithoutOrdersAsCustomerInput>, Prisma.UserUncheckedUpdateWithoutOrdersAsCustomerInput>
+}
+
+export type UserUpdateOneWithoutNoShowMarkedOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedCreateWithoutNoShowMarkedOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNoShowMarkedOrdersInput
+  upsert?: Prisma.UserUpsertWithoutNoShowMarkedOrdersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNoShowMarkedOrdersInput, Prisma.UserUpdateWithoutNoShowMarkedOrdersInput>, Prisma.UserUncheckedUpdateWithoutNoShowMarkedOrdersInput>
 }
 
 export type UserCreateNestedOneWithoutCheckpointsScannedInput = {
@@ -894,6 +1030,34 @@ export type UserUpdateOneWithoutCheckpointsScannedNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCheckpointsScannedInput, Prisma.UserUpdateWithoutCheckpointsScannedInput>, Prisma.UserUncheckedUpdateWithoutCheckpointsScannedInput>
+}
+
+export type UserCreateNestedOneWithoutNoShowAuditLogsOperatorInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNoShowAuditLogsOperatorInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNoShowAuditLogsOperatorNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNoShowAuditLogsOperatorInput
+  upsert?: Prisma.UserUpsertWithoutNoShowAuditLogsOperatorInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNoShowAuditLogsOperatorInput, Prisma.UserUpdateWithoutNoShowAuditLogsOperatorInput>, Prisma.UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput>
+}
+
+export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPushSubscriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionsInput
+  upsert?: Prisma.UserUpsertWithoutPushSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPushSubscriptionsInput, Prisma.UserUpdateWithoutPushSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
 }
 
 export type UserCreateNestedOneWithoutWalletInput = {
@@ -1022,6 +1186,62 @@ export type UserUpdateOneRequiredWithoutMerchandiseRedemptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMerchandiseRedemptionsInput, Prisma.UserUpdateWithoutMerchandiseRedemptionsInput>, Prisma.UserUncheckedUpdateWithoutMerchandiseRedemptionsInput>
 }
 
+export type UserCreateNestedOneWithoutNotificationPreferenceInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferenceInput, Prisma.UserUncheckedCreateWithoutNotificationPreferenceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationPreferenceInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationPreferenceNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferenceInput, Prisma.UserUncheckedCreateWithoutNotificationPreferenceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationPreferenceInput
+  upsert?: Prisma.UserUpsertWithoutNotificationPreferenceInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationPreferenceInput, Prisma.UserUpdateWithoutNotificationPreferenceInput>, Prisma.UserUncheckedUpdateWithoutNotificationPreferenceInput>
+}
+
+export type UserCreateNestedOneWithoutDeviceTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeviceTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDeviceTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeviceTokensInput
+  upsert?: Prisma.UserUpsertWithoutDeviceTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDeviceTokensInput, Prisma.UserUpdateWithoutDeviceTokensInput>, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationLogsInput, Prisma.UserUncheckedCreateWithoutNotificationLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationLogsInput, Prisma.UserUncheckedCreateWithoutNotificationLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationLogsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationLogsInput, Prisma.UserUpdateWithoutNotificationLogsInput>, Prisma.UserUncheckedUpdateWithoutNotificationLogsInput>
+}
+
+export type UserCreateNestedOneWithoutUserNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserNotificationsInput, Prisma.UserUncheckedCreateWithoutUserNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserNotificationsInput, Prisma.UserUncheckedCreateWithoutUserNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutUserNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserNotificationsInput, Prisma.UserUpdateWithoutUserNotificationsInput>, Prisma.UserUncheckedUpdateWithoutUserNotificationsInput>
+}
+
 export type UserCreateWithoutRegionInput = {
   id?: bigint | number
   name: string
@@ -1033,6 +1253,8 @@ export type UserCreateWithoutRegionInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1053,6 +1275,14 @@ export type UserCreateWithoutRegionInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRegionInput = {
@@ -1066,6 +1296,8 @@ export type UserUncheckedCreateWithoutRegionInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1086,6 +1318,14 @@ export type UserUncheckedCreateWithoutRegionInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRegionInput = {
@@ -1129,6 +1369,8 @@ export type UserScalarWhereInput = {
   statusVerification?: Prisma.EnumVerificationStatusFilter<"User"> | $Enums.VerificationStatus
   pinHash?: Prisma.StringNullableFilter<"User"> | string | null
   refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetTokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   rewardPoints?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -1146,6 +1388,8 @@ export type UserCreateWithoutProfileInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1166,6 +1410,14 @@ export type UserCreateWithoutProfileInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1180,6 +1432,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1199,6 +1453,14 @@ export type UserUncheckedCreateWithoutProfileInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1228,6 +1490,8 @@ export type UserUpdateWithoutProfileInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1248,6 +1512,14 @@ export type UserUpdateWithoutProfileInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1262,6 +1534,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1281,6 +1555,14 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationsInput = {
@@ -1294,6 +1576,8 @@ export type UserCreateWithoutVerificationsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1314,6 +1598,14 @@ export type UserCreateWithoutVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -1328,6 +1620,8 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1347,6 +1641,14 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -1365,6 +1667,8 @@ export type UserCreateWithoutApprovedVerificationsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1385,6 +1689,14 @@ export type UserCreateWithoutApprovedVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
@@ -1399,6 +1711,8 @@ export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1418,6 +1732,14 @@ export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApprovedVerificationsInput = {
@@ -1447,6 +1769,8 @@ export type UserUpdateWithoutVerificationsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1467,6 +1791,14 @@ export type UserUpdateWithoutVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -1481,6 +1813,8 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1500,6 +1834,14 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutApprovedVerificationsInput = {
@@ -1524,6 +1866,8 @@ export type UserUpdateWithoutApprovedVerificationsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1544,6 +1888,14 @@ export type UserUpdateWithoutApprovedVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
@@ -1558,6 +1910,8 @@ export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1577,6 +1931,14 @@ export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedPickupPointsInput = {
@@ -1590,6 +1952,8 @@ export type UserCreateWithoutAssignedPickupPointsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1610,6 +1974,14 @@ export type UserCreateWithoutAssignedPickupPointsInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
@@ -1624,6 +1996,8 @@ export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1643,6 +2017,14 @@ export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedPickupPointsInput = {
@@ -1672,6 +2054,8 @@ export type UserUpdateWithoutAssignedPickupPointsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1692,6 +2076,14 @@ export type UserUpdateWithoutAssignedPickupPointsInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
@@ -1706,6 +2098,8 @@ export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1725,6 +2119,14 @@ export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTripsAsMitraInput = {
@@ -1738,6 +2140,8 @@ export type UserCreateWithoutTripsAsMitraInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1758,6 +2162,14 @@ export type UserCreateWithoutTripsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTripsAsMitraInput = {
@@ -1772,6 +2184,8 @@ export type UserUncheckedCreateWithoutTripsAsMitraInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1791,11 +2205,110 @@ export type UserUncheckedCreateWithoutTripsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTripsAsMitraInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutTripsAsMitraInput, Prisma.UserUncheckedCreateWithoutTripsAsMitraInput>
+}
+
+export type UserCreateWithoutMitraNoShowMarkedTripsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMitraNoShowMarkedTripsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput>
 }
 
 export type UserUpsertWithoutTripsAsMitraInput = {
@@ -1820,6 +2333,8 @@ export type UserUpdateWithoutTripsAsMitraInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1840,6 +2355,14 @@ export type UserUpdateWithoutTripsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
@@ -1854,6 +2377,8 @@ export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1873,6 +2398,111 @@ export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutMitraNoShowMarkedTripsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMitraNoShowMarkedTripsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput>
+}
+
+export type UserUpdateWithoutMitraNoShowMarkedTripsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersAsCustomerInput = {
@@ -1886,6 +2516,8 @@ export type UserCreateWithoutOrdersAsCustomerInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1906,6 +2538,14 @@ export type UserCreateWithoutOrdersAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
@@ -1920,6 +2560,8 @@ export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -1939,11 +2581,110 @@ export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersAsCustomerInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutOrdersAsCustomerInput, Prisma.UserUncheckedCreateWithoutOrdersAsCustomerInput>
+}
+
+export type UserCreateWithoutNoShowMarkedOrdersInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNoShowMarkedOrdersInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNoShowMarkedOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedCreateWithoutNoShowMarkedOrdersInput>
 }
 
 export type UserUpsertWithoutOrdersAsCustomerInput = {
@@ -1968,6 +2709,8 @@ export type UserUpdateWithoutOrdersAsCustomerInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1988,6 +2731,14 @@ export type UserUpdateWithoutOrdersAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
@@ -2002,6 +2753,8 @@ export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2021,6 +2774,111 @@ export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutNoShowMarkedOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedUpdateWithoutNoShowMarkedOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedCreateWithoutNoShowMarkedOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNoShowMarkedOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNoShowMarkedOrdersInput, Prisma.UserUncheckedUpdateWithoutNoShowMarkedOrdersInput>
+}
+
+export type UserUpdateWithoutNoShowMarkedOrdersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNoShowMarkedOrdersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCheckpointsScannedInput = {
@@ -2034,6 +2892,8 @@ export type UserCreateWithoutCheckpointsScannedInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2054,6 +2914,14 @@ export type UserCreateWithoutCheckpointsScannedInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
@@ -2068,6 +2936,8 @@ export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2087,6 +2957,14 @@ export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCheckpointsScannedInput = {
@@ -2116,6 +2994,8 @@ export type UserUpdateWithoutCheckpointsScannedInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2136,6 +3016,14 @@ export type UserUpdateWithoutCheckpointsScannedInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
@@ -2150,6 +3038,8 @@ export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2169,6 +3059,390 @@ export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNoShowAuditLogsOperatorInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNoShowAuditLogsOperatorInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput>
+}
+
+export type UserUpsertWithoutNoShowAuditLogsOperatorInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNoShowAuditLogsOperatorInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNoShowAuditLogsOperatorInput, Prisma.UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput>
+}
+
+export type UserUpdateWithoutNoShowAuditLogsOperatorInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPushSubscriptionsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+}
+
+export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+}
+
+export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+}
+
+export type UserUpsertWithoutPushSubscriptionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPushSubscriptionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
+}
+
+export type UserUpdateWithoutPushSubscriptionsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -2182,6 +3456,8 @@ export type UserCreateWithoutWalletInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2202,6 +3478,14 @@ export type UserCreateWithoutWalletInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -2216,6 +3500,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2235,6 +3521,14 @@ export type UserUncheckedCreateWithoutWalletInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -2264,6 +3558,8 @@ export type UserUpdateWithoutWalletInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2284,6 +3580,14 @@ export type UserUpdateWithoutWalletInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -2298,6 +3602,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2317,6 +3623,14 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRewardTransactionsInput = {
@@ -2330,6 +3644,8 @@ export type UserCreateWithoutRewardTransactionsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2350,6 +3666,14 @@ export type UserCreateWithoutRewardTransactionsInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRewardTransactionsInput = {
@@ -2364,6 +3688,8 @@ export type UserUncheckedCreateWithoutRewardTransactionsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2383,6 +3709,14 @@ export type UserUncheckedCreateWithoutRewardTransactionsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRewardTransactionsInput = {
@@ -2412,6 +3746,8 @@ export type UserUpdateWithoutRewardTransactionsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2432,6 +3768,14 @@ export type UserUpdateWithoutRewardTransactionsInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
@@ -2446,6 +3790,8 @@ export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2465,6 +3811,14 @@ export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationsAsCustomerInput = {
@@ -2478,6 +3832,8 @@ export type UserCreateWithoutConversationsAsCustomerInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2498,6 +3854,14 @@ export type UserCreateWithoutConversationsAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
@@ -2512,6 +3876,8 @@ export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2531,6 +3897,14 @@ export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsCustomerInput = {
@@ -2549,6 +3923,8 @@ export type UserCreateWithoutConversationsAsMitraInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2569,6 +3945,14 @@ export type UserCreateWithoutConversationsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
@@ -2583,6 +3967,8 @@ export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2602,6 +3988,14 @@ export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsMitraInput = {
@@ -2631,6 +4025,8 @@ export type UserUpdateWithoutConversationsAsCustomerInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2651,6 +4047,14 @@ export type UserUpdateWithoutConversationsAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
@@ -2665,6 +4069,8 @@ export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2684,6 +4090,14 @@ export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutConversationsAsMitraInput = {
@@ -2708,6 +4122,8 @@ export type UserUpdateWithoutConversationsAsMitraInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2728,6 +4144,14 @@ export type UserUpdateWithoutConversationsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
@@ -2742,6 +4166,8 @@ export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2761,6 +4187,14 @@ export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSentMessagesInput = {
@@ -2774,6 +4208,8 @@ export type UserCreateWithoutSentMessagesInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2794,6 +4230,14 @@ export type UserCreateWithoutSentMessagesInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -2808,6 +4252,8 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2827,6 +4273,14 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -2856,6 +4310,8 @@ export type UserUpdateWithoutSentMessagesInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2876,6 +4332,14 @@ export type UserUpdateWithoutSentMessagesInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -2890,6 +4354,8 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2909,6 +4375,14 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {
@@ -2922,6 +4396,8 @@ export type UserCreateWithoutReviewsGivenInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2942,6 +4418,14 @@ export type UserCreateWithoutReviewsGivenInput = {
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsGivenInput = {
@@ -2956,6 +4440,8 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -2975,6 +4461,14 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsGivenInput = {
@@ -2993,6 +4487,8 @@ export type UserCreateWithoutReviewsReceivedInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3013,6 +4509,14 @@ export type UserCreateWithoutReviewsReceivedInput = {
   reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsReceivedInput = {
@@ -3027,6 +4531,8 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3046,6 +4552,14 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsReceivedInput = {
@@ -3075,6 +4589,8 @@ export type UserUpdateWithoutReviewsGivenInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3095,6 +4611,14 @@ export type UserUpdateWithoutReviewsGivenInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsGivenInput = {
@@ -3109,6 +4633,8 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3128,6 +4654,14 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReviewsReceivedInput = {
@@ -3152,6 +4686,8 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3172,6 +4708,14 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -3186,6 +4730,8 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3205,6 +4751,14 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVehiclesInput = {
@@ -3218,6 +4772,8 @@ export type UserCreateWithoutVehiclesInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3238,6 +4794,14 @@ export type UserCreateWithoutVehiclesInput = {
   reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVehiclesInput = {
@@ -3252,6 +4816,8 @@ export type UserUncheckedCreateWithoutVehiclesInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3271,6 +4837,14 @@ export type UserUncheckedCreateWithoutVehiclesInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVehiclesInput = {
@@ -3300,6 +4874,8 @@ export type UserUpdateWithoutVehiclesInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3320,6 +4896,14 @@ export type UserUpdateWithoutVehiclesInput = {
   reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVehiclesInput = {
@@ -3334,6 +4918,8 @@ export type UserUncheckedUpdateWithoutVehiclesInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3353,6 +4939,14 @@ export type UserUncheckedUpdateWithoutVehiclesInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMerchandiseRedemptionsInput = {
@@ -3366,6 +4960,8 @@ export type UserCreateWithoutMerchandiseRedemptionsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3386,6 +4982,14 @@ export type UserCreateWithoutMerchandiseRedemptionsInput = {
   reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
   reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
@@ -3400,6 +5004,8 @@ export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
@@ -3419,6 +5025,14 @@ export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
   reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMerchandiseRedemptionsInput = {
@@ -3448,6 +5062,8 @@ export type UserUpdateWithoutMerchandiseRedemptionsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3468,6 +5084,14 @@ export type UserUpdateWithoutMerchandiseRedemptionsInput = {
   reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
@@ -3482,6 +5106,8 @@ export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3501,9 +5127,17 @@ export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
   reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateManyRegionInput = {
+export type UserCreateWithoutNotificationPreferenceInput = {
   id?: bigint | number
   name: string
   email: string
@@ -3514,13 +5148,98 @@ export type UserCreateManyRegionInput = {
   statusVerification?: $Enums.VerificationStatus
   pinHash?: string | null
   refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
   avatar?: string | null
   rewardPoints?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
-export type UserUpdateWithoutRegionInput = {
+export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationPreferenceInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferenceInput, Prisma.UserUncheckedCreateWithoutNotificationPreferenceInput>
+}
+
+export type UserUpsertWithoutNotificationPreferenceInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationPreferenceInput, Prisma.UserUncheckedUpdateWithoutNotificationPreferenceInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferenceInput, Prisma.UserUncheckedCreateWithoutNotificationPreferenceInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationPreferenceInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationPreferenceInput, Prisma.UserUncheckedUpdateWithoutNotificationPreferenceInput>
+}
+
+export type UserUpdateWithoutNotificationPreferenceInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3531,10 +5250,13 @@ export type UserUpdateWithoutRegionInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
   profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
@@ -3551,10 +5273,18 @@ export type UserUpdateWithoutRegionInput = {
   reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutRegionInput = {
+export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3564,6 +5294,8 @@ export type UserUncheckedUpdateWithoutRegionInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3584,6 +5316,682 @@ export type UserUncheckedUpdateWithoutRegionInput = {
   reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
   merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDeviceTokensInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDeviceTokensInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDeviceTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+}
+
+export type UserUpsertWithoutDeviceTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDeviceTokensInput, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDeviceTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDeviceTokensInput, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+}
+
+export type UserUpdateWithoutDeviceTokensInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDeviceTokensInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationLogsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationLogsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationLogsInput, Prisma.UserUncheckedCreateWithoutNotificationLogsInput>
+}
+
+export type UserUpsertWithoutNotificationLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationLogsInput, Prisma.UserUncheckedUpdateWithoutNotificationLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationLogsInput, Prisma.UserUncheckedCreateWithoutNotificationLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationLogsInput, Prisma.UserUncheckedUpdateWithoutNotificationLogsInput>
+}
+
+export type UserUpdateWithoutNotificationLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationLogsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserNotificationsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserNotificationsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserNotificationsInput, Prisma.UserUncheckedCreateWithoutUserNotificationsInput>
+}
+
+export type UserUpsertWithoutUserNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserNotificationsInput, Prisma.UserUncheckedUpdateWithoutUserNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserNotificationsInput, Prisma.UserUncheckedCreateWithoutUserNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserNotificationsInput, Prisma.UserUncheckedUpdateWithoutUserNotificationsInput>
+}
+
+export type UserUpdateWithoutUserNotificationsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserNotificationsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyRegionInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutRegionInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRegionInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRegionInput = {
@@ -3597,6 +6005,8 @@ export type UserUncheckedUpdateManyWithoutRegionInput = {
   statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3623,6 +6033,13 @@ export type UserCountOutputType = {
   reviewsReceived: number
   vehicles: number
   merchandiseRedemptions: number
+  deviceTokens: number
+  notificationLogs: number
+  userNotifications: number
+  noShowMarkedOrders: number
+  mitraNoShowMarkedTrips: number
+  noShowAuditLogsOperator: number
+  pushSubscriptions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3640,6 +6057,13 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviewsReceived?: boolean | UserCountOutputTypeCountReviewsReceivedArgs
   vehicles?: boolean | UserCountOutputTypeCountVehiclesArgs
   merchandiseRedemptions?: boolean | UserCountOutputTypeCountMerchandiseRedemptionsArgs
+  deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
+  notificationLogs?: boolean | UserCountOutputTypeCountNotificationLogsArgs
+  userNotifications?: boolean | UserCountOutputTypeCountUserNotificationsArgs
+  noShowMarkedOrders?: boolean | UserCountOutputTypeCountNoShowMarkedOrdersArgs
+  mitraNoShowMarkedTrips?: boolean | UserCountOutputTypeCountMitraNoShowMarkedTripsArgs
+  noShowAuditLogsOperator?: boolean | UserCountOutputTypeCountNoShowAuditLogsOperatorArgs
+  pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
 }
 
 /**
@@ -3750,6 +6174,55 @@ export type UserCountOutputTypeCountMerchandiseRedemptionsArgs<ExtArgs extends r
   where?: Prisma.MerchandiseRedemptionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDeviceTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeviceTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserNotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNoShowMarkedOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMitraNoShowMarkedTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNoShowAuditLogsOperatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NoShowAuditLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PushSubscriptionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3763,6 +6236,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   statusVerification?: boolean
   pinHash?: boolean
   refreshToken?: boolean
+  passwordResetToken?: boolean
+  passwordResetTokenExpiresAt?: boolean
   avatar?: boolean
   rewardPoints?: boolean
   createdAt?: boolean
@@ -3784,6 +6259,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviewsReceived?: boolean | Prisma.User$reviewsReceivedArgs<ExtArgs>
   vehicles?: boolean | Prisma.User$vehiclesArgs<ExtArgs>
   merchandiseRedemptions?: boolean | Prisma.User$merchandiseRedemptionsArgs<ExtArgs>
+  notificationPreference?: boolean | Prisma.User$notificationPreferenceArgs<ExtArgs>
+  deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
+  notificationLogs?: boolean | Prisma.User$notificationLogsArgs<ExtArgs>
+  userNotifications?: boolean | Prisma.User$userNotificationsArgs<ExtArgs>
+  noShowMarkedOrders?: boolean | Prisma.User$noShowMarkedOrdersArgs<ExtArgs>
+  mitraNoShowMarkedTrips?: boolean | Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>
+  noShowAuditLogsOperator?: boolean | Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>
+  pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3801,13 +6284,15 @@ export type UserSelectScalar = {
   statusVerification?: boolean
   pinHash?: boolean
   refreshToken?: boolean
+  passwordResetToken?: boolean
+  passwordResetTokenExpiresAt?: boolean
   avatar?: boolean
   rewardPoints?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "regionId" | "name" | "email" | "phone" | "password" | "role" | "status" | "statusVerification" | "pinHash" | "refreshToken" | "avatar" | "rewardPoints" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "regionId" | "name" | "email" | "phone" | "password" | "role" | "status" | "statusVerification" | "pinHash" | "refreshToken" | "passwordResetToken" | "passwordResetTokenExpiresAt" | "avatar" | "rewardPoints" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   region?: boolean | Prisma.User$regionArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
@@ -3826,6 +6311,14 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviewsReceived?: boolean | Prisma.User$reviewsReceivedArgs<ExtArgs>
   vehicles?: boolean | Prisma.User$vehiclesArgs<ExtArgs>
   merchandiseRedemptions?: boolean | Prisma.User$merchandiseRedemptionsArgs<ExtArgs>
+  notificationPreference?: boolean | Prisma.User$notificationPreferenceArgs<ExtArgs>
+  deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
+  notificationLogs?: boolean | Prisma.User$notificationLogsArgs<ExtArgs>
+  userNotifications?: boolean | Prisma.User$userNotificationsArgs<ExtArgs>
+  noShowMarkedOrders?: boolean | Prisma.User$noShowMarkedOrdersArgs<ExtArgs>
+  mitraNoShowMarkedTrips?: boolean | Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>
+  noShowAuditLogsOperator?: boolean | Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>
+  pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -3849,6 +6342,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviewsReceived: Prisma.$TripReviewPayload<ExtArgs>[]
     vehicles: Prisma.$VehiclePayload<ExtArgs>[]
     merchandiseRedemptions: Prisma.$MerchandiseRedemptionPayload<ExtArgs>[]
+    notificationPreference: Prisma.$NotificationPreferencePayload<ExtArgs> | null
+    deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
+    notificationLogs: Prisma.$NotificationLogPayload<ExtArgs>[]
+    userNotifications: Prisma.$UserNotificationPayload<ExtArgs>[]
+    noShowMarkedOrders: Prisma.$OrderPayload<ExtArgs>[]
+    mitraNoShowMarkedTrips: Prisma.$TripPayload<ExtArgs>[]
+    noShowAuditLogsOperator: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
+    pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -3862,6 +6363,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     statusVerification: $Enums.VerificationStatus
     pinHash: string | null
     refreshToken: string | null
+    passwordResetToken: string | null
+    passwordResetTokenExpiresAt: Date | null
     avatar: string | null
     rewardPoints: number
     createdAt: Date
@@ -4223,6 +6726,14 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviewsReceived<T extends Prisma.User$reviewsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicles<T extends Prisma.User$vehiclesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$vehiclesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   merchandiseRedemptions<T extends Prisma.User$merchandiseRedemptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$merchandiseRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchandiseRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notificationPreference<T extends Prisma.User$notificationPreferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationPreferenceArgs<ExtArgs>>): Prisma.Prisma__NotificationPreferenceClient<runtime.Types.Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notificationLogs<T extends Prisma.User$notificationLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userNotifications<T extends Prisma.User$userNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  noShowMarkedOrders<T extends Prisma.User$noShowMarkedOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$noShowMarkedOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mitraNoShowMarkedTrips<T extends Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  noShowAuditLogsOperator<T extends Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pushSubscriptions<T extends Prisma.User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4263,6 +6774,8 @@ export interface UserFieldRefs {
   readonly statusVerification: Prisma.FieldRef<"User", 'VerificationStatus'>
   readonly pinHash: Prisma.FieldRef<"User", 'String'>
   readonly refreshToken: Prisma.FieldRef<"User", 'String'>
+  readonly passwordResetToken: Prisma.FieldRef<"User", 'String'>
+  readonly passwordResetTokenExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly avatar: Prisma.FieldRef<"User", 'String'>
   readonly rewardPoints: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -5005,6 +7518,193 @@ export type User$merchandiseRedemptionsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.MerchandiseRedemptionScalarFieldEnum | Prisma.MerchandiseRedemptionScalarFieldEnum[]
+}
+
+/**
+ * User.notificationPreference
+ */
+export type User$notificationPreferenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NotificationPreference
+   */
+  select?: Prisma.NotificationPreferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NotificationPreference
+   */
+  omit?: Prisma.NotificationPreferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationPreferenceInclude<ExtArgs> | null
+  where?: Prisma.NotificationPreferenceWhereInput
+}
+
+/**
+ * User.deviceTokens
+ */
+export type User$deviceTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeviceToken
+   */
+  select?: Prisma.DeviceTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeviceToken
+   */
+  omit?: Prisma.DeviceTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeviceTokenInclude<ExtArgs> | null
+  where?: Prisma.DeviceTokenWhereInput
+  orderBy?: Prisma.DeviceTokenOrderByWithRelationInput | Prisma.DeviceTokenOrderByWithRelationInput[]
+  cursor?: Prisma.DeviceTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeviceTokenScalarFieldEnum | Prisma.DeviceTokenScalarFieldEnum[]
+}
+
+/**
+ * User.notificationLogs
+ */
+export type User$notificationLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NotificationLog
+   */
+  select?: Prisma.NotificationLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NotificationLog
+   */
+  omit?: Prisma.NotificationLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationLogInclude<ExtArgs> | null
+  where?: Prisma.NotificationLogWhereInput
+  orderBy?: Prisma.NotificationLogOrderByWithRelationInput | Prisma.NotificationLogOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationLogScalarFieldEnum | Prisma.NotificationLogScalarFieldEnum[]
+}
+
+/**
+ * User.userNotifications
+ */
+export type User$userNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserNotification
+   */
+  select?: Prisma.UserNotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserNotification
+   */
+  omit?: Prisma.UserNotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserNotificationInclude<ExtArgs> | null
+  where?: Prisma.UserNotificationWhereInput
+  orderBy?: Prisma.UserNotificationOrderByWithRelationInput | Prisma.UserNotificationOrderByWithRelationInput[]
+  cursor?: Prisma.UserNotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserNotificationScalarFieldEnum | Prisma.UserNotificationScalarFieldEnum[]
+}
+
+/**
+ * User.noShowMarkedOrders
+ */
+export type User$noShowMarkedOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.mitraNoShowMarkedTrips
+ */
+export type User$mitraNoShowMarkedTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Trip
+   */
+  select?: Prisma.TripSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Trip
+   */
+  omit?: Prisma.TripOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripInclude<ExtArgs> | null
+  where?: Prisma.TripWhereInput
+  orderBy?: Prisma.TripOrderByWithRelationInput | Prisma.TripOrderByWithRelationInput[]
+  cursor?: Prisma.TripWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripScalarFieldEnum | Prisma.TripScalarFieldEnum[]
+}
+
+/**
+ * User.noShowAuditLogsOperator
+ */
+export type User$noShowAuditLogsOperatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NoShowAuditLog
+   */
+  select?: Prisma.NoShowAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NoShowAuditLog
+   */
+  omit?: Prisma.NoShowAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoShowAuditLogInclude<ExtArgs> | null
+  where?: Prisma.NoShowAuditLogWhereInput
+  orderBy?: Prisma.NoShowAuditLogOrderByWithRelationInput | Prisma.NoShowAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.NoShowAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NoShowAuditLogScalarFieldEnum | Prisma.NoShowAuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.pushSubscriptions
+ */
+export type User$pushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PushSubscription
+   */
+  select?: Prisma.PushSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PushSubscription
+   */
+  omit?: Prisma.PushSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PushSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.PushSubscriptionWhereInput
+  orderBy?: Prisma.PushSubscriptionOrderByWithRelationInput | Prisma.PushSubscriptionOrderByWithRelationInput[]
+  cursor?: Prisma.PushSubscriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
 }
 
 /**

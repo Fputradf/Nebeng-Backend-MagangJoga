@@ -74,7 +74,8 @@ export const TripStatus = {
   in_transit: 'in_transit',
   arrived_dest_pos: 'arrived_dest_pos',
   completed: 'completed',
-  cancelled: 'cancelled'
+  cancelled: 'cancelled',
+  mitra_no_show: 'mitra_no_show'
 } as const
 
 export type TripStatus = (typeof TripStatus)[keyof typeof TripStatus]
@@ -95,7 +96,8 @@ export const OrderStatus = {
   in_transit: 'in_transit',
   arrived_destination: 'arrived_destination',
   completed: 'completed',
-  cancelled: 'cancelled'
+  cancelled: 'cancelled',
+  no_show: 'no_show'
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
@@ -169,3 +171,43 @@ export const RedemptionStatus = {
 } as const
 
 export type RedemptionStatus = (typeof RedemptionStatus)[keyof typeof RedemptionStatus]
+
+
+export const NoShowAuditType = {
+  passenger_no_show: 'passenger_no_show',
+  mitra_no_show: 'mitra_no_show'
+} as const
+
+export type NoShowAuditType = (typeof NoShowAuditType)[keyof typeof NoShowAuditType]
+
+
+export const NotificationType = {
+  order_created: 'order_created',
+  order_paid: 'order_paid',
+  order_cancelled: 'order_cancelled',
+  trip_started: 'trip_started',
+  trip_arrived: 'trip_arrived',
+  trip_completed: 'trip_completed',
+  checkpoint_scanned: 'checkpoint_scanned',
+  chat_message: 'chat_message',
+  payment_success: 'payment_success',
+  payment_failed: 'payment_failed',
+  escrow_released: 'escrow_released',
+  reward_earned: 'reward_earned',
+  reward_redeemed: 'reward_redeemed',
+  verification_approved: 'verification_approved',
+  verification_rejected: 'verification_rejected',
+  trip_booking_request: 'trip_booking_request',
+  generic: 'generic'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const NotificationStatus = {
+  pending: 'pending',
+  sent: 'sent',
+  failed: 'failed'
+} as const
+
+export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus]
