@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
 import {
   EscrowStatus,
@@ -14,6 +14,8 @@ import { randomBytes } from 'crypto';
 
 @Injectable()
 export class CheckpointsRepository {
+  private readonly logger = new Logger(CheckpointsRepository.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   private safeParseBigInt(id: string): bigint | null {
@@ -526,7 +528,26 @@ export class CheckpointsRepository {
     }
 
     return this.prisma.$transaction(async (tx) => {
-      // 1. Dapatkan informasi Trip dan semua Orders aktif
+      // 1. Guard level trip: updateMany dengan where id + status asal yang sah
+      const tripUpdateCount = await tx.trip.updateMany({
+        where: {
+          id: tripId,
+          status: { in: [TripStatus.scheduled, TripStatus.in_origin_pos] },
+        },
+        data: {
+          status: TripStatus.mitra_no_show,
+          mitraNoShowMarkedAt: new Date(),
+          mitraNoShowMarkedBy: parsedUserId,
+        },
+      });
+
+      if (tripUpdateCount.count === 0) {
+        throw new BadRequestException(
+          'Trip ini sudah dibatalkan, sedang berjalan, atau tidak dapat diproses mitra no-show pada status saat ini.',
+        );
+      }
+
+      // 2. Dapatkan informasi Trip dan semua Orders aktif (setelah update berhasil)
       const trip = await tx.trip.findUnique({
         where: { id: tripId },
         include: {
@@ -542,141 +563,220 @@ export class CheckpointsRepository {
         throw new BadRequestException('Trip tidak ditemukan');
       }
 
-      // Validasi: Hanya bisa mitra no-show jika statusnya 'scheduled' atau 'in_origin_pos'
-      if (
-        trip.status !== TripStatus.scheduled &&
-        trip.status !== TripStatus.in_origin_pos
-      ) {
+      // Ambil mitra wallet di luar loop untuk digunakan berulang
+      let mitraWallet = await tx.wallet.findUnique({
+        where: { userId: trip.mitraId },
+      });
+
+      if (!mitraWallet) {
         throw new BadRequestException(
-          'Mitra no-show hanya dapat diproses untuk trip dengan status scheduled atau in_origin_pos',
+          'Wallet mitra tidak ditemukan. Hubungi administrator untuk pembuatan wallet.',
         );
       }
 
-      // 2. Process Refund untuk semua active orders
+      // 3. Process Refund untuk semua active orders
       for (const order of trip.orders) {
-        if (
-          order.status === 'paid' ||
-          order.status === 'checked_in_origin' ||
-          order.escrowStatus === 'held'
-        ) {
-          const totalPrice = Number(order.totalPrice);
-          const adminFeePercentage = Number(order.adminFeePercentage || 10);
-          const adminFeeAmount = Math.round(
-            (totalPrice * adminFeePercentage) / 100,
-          );
-          const netMitraAmount = totalPrice - adminFeeAmount;
-
-          // a. Refund Customer
-          let customerWallet = await tx.wallet.findUnique({
-            where: { userId: order.customerId },
-          });
-          if (!customerWallet) {
-            customerWallet = await tx.wallet.create({
-              data: {
-                userId: order.customerId,
-                balance: 0,
-                heldEscrowBalance: 0,
-              },
-            });
-          }
-          await tx.wallet.update({
-            where: { id: customerWallet.id },
-            data: { balance: { increment: totalPrice } },
-          });
-          await tx.walletTransaction.create({
-            data: {
-              walletId: customerWallet.id,
-              orderId: order.id,
-              amount: totalPrice,
-              type: TransactionType.credit,
-              description: `Refund (Mitra No-Show) #${order.id}`,
-            },
-          });
-
-          // b. Deduct Escrow from Mitra
-          const mitraWallet = await tx.wallet.findUnique({
-            where: { userId: trip.mitraId },
-          });
-          if (mitraWallet) {
-            await tx.wallet.update({
-              where: { id: mitraWallet.id },
-              data: { heldEscrowBalance: { decrement: netMitraAmount } },
-            });
-            await tx.walletTransaction.create({
-              data: {
-                walletId: mitraWallet.id,
-                orderId: order.id,
-                amount: netMitraAmount,
-                type: TransactionType.debit,
-                description: `Pengembalian Dana Escrow (Mitra No-Show) #${order.id}`,
-              },
-            });
-          }
-
-          // c. Deduct Admin Fee from System Admin
-          const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
-          const parsedSystemAdminId = systemAdminIdEnv
-            ? BigInt(systemAdminIdEnv)
-            : null;
-          const adminUser = parsedSystemAdminId
-            ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
-            : await tx.user.findFirst({
-                where: { role: 'admin' },
-                orderBy: { id: 'asc' },
-              });
-
-          if (adminUser) {
-            const adminWallet = await tx.wallet.findUnique({
-              where: { userId: adminUser.id },
-            });
-            if (adminWallet) {
-              await tx.wallet.update({
-                where: { id: adminWallet.id },
-                data: { balance: { decrement: adminFeeAmount } },
-              });
-              await tx.walletTransaction.create({
-                data: {
-                  walletId: adminWallet.id,
-                  orderId: order.id,
-                  amount: adminFeeAmount,
-                  type: TransactionType.debit,
-                  description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
-                },
-              });
-            }
-          }
-        }
-
-        // 3. Update semua orders ke cancelled
-        await tx.order.update({
-          where: { id: order.id },
+        // Guard level order: updateMany dengan where id + status aktif yang sah
+        const orderUpdateCount = await tx.order.updateMany({
+          where: {
+            id: order.id,
+            status: { in: [OrderStatus.paid, OrderStatus.checked_in_origin] },
+            escrowStatus: EscrowStatus.held,
+          },
           data: {
             status: OrderStatus.cancelled,
             escrowStatus: EscrowStatus.refunded,
           },
         });
+
+        // Handle orderUpdateCount === 0
+        if (orderUpdateCount.count === 0) {
+          // Baca ulang order untuk cek status aktual
+          const currentOrder = await tx.order.findUnique({
+            where: { id: order.id },
+            select: { status: true, escrowStatus: true },
+          });
+
+          if (currentOrder) {
+            const isAlreadyRefunded =
+              (currentOrder.status === OrderStatus.cancelled ||
+                currentOrder.status === OrderStatus.cancelled_by_mitra ||
+                currentOrder.status === OrderStatus.no_show) &&
+              currentOrder.escrowStatus === EscrowStatus.refunded;
+
+            if (isAlreadyRefunded) {
+              // Lewati order ini dengan log
+              this.logger.log(
+                `Order #${order.id} sudah di-refund (status: ${currentOrder.status}, escrow: ${currentOrder.escrowStatus}). Melompati refund.`,
+              );
+              continue;
+            }
+          }
+
+          // Status lain: arahkan ke pending_admin_review
+          throw new BadRequestException(
+            `Order #${order.id} dalam status tidak dapat di-refund. Status: ${currentOrder?.status}, Escrow: ${currentOrder?.escrowStatus}. Arahkan ke pending_admin_review.`,
+          );
+        }
+
+        // Kredit dompet customer, debit escrow mitra, dan debit admin fee HANYA jika count === 1
+        const totalPrice = Number(order.totalPrice);
+        const adminFeePercentage = Number(order.adminFeePercentage);
+
+        if (!adminFeePercentage) {
+          throw new BadRequestException(
+            `Admin fee percentage tidak ditemukan untuk order #${order.id}. Data tidak lengkap.`,
+          );
+        }
+
+        const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
+        const netMitraAmount = totalPrice - adminFeeAmount;
+
+        // Cari WalletTransaction escrow_hold untuk nominal tersimpan
+        const escrowTransaction = await tx.walletTransaction.findFirst({
+          where: {
+            orderId: order.id,
+            type: TransactionType.escrow_hold,
+          },
+          select: { amount: true },
+        });
+
+        if (!escrowTransaction) {
+          throw new BadRequestException(
+            `Data escrow tersimpan tidak ditemukan untuk order #${order.id}. Tidak dapat memverifikasi nominal.`,
+          );
+        }
+
+        const storedEscrowAmount = Number(escrowTransaction.amount);
+
+        // Pemeriksaan nyata: refund customer harus sama dengan escrow tersimpan
+        if (totalPrice !== storedEscrowAmount + adminFeeAmount) {
+          throw new BadRequestException(
+            `Konsistensi uang terganggu untuk order #${order.id}. Total: ${totalPrice}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${adminFeeAmount}`,
+          );
+        }
+
+        // a. Refund Customer
+        let customerWallet = await tx.wallet.findUnique({
+          where: { userId: order.customerId },
+        });
+        if (!customerWallet) {
+          customerWallet = await tx.wallet.create({
+            data: {
+              userId: order.customerId,
+              balance: 0,
+              heldEscrowBalance: 0,
+            },
+          });
+        }
+        await tx.wallet.update({
+          where: { id: customerWallet.id },
+          data: { balance: { increment: totalPrice } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: customerWallet.id,
+            orderId: order.id,
+            amount: totalPrice,
+            type: TransactionType.credit,
+            description: `Refund (Mitra No-Show) #${order.id}`,
+          },
+        });
+
+        // b. Deduct Escrow from Mitra dengan syarat saldo mencukupi
+        const mitraEscrowUpdateCount = await tx.wallet.updateMany({
+          where: {
+            id: mitraWallet.id,
+            heldEscrowBalance: { gte: netMitraAmount },
+          },
+          data: {
+            heldEscrowBalance: { decrement: netMitraAmount },
+          },
+        });
+
+        if (mitraEscrowUpdateCount.count === 0) {
+          this.logger.error(
+            `Saldo escrow mitra tidak mencukupi. Mitra: ${trip.mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${netMitraAmount}`,
+          );
+          throw new BadRequestException(
+            'Saldo escrow mitra tidak mencukupi untuk pengembalian dana. Arahkan ke pending_admin_review.',
+          );
+        }
+
+        await tx.walletTransaction.create({
+          data: {
+            walletId: mitraWallet.id,
+            orderId: order.id,
+            amount: netMitraAmount,
+            type: TransactionType.debit,
+            description: `Pengembalian Dana Escrow (Mitra No-Show) #${order.id}`,
+          },
+        });
+
+        // c. Deduct Admin Fee from System Admin dengan syarat saldo mencukupi
+        const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
+        const parsedSystemAdminId = systemAdminIdEnv
+          ? BigInt(systemAdminIdEnv)
+          : null;
+        const adminUser = parsedSystemAdminId
+          ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
+          : await tx.user.findFirst({
+              where: { role: 'admin' },
+              orderBy: { id: 'asc' },
+            });
+
+        if (adminUser) {
+          const adminWallet = await tx.wallet.findUnique({
+            where: { userId: adminUser.id },
+          });
+          if (adminWallet) {
+            const adminUpdateCount = await tx.wallet.updateMany({
+              where: {
+                id: adminWallet.id,
+                balance: { gte: adminFeeAmount },
+              },
+              data: {
+                balance: { decrement: adminFeeAmount },
+              },
+            });
+
+            if (adminUpdateCount.count === 0) {
+              this.logger.error(
+                `Saldo admin tidak mencukupi. Trip: ${tripId}, Order: ${order.id}, Saldo: ${adminWallet.balance}, Dibutuhkan: ${adminFeeAmount}`,
+              );
+              throw new BadRequestException(
+                'Saldo admin tidak mencukupi untuk pengembalian admin fee. Arahkan ke pending_admin_review.',
+              );
+            }
+
+            await tx.walletTransaction.create({
+              data: {
+                walletId: adminWallet.id,
+                orderId: order.id,
+                amount: adminFeeAmount,
+                type: TransactionType.debit,
+                description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
+              },
+            });
+          }
+        }
       }
 
-      // 4. Update Trip Status ke mitra_no_show
-      const updatedTrip = await tx.trip.update({
-        where: { id: tripId },
-        data: {
-          status: TripStatus.mitra_no_show,
-        },
-      });
-
-      // 5. Catat riwayat log checkpoint
+      // 4. Catat riwayat log checkpoint sebagai bukti
       await tx.checkpointsLog.create({
         data: {
           tripId,
-          orderId: BigInt(0), // Gunakan 0 sebagai placeholder karena ini berlaku untuk semua orders
+          orderId: BigInt(0), // Placeholder untuk audit log trip-level
           posId: parsedPosId,
           scannedByUserId: parsedUserId,
-          scanType: ScanType.checkin_origin,
+          scanType: ScanType.checkin_origin, // Tetap catat sebagai checkin_origin tapi dengan status no_show
         },
       });
 
-      return updatedTrip;
+      return await tx.trip.findUnique({
+        where: { id: tripId },
+        include: { originPoint: true, destinationPoint: true },
+      });
     });
   }
 

@@ -5,6 +5,7 @@ import { OrdersRepository } from '../orders/repository/orders.repository';
 import { PaymentsRepository } from './repository/payments.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 describe('PaymentsService (checkoutPayment)', () => {
   let service: PaymentsService;
@@ -59,6 +60,10 @@ describe('PaymentsService (checkoutPayment)', () => {
       pricingSetting: { findFirst: jest.fn() },
       payment: { create: jest.fn() },
     };
+    const mockNotificationHelper = {
+      notifyOrderPaid: jest.fn(),
+      notifyPaymentSuccess: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -66,6 +71,7 @@ describe('PaymentsService (checkoutPayment)', () => {
         { provide: OrdersRepository, useValue: ordersRepository },
         { provide: PaymentsRepository, useValue: paymentsRepository },
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: NotificationHelperService, useValue: mockNotificationHelper },
       ],
     }).compile();
 
@@ -158,6 +164,7 @@ describe('PaymentsService (checkoutPayment)', () => {
       50000,
       5000,
       45000,
+      false,
     );
   });
 });

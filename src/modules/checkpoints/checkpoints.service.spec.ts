@@ -4,6 +4,7 @@ import { TrackingGateway } from '../tracking/tracking.gateway';
 import { CheckpointsRepository } from './repository/checkpoints.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException } from '@nestjs/common';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 describe('CheckpointsService (scanCheckpoint)', () => {
   let service: CheckpointsService;
@@ -74,6 +75,9 @@ describe('CheckpointsService (scanCheckpoint)', () => {
     trackingGateway = {
       emitCheckpointScanned: jest.fn(),
     };
+    const mockNotificationHelper = {
+      notifyCheckpointScanned: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -81,6 +85,7 @@ describe('CheckpointsService (scanCheckpoint)', () => {
         { provide: CheckpointsRepository, useValue: checkpointsRepository },
         { provide: TrackingGateway, useValue: trackingGateway },
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: NotificationHelperService, useValue: mockNotificationHelper },
       ],
     }).compile();
 

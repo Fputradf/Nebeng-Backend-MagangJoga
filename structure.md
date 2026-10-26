@@ -6,6 +6,8 @@
 │   └── 📄 config.local.json
 ├── 📄 .env
 ├── 📄 .env.example
+├── 📄 .env.test
+├── 📄 .env.test.backup
 ├── 📄 .gitignore
 ├── 📄 .prettierrc
 ├── 📄 eslint.config.mjs
@@ -15,6 +17,8 @@
 ├── 📄 FRONTEND_DEVELOPMENT_PROMPT.md
 ├── 📄 FRONTEND_NOTIFICATION_IMPLEMENTATION.md
 ├── 📄 GPS_TRACKING_IMPLEMENTATION.md
+├── 📄 HANDOFF_LANGKAH2.md
+├── 📄 jest.integration.config.js
 ├── 📄 nest-cli.json
 ├── 📄 NOTIFICATION_SYSTEM_BACKEND_SUMMARY.md
 ├── 📄 package-lock.json
@@ -47,10 +51,11 @@
 │   │   │   └── 📄 migration.sql
 │   │   ├── 📁 20261026144000_fase_10_mitra_cancel/
 │   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261027000000_add_payment_late_refund_marker/
+│   │   │   └── 📄 migration.sql
 │   │   └── 📄 migration_lock.toml
 │   ├── 📄 run-seed.js
 │   ├── 📄 schema.prisma
-│   ├── 📄 schema.prisma.corrected
 │   └── 📄 seed.ts
 ├── 📄 prisma.config.ts
 ├── 📄 README.md
@@ -62,6 +67,7 @@
 │   ├── 📄 app.controller.ts
 │   ├── 📄 app.module.ts
 │   ├── 📄 app.service.ts
+│   ├── 📄 cancel-mitra-test.int-spec.ts
 │   ├── 📁 common/
 │   │   ├── 📁 decorators/
 │   │   │   ├── 📄 get-user.decorators.ts
@@ -72,6 +78,7 @@
 │   │   │   └── 📄 roles.guard.ts
 │   │   └── 📁 interceptors/
 │   │       └── 📄 audit-log.interceptor.ts
+│   ├── 📄 env-guard.spec.ts
 │   ├── 📁 generated/
 │   │   └── 📁 prisma/
 │   │       ├── 📄 browser.ts
@@ -119,6 +126,7 @@
 │   │       │   ├── 📄 Wallet.ts
 │   │       │   └── 📄 WalletTransaction.ts
 │   │       └── 📄 models.ts
+│   ├── 📄 guard-test.int-spec.ts
 │   ├── 📁 mail/
 │   │   ├── 📄 mail.module.ts
 │   │   └── 📄 mail.service.ts
@@ -361,18 +369,34 @@
 │   │       │   └── 📄 wallets.repository.ts
 │   │       ├── 📄 wallets.controller.ts
 │   │       ├── 📄 wallets.module.ts
+│   │       ├── 📄 wallets.service.spec.ts
 │   │       ├── 📄 wallets.service.ts
 │   │       └── 📄 withdraw-wallet.dto.ts
+│   ├── 📄 orders-cancel-test.int-spec.ts
 │   ├── 📁 prisma/
 │   │   ├── 📄 prisma.module.ts
 │   │   └── 📄 prisma.service.ts
+│   ├── 📄 prisma-real-test.int-spec.ts
+│   ├── 📁 test-integration/
 │   └── 📄 upload.controller.ts
 ├── 📄 structure.md
+├── 📄 structure.md.bak
+├── 📄 structure_clean.md
 ├── 📁 swagger-spec/
 │   └── 📄 swagger.json
 ├── 📁 test/
 │   ├── 📄 app.e2e-spec.ts
 │   └── 📄 jest-e2e.json
+├── 📄 test-env-wrong-dbname.sh
+├── 📄 test-env-wrong.sh
+├── 📁 test-integration/
+│   ├── 📄 env-guard.ts
+│   ├── 📄 seed-helper.ts
+│   ├── 📄 setup.ts
+│   ├── 📄 test-clean-db.ts
+│   ├── 📄 test-guard-real.js
+│   ├── 📄 test-guard.js
+│   └── 📄 test-helper.ts
 ├── 📄 TESTING_NOTIFICATION_SYSTEM.md
 ├── 📄 tsconfig.build.json
 ├── 📄 tsconfig.json

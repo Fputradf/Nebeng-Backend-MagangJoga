@@ -4,13 +4,18 @@ import { TripsRepository } from './repository/trips.repository';
 import { VehiclesRepository } from '../vehicles/repository/vehicles.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { SanctionService } from '../admin/sanction.service';
 
 describe('TripsService (createTrip)', () => {
   let service: TripsService;
   let vehiclesRepository: any;
   let tripsRepository: any;
 
-  const mockPrisma = {};
+  const mockPrisma = {
+    user: { findUnique: jest.fn() },
+  };
 
   const mockApprovedUser = {
     id: '1',
@@ -35,6 +40,16 @@ describe('TripsService (createTrip)', () => {
       findConflictingTrip: jest.fn(),
       create: jest.fn(),
     };
+    const mockConfigService = {
+      get: jest.fn((key: string, defaultValue?: any) => defaultValue),
+    };
+    const mockNotificationHelper = {
+      notifyOrderPaid: jest.fn(),
+      notifyPaymentSuccess: jest.fn(),
+    };
+    const mockSanctionService = {
+      createSanction: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -42,6 +57,9 @@ describe('TripsService (createTrip)', () => {
         { provide: TripsRepository, useValue: tripsRepository },
         { provide: VehiclesRepository, useValue: vehiclesRepository },
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: ConfigService, useValue: mockConfigService },
+        { provide: NotificationHelperService, useValue: mockNotificationHelper },
+        { provide: SanctionService, useValue: mockSanctionService },
       ],
     }).compile();
 

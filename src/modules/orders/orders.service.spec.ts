@@ -4,6 +4,7 @@ import { TripsRepository } from '../trips/repository/trips.repository';
 import { OrdersRepository } from './repository/orders.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException } from '@nestjs/common';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 describe('OrdersService (createOrder)', () => {
   let service: OrdersService;
@@ -14,6 +15,7 @@ describe('OrdersService (createOrder)', () => {
     order: { findFirst: jest.fn() },
     pricingSetting: { findFirst: jest.fn() },
     region: { findUnique: jest.fn() },
+    user: { findUnique: jest.fn() },
   };
 
   const mockTripMotor = {
@@ -42,6 +44,9 @@ describe('OrdersService (createOrder)', () => {
       findById: jest.fn(),
       createOrderWithTransaction: jest.fn(),
     };
+    const mockNotificationHelper = {
+      notifyOrderCreated: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -49,6 +54,7 @@ describe('OrdersService (createOrder)', () => {
         { provide: TripsRepository, useValue: tripsRepository },
         { provide: OrdersRepository, useValue: ordersRepository },
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: NotificationHelperService, useValue: mockNotificationHelper },
       ],
     }).compile();
 

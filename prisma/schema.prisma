@@ -581,13 +581,15 @@ model OsmRouteCache {
 // ------------------------------------------------------
 
 model Payment {
-  id             BigInt        @id @default(autoincrement())
+  id              BigInt        @id @default(autoincrement())
   orderId        BigInt        @map("order_id")
   order          Order         @relation(fields: [orderId], references: [id])
   paymentGateway String        @map("payment_gateway")
   transactionId  String        @map("transaction_id")
   amount         Decimal       @db.Decimal(10, 2)
   status         PaymentStatus
+  refundRequiredAt DateTime?    @map("refund_required_at")
+  refundNote      String?       @map("refund_note") @db.VarChar(500)
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
 

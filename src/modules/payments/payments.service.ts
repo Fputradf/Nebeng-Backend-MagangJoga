@@ -113,6 +113,7 @@ export class PaymentsService {
         totalPrice,
         adminFeeAmount,
         netMitraAmount,
+        false, // isWebhook = false untuk checkout langsung
       );
 
     await this.notificationHelper.notifyOrderPaid(
@@ -124,6 +125,10 @@ export class PaymentsService {
       userIdStr,
       totalPrice,
     );
+
+    if (!payment) {
+      throw new BadRequestException('Payment gagal dibuat.');
+    }
 
     return {
       message:
@@ -448,16 +453,16 @@ export class PaymentsService {
       throw new NotFoundException(`Order ID ${orderIdStr} tidak ditemukan.`);
     }
 
-    // Idempotency: Jika order sudah dibayar sebelumnya, jangan proses ulang
-    if (order.status === OrderStatus.paid) {
-      return { message: 'Order sudah berstatus PAID sebelumnya.' };
-    }
-
     const totalPrice = Number(order.totalPrice);
     const adminFeePercentage = Number(order.adminFeePercentage || 10);
     const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
     const netMitraAmount = totalPrice - adminFeeAmount;
     const mitraUserId = order.trip.mitraId.toString();
+
+    // Validasi payload.id harus ada
+    if (!payload.id) {
+      throw new BadRequestException('Payload Xendit tidak menyertakan ID transaksi.');
+    }
 
     // B. Jalankan Transaksi Atomik Kunci Escrow
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -465,23 +470,27 @@ export class PaymentsService {
       orderIdStr,
       mitraUserId,
       `XENDIT_${payload.payment_method || 'QRIS'}`,
-      payload.id || `TRX-${Date.now()}`,
+      payload.id,
       totalPrice,
       adminFeeAmount,
       netMitraAmount,
+      true, // isWebhook = true untuk webhook Xendit
     );
 
     // C. Buat sesi QR Check-in Pos Asal (ORIGIN) untuk tiket ini
-    const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
-    await this.prisma.orderQrSession.create({
-      data: {
-        orderId: order.id,
-        qrToken: order.qrCodeTicket,
-        scanPhase: 'checkin_origin',
-        isUsed: false,
-        expiredAt: tokenExpiry,
-      },
-    });
+    // Hanya jika order masih ada (bukan null dari jalur terlambat/replay)
+    if (result.order) {
+      const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
+      await this.prisma.orderQrSession.create({
+        data: {
+          orderId: result.order.id,
+          qrToken: result.order.qrCodeTicket,
+          scanPhase: 'checkin_origin',
+          isUsed: false,
+          expiredAt: tokenExpiry,
+        },
+      });
+    }
 
     return {
       success: true,

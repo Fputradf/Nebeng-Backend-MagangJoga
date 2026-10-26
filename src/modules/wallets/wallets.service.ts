@@ -1,13 +1,15 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ServiceUnavailableException } from '@nestjs/common';
 import { WalletsRepository } from './repository/wallets.repository';
 import { WalletMapper } from './mappers/wallet.mapper';
 import { PrismaService } from '../../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class WalletsService {
   constructor(
     private readonly walletRepository: WalletsRepository,
     private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
   ) {}
 
   private safeParseBigInt(id: string): bigint | null {
@@ -71,6 +73,13 @@ export class WalletsService {
   }
 
   async requestWithdrawal(userIdStr: string, amount: number) {
+    const withdrawEnabled = this.configService.get<string>('WITHDRAW_ENABLED') === 'true';
+    if (!withdrawEnabled) {
+      throw new ServiceUnavailableException(
+        'Penarikan dana sementara dinonaktifkan.',
+      );
+    }
+
     if (amount <= 0) {
       throw new BadRequestException(
         'Jumlah penarikan saldo harus lebih besar dari 0.',

@@ -375,26 +375,34 @@ export class OrdersService {
               orderBy: { id: 'asc' },
             });
 
-        if (adminUser) {
-          const adminWallet = await tx.wallet.findUnique({
-            where: { userId: adminUser.id },
-          });
-          if (adminWallet) {
-            await tx.wallet.update({
-              where: { id: adminWallet.id },
-              data: { balance: { decrement: adminFeeAmount } },
-            });
-            await tx.walletTransaction.create({
-              data: {
-                walletId: adminWallet.id,
-                orderId: order.id,
-                amount: adminFeeAmount,
-                type: 'debit',
-                description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
-              },
-            });
-          }
+        if (!adminUser) {
+          throw new BadRequestException(
+            'Admin user tidak ditemukan. Hubungi administrator untuk konfigurasi admin.',
+          );
         }
+
+        const adminWallet = await tx.wallet.findUnique({
+          where: { userId: adminUser.id },
+        });
+        if (!adminWallet) {
+          throw new BadRequestException(
+            'Wallet admin tidak ditemukan. Hubungi administrator untuk pembuatan wallet.',
+          );
+        }
+
+        await tx.wallet.update({
+          where: { id: adminWallet.id },
+          data: { balance: { decrement: adminFeeAmount } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: adminWallet.id,
+            orderId: order.id,
+            amount: adminFeeAmount,
+            type: 'debit',
+            description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
+          },
+        });
       }
 
       // 2. Update Order Status
