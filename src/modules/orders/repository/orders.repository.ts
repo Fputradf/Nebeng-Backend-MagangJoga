@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { TripStatus } from '../../../generated/prisma/enums';
+import { TripStatus, OrderStatus } from '../../../generated/prisma/enums';
 
 @Injectable()
 export class OrdersRepository {
@@ -63,7 +63,7 @@ export class OrdersRepository {
           totalPrice: orderData.totalPrice,
           qrCodeTicket: orderData.qrCodeTicket,
           otpClaim: orderData.otpClaim,
-          status: 'pending_payment',
+          status: OrderStatus.pending_payment,
           escrowStatus: 'pending',
         },
       });

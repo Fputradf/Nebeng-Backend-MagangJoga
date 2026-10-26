@@ -38,8 +38,6 @@ export class WalletsRepository {
     return this.prisma.wallet.create({
       data: {
         userId: parsedId,
-        balance: 0.0,
-        heldEscrowBalance: 0.0,
       },
       include: {
         transactions: {

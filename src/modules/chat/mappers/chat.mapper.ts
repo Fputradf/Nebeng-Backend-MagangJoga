@@ -45,6 +45,18 @@ export class ChatMapper {
             status: conversation.trip.status,
             departureDate: conversation.trip.departureDate,
             depatureTime: conversation.trip.depatureTime,
+            originPoint: conversation.trip.originPoint
+              ? {
+                  id: conversation.trip.originPoint.id.toString(),
+                  name: conversation.trip.originPoint.name,
+                }
+              : undefined,
+            destinationPoint: conversation.trip.destinationPoint
+              ? {
+                  id: conversation.trip.destinationPoint.id.toString(),
+                  name: conversation.trip.destinationPoint.name,
+                }
+              : undefined,
           }
         : undefined,
       customer: conversation.customer

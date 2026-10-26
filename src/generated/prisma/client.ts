@@ -204,3 +204,13 @@ export type NotificationLog = Prisma.NotificationLogModel
  * 
  */
 export type UserNotification = Prisma.UserNotificationModel
+/**
+ * Model MitraSanction
+ * 
+ */
+export type MitraSanction = Prisma.MitraSanctionModel
+/**
+ * Model MitraSanctionAppeal
+ * 
+ */
+export type MitraSanctionAppeal = Prisma.MitraSanctionAppealModel

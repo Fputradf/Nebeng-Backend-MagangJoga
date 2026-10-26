@@ -45,9 +45,12 @@
 │   │   │   └── 📄 migration.sql
 │   │   ├── 📁 20261024102908_add_user_agent_to_device_tokens/
 │   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261026144000_fase_10_mitra_cancel/
+│   │   │   └── 📄 migration.sql
 │   │   └── 📄 migration_lock.toml
 │   ├── 📄 run-seed.js
 │   ├── 📄 schema.prisma
+│   ├── 📄 schema.prisma.corrected
 │   └── 📄 seed.ts
 ├── 📄 prisma.config.ts
 ├── 📄 README.md
@@ -89,6 +92,8 @@
 │   │       │   ├── 📄 MerchandiseItem.ts
 │   │       │   ├── 📄 MerchandiseRedemption.ts
 │   │       │   ├── 📄 Message.ts
+│   │       │   ├── 📄 MitraSanction.ts
+│   │       │   ├── 📄 MitraSanctionAppeal.ts
 │   │       │   ├── 📄 NoShowAuditLog.ts
 │   │       │   ├── 📄 NotificationLog.ts
 │   │       │   ├── 📄 NotificationPreference.ts
@@ -129,8 +134,9 @@
 │   │   │   │   ├── 📄 system-setting.dto.ts
 │   │   │   │   ├── 📄 update-pricing-policy.dto.ts
 │   │   │   │   └── 📄 update-user-governance.dto.ts
-│   │   │   └── 📁 mappers/
-│   │   │       └── 📄 admin.mapper.ts
+│   │   │   ├── 📁 mappers/
+│   │   │   │   └── 📄 admin.mapper.ts
+│   │   │   └── 📄 sanction.service.ts
 │   │   ├── 📁 auth/
 │   │   │   ├── 📄 auth.controller.ts
 │   │   │   ├── 📄 auth.module.ts
@@ -297,6 +303,7 @@
 │   │   │   └── 📄 tracking.service.ts
 │   │   ├── 📁 trips/
 │   │   │   ├── 📁 dto/
+│   │   │   │   ├── 📄 cancel-trip-by-mitra.dto.ts
 │   │   │   │   ├── 📄 create-trip.dto.ts
 │   │   │   │   ├── 📄 query-trip.dto.ts
 │   │   │   │   └── 📄 update-trip.dto.ts

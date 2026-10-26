@@ -99,7 +99,7 @@ export class OrdersService {
         tripId: this.safeParseBigInt(dto.tripId),
         customerId: this.safeParseBigInt(customerIdStr),
         status: {
-          in: ['pending_payment', 'paid', 'checked_in_origin', 'in_transit'],
+          in: [OrderStatus.pending_payment, OrderStatus.paid, OrderStatus.checked_in_origin, OrderStatus.in_transit],
         },
       },
     });
@@ -401,10 +401,10 @@ export class OrdersService {
       const updatedCount = await tx.order.updateMany({
         where: {
           id: order.id,
-          status: { notIn: ['cancelled', 'completed'] },
+          status: { notIn: [OrderStatus.cancelled, OrderStatus.completed] },
         },
         data: {
-          status: 'cancelled',
+          status: OrderStatus.cancelled,
           escrowStatus: 'refunded',
         },
       });

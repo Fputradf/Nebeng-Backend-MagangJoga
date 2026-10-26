@@ -83,7 +83,9 @@ export const ModelName = {
   NotificationPreference: 'NotificationPreference',
   DeviceToken: 'DeviceToken',
   NotificationLog: 'NotificationLog',
-  UserNotification: 'UserNotification'
+  UserNotification: 'UserNotification',
+  MitraSanction: 'MitraSanction',
+  MitraSanctionAppeal: 'MitraSanctionAppeal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -254,7 +256,11 @@ export const TripScalarFieldEnum = {
   mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
   mitraNoShowMarkedBy: 'mitraNoShowMarkedBy',
   mitraNoShowReason: 'mitraNoShowReason',
-  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl',
+  cancelledAt: 'cancelledAt',
+  cancelledBy: 'cancelledBy',
+  cancelReason: 'cancelReason',
+  cancelCategory: 'cancelCategory'
 } as const
 
 export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
@@ -624,6 +630,39 @@ export const UserNotificationScalarFieldEnum = {
 export type UserNotificationScalarFieldEnum = (typeof UserNotificationScalarFieldEnum)[keyof typeof UserNotificationScalarFieldEnum]
 
 
+export const MitraSanctionScalarFieldEnum = {
+  id: 'id',
+  mitraId: 'mitraId',
+  tripId: 'tripId',
+  violationType: 'violationType',
+  scoreDeduction: 'scoreDeduction',
+  tier: 'tier',
+  isSuspended: 'isSuspended',
+  suspendedUntil: 'suspendedUntil',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MitraSanctionScalarFieldEnum = (typeof MitraSanctionScalarFieldEnum)[keyof typeof MitraSanctionScalarFieldEnum]
+
+
+export const MitraSanctionAppealScalarFieldEnum = {
+  id: 'id',
+  sanctionId: 'sanctionId',
+  mitraId: 'mitraId',
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MitraSanctionAppealScalarFieldEnum = (typeof MitraSanctionAppealScalarFieldEnum)[keyof typeof MitraSanctionAppealScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -712,7 +751,9 @@ export const TripOrderByRelevanceFieldEnum = {
   qrCodeTrip: 'qrCodeTrip',
   mapsPolyline: 'mapsPolyline',
   mitraNoShowReason: 'mitraNoShowReason',
-  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl',
+  cancelReason: 'cancelReason',
+  cancelCategory: 'cancelCategory'
 } as const
 
 export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnum)[keyof typeof TripOrderByRelevanceFieldEnum]
@@ -879,4 +920,13 @@ export const UserNotificationOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserNotificationOrderByRelevanceFieldEnum = (typeof UserNotificationOrderByRelevanceFieldEnum)[keyof typeof UserNotificationOrderByRelevanceFieldEnum]
+
+
+export const MitraSanctionAppealOrderByRelevanceFieldEnum = {
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type MitraSanctionAppealOrderByRelevanceFieldEnum = (typeof MitraSanctionAppealOrderByRelevanceFieldEnum)[keyof typeof MitraSanctionAppealOrderByRelevanceFieldEnum]
 

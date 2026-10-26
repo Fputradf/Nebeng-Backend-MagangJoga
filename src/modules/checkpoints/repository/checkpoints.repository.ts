@@ -532,7 +532,7 @@ export class CheckpointsRepository {
         include: {
           orders: {
             where: {
-              status: { notIn: ['cancelled', 'completed', 'no_show'] },
+              status: { notIn: [OrderStatus.cancelled, OrderStatus.completed, OrderStatus.no_show] },
             },
           },
         },
@@ -814,7 +814,7 @@ export class CheckpointsRepository {
         include: {
           orders: {
             where: {
-              status: { notIn: ['cancelled', 'completed', 'no_show'] },
+              status: { notIn: [OrderStatus.cancelled, OrderStatus.completed, OrderStatus.no_show] },
             },
           },
         },

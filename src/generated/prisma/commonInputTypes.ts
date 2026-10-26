@@ -657,6 +657,57 @@ export type EnumNotificationStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumNotificationStatusFilter<$PrismaModel>
 }
 
+export type EnumSanctionViolationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionViolationType | Prisma.EnumSanctionViolationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionViolationType[]
+  notIn?: $Enums.SanctionViolationType[]
+  not?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel> | $Enums.SanctionViolationType
+}
+
+export type EnumSanctionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionStatus | Prisma.EnumSanctionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionStatus[]
+  notIn?: $Enums.SanctionStatus[]
+  not?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel> | $Enums.SanctionStatus
+}
+
+export type EnumSanctionViolationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionViolationType | Prisma.EnumSanctionViolationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionViolationType[]
+  notIn?: $Enums.SanctionViolationType[]
+  not?: Prisma.NestedEnumSanctionViolationTypeWithAggregatesFilter<$PrismaModel> | $Enums.SanctionViolationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel>
+}
+
+export type EnumSanctionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionStatus | Prisma.EnumSanctionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionStatus[]
+  notIn?: $Enums.SanctionStatus[]
+  not?: Prisma.NestedEnumSanctionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SanctionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel>
+}
+
+export type EnumAppealStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppealStatus | Prisma.EnumAppealStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AppealStatus[]
+  notIn?: $Enums.AppealStatus[]
+  not?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel> | $Enums.AppealStatus
+}
+
+export type EnumAppealStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppealStatus | Prisma.EnumAppealStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AppealStatus[]
+  notIn?: $Enums.AppealStatus[]
+  not?: Prisma.NestedEnumAppealStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppealStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
+}
+
 export type NestedBigIntFilter<$PrismaModel = never> = {
   equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
   in?: bigint[] | number[]
@@ -1326,6 +1377,57 @@ export type NestedEnumNotificationStatusWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumNotificationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumNotificationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumSanctionViolationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionViolationType | Prisma.EnumSanctionViolationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionViolationType[]
+  notIn?: $Enums.SanctionViolationType[]
+  not?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel> | $Enums.SanctionViolationType
+}
+
+export type NestedEnumSanctionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionStatus | Prisma.EnumSanctionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionStatus[]
+  notIn?: $Enums.SanctionStatus[]
+  not?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel> | $Enums.SanctionStatus
+}
+
+export type NestedEnumSanctionViolationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionViolationType | Prisma.EnumSanctionViolationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionViolationType[]
+  notIn?: $Enums.SanctionViolationType[]
+  not?: Prisma.NestedEnumSanctionViolationTypeWithAggregatesFilter<$PrismaModel> | $Enums.SanctionViolationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSanctionViolationTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumSanctionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SanctionStatus | Prisma.EnumSanctionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SanctionStatus[]
+  notIn?: $Enums.SanctionStatus[]
+  not?: Prisma.NestedEnumSanctionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SanctionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSanctionStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAppealStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppealStatus | Prisma.EnumAppealStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AppealStatus[]
+  notIn?: $Enums.AppealStatus[]
+  not?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel> | $Enums.AppealStatus
+}
+
+export type NestedEnumAppealStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AppealStatus | Prisma.EnumAppealStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AppealStatus[]
+  notIn?: $Enums.AppealStatus[]
+  not?: Prisma.NestedEnumAppealStatusWithAggregatesFilter<$PrismaModel> | $Enums.AppealStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
 }
 
 

@@ -18,6 +18,7 @@ import { TripsService } from './trips.service';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { QueryTripDto } from './dto/query-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
+import { CancelTripByMitraDto } from './dto/cancel-trip-by-mitra.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -98,5 +99,21 @@ export class TripsController {
     @Body() dto: UpdateTripDto,
   ) {
     return this.tripsService.updateTrip(id, String(userId), dto);
+  }
+
+  @Post(':id/cancel-by-mitra')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.mitra)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Pembatalan Trip oleh Mitra (Fase 10 - Sebelum Jadwal)' })
+  @ApiResponse({ status: 200, description: 'Trip berhasil dibatalkan dan diproses secara idempotent' })
+  @ApiResponse({ status: 403, description: 'Mitra bukan pemilik trip' })
+  @ApiResponse({ status: 400, description: 'Trip tidak dapat dibatalkan atau dialihkan ke admin review' })
+  async cancelByMitra(
+    @Param('id') id: string,
+    @GetUser('id') userId: string,
+    @Body() dto: CancelTripByMitraDto,
+  ) {
+    return this.tripsService.cancelByMitra(id, String(userId), dto);
   }
 }

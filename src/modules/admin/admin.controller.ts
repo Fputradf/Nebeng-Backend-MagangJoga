@@ -1,3 +1,4 @@
+﻿import { SanctionService } from './sanction.service';
 import {
   Body,
   Controller,
@@ -31,8 +32,12 @@ import {
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('admin')
+
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly sanctionService: SanctionService,
+  ) {}
 
   @Get('dashboard/global')
   @Roles(Role.admin)
@@ -169,5 +174,28 @@ export class AdminController {
     @Body('pointsMultiplier') pointsMultiplier: number,
   ) {
     return this.adminService.updateRewardSetting(pointsMultiplier);
+  }
+
+  // ------------------------------------------------------
+  // FASE 10: TATA KELOLA SANKSI & BANDING MITRA
+  // ------------------------------------------------------
+  @Get('mitra/:id/sanctions')
+  @Roles(Role.admin, Role.regional)
+  @ApiOperation({ summary: 'Melihat riwayat sanksi mitra (Admin/Regional)' })
+  @ApiResponse({ status: 200, description: 'Riwayat sanksi mitra ditemukan' })
+  async getMitraSanctionsAdmin(@Param('id') mitraId: string) {
+    return this.sanctionService.getMitraSanctions(mitraId);
+  }
+
+  @Patch('sanctions/appeals/:id/review')
+  @Roles(Role.admin, Role.regional)
+  @ApiOperation({ summary: 'Tinjau banding sanksi mitra (Setujui / Tolak)' })
+  @ApiResponse({ status: 200, description: 'Banding berhasil ditinjau' })
+  async reviewMitraAppeal(
+    @GetUser('id') adminId: string,
+    @Param('id') appealId: string,
+    @Body() dto: { approved: boolean; reviewNotes?: string },
+  ) {
+    return this.sanctionService.reviewAppeal(String(adminId), appealId, dto);
   }
 }

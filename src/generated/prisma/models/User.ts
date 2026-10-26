@@ -345,6 +345,9 @@ export type UserWhereInput = {
   mitraNoShowMarkedTrips?: Prisma.TripListRelationFilter
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  cancelledTrips?: Prisma.TripListRelationFilter
+  mitraSanctions?: Prisma.MitraSanctionListRelationFilter
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -390,6 +393,9 @@ export type UserOrderByWithRelationInput = {
   mitraNoShowMarkedTrips?: Prisma.TripOrderByRelationAggregateInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
+  cancelledTrips?: Prisma.TripOrderByRelationAggregateInput
+  mitraSanctions?: Prisma.MitraSanctionOrderByRelationAggregateInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -439,6 +445,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   mitraNoShowMarkedTrips?: Prisma.TripListRelationFilter
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  cancelledTrips?: Prisma.TripListRelationFilter
+  mitraSanctions?: Prisma.MitraSanctionListRelationFilter
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -531,6 +540,9 @@ export type UserCreateInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -575,6 +587,9 @@ export type UserUncheckedCreateInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserUpdateInput = {
@@ -619,6 +634,9 @@ export type UserUpdateInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -663,6 +681,9 @@ export type UserUncheckedUpdateInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -968,6 +989,12 @@ export type UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutCancelledTripsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCancelledTripsInput, Prisma.UserUncheckedCreateWithoutCancelledTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCancelledTripsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutTripsAsMitraNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTripsAsMitraInput, Prisma.UserUncheckedCreateWithoutTripsAsMitraInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTripsAsMitraInput
@@ -984,6 +1011,16 @@ export type UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMitraNoShowMarkedTripsInput, Prisma.UserUpdateWithoutMitraNoShowMarkedTripsInput>, Prisma.UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput>
+}
+
+export type UserUpdateOneWithoutCancelledTripsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCancelledTripsInput, Prisma.UserUncheckedCreateWithoutCancelledTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCancelledTripsInput
+  upsert?: Prisma.UserUpsertWithoutCancelledTripsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCancelledTripsInput, Prisma.UserUpdateWithoutCancelledTripsInput>, Prisma.UserUncheckedUpdateWithoutCancelledTripsInput>
 }
 
 export type UserCreateNestedOneWithoutOrdersAsCustomerInput = {
@@ -1242,6 +1279,34 @@ export type UserUpdateOneRequiredWithoutUserNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserNotificationsInput, Prisma.UserUpdateWithoutUserNotificationsInput>, Prisma.UserUncheckedUpdateWithoutUserNotificationsInput>
 }
 
+export type UserCreateNestedOneWithoutMitraSanctionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraSanctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMitraSanctionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraSanctionsInput
+  upsert?: Prisma.UserUpsertWithoutMitraSanctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMitraSanctionsInput, Prisma.UserUpdateWithoutMitraSanctionsInput>, Prisma.UserUncheckedUpdateWithoutMitraSanctionsInput>
+}
+
+export type UserCreateNestedOneWithoutMitraSanctionAppealsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionAppealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraSanctionAppealsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMitraSanctionAppealsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionAppealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitraSanctionAppealsInput
+  upsert?: Prisma.UserUpsertWithoutMitraSanctionAppealsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMitraSanctionAppealsInput, Prisma.UserUpdateWithoutMitraSanctionAppealsInput>, Prisma.UserUncheckedUpdateWithoutMitraSanctionAppealsInput>
+}
+
 export type UserCreateWithoutRegionInput = {
   id?: bigint | number
   name: string
@@ -1283,6 +1348,9 @@ export type UserCreateWithoutRegionInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutRegionInput = {
@@ -1326,6 +1394,9 @@ export type UserUncheckedCreateWithoutRegionInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutRegionInput = {
@@ -1418,6 +1489,9 @@ export type UserCreateWithoutProfileInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1461,6 +1535,9 @@ export type UserUncheckedCreateWithoutProfileInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1520,6 +1597,9 @@ export type UserUpdateWithoutProfileInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1563,6 +1643,9 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutVerificationsInput = {
@@ -1606,6 +1689,9 @@ export type UserCreateWithoutVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -1649,6 +1735,9 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -1697,6 +1786,9 @@ export type UserCreateWithoutApprovedVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
@@ -1740,6 +1832,9 @@ export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutApprovedVerificationsInput = {
@@ -1799,6 +1894,9 @@ export type UserUpdateWithoutVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -1842,6 +1940,9 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUpsertWithoutApprovedVerificationsInput = {
@@ -1896,6 +1997,9 @@ export type UserUpdateWithoutApprovedVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
@@ -1939,6 +2043,9 @@ export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutAssignedPickupPointsInput = {
@@ -1982,6 +2089,9 @@ export type UserCreateWithoutAssignedPickupPointsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
@@ -2025,6 +2135,9 @@ export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutAssignedPickupPointsInput = {
@@ -2084,6 +2197,9 @@ export type UserUpdateWithoutAssignedPickupPointsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
@@ -2127,6 +2243,9 @@ export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutTripsAsMitraInput = {
@@ -2170,6 +2289,9 @@ export type UserCreateWithoutTripsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutTripsAsMitraInput = {
@@ -2213,6 +2335,9 @@ export type UserUncheckedCreateWithoutTripsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutTripsAsMitraInput = {
@@ -2261,6 +2386,9 @@ export type UserCreateWithoutMitraNoShowMarkedTripsInput = {
   noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput = {
@@ -2304,11 +2432,111 @@ export type UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutMitraNoShowMarkedTripsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutMitraNoShowMarkedTripsInput, Prisma.UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput>
+}
+
+export type UserCreateWithoutCancelledTripsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+}
+
+export type UserUncheckedCreateWithoutCancelledTripsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+}
+
+export type UserCreateOrConnectWithoutCancelledTripsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCancelledTripsInput, Prisma.UserUncheckedCreateWithoutCancelledTripsInput>
 }
 
 export type UserUpsertWithoutTripsAsMitraInput = {
@@ -2363,6 +2591,9 @@ export type UserUpdateWithoutTripsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
@@ -2406,6 +2637,9 @@ export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUpsertWithoutMitraNoShowMarkedTripsInput = {
@@ -2460,6 +2694,9 @@ export type UserUpdateWithoutMitraNoShowMarkedTripsInput = {
   noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput = {
@@ -2503,6 +2740,112 @@ export type UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+}
+
+export type UserUpsertWithoutCancelledTripsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCancelledTripsInput, Prisma.UserUncheckedUpdateWithoutCancelledTripsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCancelledTripsInput, Prisma.UserUncheckedCreateWithoutCancelledTripsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCancelledTripsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCancelledTripsInput, Prisma.UserUncheckedUpdateWithoutCancelledTripsInput>
+}
+
+export type UserUpdateWithoutCancelledTripsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCancelledTripsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutOrdersAsCustomerInput = {
@@ -2546,6 +2889,9 @@ export type UserCreateWithoutOrdersAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
@@ -2589,6 +2935,9 @@ export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutOrdersAsCustomerInput = {
@@ -2637,6 +2986,9 @@ export type UserCreateWithoutNoShowMarkedOrdersInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutNoShowMarkedOrdersInput = {
@@ -2680,6 +3032,9 @@ export type UserUncheckedCreateWithoutNoShowMarkedOrdersInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutNoShowMarkedOrdersInput = {
@@ -2739,6 +3094,9 @@ export type UserUpdateWithoutOrdersAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
@@ -2782,6 +3140,9 @@ export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUpsertWithoutNoShowMarkedOrdersInput = {
@@ -2836,6 +3197,9 @@ export type UserUpdateWithoutNoShowMarkedOrdersInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoShowMarkedOrdersInput = {
@@ -2879,6 +3243,9 @@ export type UserUncheckedUpdateWithoutNoShowMarkedOrdersInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutCheckpointsScannedInput = {
@@ -2922,6 +3289,9 @@ export type UserCreateWithoutCheckpointsScannedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
@@ -2965,6 +3335,9 @@ export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutCheckpointsScannedInput = {
@@ -3024,6 +3397,9 @@ export type UserUpdateWithoutCheckpointsScannedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
@@ -3067,6 +3443,9 @@ export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutNoShowAuditLogsOperatorInput = {
@@ -3110,6 +3489,9 @@ export type UserCreateWithoutNoShowAuditLogsOperatorInput = {
   noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput = {
@@ -3153,6 +3535,9 @@ export type UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutNoShowAuditLogsOperatorInput = {
@@ -3212,6 +3597,9 @@ export type UserUpdateWithoutNoShowAuditLogsOperatorInput = {
   noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput = {
@@ -3255,6 +3643,9 @@ export type UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionsInput = {
@@ -3298,6 +3689,9 @@ export type UserCreateWithoutPushSubscriptionsInput = {
   noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -3341,6 +3735,9 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -3400,6 +3797,9 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
   noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -3443,6 +3843,9 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
   noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -3486,6 +3889,9 @@ export type UserCreateWithoutWalletInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -3529,6 +3935,9 @@ export type UserUncheckedCreateWithoutWalletInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -3588,6 +3997,9 @@ export type UserUpdateWithoutWalletInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -3631,6 +4043,9 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutRewardTransactionsInput = {
@@ -3674,6 +4089,9 @@ export type UserCreateWithoutRewardTransactionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutRewardTransactionsInput = {
@@ -3717,6 +4135,9 @@ export type UserUncheckedCreateWithoutRewardTransactionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutRewardTransactionsInput = {
@@ -3776,6 +4197,9 @@ export type UserUpdateWithoutRewardTransactionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
@@ -3819,6 +4243,9 @@ export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutConversationsAsCustomerInput = {
@@ -3862,6 +4289,9 @@ export type UserCreateWithoutConversationsAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
@@ -3905,6 +4335,9 @@ export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsCustomerInput = {
@@ -3953,6 +4386,9 @@ export type UserCreateWithoutConversationsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
@@ -3996,6 +4432,9 @@ export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsMitraInput = {
@@ -4055,6 +4494,9 @@ export type UserUpdateWithoutConversationsAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
@@ -4098,6 +4540,9 @@ export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUpsertWithoutConversationsAsMitraInput = {
@@ -4152,6 +4597,9 @@ export type UserUpdateWithoutConversationsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
@@ -4195,6 +4643,9 @@ export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutSentMessagesInput = {
@@ -4238,6 +4689,9 @@ export type UserCreateWithoutSentMessagesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -4281,6 +4735,9 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -4340,6 +4797,9 @@ export type UserUpdateWithoutSentMessagesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -4383,6 +4843,9 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {
@@ -4426,6 +4889,9 @@ export type UserCreateWithoutReviewsGivenInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutReviewsGivenInput = {
@@ -4469,6 +4935,9 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutReviewsGivenInput = {
@@ -4517,6 +4986,9 @@ export type UserCreateWithoutReviewsReceivedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutReviewsReceivedInput = {
@@ -4560,6 +5032,9 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutReviewsReceivedInput = {
@@ -4619,6 +5094,9 @@ export type UserUpdateWithoutReviewsGivenInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsGivenInput = {
@@ -4662,6 +5140,9 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUpsertWithoutReviewsReceivedInput = {
@@ -4716,6 +5197,9 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -4759,6 +5243,9 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutVehiclesInput = {
@@ -4802,6 +5289,9 @@ export type UserCreateWithoutVehiclesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutVehiclesInput = {
@@ -4845,6 +5335,9 @@ export type UserUncheckedCreateWithoutVehiclesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutVehiclesInput = {
@@ -4904,6 +5397,9 @@ export type UserUpdateWithoutVehiclesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVehiclesInput = {
@@ -4947,6 +5443,9 @@ export type UserUncheckedUpdateWithoutVehiclesInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutMerchandiseRedemptionsInput = {
@@ -4990,6 +5489,9 @@ export type UserCreateWithoutMerchandiseRedemptionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
@@ -5033,6 +5535,9 @@ export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutMerchandiseRedemptionsInput = {
@@ -5092,6 +5597,9 @@ export type UserUpdateWithoutMerchandiseRedemptionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
@@ -5135,6 +5643,9 @@ export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutNotificationPreferenceInput = {
@@ -5178,6 +5689,9 @@ export type UserCreateWithoutNotificationPreferenceInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
@@ -5221,6 +5735,9 @@ export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutNotificationPreferenceInput = {
@@ -5280,6 +5797,9 @@ export type UserUpdateWithoutNotificationPreferenceInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
@@ -5323,6 +5843,9 @@ export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutDeviceTokensInput = {
@@ -5366,6 +5889,9 @@ export type UserCreateWithoutDeviceTokensInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutDeviceTokensInput = {
@@ -5409,6 +5935,9 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutDeviceTokensInput = {
@@ -5468,6 +5997,9 @@ export type UserUpdateWithoutDeviceTokensInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceTokensInput = {
@@ -5511,6 +6043,9 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutNotificationLogsInput = {
@@ -5554,6 +6089,9 @@ export type UserCreateWithoutNotificationLogsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutNotificationLogsInput = {
@@ -5597,6 +6135,9 @@ export type UserUncheckedCreateWithoutNotificationLogsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutNotificationLogsInput = {
@@ -5656,6 +6197,9 @@ export type UserUpdateWithoutNotificationLogsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationLogsInput = {
@@ -5699,6 +6243,9 @@ export type UserUncheckedUpdateWithoutNotificationLogsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateWithoutUserNotificationsInput = {
@@ -5742,6 +6289,9 @@ export type UserCreateWithoutUserNotificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
 }
 
 export type UserUncheckedCreateWithoutUserNotificationsInput = {
@@ -5785,6 +6335,9 @@ export type UserUncheckedCreateWithoutUserNotificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
 }
 
 export type UserCreateOrConnectWithoutUserNotificationsInput = {
@@ -5844,6 +6397,9 @@ export type UserUpdateWithoutUserNotificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserNotificationsInput = {
@@ -5887,6 +6443,409 @@ export type UserUncheckedUpdateWithoutUserNotificationsInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+}
+
+export type UserCreateWithoutMitraSanctionsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+}
+
+export type UserUncheckedCreateWithoutMitraSanctionsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+}
+
+export type UserCreateOrConnectWithoutMitraSanctionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionsInput>
+}
+
+export type UserUpsertWithoutMitraSanctionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMitraSanctionsInput, Prisma.UserUncheckedUpdateWithoutMitraSanctionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMitraSanctionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMitraSanctionsInput, Prisma.UserUncheckedUpdateWithoutMitraSanctionsInput>
+}
+
+export type UserUpdateWithoutMitraSanctionsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMitraSanctionsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+}
+
+export type UserCreateWithoutMitraSanctionAppealsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+}
+
+export type UserUncheckedCreateWithoutMitraSanctionAppealsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+}
+
+export type UserCreateOrConnectWithoutMitraSanctionAppealsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionAppealsInput>
+}
+
+export type UserUpsertWithoutMitraSanctionAppealsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedUpdateWithoutMitraSanctionAppealsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedCreateWithoutMitraSanctionAppealsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMitraSanctionAppealsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMitraSanctionAppealsInput, Prisma.UserUncheckedUpdateWithoutMitraSanctionAppealsInput>
+}
+
+export type UserUpdateWithoutMitraSanctionAppealsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMitraSanctionAppealsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserCreateManyRegionInput = {
@@ -5949,6 +6908,9 @@ export type UserUpdateWithoutRegionInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRegionInput = {
@@ -5992,6 +6954,9 @@ export type UserUncheckedUpdateWithoutRegionInput = {
   mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
   noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRegionInput = {
@@ -6040,6 +7005,9 @@ export type UserCountOutputType = {
   mitraNoShowMarkedTrips: number
   noShowAuditLogsOperator: number
   pushSubscriptions: number
+  cancelledTrips: number
+  mitraSanctions: number
+  mitraSanctionAppeals: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6064,6 +7032,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   mitraNoShowMarkedTrips?: boolean | UserCountOutputTypeCountMitraNoShowMarkedTripsArgs
   noShowAuditLogsOperator?: boolean | UserCountOutputTypeCountNoShowAuditLogsOperatorArgs
   pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
+  cancelledTrips?: boolean | UserCountOutputTypeCountCancelledTripsArgs
+  mitraSanctions?: boolean | UserCountOutputTypeCountMitraSanctionsArgs
+  mitraSanctionAppeals?: boolean | UserCountOutputTypeCountMitraSanctionAppealsArgs
 }
 
 /**
@@ -6223,6 +7194,27 @@ export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends runtim
   where?: Prisma.PushSubscriptionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCancelledTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMitraSanctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MitraSanctionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMitraSanctionAppealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MitraSanctionAppealWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6267,6 +7259,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   mitraNoShowMarkedTrips?: boolean | Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>
   noShowAuditLogsOperator?: boolean | Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  cancelledTrips?: boolean | Prisma.User$cancelledTripsArgs<ExtArgs>
+  mitraSanctions?: boolean | Prisma.User$mitraSanctionsArgs<ExtArgs>
+  mitraSanctionAppeals?: boolean | Prisma.User$mitraSanctionAppealsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6319,6 +7314,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   mitraNoShowMarkedTrips?: boolean | Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>
   noShowAuditLogsOperator?: boolean | Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  cancelledTrips?: boolean | Prisma.User$cancelledTripsArgs<ExtArgs>
+  mitraSanctions?: boolean | Prisma.User$mitraSanctionsArgs<ExtArgs>
+  mitraSanctionAppeals?: boolean | Prisma.User$mitraSanctionAppealsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -6350,6 +7348,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     mitraNoShowMarkedTrips: Prisma.$TripPayload<ExtArgs>[]
     noShowAuditLogsOperator: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
     pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+    cancelledTrips: Prisma.$TripPayload<ExtArgs>[]
+    mitraSanctions: Prisma.$MitraSanctionPayload<ExtArgs>[]
+    mitraSanctionAppeals: Prisma.$MitraSanctionAppealPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -6734,6 +7735,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   mitraNoShowMarkedTrips<T extends Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitraNoShowMarkedTripsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   noShowAuditLogsOperator<T extends Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$noShowAuditLogsOperatorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pushSubscriptions<T extends Prisma.User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cancelledTrips<T extends Prisma.User$cancelledTripsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cancelledTripsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mitraSanctions<T extends Prisma.User$mitraSanctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitraSanctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MitraSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mitraSanctionAppeals<T extends Prisma.User$mitraSanctionAppealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitraSanctionAppealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MitraSanctionAppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7705,6 +8709,78 @@ export type User$pushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.cancelledTrips
+ */
+export type User$cancelledTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Trip
+   */
+  select?: Prisma.TripSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Trip
+   */
+  omit?: Prisma.TripOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripInclude<ExtArgs> | null
+  where?: Prisma.TripWhereInput
+  orderBy?: Prisma.TripOrderByWithRelationInput | Prisma.TripOrderByWithRelationInput[]
+  cursor?: Prisma.TripWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripScalarFieldEnum | Prisma.TripScalarFieldEnum[]
+}
+
+/**
+ * User.mitraSanctions
+ */
+export type User$mitraSanctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MitraSanction
+   */
+  select?: Prisma.MitraSanctionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MitraSanction
+   */
+  omit?: Prisma.MitraSanctionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MitraSanctionInclude<ExtArgs> | null
+  where?: Prisma.MitraSanctionWhereInput
+  orderBy?: Prisma.MitraSanctionOrderByWithRelationInput | Prisma.MitraSanctionOrderByWithRelationInput[]
+  cursor?: Prisma.MitraSanctionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MitraSanctionScalarFieldEnum | Prisma.MitraSanctionScalarFieldEnum[]
+}
+
+/**
+ * User.mitraSanctionAppeals
+ */
+export type User$mitraSanctionAppealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MitraSanctionAppeal
+   */
+  select?: Prisma.MitraSanctionAppealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MitraSanctionAppeal
+   */
+  omit?: Prisma.MitraSanctionAppealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MitraSanctionAppealInclude<ExtArgs> | null
+  where?: Prisma.MitraSanctionAppealWhereInput
+  orderBy?: Prisma.MitraSanctionAppealOrderByWithRelationInput | Prisma.MitraSanctionAppealOrderByWithRelationInput[]
+  cursor?: Prisma.MitraSanctionAppealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MitraSanctionAppealScalarFieldEnum | Prisma.MitraSanctionAppealScalarFieldEnum[]
 }
 
 /**

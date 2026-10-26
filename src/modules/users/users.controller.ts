@@ -1,3 +1,4 @@
+﻿import { SanctionService } from '../admin/sanction.service';
 import {
   Controller,
   Get,
@@ -45,8 +46,12 @@ import { GetUser } from '../../common/decorators/get-user.decorators';
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
+
 export class UserController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly sanctionService: SanctionService,
+  ) {}
 
   @Patch('me')
   @ApiOperation({ summary: 'Memperbarui profil dasar akun sendiri' })
@@ -289,5 +294,28 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'User tidak ditemukan' })
   remove(@Param('id') id: string) {
     return this.userService.forceRemoveByAdmin(id);
+  }
+
+  // ------------------------------------------------------
+  // FASE 10: RIWAYAT SANKSI & BANDING MITRA (PORTAL MITRA)
+  // ------------------------------------------------------
+  @Get('me/sanctions')
+  @Roles(Role.mitra)
+  @ApiOperation({ summary: 'Melihat riwayat sanksi & sisa reputasi mitra sendiri' })
+  @ApiResponse({ status: 200, description: 'Riwayat sanksi mitra ditemukan' })
+  getMySanctions(@GetUser('id') userId: string) {
+    return this.sanctionService.getMitraSanctions(String(userId));
+  }
+
+  @Post('me/sanctions/:id/appeal')
+  @Roles(Role.mitra)
+  @ApiOperation({ summary: 'Mengajukan banding terhadap sanksi pembatalan trip' })
+  @ApiResponse({ status: 201, description: 'Banding berhasil diajukan' })
+  appealSanction(
+    @GetUser('id') userId: string,
+    @Param('id') sanctionId: string,
+    @Body() dto: { reason: string; evidenceUrl?: string },
+  ) {
+    return this.sanctionService.submitAppeal(String(userId), sanctionId, dto);
   }
 }

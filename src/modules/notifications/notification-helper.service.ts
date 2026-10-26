@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+﻿import { Injectable, Logger } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { NotificationType } from '../../generated/prisma/enums';
 
@@ -206,6 +206,69 @@ export class NotificationHelperService {
         data: {
           tripId,
           type: 'order_cancelled',
+        },
+      },
+    });
+  }
+  async notifyTripCancelledByMitra(
+    userId: string,
+    tripId: string,
+    refundAmount: number,
+    compensationPoints: number,
+    originPosName: string,
+    destPosName: string,
+    departureDate: string,
+  ) {
+    const pointsInfo =
+      compensationPoints > 0
+        ? ` serta kompensasi +${compensationPoints} poin reward.`
+        : '.';
+    const formattedAmount = refundAmount.toLocaleString('id-ID');
+
+    return this.notificationsService.sendNotification({
+      userId,
+      type: NotificationType.order_cancelled,
+      payload: {
+        title: 'Trip #' + tripId + ' Dibatalkan Mitra',
+        body: 'Trip #' + tripId + ' dibatalkan oleh mitra. Dana Rp ' + formattedAmount + ' sudah dikembalikan ke wallet Anda' + pointsInfo,
+        data: {
+          tripId,
+          refundAmount,
+          compensationPoints,
+          originPosName,
+          destPosName,
+          departureDate,
+          action: 'SEARCH_REPLACEMENT',
+          type: 'trip_cancelled_by_mitra',
+        },
+      },
+    });
+  }
+
+  async notifyMitraCancellationSanction(
+    mitraId: string,
+    tripId: string,
+    deductedScore: number,
+    remainingScore: number,
+    isSuspended: boolean,
+    suspendedUntil?: Date | null,
+  ) {
+    const suspendText = isSuspended
+      ? ` Akun Anda ditangguhkan sementara hingga ${suspendedUntil ? suspendedUntil.toLocaleDateString('id-ID') : 'pemberitahuan selanjutnya'}.`
+      : '';
+
+    return this.notificationsService.sendNotification({
+      userId: mitraId,
+      type: NotificationType.generic,
+      payload: {
+        title: 'Pembatalan Trip #' + tripId + ' Berhasil',
+        body: 'Trip #' + tripId + ' telah dibatalkan. Sanksi diterapkan: -' + deductedScore + ' skor reputasi (Sisa skor: ' + remainingScore + ').' + suspendText + ' Anda dapat mengajukan banding jika memiliki bukti kendala darurat.',
+        data: {
+          tripId,
+          deductedScore,
+          remainingScore,
+          isSuspended,
+          type: 'mitra_sanction_applied',
         },
       },
     });

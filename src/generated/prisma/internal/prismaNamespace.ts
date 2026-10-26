@@ -429,7 +429,9 @@ export const ModelName = {
   NotificationPreference: 'NotificationPreference',
   DeviceToken: 'DeviceToken',
   NotificationLog: 'NotificationLog',
-  UserNotification: 'UserNotification'
+  UserNotification: 'UserNotification',
+  MitraSanction: 'MitraSanction',
+  MitraSanctionAppeal: 'MitraSanctionAppeal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -445,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2627,6 +2629,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MitraSanction: {
+      payload: Prisma.$MitraSanctionPayload<ExtArgs>
+      fields: Prisma.MitraSanctionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MitraSanctionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MitraSanctionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        findFirst: {
+          args: Prisma.MitraSanctionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MitraSanctionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        findMany: {
+          args: Prisma.MitraSanctionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>[]
+        }
+        create: {
+          args: Prisma.MitraSanctionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        createMany: {
+          args: Prisma.MitraSanctionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.MitraSanctionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        update: {
+          args: Prisma.MitraSanctionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        deleteMany: {
+          args: Prisma.MitraSanctionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MitraSanctionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.MitraSanctionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionPayload>
+        }
+        aggregate: {
+          args: Prisma.MitraSanctionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMitraSanction>
+        }
+        groupBy: {
+          args: Prisma.MitraSanctionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MitraSanctionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MitraSanctionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MitraSanctionCountAggregateOutputType> | number
+        }
+      }
+    }
+    MitraSanctionAppeal: {
+      payload: Prisma.$MitraSanctionAppealPayload<ExtArgs>
+      fields: Prisma.MitraSanctionAppealFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MitraSanctionAppealFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MitraSanctionAppealFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        findFirst: {
+          args: Prisma.MitraSanctionAppealFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MitraSanctionAppealFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        findMany: {
+          args: Prisma.MitraSanctionAppealFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>[]
+        }
+        create: {
+          args: Prisma.MitraSanctionAppealCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        createMany: {
+          args: Prisma.MitraSanctionAppealCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.MitraSanctionAppealDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        update: {
+          args: Prisma.MitraSanctionAppealUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        deleteMany: {
+          args: Prisma.MitraSanctionAppealDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MitraSanctionAppealUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.MitraSanctionAppealUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MitraSanctionAppealPayload>
+        }
+        aggregate: {
+          args: Prisma.MitraSanctionAppealAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMitraSanctionAppeal>
+        }
+        groupBy: {
+          args: Prisma.MitraSanctionAppealGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MitraSanctionAppealGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MitraSanctionAppealCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MitraSanctionAppealCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2818,7 +2952,11 @@ export const TripScalarFieldEnum = {
   mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
   mitraNoShowMarkedBy: 'mitraNoShowMarkedBy',
   mitraNoShowReason: 'mitraNoShowReason',
-  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl',
+  cancelledAt: 'cancelledAt',
+  cancelledBy: 'cancelledBy',
+  cancelReason: 'cancelReason',
+  cancelCategory: 'cancelCategory'
 } as const
 
 export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
@@ -3188,6 +3326,39 @@ export const UserNotificationScalarFieldEnum = {
 export type UserNotificationScalarFieldEnum = (typeof UserNotificationScalarFieldEnum)[keyof typeof UserNotificationScalarFieldEnum]
 
 
+export const MitraSanctionScalarFieldEnum = {
+  id: 'id',
+  mitraId: 'mitraId',
+  tripId: 'tripId',
+  violationType: 'violationType',
+  scoreDeduction: 'scoreDeduction',
+  tier: 'tier',
+  isSuspended: 'isSuspended',
+  suspendedUntil: 'suspendedUntil',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MitraSanctionScalarFieldEnum = (typeof MitraSanctionScalarFieldEnum)[keyof typeof MitraSanctionScalarFieldEnum]
+
+
+export const MitraSanctionAppealScalarFieldEnum = {
+  id: 'id',
+  sanctionId: 'sanctionId',
+  mitraId: 'mitraId',
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MitraSanctionAppealScalarFieldEnum = (typeof MitraSanctionAppealScalarFieldEnum)[keyof typeof MitraSanctionAppealScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3276,7 +3447,9 @@ export const TripOrderByRelevanceFieldEnum = {
   qrCodeTrip: 'qrCodeTrip',
   mapsPolyline: 'mapsPolyline',
   mitraNoShowReason: 'mitraNoShowReason',
-  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl'
+  mitraNoShowEvidenceUrl: 'mitraNoShowEvidenceUrl',
+  cancelReason: 'cancelReason',
+  cancelCategory: 'cancelCategory'
 } as const
 
 export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnum)[keyof typeof TripOrderByRelevanceFieldEnum]
@@ -3443,6 +3616,15 @@ export const UserNotificationOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserNotificationOrderByRelevanceFieldEnum = (typeof UserNotificationOrderByRelevanceFieldEnum)[keyof typeof UserNotificationOrderByRelevanceFieldEnum]
+
+
+export const MitraSanctionAppealOrderByRelevanceFieldEnum = {
+  reason: 'reason',
+  evidenceUrl: 'evidenceUrl',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type MitraSanctionAppealOrderByRelevanceFieldEnum = (typeof MitraSanctionAppealOrderByRelevanceFieldEnum)[keyof typeof MitraSanctionAppealOrderByRelevanceFieldEnum]
 
 
 
@@ -3623,6 +3805,27 @@ export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'NotificationStatus'
  */
 export type EnumNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SanctionViolationType'
+ */
+export type EnumSanctionViolationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SanctionViolationType'>
+    
+
+
+/**
+ * Reference to a field of type 'SanctionStatus'
+ */
+export type EnumSanctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SanctionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AppealStatus'
+ */
+export type EnumAppealStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppealStatus'>
     
 
 
@@ -3816,6 +4019,8 @@ export type GlobalOmitConfig = {
   deviceToken?: Prisma.DeviceTokenOmit
   notificationLog?: Prisma.NotificationLogOmit
   userNotification?: Prisma.UserNotificationOmit
+  mitraSanction?: Prisma.MitraSanctionOmit
+  mitraSanctionAppeal?: Prisma.MitraSanctionAppealOmit
 }
 
 /* Types for Logging */

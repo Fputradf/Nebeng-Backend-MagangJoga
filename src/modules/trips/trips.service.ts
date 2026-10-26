@@ -5,19 +5,26 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TripsRepository } from './repository/trips.repository';
 import { VehiclesRepository } from '../vehicles/repository/vehicles.repository';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { QueryTripDto } from './dto/query-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
+import { CancelTripByMitraDto } from './dto/cancel-trip-by-mitra.dto';
 import { TripMapper } from './mappers/trip.mapper';
 import {
   TripStatus,
+  OrderStatus,
   VehicleType,
   VerificationStatus,
+  NoShowAuditType,
+  SanctionViolationType,
 } from '../../generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { SanctionService } from '../admin/sanction.service';
 
 @Injectable()
 export class TripsService {
@@ -25,6 +32,9 @@ export class TripsService {
     private readonly tripsRepository: TripsRepository,
     private readonly vehiclesRepository: VehiclesRepository,
     private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+    private readonly notificationHelper: NotificationHelperService,
+    private readonly sanctionService: SanctionService,
   ) {}
 
   private async generateUniqueTripQr(): Promise<string> {
@@ -78,33 +88,27 @@ export class TripsService {
   async createTrip(userIdStr: string, dto: CreateTripDto) {
     const parsedUserId: string = userIdStr;
     if (!parsedUserId || parsedUserId === 'undefined') {
-      throw new ForbiddenException(
-        'Sesi user tidak valid. Silakan login kembali.',
-      );
+      throw new BadRequestException('ID Mitra tidak valid');
     }
 
-    const user =
-      await this.vehiclesRepository.findUserVerificationStatus(parsedUserId);
-
+    const user = await this.prisma.user.findUnique({ where: { id: this.safeParseBigInt(parsedUserId) } });
     if (!user) {
-      throw new NotFoundException(
-        `User dengan ID ${parsedUserId} tidak ditemukan.`,
-      );
+      throw new NotFoundException('Data mitra tidak ditemukan.');
     }
-
     if (user.statusVerification !== VerificationStatus.approved) {
       throw new ForbiddenException(
-        'Hanya Mitra terverifikasi (approved) yang dapat membuat jadwal trip.',
+        'Akun Anda belum disetujui (Approved) oleh Admin Regional. Belum dapat mempublikasikan trip.',
       );
     }
 
     const vehicle = await this.vehiclesRepository.findById(dto.vehicleId);
     if (!vehicle) {
-      throw new NotFoundException('Kendaraan tidak ditemukan.');
+      throw new NotFoundException('Data kendaraan tidak ditemukan.');
     }
-
     if (vehicle.userId.toString() !== parsedUserId) {
-      throw new ForbiddenException('Kendaraan ini bukan milik Anda.');
+      throw new ForbiddenException(
+        'Kendaraan ini bukan milik Anda yang terdaftar.',
+      );
     }
 
     if (dto.originPointId === dto.destinationPointId) {
@@ -113,91 +117,49 @@ export class TripsService {
       );
     }
 
-    const departureCombinedDate = this.combineDateAndTime(
+    const combinedDate = this.combineDateAndTime(
       dto.departureDate,
       dto.departureTime,
     );
-    const now = new Date();
-
-    if (departureCombinedDate < now) {
+    if (combinedDate < new Date()) {
       throw new BadRequestException(
         'Waktu keberangkatan tidak boleh di masa lalu.',
       );
     }
 
-    const parsedVehicleId = this.safeParseBigInt(dto.vehicleId);
-    const targetDepartureDate = new Date(dto.departureDate);
-
-    const conflictingTrip = await this.tripsRepository.findConflictingTrip(
-      parsedVehicleId,
-      targetDepartureDate,
-    );
-
-    if (conflictingTrip) {
-      throw new BadRequestException(
-        'Kendaraan ini sedang aktif dalam trip lain atau sudah dijadwalkan pada tanggal yang sama.',
-      );
-    }
-
-    let seatTotal = dto.totalSeats ?? vehicle.capacitySeats;
-    let maxWeightKg =
-      dto.maxWeightCapacityKg ?? Number(vehicle.maxWeightCapacityKg);
-
-    if (vehicle.type === VehicleType.motor) {
-      seatTotal = 1;
-      if (maxWeightKg > 15) {
-        maxWeightKg = 15.0;
-      }
-    } else {
-      if (seatTotal > vehicle.capacitySeats) {
-        throw new BadRequestException(
-          `Jumlah kursi (${seatTotal}) melebihi kapasitas maksimal kendaraan (${vehicle.capacitySeats} kursi).`,
-        );
-      }
-      if (maxWeightKg > Number(vehicle.maxWeightCapacityKg)) {
-        throw new BadRequestException(
-          `Kapasitas berat bagasi (${maxWeightKg} kg) melebihi batas kendaraan (${vehicle.maxWeightCapacityKg} kg).`,
-        );
-      }
-    }
+    const maxWeight =
+      dto.maxWeightCapacityKg !== undefined
+        ? Number(dto.maxWeightCapacityKg)
+        : Number(vehicle.maxWeightCapacityKg) || 15;
 
     const qrCodeTrip = await this.generateUniqueTripQr();
 
-    let parsedDepartureTime: Date;
-    if (dto.departureTime.includes('T')) {
-      parsedDepartureTime = new Date(dto.departureTime);
-    } else {
-      parsedDepartureTime = new Date(`1970-01-01T${dto.departureTime}Z`);
-    }
-
-    const tripData = {
+    const createdTrip = await this.tripsRepository.create({
       mitraId: this.safeParseBigInt(parsedUserId),
-      vehicleId: parsedVehicleId,
+      vehicleId: this.safeParseBigInt(dto.vehicleId),
       originPointId: this.safeParseBigInt(dto.originPointId),
       destinationPointId: this.safeParseBigInt(dto.destinationPointId),
-      vehicleType: vehicle.type,
-      departureDate: targetDepartureDate,
-      departureTime: parsedDepartureTime,
+      vehicleType: vehicle.type as VehicleType,
+      departureDate: new Date(dto.departureDate),
+      departureTime: new Date(dto.departureTime),
       price: dto.price,
-      seatTotal,
-      seatAvailable: seatTotal,
-      maxWeightCapacityKg: maxWeightKg,
-      remainingWeightCapacityKg: maxWeightKg,
+      seatTotal: dto.totalSeats || 1,
+      seatAvailable: dto.totalSeats || 1,
+      maxWeightCapacityKg: maxWeight,
+      remainingWeightCapacityKg: maxWeight,
       qrCodeTrip,
-      serviceType: dto.serviceType,
       status: TripStatus.scheduled,
-    };
+      serviceType: dto.serviceType || 'mobil',
+      mapsPolyline: (dto as any).mapsPolyline ?? null,
+    });
 
-    const trip = await this.tripsRepository.create(tripData);
-    return TripMapper.toResponse(trip);
+    return TripMapper.toResponse(createdTrip);
   }
 
   async getTrips(query: QueryTripDto, currentUserIdStr?: string) {
-    const filters: any = {};
-
-    if (query.status) {
-      filters.status = query.status;
-    }
+    const filters: any = {
+      status: query.status ? query.status : TripStatus.scheduled,
+    };
 
     if (query.date) {
       const cleanDateStr = query.date.split('T')[0];
@@ -281,7 +243,7 @@ export class TripsService {
       const userOrders = await this.prisma.order.findMany({
         where: {
           customerId: this.safeParseBigInt(currentUserIdStr),
-          status: { notIn: ['cancelled'] },
+          status: { notIn: [OrderStatus.cancelled, OrderStatus.cancelled_by_mitra] },
         },
         select: { tripId: true },
       });
@@ -378,121 +340,9 @@ export class TripsService {
       }
 
       if (dto.status === TripStatus.cancelled) {
-        const tripIdBigInt = this.safeParseBigInt(idStr);
-        const activeOrders = await this.prisma.order.findMany({
-          where: {
-            tripId: tripIdBigInt,
-            status: { notIn: ['cancelled', 'completed'] },
-          },
+        return this.cancelByMitra(idStr, userIdStr, {
+          reason: 'Dibatalkan oleh Mitra melalui panel trip',
         });
-
-        if (activeOrders.length > 0) {
-          // Perform emergency cancellation and refund all passengers
-          await this.prisma.$transaction(async (tx) => {
-            for (const order of activeOrders) {
-              if (
-                order.status === 'paid' ||
-                order.status === 'checked_in_origin' ||
-                order.escrowStatus === 'held'
-              ) {
-                const totalPrice = Number(order.totalPrice);
-                const adminFeePercentage = Number(
-                  order.adminFeePercentage || 10,
-                );
-                const adminFeeAmount = Math.round(
-                  (totalPrice * adminFeePercentage) / 100,
-                );
-                const netMitraAmount = totalPrice - adminFeeAmount;
-
-                // Refund Customer
-                let customerWallet = await tx.wallet.findUnique({
-                  where: { userId: order.customerId },
-                });
-                if (!customerWallet) {
-                  customerWallet = await tx.wallet.create({
-                    data: {
-                      userId: order.customerId,
-                      balance: 0,
-                      heldEscrowBalance: 0,
-                    },
-                  });
-                }
-                await tx.wallet.update({
-                  where: { id: customerWallet.id },
-                  data: { balance: { increment: totalPrice } },
-                });
-                await tx.walletTransaction.create({
-                  data: {
-                    walletId: customerWallet.id,
-                    orderId: order.id,
-                    amount: totalPrice,
-                    type: 'credit',
-                    description: `Refund (Trip Dibatalkan Mitra) #${order.id}`,
-                  },
-                });
-
-                // Deduct Escrow
-                const mitraWallet = await tx.wallet.findUnique({
-                  where: { userId: trip.mitraId },
-                });
-                if (mitraWallet) {
-                  await tx.wallet.update({
-                    where: { id: mitraWallet.id },
-                    data: { heldEscrowBalance: { decrement: netMitraAmount } },
-                  });
-                  await tx.walletTransaction.create({
-                    data: {
-                      walletId: mitraWallet.id,
-                      orderId: order.id,
-                      amount: netMitraAmount,
-                      type: 'debit',
-                      description: `Pengembalian Dana Escrow (Trip Dibatalkan) #${order.id}`,
-                    },
-                  });
-                }
-
-                // Deduct Admin Fee
-                const sysAdminEnv = process.env.SYSTEM_ADMIN_USER_ID;
-                const adminId = sysAdminEnv ? BigInt(sysAdminEnv) : null;
-                const adminUser = adminId
-                  ? await tx.user.findUnique({ where: { id: adminId } })
-                  : await tx.user.findFirst({
-                      where: { role: 'admin' },
-                      orderBy: { id: 'asc' },
-                    });
-                if (adminUser) {
-                  const adminWallet = await tx.wallet.findUnique({
-                    where: { userId: adminUser.id },
-                  });
-                  if (adminWallet) {
-                    await tx.wallet.update({
-                      where: { id: adminWallet.id },
-                      data: { balance: { decrement: adminFeeAmount } },
-                    });
-                    await tx.walletTransaction.create({
-                      data: {
-                        walletId: adminWallet.id,
-                        orderId: order.id,
-                        amount: adminFeeAmount,
-                        type: 'debit',
-                        description: `Pengembalian Admin Fee (Trip Dibatalkan) #${order.id}`,
-                      },
-                    });
-                  }
-                }
-              }
-            }
-
-            // Update all active orders to cancelled
-            await tx.order.updateMany({
-              where: {
-                tripId: tripIdBigInt,
-                status: { notIn: ['cancelled', 'completed'] },
-              },
-              data: { status: 'cancelled', escrowStatus: 'refunded' },
-            });
-          });
-        }
       }
 
       updateData.status = dto.status;
@@ -523,5 +373,416 @@ export class TripsService {
 
     const updated = await this.tripsRepository.update(idStr, updateData);
     return TripMapper.toResponse(updated);
+  }
+
+  // =========================================================================
+  // FASE 10: PEMBATALAN TRIP OLEH MITRA (SEBELUM JADWAL)
+  // =========================================================================
+  async cancelByMitra(
+    tripIdStr: string,
+    mitraIdStr: string,
+    dto: CancelTripByMitraDto,
+  ) {
+    const tripId = this.safeParseBigInt(tripIdStr);
+    const mitraId = this.safeParseBigInt(mitraIdStr);
+
+    const trip = await this.prisma.trip.findUnique({
+      where: { id: tripId },
+      include: {
+        originPoint: true,
+        destinationPoint: true,
+        orders: {
+          where: {
+            status: { notIn: [OrderStatus.cancelled, OrderStatus.completed, OrderStatus.no_show, OrderStatus.cancelled_by_mitra] },
+          },
+          include: {
+            customer: true,
+          },
+        },
+      },
+    });
+
+    if (!trip) {
+      throw new NotFoundException('Trip tidak ditemukan.');
+    }
+
+    // 1. Validasi Pemilik Trip
+    if (trip.mitraId !== mitraId) {
+      throw new ForbiddenException('Anda tidak berhak membatalkan trip milik mitra lain.');
+    }
+
+    // 2. IDEMPOTENT CHECK: Jika sudah dibatalkan sebelumnya, kembalikan hasil sebelumnya
+    if (trip.status === TripStatus.cancelled_by_mitra || trip.status === TripStatus.cancelled) {
+      return {
+        message: 'Trip sudah dibatalkan sebelumnya.',
+        alreadyProcessed: true,
+        tripId: trip.id.toString(),
+        status: trip.status,
+        cancelCategory: trip.cancelCategory || 'ALREADY_CANCELLED',
+        cancelledAt: trip.cancelledAt,
+        cancelReason: trip.cancelReason,
+      };
+    }
+
+    // Tolak jika trip sudah selesai atau mitra no-show
+    if (trip.status === TripStatus.completed || trip.status === TripStatus.mitra_no_show) {
+      throw new BadRequestException(
+        `Trip dengan status '${trip.status}' tidak dapat dibatalkan.`,
+      );
+    }
+
+    const now = new Date();
+    const departureCombined = this.combineDateAndTime(
+      trip.departureDate.toISOString().split('T')[0],
+      trip.departureTime.toISOString(),
+    );
+
+    // Cek apakah ada penumpang yang sudah check-in atau trip sudah berjalan
+    const hasCheckedInPassengers = trip.orders.some(
+      (o) => o.status === OrderStatus.checked_in_origin || o.status === OrderStatus.in_transit,
+    );
+    const isPastDeparture = now > departureCombined;
+    const isRunning =
+      trip.status === TripStatus.in_origin_pos ||
+      trip.status === TripStatus.in_transit ||
+      trip.status === TripStatus.arrived_dest_pos;
+
+    // KASUS D: Lewat jadwal atau ada penumpang check-in atau sedang berjalan
+    // -> Masuk ke pending_admin_review (tidak di-refund otomatis)
+    if (isPastDeparture || hasCheckedInPassengers || isRunning) {
+      const updatedTrip = await this.prisma.trip.update({
+        where: { id: tripId },
+        data: {
+          status: TripStatus.pending_admin_review,
+          cancelledAt: now,
+          cancelledBy: mitraId,
+          cancelReason: dto.reason,
+          cancelCategory: 'PENDING_ADMIN_REVIEW',
+        },
+      });
+
+      // Catat log audit pembatalan
+      await this.prisma.noShowAuditLog.create({
+        data: {
+          type: NoShowAuditType.mitra_cancel,
+          tripId,
+          posId: trip.originPointId,
+          operatorId: mitraId, // actor mitra
+          reason: `[PENDING ADMIN REVIEW] ${dto.reason}`,
+          evidenceUrl: dto.evidenceUrl,
+        },
+      });
+
+      return {
+        message:
+          'Trip ini sudah melewati jadwal atau sedang berjalan dengan penumpang check-in. Pembatalan dialihkan ke peninjauan admin (pending_admin_review). Refund otomatis ditangguhkan.',
+        tripId: updatedTrip.id.toString(),
+        status: updatedTrip.status,
+        cancelCategory: 'PENDING_ADMIN_REVIEW',
+        requiresAdminReview: true,
+      };
+    }
+
+    // Konfigurasi Jam & Threshold dari Environment
+    const earlyCancelHours = Number(
+      this.configService.get<number>('MITRA_EARLY_CANCEL_HOURS', 3),
+    );
+    const patternWindowDays = Number(
+      this.configService.get<number>('MITRA_CANCEL_PATTERN_WINDOW_DAYS', 30),
+    );
+    const patternThreshold = Number(
+      this.configService.get<number>('MITRA_CANCEL_PATTERN_THRESHOLD', 3),
+    );
+    const pointsLateCancel = Number(
+      this.configService.get<number>('COMPENSATION_POINTS_MITRA_LATE_CANCEL', 30),
+    );
+    const pointsEarlyCancel = Number(
+      this.configService.get<number>('COMPENSATION_POINTS_MITRA_EARLY_CANCEL', 0),
+    );
+
+    // KASUS A: NO_BOOKINGS
+    const activeOrders = trip.orders.filter(
+      (o) => o.status === OrderStatus.paid || o.status === OrderStatus.pending_payment,
+    );
+
+    if (activeOrders.length === 0) {
+      const updatedTrip = await this.prisma.trip.update({
+        where: { id: tripId },
+        data: {
+          status: TripStatus.cancelled_by_mitra,
+          cancelledAt: now,
+          cancelledBy: mitraId,
+          cancelReason: dto.reason,
+          cancelCategory: 'NO_BOOKINGS',
+        },
+      });
+
+      // Catat log audit pembatalan tanpa refund
+      await this.prisma.noShowAuditLog.create({
+        data: {
+          type: NoShowAuditType.mitra_cancel,
+          tripId,
+          posId: trip.originPointId,
+          operatorId: mitraId,
+          reason: `[NO_BOOKINGS] ${dto.reason}`,
+          evidenceUrl: dto.evidenceUrl,
+        },
+      });
+
+      return {
+        message: 'Trip berhasil dibatalkan. Tidak ada pesanan aktif sehingga tidak ada sanksi atau pengembalian dana.',
+        tripId: updatedTrip.id.toString(),
+        status: updatedTrip.status,
+        cancelCategory: 'NO_BOOKINGS',
+        affectedOrdersCount: 0,
+        totalRefundAmount: 0,
+        compensationPointsPerPassenger: 0,
+      };
+    }
+
+    // KASUS B & C: Ada pesanan aktif
+    const remainingMilliseconds = departureCombined.getTime() - now.getTime();
+    const remainingHours = remainingMilliseconds / (1000 * 60 * 60);
+
+    const isEarly = remainingHours >= earlyCancelHours;
+    const cancelCategory = isEarly ? 'EARLY' : 'LATE';
+    const violationType = isEarly
+      ? SanctionViolationType.MITRA_CANCEL_EARLY
+      : SanctionViolationType.MITRA_CANCEL_LATE;
+    const compensationPoints = isEarly ? pointsEarlyCancel : pointsLateCancel;
+
+    // Cek Pola Pembatalan Berulang (EARLY & LATE dalam 30 hari terakhir)
+    const windowStartDate = new Date(now.getTime() - patternWindowDays * 24 * 60 * 60 * 1000);
+    const previousCancellationsCount = await this.prisma.trip.count({
+      where: {
+        mitraId,
+        cancelledAt: { gte: windowStartDate },
+        status: TripStatus.cancelled_by_mitra,
+        cancelCategory: { in: ['EARLY', 'LATE'] },
+      },
+    });
+
+    const isPatternTriggered = previousCancellationsCount + 1 >= patternThreshold;
+    const sanctionTier = isPatternTriggered ? 2 : 1;
+
+    // Eksekusi Transaksi Idempotent dalam prisma.$transaction
+    let totalRefundAmount = 0;
+    const refundDetails: Array<{ orderId: string; customerId: string; amount: number }> = [];
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      // 1. Update Trip ke cancelled_by_mitra
+      const updatedTrip = await tx.trip.update({
+        where: { id: tripId },
+        data: {
+          status: TripStatus.cancelled_by_mitra,
+          cancelledAt: now,
+          cancelledBy: mitraId,
+          cancelReason: dto.reason,
+          cancelCategory,
+          seatAvailable: 0,
+          remainingWeightCapacityKg: 0,
+        },
+      });
+
+      // 2. Refund seluruh pesanan aktif
+      for (const order of activeOrders) {
+        if (order.status === OrderStatus.paid || order.escrowStatus === 'held') {
+          const totalPrice = Number(order.totalPrice);
+          const adminFeePercentage = Number(order.adminFeePercentage || 10);
+          const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
+          const netMitraAmount = totalPrice - adminFeeAmount;
+
+          totalRefundAmount += totalPrice;
+          refundDetails.push({
+            orderId: order.id.toString(),
+            customerId: order.customerId.toString(),
+            amount: totalPrice,
+          });
+
+          // a. Kembalikan saldo ke wallet Customer
+          let customerWallet = await tx.wallet.findUnique({
+            where: { userId: order.customerId },
+          });
+          if (!customerWallet) {
+            customerWallet = await tx.wallet.create({
+              data: {
+                userId: order.customerId,
+                balance: 0,
+                heldEscrowBalance: 0,
+              },
+            });
+          }
+          await tx.wallet.update({
+            where: { id: customerWallet.id },
+            data: { balance: { increment: totalPrice } },
+          });
+          await tx.walletTransaction.create({
+            data: {
+              walletId: customerWallet.id,
+              orderId: order.id,
+              amount: totalPrice,
+              type: 'credit',
+              description: `Refund Penuh (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+            },
+          });
+
+          // b. Tarik escrow dari wallet Mitra
+          const mitraWallet = await tx.wallet.findUnique({
+            where: { userId: mitraId },
+          });
+          if (mitraWallet) {
+            await tx.wallet.update({
+              where: { id: mitraWallet.id },
+              data: { heldEscrowBalance: { decrement: netMitraAmount } },
+            });
+            await tx.walletTransaction.create({
+              data: {
+                walletId: mitraWallet.id,
+                orderId: order.id,
+                amount: netMitraAmount,
+                type: 'debit',
+                description: `Pengembalian Dana Escrow (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+              },
+            });
+          }
+
+          // c. Tarik admin fee dari wallet Admin
+          const sysAdminEnv = process.env.SYSTEM_ADMIN_USER_ID;
+          const adminId = sysAdminEnv ? BigInt(sysAdminEnv) : null;
+          const adminUser = adminId
+            ? await tx.user.findUnique({ where: { id: adminId } })
+            : await tx.user.findFirst({
+                where: { role: 'admin' },
+                orderBy: { id: 'asc' },
+              });
+
+          if (adminUser) {
+            const adminWallet = await tx.wallet.findUnique({
+              where: { userId: adminUser.id },
+            });
+            if (adminWallet) {
+              await tx.wallet.update({
+                where: { id: adminWallet.id },
+                data: { balance: { decrement: adminFeeAmount } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: adminWallet.id,
+                  orderId: order.id,
+                  amount: adminFeeAmount,
+                  type: 'debit',
+                  description: `Pengembalian Admin Fee (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+                },
+              });
+            }
+          }
+        }
+
+        // d. Update status Order ke cancelled_by_mitra & escrowStatus refunded
+        await tx.order.update({
+          where: { id: order.id },
+          data: {
+            status: OrderStatus.cancelled_by_mitra,
+            escrowStatus: 'refunded',
+          },
+        });
+
+        // e. Berikan poin kompensasi ke penumpang jika > 0
+        if (compensationPoints > 0) {
+          const pointReason = `Kompensasi Pembatalan Trip #${tripId}`;
+
+          // Tambahkan ke saldo rewardPoints user & log reward_transactions
+          await tx.user.update({
+            where: { id: order.customerId },
+            data: {
+              rewardPoints: { increment: compensationPoints },
+            },
+          });
+
+          await tx.rewardTransaction.create({
+            data: {
+              userId: order.customerId,
+              points: compensationPoints,
+              type: 'earn',
+              description: pointReason,
+            },
+          });
+        }
+      }
+
+      // 3. Catat NoShowAuditLog (mitra_cancel)
+      await tx.noShowAuditLog.create({
+        data: {
+          type: NoShowAuditType.mitra_cancel,
+          tripId,
+          posId: trip.originPointId,
+          operatorId: mitraId,
+          reason: `[${cancelCategory}] ${dto.reason} (Affected Orders: ${activeOrders.length}, Total Refund: Rp ${totalRefundAmount})`,
+          evidenceUrl: dto.evidenceUrl,
+        },
+      });
+
+      // 4. Terapkan Sanksi ke Mitra melalui SanctionService
+      const sanctionResult = await this.sanctionService.applySanction(
+        mitraId,
+        tripId,
+        violationType,
+        sanctionTier,
+        tx,
+      );
+
+      return {
+        updatedTrip,
+        sanctionResult,
+      };
+    });
+
+    // 5. NOTIFIKASI POST-TRANSAKSI (FCM + Socket + In-App)
+    try {
+      // a. Notifikasi ke seluruh penumpang terdampak
+      for (const ref of refundDetails) {
+        const pointsText = compensationPoints > 0 ? ` serta kompensasi ${compensationPoints} poin` : '';
+        await this.notificationHelper.notifyTripCancelledByMitra(
+          ref.customerId,
+          tripId.toString(),
+          ref.amount,
+          compensationPoints,
+          trip.originPoint?.name || 'Asal',
+          trip.destinationPoint?.name || 'Tujuan',
+          trip.departureDate.toISOString().split('T')[0],
+        );
+      }
+
+      // b. Notifikasi ke mitra mengenai sanksi & opsi banding
+      const currentMitraScore = await this.sanctionService.getMitraSanctions(mitraId.toString());
+      await this.notificationHelper.notifyMitraCancellationSanction(
+        mitraId.toString(),
+        tripId.toString(),
+        result.sanctionResult.scoreDeduction,
+        currentMitraScore.currentScore,
+        result.sanctionResult.isSuspended,
+        result.sanctionResult.suspendedUntil,
+      );
+    } catch (notifErr) {
+      console.error('[TripsService] Gagal mengirim notifikasi pembatalan:', notifErr);
+    }
+
+    return {
+      message: `Trip #${tripId} berhasil dibatalkan. Kategori: ${cancelCategory}. Seluruh penumpang telah di-refund penuh.`,
+      tripId: tripId.toString(),
+      status: result.updatedTrip.status,
+      cancelCategory,
+      affectedOrdersCount: activeOrders.length,
+      totalRefundAmount,
+      compensationPointsPerPassenger: compensationPoints,
+      isPatternTriggered,
+      sanction: {
+        violationType,
+        scoreDeduction: result.sanctionResult.scoreDeduction,
+        tier: result.sanctionResult.tier,
+        isSuspended: result.sanctionResult.isSuspended,
+        suspendedUntil: result.sanctionResult.suspendedUntil,
+      },
+    };
   }
 }

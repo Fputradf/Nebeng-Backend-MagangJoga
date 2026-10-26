@@ -28,7 +28,12 @@ export class ChatRepository {
         customerId: parsedCustomerId,
       },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+          },
+        },
         customer: true,
         mitra: true,
         messages: {
@@ -62,7 +67,12 @@ export class ChatRepository {
         isLocked: false,
       },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+          },
+        },
         customer: true,
         mitra: true,
         messages: {
@@ -82,7 +92,12 @@ export class ChatRepository {
         OR: [{ customerId: parsedUserId }, { mitraId: parsedUserId }],
       },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+          },
+        },
         customer: true,
         mitra: true,
         messages: {
@@ -101,7 +116,12 @@ export class ChatRepository {
     return this.prisma.conversation.findUnique({
       where: { id: parsedId },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+          },
+        },
         customer: true,
         mitra: true,
       },

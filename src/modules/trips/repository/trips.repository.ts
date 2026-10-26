@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
+import { TripStatus } from '../../../generated/prisma/enums';
 
 @Injectable()
 export class TripsRepository {
@@ -40,9 +41,9 @@ export class TripsRepository {
       where: {
         vehicleId,
         OR: [
-          { status: 'in_transit' },
+          { status: TripStatus.in_transit },
           {
-            status: 'scheduled',
+            status: TripStatus.scheduled,
             departureDate: {
               gte: startOfDay,
               lte: endOfDay,

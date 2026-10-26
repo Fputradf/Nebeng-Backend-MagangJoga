@@ -601,6 +601,378 @@
         ]
       }
     },
+    "/api/users/me/sanctions": {
+      "get": {
+        "operationId": "UserController_getMySanctions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Riwayat sanksi mitra ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat riwayat sanksi & sisa reputasi mitra sendiri",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/users/me/sanctions/{id}/appeal": {
+      "post": {
+        "operationId": "UserController_appealSanction",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Banding berhasil diajukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mengajukan banding terhadap sanksi pembatalan trip",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/admin/dashboard/global": {
+      "get": {
+        "operationId": "AdminController_getGlobalDashboard",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Analitik global ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat dashboard analitik global (Superadmin Only)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/dashboard/regional": {
+      "get": {
+        "operationId": "AdminController_getRegionalDashboard",
+        "parameters": [
+          {
+            "name": "regionId",
+            "required": false,
+            "in": "query",
+            "description": "Wajib diisi jika dikirim oleh Superadmin",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analitik wilayah ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat dashboard analitik wilayah",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/escrow/ledger": {
+      "get": {
+        "operationId": "AdminController_getEscrowLedger",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Nomor halaman (default: 1)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Jumlah data per halaman (default: 20)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Buku besar Escrow ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat buku besar audit Escrow (Superadmin Only)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/settings/pricing-policy": {
+      "get": {
+        "operationId": "AdminController_getPricingPolicy",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Data tarif ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan seluruh data kebijakan tarif global & matriks paket",
+        "tags": [
+          "Admin Governance"
+        ]
+      },
+      "patch": {
+        "operationId": "AdminController_updatePricingPolicy",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePricingPolicyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kebijakan tarif berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Memperbarui seluruh kebijakan tarif global & komisi",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/users/{id}/governance": {
+      "patch": {
+        "operationId": "AdminController_updateUserGovernance",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserGovernanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status tata kelola user berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mengubah status akun user (Suspended / Active / Banned)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/settings/commission": {
+      "patch": {
+        "operationId": "AdminController_updatePlatformCommission",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlatformCommissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Persentase komisi platform berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pengaturan persentase komisi platform global (Hanya Superadmin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/regions/{id}/rate": {
+      "patch": {
+        "operationId": "AdminController_updateRegionRate",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRegionRateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tarif Rp/Km wilayah berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pengaturan tarif Rp/Km Wilayah Asal (Admin Wilayah & Superadmin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/settings/rewards": {
+      "patch": {
+        "operationId": "AdminController_updateRewardSetting",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Pengaturan kelipatan Poin Reward berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pengaturan kelipatan Poin Reward global (Hanya Superadmin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/mitra/{id}/sanctions": {
+      "get": {
+        "operationId": "AdminController_getMitraSanctionsAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Riwayat sanksi mitra ditemukan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat riwayat sanksi mitra (Admin/Regional)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
+    "/api/admin/sanctions/appeals/{id}/review": {
+      "patch": {
+        "operationId": "AdminController_reviewMitraAppeal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banding berhasil ditinjau"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Tinjau banding sanksi mitra (Setujui / Tolak)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
     "/api/auth/register": {
       "post": {
         "operationId": "AuthController_register",
@@ -1985,7 +2357,9 @@
                 "arrived_dest_pos",
                 "completed",
                 "cancelled",
-                "mitra_no_show"
+                "mitra_no_show",
+                "cancelled_by_mitra",
+                "pending_admin_review"
               ]
             }
           },
@@ -2130,7 +2504,9 @@
                 "arrived_dest_pos",
                 "completed",
                 "cancelled",
-                "mitra_no_show"
+                "mitra_no_show",
+                "cancelled_by_mitra",
+                "pending_admin_review"
               ]
             }
           },
@@ -2282,6 +2658,51 @@
           }
         ],
         "summary": "Update detail / status Trip (Mitra Owner Only)",
+        "tags": [
+          "Trips"
+        ]
+      }
+    },
+    "/api/trips/{id}/cancel-by-mitra": {
+      "post": {
+        "operationId": "TripsController_cancelByMitra",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelTripByMitraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Trip berhasil dibatalkan dan diproses secara idempotent"
+          },
+          "400": {
+            "description": "Trip tidak dapat dibatalkan atau dialihkan ke admin review"
+          },
+          "403": {
+            "description": "Mitra bukan pemilik trip"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pembatalan Trip oleh Mitra (Fase 10 - Sebelum Jadwal)",
         "tags": [
           "Trips"
         ]
@@ -3421,271 +3842,6 @@
         ]
       }
     },
-    "/api/admin/dashboard/global": {
-      "get": {
-        "operationId": "AdminController_getGlobalDashboard",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Analitik global ditemukan"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Melihat dashboard analitik global (Superadmin Only)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/dashboard/regional": {
-      "get": {
-        "operationId": "AdminController_getRegionalDashboard",
-        "parameters": [
-          {
-            "name": "regionId",
-            "required": false,
-            "in": "query",
-            "description": "Wajib diisi jika dikirim oleh Superadmin",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Analitik wilayah ditemukan"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Melihat dashboard analitik wilayah",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/escrow/ledger": {
-      "get": {
-        "operationId": "AdminController_getEscrowLedger",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Nomor halaman (default: 1)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Jumlah data per halaman (default: 20)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Buku besar Escrow ditemukan"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Melihat buku besar audit Escrow (Superadmin Only)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/settings/pricing-policy": {
-      "get": {
-        "operationId": "AdminController_getPricingPolicy",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Data tarif ditemukan"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Mendapatkan seluruh data kebijakan tarif global & matriks paket",
-        "tags": [
-          "Admin Governance"
-        ]
-      },
-      "patch": {
-        "operationId": "AdminController_updatePricingPolicy",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdatePricingPolicyDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Kebijakan tarif berhasil diperbarui"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Memperbarui seluruh kebijakan tarif global & komisi",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/users/{id}/governance": {
-      "patch": {
-        "operationId": "AdminController_updateUserGovernance",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserGovernanceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Status tata kelola user berhasil diperbarui"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Mengubah status akun user (Suspended / Active / Banned)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/settings/commission": {
-      "patch": {
-        "operationId": "AdminController_updatePlatformCommission",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdatePlatformCommissionDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Persentase komisi platform berhasil diperbarui"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Pengaturan persentase komisi platform global (Hanya Superadmin)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/regions/{id}/rate": {
-      "patch": {
-        "operationId": "AdminController_updateRegionRate",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateRegionRateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Tarif Rp/Km wilayah berhasil diperbarui"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Pengaturan tarif Rp/Km Wilayah Asal (Admin Wilayah & Superadmin)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
-    "/api/admin/settings/rewards": {
-      "patch": {
-        "operationId": "AdminController_updateRewardSetting",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Pengaturan kelipatan Poin Reward berhasil diperbarui"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Pengaturan kelipatan Poin Reward global (Hanya Superadmin)",
-        "tags": [
-          "Admin Governance"
-        ]
-      }
-    },
     "/api/merchandises": {
       "get": {
         "operationId": "MerchandiseController_getCatalog",
@@ -4451,6 +4607,131 @@
           "status"
         ]
       },
+      "ParcelMatrixDto": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "example": "XXS",
+            "enum": [
+              "XXS",
+              "XS",
+              "S",
+              "M",
+              "L",
+              "XL"
+            ]
+          },
+          "maxWeightKg": {
+            "type": "number",
+            "example": 1
+          },
+          "baseRate": {
+            "type": "number",
+            "example": 6000
+          }
+        },
+        "required": [
+          "size",
+          "maxWeightKg",
+          "baseRate"
+        ]
+      },
+      "UpdatePricingPolicyDto": {
+        "type": "object",
+        "properties": {
+          "motorPerKm": {
+            "type": "number",
+            "example": 2500
+          },
+          "carPerKm": {
+            "type": "number",
+            "example": 5000
+          },
+          "motorBaseFare": {
+            "type": "number",
+            "example": 5000
+          },
+          "carBaseFare": {
+            "type": "number",
+            "example": 10000
+          },
+          "rideFeePercent": {
+            "type": "number",
+            "example": 15
+          },
+          "parcelFeePercent": {
+            "type": "number",
+            "example": 12
+          },
+          "parcelMatrix": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParcelMatrixDto"
+            }
+          }
+        },
+        "required": [
+          "motorPerKm",
+          "carPerKm",
+          "motorBaseFare",
+          "carBaseFare",
+          "rideFeePercent",
+          "parcelFeePercent",
+          "parcelMatrix"
+        ]
+      },
+      "UpdateUserGovernanceDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status akun baru (active, suspended, blocked)",
+            "enum": [
+              "active",
+              "suspended",
+              "blocked",
+              "inactive",
+              "deleted"
+            ],
+            "example": "suspended"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Alasan penanguhan atau pemblokiran akun",
+            "example": "Pelanggaran ketetapan keamanan dan indikasi fraud"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "UpdatePlatformCommissionDto": {
+        "type": "object",
+        "properties": {
+          "commissionPercentage": {
+            "type": "number",
+            "example": 10,
+            "description": "presentase komisi platfrom"
+          }
+        },
+        "required": [
+          "commissionPercentage"
+        ]
+      },
+      "UpdateRegionRateDto": {
+        "type": "object",
+        "properties": {
+          "pricePerKm": {
+            "type": "number",
+            "example": 3000,
+            "description": "Tarip dasar pengiriman/perjalanan per kilometer (Rp/Km)"
+          }
+        },
+        "required": [
+          "pricePerKm"
+        ]
+      },
       "RegisterDto": {
         "type": "object",
         "properties": {
@@ -5025,7 +5306,9 @@
               "arrived_dest_pos",
               "completed",
               "cancelled",
-              "mitra_no_show"
+              "mitra_no_show",
+              "cancelled_by_mitra",
+              "pending_admin_review"
             ]
           },
           "departureDate": {
@@ -5037,6 +5320,24 @@
             "example": "1970-01-01T09:00:00.000Z"
           }
         }
+      },
+      "CancelTripByMitraDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Alasan pembatalan trip oleh mitra",
+            "example": "Kendaraan mengalami mogok darurat pada sistem transmisi"
+          },
+          "evidenceUrl": {
+            "type": "string",
+            "description": "Bukti pendukung pembatalan opsional (URL foto / dokumen bengkel)",
+            "example": "https://storage.nebeng.com/evidence/kendaraan-rusak.jpg"
+          }
+        },
+        "required": [
+          "reason"
+        ]
       },
       "CreateOrderItemDto": {
         "type": "object",
@@ -5396,131 +5697,6 @@
         },
         "required": [
           "points"
-        ]
-      },
-      "ParcelMatrixDto": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "string",
-            "example": "XXS",
-            "enum": [
-              "XXS",
-              "XS",
-              "S",
-              "M",
-              "L",
-              "XL"
-            ]
-          },
-          "maxWeightKg": {
-            "type": "number",
-            "example": 1
-          },
-          "baseRate": {
-            "type": "number",
-            "example": 6000
-          }
-        },
-        "required": [
-          "size",
-          "maxWeightKg",
-          "baseRate"
-        ]
-      },
-      "UpdatePricingPolicyDto": {
-        "type": "object",
-        "properties": {
-          "motorPerKm": {
-            "type": "number",
-            "example": 2500
-          },
-          "carPerKm": {
-            "type": "number",
-            "example": 5000
-          },
-          "motorBaseFare": {
-            "type": "number",
-            "example": 5000
-          },
-          "carBaseFare": {
-            "type": "number",
-            "example": 10000
-          },
-          "rideFeePercent": {
-            "type": "number",
-            "example": 15
-          },
-          "parcelFeePercent": {
-            "type": "number",
-            "example": 12
-          },
-          "parcelMatrix": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ParcelMatrixDto"
-            }
-          }
-        },
-        "required": [
-          "motorPerKm",
-          "carPerKm",
-          "motorBaseFare",
-          "carBaseFare",
-          "rideFeePercent",
-          "parcelFeePercent",
-          "parcelMatrix"
-        ]
-      },
-      "UpdateUserGovernanceDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Status akun baru (active, suspended, blocked)",
-            "enum": [
-              "active",
-              "suspended",
-              "blocked",
-              "inactive",
-              "deleted"
-            ],
-            "example": "suspended"
-          },
-          "reason": {
-            "type": "string",
-            "description": "Alasan penanguhan atau pemblokiran akun",
-            "example": "Pelanggaran ketetapan keamanan dan indikasi fraud"
-          }
-        },
-        "required": [
-          "status"
-        ]
-      },
-      "UpdatePlatformCommissionDto": {
-        "type": "object",
-        "properties": {
-          "commissionPercentage": {
-            "type": "number",
-            "example": 10,
-            "description": "presentase komisi platfrom"
-          }
-        },
-        "required": [
-          "commissionPercentage"
-        ]
-      },
-      "UpdateRegionRateDto": {
-        "type": "object",
-        "properties": {
-          "pricePerKm": {
-            "type": "number",
-            "example": 3000,
-            "description": "Tarip dasar pengiriman/perjalanan per kilometer (Rp/Km)"
-          }
-        },
-        "required": [
-          "pricePerKm"
         ]
       },
       "RedeemMerchandiseDto": {

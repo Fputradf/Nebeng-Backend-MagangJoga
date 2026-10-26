@@ -246,7 +246,7 @@ export class CheckpointsService {
           orderId: order.id.toString(),
           tripId: trip.id.toString(),
           scanType: 'checkin_origin',
-          status: 'in_transit',
+          status: OrderStatus.in_transit,
           newQrCode: log.order?.qrCodeTicket,
           message: 'Check-in Pos Asal selesai. Armada sedang dalam perjalanan.',
           checkpoint: CheckpointMapper.toResponse(log),
@@ -349,7 +349,7 @@ export class CheckpointsService {
           orderId: order.id.toString(),
           tripId: trip.id.toString(),
           scanType: 'checkin_destination',
-          status: 'completed',
+          status: OrderStatus.completed,
           message:
             order.type === OrderType.parcel
               ? 'Barang telah berhasil diserah-terimakan di Pos Tujuan.'
@@ -458,7 +458,7 @@ export class CheckpointsService {
         orderId: order.id.toString(),
         tripId: trip.id.toString(),
         scanType: 'checkin_destination',
-        status: 'completed',
+        status: OrderStatus.completed,
         message: 'Force Check-in manual oleh Operator Pos telah selesai.',
         checkpoint: CheckpointMapper.toResponse(log),
       },
@@ -533,7 +533,7 @@ export class CheckpointsService {
         orderId: order.id.toString(),
         tripId: trip.id.toString(),
         scanType: 'no_show',
-        status: 'no_show',
+        status: OrderStatus.no_show,
         message: 'Penumpang tidak datang (No-Show). Tiket hangus, kuota kursi dikembalikan.',
       },
     );
@@ -588,7 +588,7 @@ export class CheckpointsService {
       {
         tripId: trip.id.toString(),
         scanType: 'mitra_no_show',
-        status: 'mitra_no_show',
+        status: TripStatus.mitra_no_show,
         message: 'Mitra tidak datang ke pos (No-Show). Trip dibatalkan, semua penumpang di-refund.',
       },
     );

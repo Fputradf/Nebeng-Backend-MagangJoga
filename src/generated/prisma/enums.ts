@@ -75,7 +75,9 @@ export const TripStatus = {
   arrived_dest_pos: 'arrived_dest_pos',
   completed: 'completed',
   cancelled: 'cancelled',
-  mitra_no_show: 'mitra_no_show'
+  mitra_no_show: 'mitra_no_show',
+  cancelled_by_mitra: 'cancelled_by_mitra',
+  pending_admin_review: 'pending_admin_review'
 } as const
 
 export type TripStatus = (typeof TripStatus)[keyof typeof TripStatus]
@@ -97,7 +99,8 @@ export const OrderStatus = {
   arrived_destination: 'arrived_destination',
   completed: 'completed',
   cancelled: 'cancelled',
-  no_show: 'no_show'
+  no_show: 'no_show',
+  cancelled_by_mitra: 'cancelled_by_mitra'
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
@@ -175,10 +178,39 @@ export type RedemptionStatus = (typeof RedemptionStatus)[keyof typeof Redemption
 
 export const NoShowAuditType = {
   passenger_no_show: 'passenger_no_show',
-  mitra_no_show: 'mitra_no_show'
+  mitra_no_show: 'mitra_no_show',
+  mitra_cancel: 'mitra_cancel'
 } as const
 
 export type NoShowAuditType = (typeof NoShowAuditType)[keyof typeof NoShowAuditType]
+
+
+export const SanctionViolationType = {
+  MITRA_CANCEL_EARLY: 'MITRA_CANCEL_EARLY',
+  MITRA_CANCEL_LATE: 'MITRA_CANCEL_LATE',
+  MITRA_NO_SHOW: 'MITRA_NO_SHOW'
+} as const
+
+export type SanctionViolationType = (typeof SanctionViolationType)[keyof typeof SanctionViolationType]
+
+
+export const SanctionStatus = {
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  APPEALED: 'APPEALED',
+  WAIVED: 'WAIVED'
+} as const
+
+export type SanctionStatus = (typeof SanctionStatus)[keyof typeof SanctionStatus]
+
+
+export const AppealStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type AppealStatus = (typeof AppealStatus)[keyof typeof AppealStatus]
 
 
 export const NotificationType = {

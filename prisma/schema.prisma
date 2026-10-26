@@ -64,6 +64,8 @@ enum TripStatus {
   completed
   cancelled
   mitra_no_show
+  cancelled_by_mitra
+  pending_admin_review
 }
 
 enum OrderType {
@@ -80,6 +82,7 @@ enum OrderStatus {
   completed
   cancelled
   no_show
+  cancelled_by_mitra
 }
 
 enum EscrowStatus {
@@ -134,6 +137,26 @@ enum RedemptionStatus {
 enum NoShowAuditType {
   passenger_no_show
   mitra_no_show
+  mitra_cancel
+}
+
+enum SanctionViolationType {
+  MITRA_CANCEL_EARLY
+  MITRA_CANCEL_LATE
+  MITRA_NO_SHOW
+}
+
+enum SanctionStatus {
+  ACTIVE
+  EXPIRED
+  APPEALED
+  WAIVED
+}
+
+enum AppealStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 // ------------------------------------------------------
@@ -176,24 +199,24 @@ model City {
 // ------------------------------------------------------
 
 model User {
-  id                 BigInt             @id @default(autoincrement())
-  regionId           BigInt?            @map("region_id")
-  region             Region?            @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  name               String
-  email              String             @unique
-  phone              String             @unique
-  password           String
-  role               Role
-  status             UserStatus         @default(active)
-  statusVerification VerificationStatus @default(unverified) @map("status_verification")
-  pinHash            String?            @map("pin_hash")
-  refreshToken       String?            @map("refresh_token") @db.Text
-  passwordResetToken String?            @map("password_reset_token")
-  passwordResetTokenExpiresAt DateTime? @map("password_reset_token_expires_at")
-  avatar             String?
-  rewardPoints       Int                @default(0) @map("reward_points")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
+  id                          BigInt             @id @default(autoincrement())
+  regionId                    BigInt?            @map("region_id")
+  region                      Region?            @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  name                        String
+  email                       String             @unique
+  phone                       String             @unique
+  password                    String
+  role                        Role
+  status                      UserStatus         @default(active)
+  statusVerification          VerificationStatus @default(unverified) @map("status_verification")
+  pinHash                     String?            @map("pin_hash")
+  refreshToken                String?            @map("refresh_token") @db.Text
+  passwordResetToken          String?            @map("password_reset_token")
+  passwordResetTokenExpiresAt DateTime?          @map("password_reset_token_expires_at")
+  avatar                      String?
+  rewardPoints                Int                @default(0) @map("reward_points")
+  createdAt                   DateTime           @default(now()) @map("created_at")
+  updatedAt                   DateTime           @updatedAt @map("updated_at")
 
   profile                 UserProfile?
   wallet                  Wallet?
@@ -214,11 +237,14 @@ model User {
   notificationPreference  NotificationPreference?
   deviceTokens            DeviceToken[]
   notificationLogs        NotificationLog[]
-  userNotifications      UserNotification[]
+  userNotifications       UserNotification[]
   noShowMarkedOrders      Order[]                 @relation("NoShowMarkedBy")
   mitraNoShowMarkedTrips  Trip[]                  @relation("MitraNoShowMarkedBy")
   noShowAuditLogsOperator NoShowAuditLog[]        @relation("NoShowAuditOperator")
   pushSubscriptions       PushSubscription[]      @relation("PushSubscriptions")
+  cancelledTrips          Trip[]                  @relation("CancelledBy")
+  mitraSanctions          MitraSanction[]
+  mitraSanctionAppeals    MitraSanctionAppeal[]
 
   @@index([role])
   @@index([status])
@@ -297,7 +323,7 @@ model PickupPoint {
   destTrips              Trip[]                  @relation("DestPickupPoint")
   checkpointsLogs        CheckpointsLog[]
   merchandiseRedemptions MerchandiseRedemption[]
-  noShowAuditLogs        NoShowAuditLog[]         @relation("NoShowAuditLogs")
+  noShowAuditLogs        NoShowAuditLog[]        @relation("NoShowAuditLogs")
 
   @@map("pickup_points")
 }
@@ -348,11 +374,18 @@ model Trip {
   updatedAt                 DateTime    @updatedAt @map("updated_at")
 
   // Mitra No-Show Audit Fields
-  mitraNoShowMarkedAt       DateTime?   @map("mitra_no_show_marked_at")
-  mitraNoShowMarkedBy       BigInt?     @map("mitra_no_show_marked_by")
-  mitraNoShowMarkedByUser   User?       @relation("MitraNoShowMarkedBy", fields: [mitraNoShowMarkedBy], references: [id])
-  mitraNoShowReason         String?     @map("mitra_no_show_reason") @db.Text
-  mitraNoShowEvidenceUrl    String?     @map("mitra_no_show_evidence_url") @db.Text
+  mitraNoShowMarkedAt     DateTime? @map("mitra_no_show_marked_at")
+  mitraNoShowMarkedBy     BigInt?   @map("mitra_no_show_marked_by")
+  mitraNoShowMarkedByUser User?     @relation("MitraNoShowMarkedBy", fields: [mitraNoShowMarkedBy], references: [id])
+  mitraNoShowReason       String?   @map("mitra_no_show_reason") @db.Text
+  mitraNoShowEvidenceUrl  String?   @map("mitra_no_show_evidence_url") @db.Text
+
+  // Cancellation Fields
+  cancelledAt     DateTime? @map("cancelled_at")
+  cancelledBy     BigInt?   @map("cancelled_by")
+  cancelledByUser User?     @relation("CancelledBy", fields: [cancelledBy], references: [id])
+  cancelReason    String?   @map("cancel_reason") @db.Text
+  cancelCategory  String?   @map("cancel_category")
 
   orders          Order[]
   checkpointsLogs CheckpointsLog[]
@@ -361,6 +394,7 @@ model Trip {
   conversations   Conversation[]
   reviews         TripReview[]
   noShowAuditLogs NoShowAuditLog[]
+  mitraSanctions  MitraSanction[]
 
   @@index([departureDate, status])
   @@index([originPointId, destinationPointId])
@@ -388,12 +422,12 @@ model Order {
   updatedAt          DateTime     @updatedAt @map("updated_at")
 
   // Passenger No-Show Audit Fields
-  noShowMarkedAt     DateTime?    @map("no_show_marked_at")
-  noShowMarkedBy     BigInt?      @map("no_show_marked_by")
-  noShowMarkedByUser User?        @relation("NoShowMarkedBy", fields: [noShowMarkedBy], references: [id])
-  noShowReason       String?      @map("no_show_reason") @db.Text
-  disputeDeadline    DateTime?    @map("dispute_deadline")
-  isDisputed         Boolean      @default(false) @map("is_disputed")
+  noShowMarkedAt     DateTime? @map("no_show_marked_at")
+  noShowMarkedBy     BigInt?   @map("no_show_marked_by")
+  noShowMarkedByUser User?     @relation("NoShowMarkedBy", fields: [noShowMarkedBy], references: [id])
+  noShowReason       String?   @map("no_show_reason") @db.Text
+  disputeDeadline    DateTime? @map("dispute_deadline")
+  isDisputed         Boolean   @default(false) @map("is_disputed")
 
   itemOrders         ItemOrder[]
   checkpointsLogs    CheckpointsLog[]
@@ -447,19 +481,19 @@ model CheckpointsLog {
 }
 
 model NoShowAuditLog {
-  id              BigInt        @id @default(autoincrement())
-  type            NoShowAuditType
-  orderId         BigInt?       @map("order_id")
-  order           Order?        @relation(fields: [orderId], references: [id])
-  tripId          BigInt?       @map("trip_id")
-  trip            Trip?         @relation(fields: [tripId], references: [id])
-  posId           BigInt        @map("pos_id")
-  pos             PickupPoint   @relation("NoShowAuditLogs", fields: [posId], references: [id])
-  operatorId      BigInt        @map("operator_id")
-  operator        User          @relation("NoShowAuditOperator", fields: [operatorId], references: [id])
-  reason          String        @db.Text
-  evidenceUrl     String?       @map("evidence_url") @db.Text
-  createdAt       DateTime      @default(now()) @map("created_at")
+  id          BigInt          @id @default(autoincrement())
+  type        NoShowAuditType
+  orderId     BigInt?         @map("order_id")
+  order       Order?          @relation(fields: [orderId], references: [id])
+  tripId      BigInt?         @map("trip_id")
+  trip        Trip?           @relation(fields: [tripId], references: [id])
+  posId       BigInt          @map("pos_id")
+  pos         PickupPoint     @relation("NoShowAuditLogs", fields: [posId], references: [id])
+  operatorId  BigInt          @map("operator_id")
+  operator    User            @relation("NoShowAuditOperator", fields: [operatorId], references: [id])
+  reason      String          @db.Text
+  evidenceUrl String?         @map("evidence_url") @db.Text
+  createdAt   DateTime        @default(now()) @map("created_at")
 
   @@index([type, createdAt])
   @@index([posId, createdAt])
@@ -467,15 +501,15 @@ model NoShowAuditLog {
 }
 
 model PushSubscription {
-  id              BigInt    @id @default(autoincrement())
-  userId          BigInt    @map("user_id")
-  user            User      @relation("PushSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
-  endpoint        String    @unique
-  p256dh          String    @map("p256dh")
-  auth             String
-  userAgent       String?   @map("user_agent")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  lastUsedAt      DateTime? @map("last_used_at")
+  id         BigInt    @id @default(autoincrement())
+  userId     BigInt    @map("user_id")
+  user       User      @relation("PushSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  endpoint   String    @unique
+  p256dh     String    @map("p256dh")
+  auth       String
+  userAgent  String?   @map("user_agent")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  lastUsedAt DateTime? @map("last_used_at")
 
   @@index([userId, endpoint])
   @@map("push_subscriptions")
@@ -757,33 +791,33 @@ enum NotificationStatus {
 }
 
 model NotificationPreference {
-  id                      BigInt              @id @default(autoincrement())
-  userId                  BigInt              @unique @map("user_id")
-  user                    User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  enablePushNotifications Boolean              @default(true) @map("enable_push_notifications")
-  enableEmailNotifications Boolean             @default(true) @map("enable_email_notifications")
-  orderNotifications      Boolean              @default(true) @map("order_notifications")
-  tripNotifications       Boolean              @default(true) @map("trip_notifications")
-  chatNotifications       Boolean              @default(true) @map("chat_notifications")
-  paymentNotifications     Boolean              @default(true) @map("payment_notifications")
-  promotionNotifications   Boolean              @default(false) @map("promotion_notifications")
-  createdAt                DateTime            @default(now()) @map("created_at")
-  updatedAt                DateTime            @updatedAt @map("updated_at")
+  id                       BigInt   @id @default(autoincrement())
+  userId                   BigInt   @unique @map("user_id")
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enablePushNotifications  Boolean  @default(true) @map("enable_push_notifications")
+  enableEmailNotifications Boolean  @default(true) @map("enable_email_notifications")
+  orderNotifications       Boolean  @default(true) @map("order_notifications")
+  tripNotifications        Boolean  @default(true) @map("trip_notifications")
+  chatNotifications        Boolean  @default(true) @map("chat_notifications")
+  paymentNotifications     Boolean  @default(true) @map("payment_notifications")
+  promotionNotifications   Boolean  @default(false) @map("promotion_notifications")
+  createdAt                DateTime @default(now()) @map("created_at")
+  updatedAt                DateTime @updatedAt @map("updated_at")
 
   @@map("notification_preferences")
 }
 
 model DeviceToken {
-  id        BigInt   @id @default(autoincrement())
-  userId    BigInt   @map("user_id")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
-  platform  String   @default("android")
-  userAgent String?   @map("user_agent")
-  isActive  Boolean  @default(true) @map("is_active")
+  id         BigInt    @id @default(autoincrement())
+  userId     BigInt    @map("user_id")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String    @unique
+  platform   String    @default("android")
+  userAgent  String?   @map("user_agent")
+  isActive   Boolean   @default(true) @map("is_active")
   lastUsedAt DateTime? @map("last_used_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
 
   notificationLogs NotificationLog[]
 
@@ -792,19 +826,19 @@ model DeviceToken {
 }
 
 model NotificationLog {
-  id          BigInt              @id @default(autoincrement())
-  userId      BigInt              @map("user_id")
-  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type        NotificationType
-  title       String
-  body        String              @db.Text
-  data        String?             @db.Text
-  status      NotificationStatus  @default(pending)
-  deviceId    BigInt?             @map("device_id")
-  device      DeviceToken?        @relation(fields: [deviceId], references: [id], onDelete: SetNull)
+  id           BigInt             @id @default(autoincrement())
+  userId       BigInt             @map("user_id")
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         NotificationType
+  title        String
+  body         String             @db.Text
+  data         String?            @db.Text
+  status       NotificationStatus @default(pending)
+  deviceId     BigInt?            @map("device_id")
+  device       DeviceToken?       @relation(fields: [deviceId], references: [id], onDelete: SetNull)
   errorMessage String?            @map("error_message") @db.Text
-  sentAt      DateTime?           @map("sent_at")
-  createdAt   DateTime            @default(now()) @map("created_at")
+  sentAt       DateTime?          @map("sent_at")
+  createdAt    DateTime           @default(now()) @map("created_at")
 
   @@index([userId, status])
   @@index([createdAt])
@@ -812,20 +846,65 @@ model NotificationLog {
 }
 
 model UserNotification {
-  id             BigInt          @id @default(autoincrement())
-  userId         BigInt          @map("user_id")
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             BigInt           @id @default(autoincrement())
+  userId         BigInt           @map("user_id")
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   type           NotificationType
   title          String
-  body           String          @db.Text
-  data           String?         @db.Text
-  isRead         Boolean         @default(false) @map("is_read")
-  conversationId BigInt?         @map("conversation_id")
-  readAt         DateTime?       @map("read_at")
-  createdAt      DateTime        @default(now()) @map("created_at")
+  body           String           @db.Text
+  data           String?          @db.Text
+  isRead         Boolean          @default(false) @map("is_read")
+  conversationId BigInt?          @map("conversation_id")
+  readAt         DateTime?        @map("read_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
 
   @@index([userId, isRead])
   @@index([userId, createdAt])
   @@index([conversationId])
   @@map("user_notifications")
+}
+
+// ------------------------------------------------------
+// 11. MITRA SANCTIONS & APPEALS
+// ------------------------------------------------------
+
+model MitraSanction {
+  id             BigInt                @id @default(autoincrement())
+  mitraId        BigInt                @map("mitra_id")
+  mitra          User                  @relation(fields: [mitraId], references: [id], onDelete: Cascade)
+  tripId         BigInt?               @map("trip_id")
+  trip           Trip?                 @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  violationType  SanctionViolationType @map("violation_type")
+  scoreDeduction Int                   @default(0) @map("score_deduction")
+  tier           Int                   @default(1)
+  isSuspended    Boolean               @default(false) @map("is_suspended")
+  suspendedUntil DateTime?             @map("suspended_until")
+  status         SanctionStatus        @default(ACTIVE)
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
+
+  appeals MitraSanctionAppeal[]
+
+  @@index([mitraId, status])
+  @@index([violationType, createdAt])
+  @@map("mitra_sanctions")
+}
+
+model MitraSanctionAppeal {
+  id          BigInt        @id @default(autoincrement())
+  sanctionId  BigInt        @map("sanction_id")
+  sanction    MitraSanction @relation(fields: [sanctionId], references: [id], onDelete: Cascade)
+  mitraId     BigInt        @map("mitra_id")
+  mitra       User          @relation(fields: [mitraId], references: [id], onDelete: Cascade)
+  reason      String        @db.Text
+  evidenceUrl String?       @map("evidence_url") @db.Text
+  status      AppealStatus  @default(PENDING)
+  reviewedBy  BigInt?       @map("reviewed_by")
+  reviewNotes String?       @map("review_notes") @db.Text
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@index([sanctionId, status])
+  @@index([mitraId, status])
+  @@map("mitra_sanction_appeals")
 }
