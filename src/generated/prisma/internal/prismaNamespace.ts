@@ -431,7 +431,9 @@ export const ModelName = {
   NotificationLog: 'NotificationLog',
   UserNotification: 'UserNotification',
   MitraSanction: 'MitraSanction',
-  MitraSanctionAppeal: 'MitraSanctionAppeal'
+  MitraSanctionAppeal: 'MitraSanctionAppeal',
+  Voucher: 'Voucher',
+  VoucherRedemption: 'VoucherRedemption'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -447,7 +449,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "voucherRedemption"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2761,6 +2763,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Voucher: {
+      payload: Prisma.$VoucherPayload<ExtArgs>
+      fields: Prisma.VoucherFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VoucherFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VoucherFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        findFirst: {
+          args: Prisma.VoucherFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VoucherFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        findMany: {
+          args: Prisma.VoucherFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>[]
+        }
+        create: {
+          args: Prisma.VoucherCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        createMany: {
+          args: Prisma.VoucherCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.VoucherDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        update: {
+          args: Prisma.VoucherUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        deleteMany: {
+          args: Prisma.VoucherDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VoucherUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.VoucherUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherPayload>
+        }
+        aggregate: {
+          args: Prisma.VoucherAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVoucher>
+        }
+        groupBy: {
+          args: Prisma.VoucherGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoucherGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VoucherCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoucherCountAggregateOutputType> | number
+        }
+      }
+    }
+    VoucherRedemption: {
+      payload: Prisma.$VoucherRedemptionPayload<ExtArgs>
+      fields: Prisma.VoucherRedemptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VoucherRedemptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VoucherRedemptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        findFirst: {
+          args: Prisma.VoucherRedemptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VoucherRedemptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        findMany: {
+          args: Prisma.VoucherRedemptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>[]
+        }
+        create: {
+          args: Prisma.VoucherRedemptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        createMany: {
+          args: Prisma.VoucherRedemptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.VoucherRedemptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        update: {
+          args: Prisma.VoucherRedemptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.VoucherRedemptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VoucherRedemptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.VoucherRedemptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoucherRedemptionPayload>
+        }
+        aggregate: {
+          args: Prisma.VoucherRedemptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVoucherRedemption>
+        }
+        groupBy: {
+          args: Prisma.VoucherRedemptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoucherRedemptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VoucherRedemptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoucherRedemptionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2970,8 +3104,11 @@ export const OrderScalarFieldEnum = {
   seatsBooked: 'seatsBooked',
   totalItemsCount: 'totalItemsCount',
   totalWeightKg: 'totalWeightKg',
+  subtotal: 'subtotal',
+  discountAmount: 'discountAmount',
   totalPrice: 'totalPrice',
   adminFeePercentage: 'adminFeePercentage',
+  voucherCode: 'voucherCode',
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
   readinessStatus: 'readinessStatus',
@@ -3361,6 +3498,42 @@ export const MitraSanctionAppealScalarFieldEnum = {
 export type MitraSanctionAppealScalarFieldEnum = (typeof MitraSanctionAppealScalarFieldEnum)[keyof typeof MitraSanctionAppealScalarFieldEnum]
 
 
+export const VoucherScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  title: 'title',
+  description: 'description',
+  appliesTo: 'appliesTo',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  maxDiscountAmount: 'maxDiscountAmount',
+  minOrderAmount: 'minOrderAmount',
+  usageLimit: 'usageLimit',
+  usagePerUserLimit: 'usagePerUserLimit',
+  validFrom: 'validFrom',
+  validUntil: 'validUntil',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
+
+
+export const VoucherRedemptionScalarFieldEnum = {
+  id: 'id',
+  voucherId: 'voucherId',
+  userId: 'userId',
+  orderId: 'orderId',
+  discountAmount: 'discountAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VoucherRedemptionScalarFieldEnum = (typeof VoucherRedemptionScalarFieldEnum)[keyof typeof VoucherRedemptionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3458,6 +3631,7 @@ export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnu
 
 
 export const OrderOrderByRelevanceFieldEnum = {
+  voucherCode: 'voucherCode',
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
   readinessStatus: 'readinessStatus',
@@ -3628,6 +3802,15 @@ export const MitraSanctionAppealOrderByRelevanceFieldEnum = {
 } as const
 
 export type MitraSanctionAppealOrderByRelevanceFieldEnum = (typeof MitraSanctionAppealOrderByRelevanceFieldEnum)[keyof typeof MitraSanctionAppealOrderByRelevanceFieldEnum]
+
+
+export const VoucherOrderByRelevanceFieldEnum = {
+  code: 'code',
+  title: 'title',
+  description: 'description'
+} as const
+
+export type VoucherOrderByRelevanceFieldEnum = (typeof VoucherOrderByRelevanceFieldEnum)[keyof typeof VoucherOrderByRelevanceFieldEnum]
 
 
 
@@ -3833,6 +4016,20 @@ export type EnumAppealStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'DiscountType'
+ */
+export type EnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscountType'>
+    
+
+
+/**
+ * Reference to a field of type 'VoucherRedemptionStatus'
+ */
+export type EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VoucherRedemptionStatus'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4024,6 +4221,8 @@ export type GlobalOmitConfig = {
   userNotification?: Prisma.UserNotificationOmit
   mitraSanction?: Prisma.MitraSanctionOmit
   mitraSanctionAppeal?: Prisma.MitraSanctionAppealOmit
+  voucher?: Prisma.VoucherOmit
+  voucherRedemption?: Prisma.VoucherRedemptionOmit
 }
 
 /* Types for Logging */

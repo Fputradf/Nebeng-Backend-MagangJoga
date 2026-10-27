@@ -8,6 +8,8 @@ import { ConfigService } from '@nestjs/config';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { SanctionService } from '../admin/sanction.service';
 
+const FUTURE_DATE = '2027-01-01';
+
 describe('TripsService (createTrip)', () => {
   let service: TripsService;
   let vehiclesRepository: any;
@@ -39,6 +41,7 @@ describe('TripsService (createTrip)', () => {
     tripsRepository = {
       findConflictingTrip: jest.fn(),
       create: jest.fn(),
+      findByQrCode: jest.fn(),
     };
     const mockConfigService = {
       get: jest.fn((key: string, defaultValue?: any) => defaultValue),
@@ -65,6 +68,8 @@ describe('TripsService (createTrip)', () => {
 
     service = module.get(TripsService);
 
+    mockPrisma.user.findUnique.mockResolvedValue(mockApprovedUser);
+    tripsRepository.findByQrCode.mockResolvedValue(null);
     vehiclesRepository.findUserVerificationStatus.mockResolvedValue(
       mockApprovedUser,
     );
@@ -81,7 +86,7 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '1',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
@@ -92,7 +97,7 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '1',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
@@ -101,7 +106,7 @@ describe('TripsService (createTrip)', () => {
   });
 
   it('throws ForbiddenException when user verification is not approved', async () => {
-    vehiclesRepository.findUserVerificationStatus.mockResolvedValue({
+    mockPrisma.user.findUnique.mockResolvedValue({
       id: '1',
       role: 'mitra',
       statusVerification: 'pending',
@@ -112,7 +117,7 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '2',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
@@ -123,14 +128,17 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '2',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
       }),
     ).rejects.toThrow(
-      'Hanya Mitra terverifikasi (approved) yang dapat membuat jadwal trip.',
+      'Akun Anda belum disetujui (Approved) oleh Admin Regional. Belum dapat mempublikasikan trip.',
     );
+    
+    // Reset mock
+    mockPrisma.user.findUnique.mockResolvedValue(mockApprovedUser);
   });
 
   it('throws BadRequestException when departure is in the past', async () => {
@@ -177,7 +185,7 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '2',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
@@ -188,11 +196,136 @@ describe('TripsService (createTrip)', () => {
         vehicleId: '10',
         originPointId: '1',
         destinationPointId: '2',
-        departureDate: '2026-10-21',
+        departureDate: FUTURE_DATE,
         departureTime: '08:00:00',
         price: 50000,
         serviceType: 'mobil',
       }),
-    ).rejects.toThrow('Kendaraan ini bukan milik Anda.');
+    ).rejects.toThrow('Kendaraan ini bukan milik Anda yang terdaftar.');
+  });
+
+  it('should create trip with serviceType=barang and seatTotal=0', async () => {
+    vehiclesRepository.findUserVerificationStatus.mockResolvedValue(
+      mockApprovedUser,
+    );
+    vehiclesRepository.findById.mockResolvedValue(mockVehicle);
+    tripsRepository.create.mockResolvedValue({
+      id: '100',
+      serviceType: 'barang',
+      seatTotal: 0,
+      seatAvailable: 0,
+      maxWeightCapacityKg: 500,
+      remainingWeightCapacityKg: 500,
+    });
+
+    const result = await service.createTrip('1', {
+      vehicleId: '10',
+      originPointId: '1',
+      destinationPointId: '2',
+      departureDate: FUTURE_DATE,
+      departureTime: '08:00:00',
+      price: 50000,
+      serviceType: 'barang',
+      maxWeightCapacityKg: 500,
+    });
+
+    expect(tripsRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        serviceType: 'barang',
+        seatTotal: 0,
+        seatAvailable: 0,
+      }),
+    );
+  });
+
+  it('should throw error when serviceType is not provided', async () => {
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: undefined as any,
+      }),
+    ).rejects.toThrow(BadRequestException);
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: undefined as any,
+      }),
+    ).rejects.toThrow('Tipe layanan (serviceType) wajib diisi.');
+  });
+
+  it('should throw error when serviceType=motor/mobil and totalSeats < 1', async () => {
+    vehiclesRepository.findUserVerificationStatus.mockResolvedValue(
+      mockApprovedUser,
+    );
+    vehiclesRepository.findById.mockResolvedValue(mockVehicle);
+
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: 'mobil',
+        totalSeats: 0,
+      }),
+    ).rejects.toThrow(BadRequestException);
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: 'mobil',
+        totalSeats: 0,
+      }),
+    ).rejects.toThrow('Trip penumpang wajib memiliki minimal 1 kursi.');
+  });
+
+  it('should throw error when serviceType=motor and totalSeats > 1', async () => {
+    const mockVehicleMotor = {
+      ...mockVehicle,
+      type: 'motor',
+      capacitySeats: 1,
+    };
+    vehiclesRepository.findById.mockResolvedValue(mockVehicleMotor);
+
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: 'motor',
+        totalSeats: 2,
+      }),
+    ).rejects.toThrow(BadRequestException);
+    await expect(
+      service.createTrip('1', {
+        vehicleId: '10',
+        originPointId: '1',
+        destinationPointId: '2',
+        departureDate: FUTURE_DATE,
+        departureTime: '08:00:00',
+        price: 50000,
+        serviceType: 'motor',
+        totalSeats: 2,
+      }),
+    ).rejects.toThrow('Trip motor hanya diperbolehkan maksimal 1 kursi.');
   });
 });

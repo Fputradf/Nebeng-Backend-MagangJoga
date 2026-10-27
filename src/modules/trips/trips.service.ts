@@ -23,11 +23,14 @@ import {
   TransactionType,
   NoShowAuditType,
   SanctionViolationType,
+  Role,
+  ServiceType,
 } from '../../generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { SanctionService } from '../admin/sanction.service';
+import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
 export class TripsService {
@@ -122,6 +125,46 @@ export class TripsService {
       );
     }
 
+    const originPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(dto.originPointId) },
+          include: { region: true },
+        })
+      : ({ regionId: '1' } as any);
+    if (!originPoint) {
+      throw new NotFoundException('Pos Asal tidak ditemukan.');
+    }
+
+    const destPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(dto.destinationPointId) },
+          include: { region: true },
+        })
+      : ({ regionId: '2' } as any);
+    if (!destPoint) {
+      throw new NotFoundException('Pos Tujuan tidak ditemukan.');
+    }
+
+    // Aturan Opsi C: Home Base + Touchpoint Policy untuk Mitra
+    if (user.role === Role.mitra && user.regionId) {
+      const userRegionIdStr = user.regionId.toString();
+      const originRegionIdStr = originPoint.regionId.toString();
+      const destRegionIdStr = destPoint.regionId.toString();
+
+      const isOriginMatch = originRegionIdStr === userRegionIdStr;
+      const isDestMatch = destRegionIdStr === userRegionIdStr;
+
+      if (!isOriginMatch && !isDestMatch) {
+        const userRegion = await this.prisma.region.findUnique({
+          where: { id: user.regionId },
+        });
+        const regionName = userRegion ? userRegion.name : 'wilayah terdaftar Anda';
+        throw new BadRequestException(
+          `Sesuai aturan wilayah operasi (Home Base), salah satu titik pos (Asal atau Tujuan) harus berada di wilayah terdaftar Anda (${regionName}). Anda tidak diizinkan membuka perjalanan yang seluruhnya berada di luar wilayah terdaftar Anda.`,
+        );
+      }
+    }
+
     const combinedDate = this.combineDateAndTime(
       dto.departureDate,
       dto.departureTime,
@@ -137,6 +180,22 @@ export class TripsService {
         ? Number(dto.maxWeightCapacityKg)
         : Number(vehicle.maxWeightCapacityKg) || 15;
 
+    if (!dto.serviceType) {
+      throw new BadRequestException('Tipe layanan (serviceType) wajib diisi.');
+    }
+
+    let seatTotal = dto.totalSeats !== undefined ? dto.totalSeats : 1;
+    if (dto.serviceType === ServiceType.barang) {
+      seatTotal = 0;
+    } else {
+      if (seatTotal < 1) {
+        throw new BadRequestException('Trip penumpang wajib memiliki minimal 1 kursi.');
+      }
+      if (dto.serviceType === ServiceType.motor && seatTotal > 1) {
+        throw new BadRequestException('Trip motor hanya diperbolehkan maksimal 1 kursi.');
+      }
+    }
+
     const qrCodeTrip = await this.generateUniqueTripQr();
 
     const createdTrip = await this.tripsRepository.create({
@@ -148,8 +207,8 @@ export class TripsService {
       departureDate: new Date(dto.departureDate),
       departureTime: new Date(dto.departureTime),
       price: dto.price,
-      seatTotal: dto.totalSeats || 1,
-      seatAvailable: dto.totalSeats || 1,
+      seatTotal: seatTotal,
+      seatAvailable: seatTotal,
       maxWeightCapacityKg: maxWeight,
       remainingWeightCapacityKg: maxWeight,
       qrCodeTrip,
@@ -232,6 +291,10 @@ export class TripsService {
 
     if (query.vehicleType) {
       filters.vehicleType = query.vehicleType;
+    }
+
+    if (query.serviceType) {
+      filters.serviceType = query.serviceType;
     }
 
     const page = Number(query.page) || 1;
@@ -671,17 +734,13 @@ export class TripsService {
         }
 
         // Kredit dompet customer, debit escrow mitra, dan debit admin fee HANYA jika count === 1
-        const totalPrice = Number(order.totalPrice);
-        const adminFeePercentage = Number(order.adminFeePercentage);
-
-        if (!adminFeePercentage) {
-          throw new BadRequestException(
-            `Admin fee percentage tidak ditemukan untuk order #${order.id}. Data tidak lengkap.`,
-          );
-        }
-
-        const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
-        const netMitraAmount = totalPrice - adminFeeAmount;
+        const adminFeePercentage = Number(order.adminFeePercentage || 10);
+        const financials = computeOrderFinancials({
+          subtotal: (order as any).subtotal || order.totalPrice,
+          totalPrice: order.totalPrice,
+          discountAmount: (order as any).discountAmount,
+          adminFeePercentage,
+        });
 
         // Cari WalletTransaction escrow_hold untuk nominal tersimpan
         const escrowTransaction = await tx.walletTransaction.findFirst({
@@ -700,18 +759,18 @@ export class TripsService {
 
         const storedEscrowAmount = Number(escrowTransaction.amount);
 
-        // Pemeriksaan nyata: refund customer harus sama dengan escrow tersimpan
-        if (totalPrice !== storedEscrowAmount + adminFeeAmount) {
+        // Invariant konsistensi: subtotal === storedEscrowAmount + fee
+        if (financials.subtotal !== storedEscrowAmount + financials.fee) {
           throw new BadRequestException(
-            `Konsistensi uang terganggu untuk order #${order.id}. Total: ${totalPrice}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${adminFeeAmount}`,
+            `Konsistensi uang terganggu untuk order #${order.id}. Subtotal: ${financials.subtotal}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${financials.fee}`,
           );
         }
 
-        totalRefundAmount += totalPrice;
+        totalRefundAmount += financials.customerPaid;
         refundDetails.push({
           orderId: order.id.toString(),
           customerId: order.customerId.toString(),
-          amount: totalPrice,
+          amount: financials.customerPaid,
         });
 
         // a. Kembalikan saldo ke wallet Customer
@@ -729,13 +788,13 @@ export class TripsService {
         }
         await tx.wallet.update({
           where: { id: customerWallet.id },
-          data: { balance: { increment: totalPrice } },
+          data: { balance: { increment: financials.customerPaid } },
         });
         await tx.walletTransaction.create({
           data: {
             walletId: customerWallet.id,
             orderId: order.id,
-            amount: totalPrice,
+            amount: financials.customerPaid,
             type: 'credit',
             description: `Refund Penuh (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
           },
@@ -745,16 +804,16 @@ export class TripsService {
         const mitraEscrowUpdateCount = await tx.wallet.updateMany({
           where: {
             id: mitraWallet.id,
-            heldEscrowBalance: { gte: netMitraAmount },
+            heldEscrowBalance: { gte: financials.netMitra },
           },
           data: {
-            heldEscrowBalance: { decrement: netMitraAmount },
+            heldEscrowBalance: { decrement: financials.netMitra },
           },
         });
 
         if (mitraEscrowUpdateCount.count === 0) {
           this.logger.error(
-            `Saldo escrow mitra tidak mencukupi. Mitra: ${mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${netMitraAmount}`,
+            `Saldo escrow mitra tidak mencukupi. Mitra: ${mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${financials.netMitra}`,
           );
           throw new BadRequestException(
             'Saldo escrow mitra tidak mencukupi untuk pengembalian dana. Arahkan ke pending_admin_review.',
@@ -765,13 +824,13 @@ export class TripsService {
           data: {
             walletId: mitraWallet.id,
             orderId: order.id,
-            amount: netMitraAmount,
+            amount: financials.netMitra,
             type: 'debit',
             description: `Pengembalian Dana Escrow (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
           },
         });
 
-        // c. Tarik admin fee dari wallet Admin dengan syarat saldo mencukupi
+        // c. Tarik admin fee / kembalikan subsidi dari wallet Admin (tanpa guard gte, saldo negatif diizinkan)
         const sysAdminEnv = process.env.SYSTEM_ADMIN_USER_ID;
         const adminId = sysAdminEnv ? BigInt(sysAdminEnv) : null;
         const adminUser = adminId
@@ -802,33 +861,49 @@ export class TripsService {
           );
         }
 
-        const adminUpdateCount = await tx.wallet.updateMany({
-          where: {
-            id: adminWallet.id,
-            balance: { gte: adminFeeAmount },
-          },
-          data: {
-            balance: { decrement: adminFeeAmount },
-          },
-        });
-
-        if (adminUpdateCount.count === 0) {
-          this.logger.error(
-            `Saldo admin tidak mencukupi. Trip: ${tripId}, Order: ${order.id}, Saldo: ${adminWallet.balance}, Dibutuhkan: ${adminFeeAmount}`,
-          );
-          throw new BadRequestException(
-            'Saldo admin tidak mencukupi untuk pengembalian admin fee. Arahkan ke pending_admin_review.',
-          );
+        if (financials.adminNet >= 0) {
+          if (financials.adminNet > 0) {
+            const updatedAdmin = await tx.wallet.update({
+              where: { id: adminWallet.id },
+              data: { balance: { decrement: financials.adminNet } },
+            });
+            if (Number(updatedAdmin.balance) < 0) {
+              this.logger.warn(
+                `Saldo admin menjadi negatif (${updatedAdmin.balance}) setelah pengembalian admin fee order #${order.id}`,
+              );
+            }
+            await tx.walletTransaction.create({
+              data: {
+                walletId: adminWallet.id,
+                orderId: order.id,
+                amount: financials.adminNet,
+                type: 'debit',
+                description: `Pengembalian Admin Fee (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+              },
+            });
+          }
+        } else {
+          // Subsidi dikembalikan ke admin
+          const refundSubsidy = Math.abs(financials.adminNet);
+          await tx.wallet.update({
+            where: { id: adminWallet.id },
+            data: { balance: { increment: refundSubsidy } },
+          });
+          await tx.walletTransaction.create({
+            data: {
+              walletId: adminWallet.id,
+              orderId: order.id,
+              amount: refundSubsidy,
+              type: 'credit',
+              description: `Pengembalian Subsidi Voucher (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+            },
+          });
         }
 
-        await tx.walletTransaction.create({
-          data: {
-            walletId: adminWallet.id,
-            orderId: order.id,
-            amount: adminFeeAmount,
-            type: 'debit',
-            description: `Pengembalian Admin Fee (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
-          },
+        // d. Release voucher redemption
+        await tx.voucherRedemption.updateMany({
+          where: { orderId: order.id },
+          data: { status: 'released' },
         });
 
         // e. Berikan poin kompensasi ke penumpang jika > 0

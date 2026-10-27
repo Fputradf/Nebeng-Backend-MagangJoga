@@ -11,6 +11,7 @@ import {
   TripStatus,
 } from '../../../generated/prisma/enums';
 import { randomBytes } from 'crypto';
+import { computeOrderFinancials } from '../../../common/utils/financial.util';
 
 @Injectable()
 export class CheckpointsRepository {
@@ -138,6 +139,8 @@ export class CheckpointsRepository {
     totalPrice: number,
     adminFeePercentage: number = 10,
     recipientName?: string,
+    subtotal?: number,
+    discountAmount?: number,
   ) {
     const parsedPosId = this.safeParseBigInt(posIdStr);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
@@ -147,8 +150,24 @@ export class CheckpointsRepository {
     }
 
     return this.prisma.$transaction(async (tx) => {
-      const platformFee = totalPrice * (adminFeePercentage / 100);
-      const mitraEarnings = totalPrice - platformFee;
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        select: {
+          subtotal: true,
+          totalPrice: true,
+          discountAmount: true,
+          adminFeePercentage: true,
+        },
+      });
+
+      const financials = computeOrderFinancials({
+        subtotal: order?.subtotal ?? subtotal ?? totalPrice,
+        totalPrice: order?.totalPrice ?? totalPrice,
+        discountAmount: order?.discountAmount ?? discountAmount ?? 0,
+        adminFeePercentage: Number(order?.adminFeePercentage ?? adminFeePercentage),
+      });
+
+      const mitraEarnings = financials.netMitra;
 
       await tx.trip.update({
         where: { id: tripId },
@@ -334,12 +353,13 @@ export class CheckpointsRepository {
         order.status === 'checked_in_origin' ||
         order.escrowStatus === 'held'
       ) {
-        const totalPrice = Number(order.totalPrice);
         const adminFeePercentage = Number(order.adminFeePercentage || 10);
-        const adminFeeAmount = Math.round(
-          (totalPrice * adminFeePercentage) / 100,
-        );
-        const netMitraAmount = totalPrice - adminFeeAmount;
+        const financials = computeOrderFinancials({
+          subtotal: (order as any).subtotal || order.totalPrice,
+          totalPrice: order.totalPrice,
+          discountAmount: (order as any).discountAmount,
+          adminFeePercentage,
+        });
 
         // a. Refund Customer
         let customerWallet = await tx.wallet.findUnique({
@@ -356,13 +376,13 @@ export class CheckpointsRepository {
         }
         await tx.wallet.update({
           where: { id: customerWallet.id },
-          data: { balance: { increment: totalPrice } },
+          data: { balance: { increment: financials.customerPaid } },
         });
         await tx.walletTransaction.create({
           data: {
             walletId: customerWallet.id,
             orderId: order.id,
-            amount: totalPrice,
+            amount: financials.customerPaid,
             type: TransactionType.credit,
             description: `Refund Order Dibatalkan Operator #${order.id}`,
           },
@@ -375,20 +395,20 @@ export class CheckpointsRepository {
         if (mitraWallet) {
           await tx.wallet.update({
             where: { id: mitraWallet.id },
-            data: { heldEscrowBalance: { decrement: netMitraAmount } },
+            data: { heldEscrowBalance: { decrement: financials.netMitra } },
           });
           await tx.walletTransaction.create({
             data: {
               walletId: mitraWallet.id,
               orderId: order.id,
-              amount: netMitraAmount,
+              amount: financials.netMitra,
               type: TransactionType.debit,
               description: `Pengembalian Dana Escrow (Order Dibatalkan) #${order.id}`,
             },
           });
         }
 
-        // c. Deduct Admin Fee from System Admin
+        // c. Deduct Admin Fee / Return Subsidy
         const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
         const parsedSystemAdminId = systemAdminIdEnv
           ? BigInt(systemAdminIdEnv)
@@ -405,22 +425,47 @@ export class CheckpointsRepository {
             where: { userId: adminUser.id },
           });
           if (adminWallet) {
-            await tx.wallet.update({
-              where: { id: adminWallet.id },
-              data: { balance: { decrement: adminFeeAmount } },
-            });
-            await tx.walletTransaction.create({
-              data: {
-                walletId: adminWallet.id,
-                orderId: order.id,
-                amount: adminFeeAmount,
-                type: TransactionType.debit,
-                description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
-              },
-            });
+            if (financials.adminNet >= 0) {
+              if (financials.adminNet > 0) {
+                await tx.wallet.update({
+                  where: { id: adminWallet.id },
+                  data: { balance: { decrement: financials.adminNet } },
+                });
+                await tx.walletTransaction.create({
+                  data: {
+                    walletId: adminWallet.id,
+                    orderId: order.id,
+                    amount: financials.adminNet,
+                    type: TransactionType.debit,
+                    description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
+                  },
+                });
+              }
+            } else {
+              const refundSubsidy = Math.abs(financials.adminNet);
+              await tx.wallet.update({
+                where: { id: adminWallet.id },
+                data: { balance: { increment: refundSubsidy } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: adminWallet.id,
+                  orderId: order.id,
+                  amount: refundSubsidy,
+                  type: TransactionType.credit,
+                  description: `Pengembalian Subsidi Voucher (Order Dibatalkan) #${order.id}`,
+                },
+              });
+            }
           }
         }
       }
+
+      // 2b. Release Voucher Redemption
+      await tx.voucherRedemption.updateMany({
+        where: { orderId: order.id },
+        data: { status: 'released' },
+      });
 
       // 3. Update Order Status
       const updatedOrder = await tx.order.update({
@@ -620,17 +665,13 @@ export class CheckpointsRepository {
         }
 
         // Kredit dompet customer, debit escrow mitra, dan debit admin fee HANYA jika count === 1
-        const totalPrice = Number(order.totalPrice);
-        const adminFeePercentage = Number(order.adminFeePercentage);
-
-        if (!adminFeePercentage) {
-          throw new BadRequestException(
-            `Admin fee percentage tidak ditemukan untuk order #${order.id}. Data tidak lengkap.`,
-          );
-        }
-
-        const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
-        const netMitraAmount = totalPrice - adminFeeAmount;
+        const adminFeePercentage = Number(order.adminFeePercentage || 10);
+        const financials = computeOrderFinancials({
+          subtotal: (order as any).subtotal || order.totalPrice,
+          totalPrice: order.totalPrice,
+          discountAmount: (order as any).discountAmount,
+          adminFeePercentage,
+        });
 
         // Cari WalletTransaction escrow_hold untuk nominal tersimpan
         const escrowTransaction = await tx.walletTransaction.findFirst({
@@ -649,10 +690,10 @@ export class CheckpointsRepository {
 
         const storedEscrowAmount = Number(escrowTransaction.amount);
 
-        // Pemeriksaan nyata: refund customer harus sama dengan escrow tersimpan
-        if (totalPrice !== storedEscrowAmount + adminFeeAmount) {
+        // Invariant konsistensi: subtotal === storedEscrowAmount + fee
+        if (financials.subtotal !== storedEscrowAmount + financials.fee) {
           throw new BadRequestException(
-            `Konsistensi uang terganggu untuk order #${order.id}. Total: ${totalPrice}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${adminFeeAmount}`,
+            `Konsistensi uang terganggu untuk order #${order.id}. Subtotal: ${financials.subtotal}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${financials.fee}`,
           );
         }
 
@@ -671,13 +712,13 @@ export class CheckpointsRepository {
         }
         await tx.wallet.update({
           where: { id: customerWallet.id },
-          data: { balance: { increment: totalPrice } },
+          data: { balance: { increment: financials.customerPaid } },
         });
         await tx.walletTransaction.create({
           data: {
             walletId: customerWallet.id,
             orderId: order.id,
-            amount: totalPrice,
+            amount: financials.customerPaid,
             type: TransactionType.credit,
             description: `Refund (Mitra No-Show) #${order.id}`,
           },
@@ -687,16 +728,16 @@ export class CheckpointsRepository {
         const mitraEscrowUpdateCount = await tx.wallet.updateMany({
           where: {
             id: mitraWallet.id,
-            heldEscrowBalance: { gte: netMitraAmount },
+            heldEscrowBalance: { gte: financials.netMitra },
           },
           data: {
-            heldEscrowBalance: { decrement: netMitraAmount },
+            heldEscrowBalance: { decrement: financials.netMitra },
           },
         });
 
         if (mitraEscrowUpdateCount.count === 0) {
           this.logger.error(
-            `Saldo escrow mitra tidak mencukupi. Mitra: ${trip.mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${netMitraAmount}`,
+            `Saldo escrow mitra tidak mencukupi. Mitra: ${trip.mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${financials.netMitra}`,
           );
           throw new BadRequestException(
             'Saldo escrow mitra tidak mencukupi untuk pengembalian dana. Arahkan ke pending_admin_review.',
@@ -707,13 +748,13 @@ export class CheckpointsRepository {
           data: {
             walletId: mitraWallet.id,
             orderId: order.id,
-            amount: netMitraAmount,
+            amount: financials.netMitra,
             type: TransactionType.debit,
             description: `Pengembalian Dana Escrow (Mitra No-Show) #${order.id}`,
           },
         });
 
-        // c. Deduct Admin Fee from System Admin dengan syarat saldo mencukupi
+        // c. Deduct Admin Fee / Return Subsidy (tanpa guard gte, saldo negatif diizinkan)
         const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
         const parsedSystemAdminId = systemAdminIdEnv
           ? BigInt(systemAdminIdEnv)
@@ -730,36 +771,51 @@ export class CheckpointsRepository {
             where: { userId: adminUser.id },
           });
           if (adminWallet) {
-            const adminUpdateCount = await tx.wallet.updateMany({
-              where: {
-                id: adminWallet.id,
-                balance: { gte: adminFeeAmount },
-              },
-              data: {
-                balance: { decrement: adminFeeAmount },
-              },
-            });
-
-            if (adminUpdateCount.count === 0) {
-              this.logger.error(
-                `Saldo admin tidak mencukupi. Trip: ${tripId}, Order: ${order.id}, Saldo: ${adminWallet.balance}, Dibutuhkan: ${adminFeeAmount}`,
-              );
-              throw new BadRequestException(
-                'Saldo admin tidak mencukupi untuk pengembalian admin fee. Arahkan ke pending_admin_review.',
-              );
+            if (financials.adminNet >= 0) {
+              if (financials.adminNet > 0) {
+                const updatedAdmin = await tx.wallet.update({
+                  where: { id: adminWallet.id },
+                  data: { balance: { decrement: financials.adminNet } },
+                });
+                if (Number(updatedAdmin.balance) < 0) {
+                  this.logger.warn(
+                    `Saldo admin menjadi negatif (${updatedAdmin.balance}) setelah pengembalian admin fee mitra no-show order #${order.id}`,
+                  );
+                }
+                await tx.walletTransaction.create({
+                  data: {
+                    walletId: adminWallet.id,
+                    orderId: order.id,
+                    amount: financials.adminNet,
+                    type: TransactionType.debit,
+                    description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
+                  },
+                });
+              }
+            } else {
+              const refundSubsidy = Math.abs(financials.adminNet);
+              await tx.wallet.update({
+                where: { id: adminWallet.id },
+                data: { balance: { increment: refundSubsidy } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: adminWallet.id,
+                  orderId: order.id,
+                  amount: refundSubsidy,
+                  type: TransactionType.credit,
+                  description: `Pengembalian Subsidi Voucher (Mitra No-Show) #${order.id}`,
+                },
+              });
             }
-
-            await tx.walletTransaction.create({
-              data: {
-                walletId: adminWallet.id,
-                orderId: order.id,
-                amount: adminFeeAmount,
-                type: TransactionType.debit,
-                description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
-              },
-            });
           }
         }
+
+        // d. Release voucher redemption
+        await tx.voucherRedemption.updateMany({
+          where: { orderId: order.id },
+          data: { status: 'released' },
+        });
       }
 
       // 4. Catat riwayat log checkpoint sebagai bukti
@@ -955,12 +1011,13 @@ export class CheckpointsRepository {
           order.status === 'checked_in_origin' ||
           order.escrowStatus === 'held'
         ) {
-          const totalPrice = Number(order.totalPrice);
           const adminFeePercentage = Number(order.adminFeePercentage || 10);
-          const adminFeeAmount = Math.round(
-            (totalPrice * adminFeePercentage) / 100,
-          );
-          const netMitraAmount = totalPrice - adminFeeAmount;
+          const financials = computeOrderFinancials({
+            subtotal: (order as any).subtotal || order.totalPrice,
+            totalPrice: order.totalPrice,
+            discountAmount: (order as any).discountAmount,
+            adminFeePercentage,
+          });
 
           // Refund Customer
           let customerWallet = await tx.wallet.findUnique({
@@ -977,13 +1034,13 @@ export class CheckpointsRepository {
           }
           await tx.wallet.update({
             where: { id: customerWallet.id },
-            data: { balance: { increment: totalPrice } },
+            data: { balance: { increment: financials.customerPaid } },
           });
           await tx.walletTransaction.create({
             data: {
               walletId: customerWallet.id,
               orderId: order.id,
-              amount: totalPrice,
+              amount: financials.customerPaid,
               type: TransactionType.credit,
               description: `Refund (Mitra No-Show) #${order.id}`,
             },
@@ -996,20 +1053,20 @@ export class CheckpointsRepository {
           if (mitraWallet) {
             await tx.wallet.update({
               where: { id: mitraWallet.id },
-              data: { heldEscrowBalance: { decrement: netMitraAmount } },
+              data: { heldEscrowBalance: { decrement: financials.netMitra } },
             });
             await tx.walletTransaction.create({
               data: {
                 walletId: mitraWallet.id,
                 orderId: order.id,
-                amount: netMitraAmount,
+                amount: financials.netMitra,
                 type: TransactionType.debit,
                 description: `Pengembalian Dana Escrow (Mitra No-Show) #${order.id}`,
               },
             });
           }
 
-          // Deduct Admin Fee from System Admin
+          // Deduct Admin Fee / Return Subsidy
           const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
           const parsedSystemAdminId = systemAdminIdEnv
             ? BigInt(systemAdminIdEnv)
@@ -1026,21 +1083,46 @@ export class CheckpointsRepository {
               where: { userId: adminUser.id },
             });
             if (adminWallet) {
-              await tx.wallet.update({
-                where: { id: adminWallet.id },
-                data: { balance: { decrement: adminFeeAmount } },
-              });
-              await tx.walletTransaction.create({
-                data: {
-                  walletId: adminWallet.id,
-                  orderId: order.id,
-                  amount: adminFeeAmount,
-                  type: TransactionType.debit,
-                  description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
-                },
-              });
+              if (financials.adminNet >= 0) {
+                if (financials.adminNet > 0) {
+                  await tx.wallet.update({
+                    where: { id: adminWallet.id },
+                    data: { balance: { decrement: financials.adminNet } },
+                  });
+                  await tx.walletTransaction.create({
+                    data: {
+                      walletId: adminWallet.id,
+                      orderId: order.id,
+                      amount: financials.adminNet,
+                      type: TransactionType.debit,
+                      description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
+                    },
+                  });
+                }
+              } else {
+                const refundSubsidy = Math.abs(financials.adminNet);
+                await tx.wallet.update({
+                  where: { id: adminWallet.id },
+                  data: { balance: { increment: refundSubsidy } },
+                });
+                await tx.walletTransaction.create({
+                  data: {
+                    walletId: adminWallet.id,
+                    orderId: order.id,
+                    amount: refundSubsidy,
+                    type: TransactionType.credit,
+                    description: `Pengembalian Subsidi Voucher (Mitra No-Show) #${order.id}`,
+                  },
+                });
+              }
             }
           }
+
+          // Release voucher redemption
+          await tx.voucherRedemption.updateMany({
+            where: { orderId: order.id },
+            data: { status: 'released' },
+          });
         }
 
         // Update semua orders ke cancelled

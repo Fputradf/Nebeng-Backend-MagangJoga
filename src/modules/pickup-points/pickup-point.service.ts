@@ -10,6 +10,7 @@ import { UpdatePickupPointDto } from './dto/update-pickup-point.dto';
 import { PickupPointMapper } from './mappers/pickup-point.mapper';
 import { randomBytes } from 'crypto';
 import { Role } from '../../generated/prisma/enums';
+import { isPointInPolygon, haversineDistance } from '../../common/utils/geo.util';
 
 @Injectable()
 export class PickupPointService {
@@ -60,8 +61,47 @@ export class PickupPointService {
     }
   }
 
+  private async validateCoordinatesInRegion(
+    regionIdStr: string,
+    latitude: number,
+    longitude: number,
+  ) {
+    const region = await this.pickupPointRepo.findRegionById(regionIdStr);
+    if (!region) return;
+
+    if (region.boundaryPolygon) {
+      const isInside = isPointInPolygon(
+        { latitude, longitude },
+        region.boundaryPolygon,
+      );
+      if (!isInside) {
+        throw new BadRequestException(
+          `Koordinat Pos Resmi (${latitude}, ${longitude}) berada di luar batas poligon wilayah ${region.name}. Silakan tentukan titik pos di dalam area batas wilayah.`,
+        );
+      }
+    } else if (region.latitude && region.longitude && region.radiusKm) {
+      const distance = haversineDistance(
+        Number(region.latitude),
+        Number(region.longitude),
+        latitude,
+        longitude,
+      );
+      const maxRadius = Number(region.radiusKm);
+      if (distance > maxRadius) {
+        throw new BadRequestException(
+          `Koordinat Pos Resmi berjarak ${distance.toFixed(1)} km dari pusat ${region.name}, melebihi radius batas operasional maksimum (${maxRadius} km).`,
+        );
+      }
+    }
+  }
+
   async create(dto: CreatePickupPointDto) {
     await this.validateRegionAndCity(dto.regionId, dto.cityId);
+    await this.validateCoordinatesInRegion(
+      dto.regionId,
+      dto.latitude,
+      dto.longitude,
+    );
 
     if (dto.operatorId) {
       await this.validateOperatorUser(dto.operatorId);
@@ -126,6 +166,23 @@ export class PickupPointService {
       const targetRegionId = dto.regionId || pos.regionId.toString();
       const targetCityId = dto.cityId || pos.cityId.toString();
       await this.validateRegionAndCity(targetRegionId, targetCityId);
+    }
+
+    if (
+      dto.latitude !== undefined ||
+      dto.longitude !== undefined ||
+      dto.regionId
+    ) {
+      const targetRegionId = dto.regionId || pos.regionId.toString();
+      const targetLat =
+        dto.latitude !== undefined ? dto.latitude : Number(pos.latitude);
+      const targetLng =
+        dto.longitude !== undefined ? dto.longitude : Number(pos.longitude);
+      await this.validateCoordinatesInRegion(
+        targetRegionId,
+        targetLat,
+        targetLng,
+      );
     }
 
     if (dto.operatorId) {

@@ -4,8 +4,12 @@ import * as bcrypt from 'bcrypt';
 /**
  * Minimal seed for integration tests.
  * Creates: customer, mitra, region, city, pickup points, vehicle, trip, order with escrow, wallets.
+ *
+ * @param options - Optional configuration for trip service type
+ * @param options.tripServiceType - Service type for the trip (default: mobil)
+ * @param options.orderType - Order type (default: passenger)
  */
-export async function seedMinimalTestData(prisma: PrismaClient) {
+export async function seedMinimalTestData(prisma: PrismaClient, options?: { tripServiceType?: ServiceType; orderType?: OrderType }) {
   // 1. Create Users
   const hashedPassword = await bcrypt.hash('Test@12345', 10);
   const timestamp = Date.now();
@@ -134,6 +138,9 @@ export async function seedMinimalTestData(prisma: PrismaClient) {
   const departureTime = new Date(futureDate);
   departureTime.setHours(10, 0, 0, 0);
 
+  const tripServiceType = options?.tripServiceType || ServiceType.mobil;
+  const isBarang = tripServiceType === ServiceType.barang;
+
   const trip = await prisma.trip.create({
     data: {
       qrCodeTrip: `TRIP-TEST-${timestamp}`,
@@ -145,12 +152,12 @@ export async function seedMinimalTestData(prisma: PrismaClient) {
       mitraId: mitra.id,
       vehicleType: VehicleType.mobil,
       status: TripStatus.scheduled,
-      seatTotal: 4,
-      seatAvailable: 4,
-      maxWeightCapacityKg: 200,
-      remainingWeightCapacityKg: 200,
+      seatTotal: isBarang ? 0 : 4,
+      seatAvailable: isBarang ? 0 : 4,
+      maxWeightCapacityKg: isBarang ? 500 : 200,
+      remainingWeightCapacityKg: isBarang ? 500 : 200,
       price: 158000,
-      serviceType: ServiceType.mobil,
+      serviceType: tripServiceType,
     },
   });
 
@@ -172,6 +179,7 @@ export async function seedMinimalTestData(prisma: PrismaClient) {
   });
 
   // 8. Create Order (paid, with escrow)
+  const orderType = options?.orderType || OrderType.passenger;
   const orderTotalPrice = 158000;
   const adminFeePercentage = 10; // 10% admin fee
   const adminFeeAmount = Math.round((orderTotalPrice * adminFeePercentage) / 100); // 15800
@@ -181,8 +189,10 @@ export async function seedMinimalTestData(prisma: PrismaClient) {
   const order = await prisma.order.create({
     data: {
       qrCodeTicket: `TKT-TEST-${timestamp}`,
-      type: OrderType.passenger,
-      seatsBooked: 1,
+      type: orderType,
+      seatsBooked: orderType === OrderType.passenger ? 1 : 0,
+      totalItemsCount: orderType === OrderType.parcel ? 1 : 0,
+      totalWeightKg: orderType === OrderType.parcel ? 5 : 0,
       totalPrice: orderTotalPrice,
       adminFeePercentage,
       status: OrderStatus.paid,

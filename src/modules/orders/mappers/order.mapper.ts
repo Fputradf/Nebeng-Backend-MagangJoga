@@ -12,6 +12,9 @@ export class OrderMapper {
       seatsBooked: Number(order.seatsBooked),
       totalItemsCount: Number(order.totalItemsCount),
       totalWeightKg: Number(order.totalWeightKg),
+      subtotal: order.subtotal ? Number(order.subtotal) : Number(order.totalPrice),
+      discountAmount: order.discountAmount ? Number(order.discountAmount) : 0,
+      voucherCode: order.voucherCode ?? null,
       totalPrice: Number(order.totalPrice),
       adminFeePercentage: order.adminFeePercentage
         ? Number(order.adminFeePercentage)

@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsArray,
 } from 'class-validator';
 
 export class CreateRegionDto {
@@ -51,6 +50,5 @@ export class CreateRegionDto {
     description: 'Array koordinat poligon batas wilayah (GeoJSON coordinates)',
   })
   @IsOptional()
-  @IsArray()
   boundaryPolygon?: any;
 }

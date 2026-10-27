@@ -41,7 +41,7 @@ describe('V4d - Orders Cancel Admin Wallet Check', () => {
 
     await assertConnectedToTestDb(prisma);
     await cleanTestDatabase(prisma);
-  });
+  }, 60000);
 
   afterAll(async () => {
     await prisma.$disconnect();
@@ -64,10 +64,37 @@ describe('V4d - Orders Cancel Admin Wallet Check', () => {
     process.env.SYSTEM_ADMIN_USER_ID = seedData.admin.id.toString();
 
     try {
+      // Get initial state
+      const orderBefore = await prisma.order.findUnique({
+        where: { id: seedData.order.id },
+      });
+      const customerWalletBefore = await prisma.wallet.findUnique({
+        where: { userId: seedData.customer.id },
+      });
+      const transactionsBefore = await prisma.walletTransaction.findMany({
+        where: { orderId: seedData.order.id },
+      });
+
       // Attempt to cancel order - should throw specific error about missing admin wallet
       await expect(
         ordersService.cancelOrder(seedData.admin, seedData.order.id.toString()),
       ).rejects.toThrow('Wallet admin tidak ditemukan. Hubungi administrator untuk pembuatan wallet.');
+
+      // Verify rollback: nothing changed
+      const orderAfter = await prisma.order.findUnique({
+        where: { id: seedData.order.id },
+      });
+      const customerWalletAfter = await prisma.wallet.findUnique({
+        where: { userId: seedData.customer.id },
+      });
+      const transactionsAfter = await prisma.walletTransaction.findMany({
+        where: { orderId: seedData.order.id },
+      });
+
+      expect(orderAfter?.status).toBe(orderBefore?.status);
+      expect(orderAfter?.escrowStatus).toBe(orderBefore?.escrowStatus);
+      expect(Number(customerWalletAfter?.balance)).toBe(Number(customerWalletBefore?.balance));
+      expect(transactionsAfter.length).toBe(transactionsBefore.length);
     } finally {
       // Restore original env
       process.env.SYSTEM_ADMIN_USER_ID = originalEnv;
@@ -83,10 +110,37 @@ describe('V4d - Orders Cancel Admin Wallet Check', () => {
     process.env.SYSTEM_ADMIN_USER_ID = '999999';
 
     try {
+      // Get initial state
+      const orderBefore = await prisma.order.findUnique({
+        where: { id: seedData.order.id },
+      });
+      const customerWalletBefore = await prisma.wallet.findUnique({
+        where: { userId: seedData.customer.id },
+      });
+      const transactionsBefore = await prisma.walletTransaction.findMany({
+        where: { orderId: seedData.order.id },
+      });
+
       // Attempt to cancel order - should throw specific error about missing admin user
       await expect(
         ordersService.cancelOrder(seedData.admin, seedData.order.id.toString()),
       ).rejects.toThrow('Admin user tidak ditemukan. Hubungi administrator untuk konfigurasi admin.');
+
+      // Verify rollback: nothing changed
+      const orderAfter = await prisma.order.findUnique({
+        where: { id: seedData.order.id },
+      });
+      const customerWalletAfter = await prisma.wallet.findUnique({
+        where: { userId: seedData.customer.id },
+      });
+      const transactionsAfter = await prisma.walletTransaction.findMany({
+        where: { orderId: seedData.order.id },
+      });
+
+      expect(orderAfter?.status).toBe(orderBefore?.status);
+      expect(orderAfter?.escrowStatus).toBe(orderBefore?.escrowStatus);
+      expect(Number(customerWalletAfter?.balance)).toBe(Number(customerWalletBefore?.balance));
+      expect(transactionsAfter.length).toBe(transactionsBefore.length);
     } finally {
       // Restore original env
       process.env.SYSTEM_ADMIN_USER_ID = originalEnv;

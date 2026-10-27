@@ -2882,6 +2882,162 @@
         ]
       }
     },
+    "/api/vouchers/validate": {
+      "post": {
+        "operationId": "VouchersController_validate",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateVoucherDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Validasi dan pratinjau kalkulasi diskon voucher untuk order (Customer)",
+        "tags": [
+          "Vouchers"
+        ]
+      }
+    },
+    "/api/admin/vouchers": {
+      "get": {
+        "operationId": "VouchersAdminController_getAllVouchers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan semua daftar voucher dengan rekapitulasi kuota (Admin)",
+        "tags": [
+          "Admin Vouchers"
+        ]
+      },
+      "post": {
+        "operationId": "VouchersAdminController_createVoucher",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVoucherDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Membuat voucher baru (Admin)",
+        "tags": [
+          "Admin Vouchers"
+        ]
+      }
+    },
+    "/api/admin/vouchers/{id}": {
+      "put": {
+        "operationId": "VouchersAdminController_updateVoucher",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVoucherDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Memperbarui data voucher (Admin)",
+        "tags": [
+          "Admin Vouchers"
+        ]
+      }
+    },
+    "/api/admin/vouchers/{id}/status": {
+      "patch": {
+        "operationId": "VouchersAdminController_updateStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVoucherStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mengaktifkan atau menonaktifkan voucher (Admin)",
+        "tags": [
+          "Admin Vouchers"
+        ]
+      }
+    },
     "/api/wallets/me": {
       "get": {
         "operationId": "WalletsController_getMyWallet",
@@ -2897,6 +3053,85 @@
           }
         ],
         "summary": "Cek saldo & riwayat dompet digital milik sendiri",
+        "tags": [
+          "Wallets"
+        ]
+      }
+    },
+    "/api/wallets/top-up": {
+      "post": {
+        "operationId": "WalletsController_topUp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TopUpWalletDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Invoice Top Up berhasil dibuat"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Membuat invoice Xendit untuk Top Up saldo dompet digital",
+        "tags": [
+          "Wallets"
+        ]
+      }
+    },
+    "/api/wallets/top-up/check-status/{invoiceId}": {
+      "get": {
+        "operationId": "WalletsController_checkTopUpStatus",
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cek status pembayaran invoice Top Up ke Xendit secara manual",
+        "tags": [
+          "Wallets"
+        ]
+      }
+    },
+    "/api/wallets/top-up/sync": {
+      "post": {
+        "operationId": "WalletsController_syncTopUp",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sinkronisasi otomatis seluruh status invoice Top Up dari Xendit",
         "tags": [
           "Wallets"
         ]
@@ -5423,6 +5658,11 @@
             "items": {
               "$ref": "#/components/schemas/CreateOrderItemDto"
             }
+          },
+          "voucherCode": {
+            "type": "string",
+            "example": "HEMAT50",
+            "description": "Kode voucher diskon opsional"
           }
         },
         "required": [
@@ -5440,6 +5680,213 @@
         },
         "required": [
           "reason"
+        ]
+      },
+      "ValidateVoucherDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kode voucher yang akan divalidasi",
+            "example": "HEMAT50"
+          },
+          "orderType": {
+            "type": "string",
+            "enum": [
+              "passenger",
+              "parcel"
+            ],
+            "description": "Jenis pemesanan (passenger atau parcel)",
+            "example": "passenger"
+          },
+          "subtotal": {
+            "type": "number",
+            "description": "Subtotal pemesanan sebelum diskon",
+            "example": 50000
+          }
+        },
+        "required": [
+          "code",
+          "orderType",
+          "subtotal"
+        ]
+      },
+      "CreateVoucherDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kode voucher unik (alfanumerik)",
+            "example": "NEBENGHEMAT50"
+          },
+          "title": {
+            "type": "string",
+            "description": "Judul / nama promosi voucher",
+            "example": "Diskon Spesial 50%"
+          },
+          "description": {
+            "type": "string",
+            "description": "Deskripsi lengkap voucher"
+          },
+          "appliesTo": {
+            "type": "string",
+            "enum": [
+              "passenger",
+              "parcel"
+            ],
+            "description": "Jenis order yang berlaku (null = semua)",
+            "example": "passenger"
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "percentage",
+              "fixed_amount"
+            ],
+            "description": "Tipe potongan (percentage atau fixed_amount)",
+            "example": "percentage"
+          },
+          "discountValue": {
+            "type": "number",
+            "description": "Nilai diskon (persen 1-100 atau nominal Rp)",
+            "example": 50
+          },
+          "maxDiscountAmount": {
+            "type": "number",
+            "description": "Maksimal potongan dalam Rupiah jika tipe percentage",
+            "example": 25000
+          },
+          "minOrderAmount": {
+            "type": "number",
+            "description": "Minimal nilai pesanan (subtotal) dalam Rupiah",
+            "example": 50000,
+            "default": 0
+          },
+          "usageLimit": {
+            "type": "number",
+            "description": "Batas kuota total penggunaan secara global",
+            "example": 100
+          },
+          "usagePerUserLimit": {
+            "type": "number",
+            "description": "Batas kuota penggunaan per pengguna",
+            "example": 1,
+            "default": 1
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Waktu mulai berlaku (ISO date)",
+            "example": "2026-10-27T00:00:00.000Z"
+          },
+          "validUntil": {
+            "type": "string",
+            "description": "Waktu selesai berlaku (ISO date)",
+            "example": "2026-11-27T23:59:59.000Z"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Status aktif voucher",
+            "default": true
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "discountType",
+          "discountValue",
+          "validFrom",
+          "validUntil"
+        ]
+      },
+      "UpdateVoucherDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kode voucher unik (alfanumerik)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Judul / nama promosi voucher"
+          },
+          "description": {
+            "type": "string",
+            "description": "Deskripsi lengkap voucher"
+          },
+          "appliesTo": {
+            "type": "string",
+            "enum": [
+              "passenger",
+              "parcel"
+            ],
+            "description": "Jenis order yang berlaku (null = semua)"
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "percentage",
+              "fixed_amount"
+            ],
+            "description": "Tipe potongan"
+          },
+          "discountValue": {
+            "type": "number",
+            "description": "Nilai diskon"
+          },
+          "maxDiscountAmount": {
+            "type": "object",
+            "description": "Maksimal potongan dalam Rupiah"
+          },
+          "minOrderAmount": {
+            "type": "number",
+            "description": "Minimal nilai pesanan (subtotal) dalam Rupiah"
+          },
+          "usageLimit": {
+            "type": "object",
+            "description": "Batas kuota total penggunaan secara global"
+          },
+          "usagePerUserLimit": {
+            "type": "number",
+            "description": "Batas kuota penggunaan per pengguna"
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Waktu mulai berlaku (ISO date)"
+          },
+          "validUntil": {
+            "type": "string",
+            "description": "Waktu selesai berlaku (ISO date)"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Status aktif voucher"
+          }
+        }
+      },
+      "UpdateVoucherStatusDto": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Status keaktifan voucher",
+            "example": false
+          }
+        },
+        "required": [
+          "isActive"
+        ]
+      },
+      "TopUpWalletDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 50000,
+            "description": "Jumlah saldo yang ingin di-top up"
+          }
+        },
+        "required": [
+          "amount"
         ]
       },
       "WithdrawWalletDto": {
@@ -5465,7 +5912,13 @@
           },
           "paymentGateway": {
             "type": "string",
-            "example": "BANK_TRANSFER / QRIS / MANUAL_SIMULATION"
+            "example": "WALLET",
+            "description": "Metode pembayaran yang diizinkan: BANK_TRANSFER, QRIS, WALLET",
+            "enum": [
+              "BANK_TRANSFER",
+              "QRIS",
+              "WALLET"
+            ]
           },
           "pin": {
             "type": "string",

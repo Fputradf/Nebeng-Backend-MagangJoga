@@ -20,6 +20,7 @@ import {
 } from '../../generated/prisma/enums';
 import { randomBytes, randomInt } from 'crypto';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
 export class OrdersService {
@@ -82,6 +83,15 @@ export class OrdersService {
       throw new BadRequestException(
         'Trip ini sudah tidak menerima pemesanan baru.',
       );
+    }
+
+    // Validate service type compatibility
+    if (trip.serviceType === ServiceType.barang && dto.type === OrderType.passenger) {
+      throw new BadRequestException('Order penumpang tidak dapat dibuat pada trip pengiriman barang.');
+    }
+
+    if (trip.serviceType === ServiceType.mobil && dto.type === OrderType.parcel) {
+      throw new BadRequestException('Order barang tidak dapat dibuat pada trip penumpang.');
     }
 
     const tripDepartureDateTime = this.getTripDepartureDateTime(
@@ -235,10 +245,12 @@ export class OrdersService {
       seatsBooked,
       totalItemsCount,
       totalWeightKg,
+      subtotal: totalPrice,
       totalPrice,
       qrCodeTicket,
       otpClaim,
       adminFeePercentage,
+      voucherCode: dto.voucherCode,
     };
 
     const order = await this.ordersRepository.createOrderWithTransaction(
@@ -309,12 +321,13 @@ export class OrdersService {
         order.status === 'checked_in_origin' ||
         order.escrowStatus === 'held'
       ) {
-        const totalPrice = Number(order.totalPrice);
         const adminFeePercentage = Number(order.adminFeePercentage || 10);
-        const adminFeeAmount = Math.round(
-          (totalPrice * adminFeePercentage) / 100,
-        );
-        const netMitraAmount = totalPrice - adminFeeAmount;
+        const financials = computeOrderFinancials({
+          subtotal: (order as any).subtotal || order.totalPrice,
+          totalPrice: order.totalPrice,
+          discountAmount: (order as any).discountAmount,
+          adminFeePercentage,
+        });
 
         // a. Refund Customer
         let customerWallet = await tx.wallet.findUnique({
@@ -331,13 +344,13 @@ export class OrdersService {
         }
         await tx.wallet.update({
           where: { id: customerWallet.id },
-          data: { balance: { increment: totalPrice } },
+          data: { balance: { increment: financials.customerPaid } },
         });
         await tx.walletTransaction.create({
           data: {
             walletId: customerWallet.id,
             orderId: order.id,
-            amount: totalPrice,
+            amount: financials.customerPaid,
             type: 'credit', // Credit back to customer
             description: `Refund Order Dibatalkan #${order.id}`,
           },
@@ -350,20 +363,20 @@ export class OrdersService {
         if (mitraWallet) {
           await tx.wallet.update({
             where: { id: mitraWallet.id },
-            data: { heldEscrowBalance: { decrement: netMitraAmount } },
+            data: { heldEscrowBalance: { decrement: financials.netMitra } },
           });
           await tx.walletTransaction.create({
             data: {
               walletId: mitraWallet.id,
               orderId: order.id,
-              amount: netMitraAmount,
+              amount: financials.netMitra,
               type: 'debit',
               description: `Pengembalian Dana Escrow (Order Dibatalkan) #${order.id}`,
             },
           });
         }
 
-        // c. Deduct Admin Fee from System Admin
+        // c. Deduct Admin Fee / Return Platform Subsidy to Admin
         const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
         const parsedSystemAdminId = systemAdminIdEnv
           ? BigInt(systemAdminIdEnv)
@@ -390,22 +403,48 @@ export class OrdersService {
           );
         }
 
-        await tx.wallet.update({
-          where: { id: adminWallet.id },
-          data: { balance: { decrement: adminFeeAmount } },
-        });
-        await tx.walletTransaction.create({
-          data: {
-            walletId: adminWallet.id,
-            orderId: order.id,
-            amount: adminFeeAmount,
-            type: 'debit',
-            description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
-          },
-        });
+        if (financials.adminNet >= 0) {
+          if (financials.adminNet > 0) {
+            await tx.wallet.update({
+              where: { id: adminWallet.id },
+              data: { balance: { decrement: financials.adminNet } },
+            });
+            await tx.walletTransaction.create({
+              data: {
+                walletId: adminWallet.id,
+                orderId: order.id,
+                amount: financials.adminNet,
+                type: 'debit',
+                description: `Pengembalian Admin Fee (Order Dibatalkan) #${order.id}`,
+              },
+            });
+          }
+        } else {
+          // Subsidi voucher dikembalikan ke admin
+          const refundSubsidy = Math.abs(financials.adminNet);
+          await tx.wallet.update({
+            where: { id: adminWallet.id },
+            data: { balance: { increment: refundSubsidy } },
+          });
+          await tx.walletTransaction.create({
+            data: {
+              walletId: adminWallet.id,
+              orderId: order.id,
+              amount: refundSubsidy,
+              type: 'credit',
+              description: `Pengembalian Subsidi Voucher (Order Dibatalkan) #${order.id}`,
+            },
+          });
+        }
       }
 
-      // 2. Update Order Status
+      // 2. Release Voucher Redemption jika ada
+      await tx.voucherRedemption.updateMany({
+        where: { orderId: order.id },
+        data: { status: 'released' },
+      });
+
+      // 3. Update Order Status
       const updatedCount = await tx.order.updateMany({
         where: {
           id: order.id,
@@ -423,13 +462,23 @@ export class OrdersService {
         );
       }
 
-      // 3. Restore Quota
+      // 3. Restore Quota - only restore seatAvailable for non-barang trips
+      const trip = await tx.trip.findUnique({
+        where: { id: order.tripId },
+      });
+
+      const updateData: any = {
+        remainingWeightCapacityKg: { increment: weightToRestore },
+      };
+
+      // Only restore seatAvailable if trip is not barang (barang trips always have seatAvailable=0)
+      if (trip && trip.serviceType !== ServiceType.barang) {
+        updateData.seatAvailable = { increment: seatsToRestore };
+      }
+
       await tx.trip.update({
         where: { id: order.tripId },
-        data: {
-          seatAvailable: { increment: seatsToRestore },
-          remainingWeightCapacityKg: { increment: weightToRestore },
-        },
+        data: updateData,
       });
 
       const updatedOrder = await tx.order.findUnique({

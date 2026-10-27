@@ -33,6 +33,8 @@ export type OrderAvgAggregateOutputType = {
   seatsBooked: number | null
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
+  subtotal: runtime.Decimal | null
+  discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
   noShowMarkedBy: number | null
@@ -45,6 +47,8 @@ export type OrderSumAggregateOutputType = {
   seatsBooked: number | null
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
+  subtotal: runtime.Decimal | null
+  discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
   noShowMarkedBy: bigint | null
@@ -58,8 +62,11 @@ export type OrderMinAggregateOutputType = {
   seatsBooked: number | null
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
+  subtotal: runtime.Decimal | null
+  discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  voucherCode: string | null
   qrCodeTicket: string | null
   otpClaim: string | null
   readinessStatus: string | null
@@ -82,8 +89,11 @@ export type OrderMaxAggregateOutputType = {
   seatsBooked: number | null
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
+  subtotal: runtime.Decimal | null
+  discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  voucherCode: string | null
   qrCodeTicket: string | null
   otpClaim: string | null
   readinessStatus: string | null
@@ -106,8 +116,11 @@ export type OrderCountAggregateOutputType = {
   seatsBooked: number
   totalItemsCount: number
   totalWeightKg: number
+  subtotal: number
+  discountAmount: number
   totalPrice: number
   adminFeePercentage: number
+  voucherCode: number
   qrCodeTicket: number
   otpClaim: number
   readinessStatus: number
@@ -131,6 +144,8 @@ export type OrderAvgAggregateInputType = {
   seatsBooked?: true
   totalItemsCount?: true
   totalWeightKg?: true
+  subtotal?: true
+  discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
   noShowMarkedBy?: true
@@ -143,6 +158,8 @@ export type OrderSumAggregateInputType = {
   seatsBooked?: true
   totalItemsCount?: true
   totalWeightKg?: true
+  subtotal?: true
+  discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
   noShowMarkedBy?: true
@@ -156,8 +173,11 @@ export type OrderMinAggregateInputType = {
   seatsBooked?: true
   totalItemsCount?: true
   totalWeightKg?: true
+  subtotal?: true
+  discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
+  voucherCode?: true
   qrCodeTicket?: true
   otpClaim?: true
   readinessStatus?: true
@@ -180,8 +200,11 @@ export type OrderMaxAggregateInputType = {
   seatsBooked?: true
   totalItemsCount?: true
   totalWeightKg?: true
+  subtotal?: true
+  discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
+  voucherCode?: true
   qrCodeTicket?: true
   otpClaim?: true
   readinessStatus?: true
@@ -204,8 +227,11 @@ export type OrderCountAggregateInputType = {
   seatsBooked?: true
   totalItemsCount?: true
   totalWeightKg?: true
+  subtotal?: true
+  discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
+  voucherCode?: true
   qrCodeTicket?: true
   otpClaim?: true
   readinessStatus?: true
@@ -315,8 +341,11 @@ export type OrderGroupByOutputType = {
   seatsBooked: number
   totalItemsCount: number
   totalWeightKg: runtime.Decimal
+  subtotal: runtime.Decimal
+  discountAmount: runtime.Decimal
   totalPrice: runtime.Decimal
   adminFeePercentage: runtime.Decimal
+  voucherCode: string | null
   qrCodeTicket: string
   otpClaim: string | null
   readinessStatus: string | null
@@ -362,8 +391,11 @@ export type OrderWhereInput = {
   seatsBooked?: Prisma.IntFilter<"Order"> | number
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.StringNullableFilter<"Order"> | string | null
   qrCodeTicket?: Prisma.StringFilter<"Order"> | string
   otpClaim?: Prisma.StringNullableFilter<"Order"> | string | null
   readinessStatus?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -385,6 +417,7 @@ export type OrderWhereInput = {
   payments?: Prisma.PaymentListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
+  voucherRedemption?: Prisma.XOR<Prisma.VoucherRedemptionNullableScalarRelationFilter, Prisma.VoucherRedemptionWhereInput> | null
 }
 
 export type OrderOrderByWithRelationInput = {
@@ -395,8 +428,11 @@ export type OrderOrderByWithRelationInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  voucherCode?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCodeTicket?: Prisma.SortOrder
   otpClaim?: Prisma.SortOrderInput | Prisma.SortOrder
   readinessStatus?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -418,6 +454,7 @@ export type OrderOrderByWithRelationInput = {
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   walletTransactions?: Prisma.WalletTransactionOrderByRelationAggregateInput
   noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
+  voucherRedemption?: Prisma.VoucherRedemptionOrderByWithRelationInput
   _relevance?: Prisma.OrderOrderByRelevanceInput
 }
 
@@ -433,8 +470,11 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   seatsBooked?: Prisma.IntFilter<"Order"> | number
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.StringNullableFilter<"Order"> | string | null
   otpClaim?: Prisma.StringNullableFilter<"Order"> | string | null
   readinessStatus?: Prisma.StringNullableFilter<"Order"> | string | null
   status?: Prisma.EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
@@ -455,6 +495,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.PaymentListRelationFilter
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
+  voucherRedemption?: Prisma.XOR<Prisma.VoucherRedemptionNullableScalarRelationFilter, Prisma.VoucherRedemptionWhereInput> | null
 }, "id" | "qrCodeTicket">
 
 export type OrderOrderByWithAggregationInput = {
@@ -465,8 +506,11 @@ export type OrderOrderByWithAggregationInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  voucherCode?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCodeTicket?: Prisma.SortOrder
   otpClaim?: Prisma.SortOrderInput | Prisma.SortOrder
   readinessStatus?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -497,8 +541,11 @@ export type OrderScalarWhereWithAggregatesInput = {
   seatsBooked?: Prisma.IntWithAggregatesFilter<"Order"> | number
   totalItemsCount?: Prisma.IntWithAggregatesFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   qrCodeTicket?: Prisma.StringWithAggregatesFilter<"Order"> | string
   otpClaim?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   readinessStatus?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -519,8 +566,11 @@ export type OrderCreateInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -541,6 +591,7 @@ export type OrderCreateInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateInput = {
@@ -551,8 +602,11 @@ export type OrderUncheckedCreateInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -571,6 +625,7 @@ export type OrderUncheckedCreateInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUpdateInput = {
@@ -579,8 +634,11 @@ export type OrderUpdateInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -601,6 +659,7 @@ export type OrderUpdateInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateInput = {
@@ -611,8 +670,11 @@ export type OrderUncheckedUpdateInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -631,6 +693,7 @@ export type OrderUncheckedUpdateInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateManyInput = {
@@ -641,8 +704,11 @@ export type OrderCreateManyInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -663,8 +729,11 @@ export type OrderUpdateManyMutationInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -686,8 +755,11 @@ export type OrderUncheckedUpdateManyInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -726,8 +798,11 @@ export type OrderCountOrderByAggregateInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  voucherCode?: Prisma.SortOrder
   qrCodeTicket?: Prisma.SortOrder
   otpClaim?: Prisma.SortOrder
   readinessStatus?: Prisma.SortOrder
@@ -749,6 +824,8 @@ export type OrderAvgOrderByAggregateInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
   noShowMarkedBy?: Prisma.SortOrder
@@ -762,8 +839,11 @@ export type OrderMaxOrderByAggregateInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  voucherCode?: Prisma.SortOrder
   qrCodeTicket?: Prisma.SortOrder
   otpClaim?: Prisma.SortOrder
   readinessStatus?: Prisma.SortOrder
@@ -786,8 +866,11 @@ export type OrderMinOrderByAggregateInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  voucherCode?: Prisma.SortOrder
   qrCodeTicket?: Prisma.SortOrder
   otpClaim?: Prisma.SortOrder
   readinessStatus?: Prisma.SortOrder
@@ -809,6 +892,8 @@ export type OrderSumOrderByAggregateInput = {
   seatsBooked?: Prisma.SortOrder
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
   noShowMarkedBy?: Prisma.SortOrder
@@ -1050,14 +1135,31 @@ export type OrderUpdateOneWithoutWalletTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutWalletTransactionsInput, Prisma.OrderUpdateWithoutWalletTransactionsInput>, Prisma.OrderUncheckedUpdateWithoutWalletTransactionsInput>
 }
 
+export type OrderCreateNestedOneWithoutVoucherRedemptionInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedCreateWithoutVoucherRedemptionInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutVoucherRedemptionInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutVoucherRedemptionNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedCreateWithoutVoucherRedemptionInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutVoucherRedemptionInput
+  upsert?: Prisma.OrderUpsertWithoutVoucherRedemptionInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutVoucherRedemptionInput, Prisma.OrderUpdateWithoutVoucherRedemptionInput>, Prisma.OrderUncheckedUpdateWithoutVoucherRedemptionInput>
+}
+
 export type OrderCreateWithoutCustomerInput = {
   id?: bigint | number
   type: $Enums.OrderType
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1077,6 +1179,7 @@ export type OrderCreateWithoutCustomerInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCustomerInput = {
@@ -1086,8 +1189,11 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1106,6 +1212,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCustomerInput = {
@@ -1124,8 +1231,11 @@ export type OrderCreateWithoutNoShowMarkedByUserInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1145,6 +1255,7 @@ export type OrderCreateWithoutNoShowMarkedByUserInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
@@ -1155,8 +1266,11 @@ export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1174,6 +1288,7 @@ export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutNoShowMarkedByUserInput = {
@@ -1213,8 +1328,11 @@ export type OrderScalarWhereInput = {
   seatsBooked?: Prisma.IntFilter<"Order"> | number
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.StringNullableFilter<"Order"> | string | null
   qrCodeTicket?: Prisma.StringFilter<"Order"> | string
   otpClaim?: Prisma.StringNullableFilter<"Order"> | string | null
   readinessStatus?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -1251,8 +1369,11 @@ export type OrderCreateWithoutTripInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1272,6 +1393,7 @@ export type OrderCreateWithoutTripInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutTripInput = {
@@ -1281,8 +1403,11 @@ export type OrderUncheckedCreateWithoutTripInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1301,6 +1426,7 @@ export type OrderUncheckedCreateWithoutTripInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutTripInput = {
@@ -1335,8 +1461,11 @@ export type OrderCreateWithoutItemOrdersInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1356,6 +1485,7 @@ export type OrderCreateWithoutItemOrdersInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutItemOrdersInput = {
@@ -1366,8 +1496,11 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1385,6 +1518,7 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutItemOrdersInput = {
@@ -1409,8 +1543,11 @@ export type OrderUpdateWithoutItemOrdersInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1430,6 +1567,7 @@ export type OrderUpdateWithoutItemOrdersInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutItemOrdersInput = {
@@ -1440,8 +1578,11 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1459,6 +1600,7 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutCheckpointsLogsInput = {
@@ -1467,8 +1609,11 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1488,6 +1633,7 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -1498,8 +1644,11 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1517,6 +1666,7 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -1541,8 +1691,11 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1562,6 +1715,7 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -1572,8 +1726,11 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1591,6 +1748,7 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutNoShowAuditLogsInput = {
@@ -1599,8 +1757,11 @@ export type OrderCreateWithoutNoShowAuditLogsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1620,6 +1781,7 @@ export type OrderCreateWithoutNoShowAuditLogsInput = {
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
@@ -1630,8 +1792,11 @@ export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1649,6 +1814,7 @@ export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutNoShowAuditLogsInput = {
@@ -1673,8 +1839,11 @@ export type OrderUpdateWithoutNoShowAuditLogsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1694,6 +1863,7 @@ export type OrderUpdateWithoutNoShowAuditLogsInput = {
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
@@ -1704,8 +1874,11 @@ export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1723,6 +1896,7 @@ export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutQrSessionsInput = {
@@ -1731,8 +1905,11 @@ export type OrderCreateWithoutQrSessionsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1752,6 +1929,7 @@ export type OrderCreateWithoutQrSessionsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutQrSessionsInput = {
@@ -1762,8 +1940,11 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1781,6 +1962,7 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutQrSessionsInput = {
@@ -1805,8 +1987,11 @@ export type OrderUpdateWithoutQrSessionsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1826,6 +2011,7 @@ export type OrderUpdateWithoutQrSessionsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutQrSessionsInput = {
@@ -1836,8 +2022,11 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1855,6 +2044,7 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutPaymentsInput = {
@@ -1863,8 +2053,11 @@ export type OrderCreateWithoutPaymentsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1884,6 +2077,7 @@ export type OrderCreateWithoutPaymentsInput = {
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutPaymentsInput = {
@@ -1894,8 +2088,11 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -1913,6 +2110,7 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutPaymentsInput = {
@@ -1937,8 +2135,11 @@ export type OrderUpdateWithoutPaymentsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1958,6 +2159,7 @@ export type OrderUpdateWithoutPaymentsInput = {
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutPaymentsInput = {
@@ -1968,8 +2170,11 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1987,6 +2192,7 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutWalletTransactionsInput = {
@@ -1995,8 +2201,11 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -2016,6 +2225,7 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
@@ -2026,8 +2236,11 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -2045,6 +2258,7 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutWalletTransactionsInput = {
@@ -2069,8 +2283,11 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2090,6 +2307,7 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -2100,8 +2318,11 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2119,6 +2340,155 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutVoucherRedemptionInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutVoucherRedemptionInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutVoucherRedemptionInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedCreateWithoutVoucherRedemptionInput>
+}
+
+export type OrderUpsertWithoutVoucherRedemptionInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedUpdateWithoutVoucherRedemptionInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedCreateWithoutVoucherRedemptionInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutVoucherRedemptionInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutVoucherRedemptionInput, Prisma.OrderUncheckedUpdateWithoutVoucherRedemptionInput>
+}
+
+export type OrderUpdateWithoutVoucherRedemptionInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutVoucherRedemptionInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyCustomerInput = {
@@ -2128,8 +2498,11 @@ export type OrderCreateManyCustomerInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -2152,8 +2525,11 @@ export type OrderCreateManyNoShowMarkedByUserInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -2173,8 +2549,11 @@ export type OrderUpdateWithoutCustomerInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2194,6 +2573,7 @@ export type OrderUpdateWithoutCustomerInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCustomerInput = {
@@ -2203,8 +2583,11 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2223,6 +2606,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutCustomerInput = {
@@ -2232,8 +2616,11 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2254,8 +2641,11 @@ export type OrderUpdateWithoutNoShowMarkedByUserInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2275,6 +2665,7 @@ export type OrderUpdateWithoutNoShowMarkedByUserInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
@@ -2285,8 +2676,11 @@ export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2304,6 +2698,7 @@ export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput = {
@@ -2314,8 +2709,11 @@ export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2336,8 +2734,11 @@ export type OrderCreateManyTripInput = {
   seatsBooked?: number
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
   qrCodeTicket: string
   otpClaim?: string | null
   readinessStatus?: string | null
@@ -2358,8 +2759,11 @@ export type OrderUpdateWithoutTripInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2379,6 +2783,7 @@ export type OrderUpdateWithoutTripInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutTripInput = {
@@ -2388,8 +2793,11 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2408,6 +2816,7 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutTripInput = {
@@ -2417,8 +2826,11 @@ export type OrderUncheckedUpdateManyWithoutTripInput = {
   seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
   otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2517,8 +2929,11 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   seatsBooked?: boolean
   totalItemsCount?: boolean
   totalWeightKg?: boolean
+  subtotal?: boolean
+  discountAmount?: boolean
   totalPrice?: boolean
   adminFeePercentage?: boolean
+  voucherCode?: boolean
   qrCodeTicket?: boolean
   otpClaim?: boolean
   readinessStatus?: boolean
@@ -2540,6 +2955,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
+  voucherRedemption?: boolean | Prisma.Order$voucherRedemptionArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
 
@@ -2553,8 +2969,11 @@ export type OrderSelectScalar = {
   seatsBooked?: boolean
   totalItemsCount?: boolean
   totalWeightKg?: boolean
+  subtotal?: boolean
+  discountAmount?: boolean
   totalPrice?: boolean
   adminFeePercentage?: boolean
+  voucherCode?: boolean
   qrCodeTicket?: boolean
   otpClaim?: boolean
   readinessStatus?: boolean
@@ -2569,7 +2988,7 @@ export type OrderSelectScalar = {
   isDisputed?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "totalPrice" | "adminFeePercentage" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt" | "noShowMarkedAt" | "noShowMarkedBy" | "noShowReason" | "disputeDeadline" | "isDisputed", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "subtotal" | "discountAmount" | "totalPrice" | "adminFeePercentage" | "voucherCode" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt" | "noShowMarkedAt" | "noShowMarkedBy" | "noShowReason" | "disputeDeadline" | "isDisputed", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2580,6 +2999,7 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
+  voucherRedemption?: boolean | Prisma.Order$voucherRedemptionArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2595,6 +3015,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
     noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
+    voucherRedemption: Prisma.$VoucherRedemptionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -2604,8 +3025,11 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     seatsBooked: number
     totalItemsCount: number
     totalWeightKg: runtime.Decimal
+    subtotal: runtime.Decimal
+    discountAmount: runtime.Decimal
     totalPrice: runtime.Decimal
     adminFeePercentage: runtime.Decimal
+    voucherCode: string | null
     qrCodeTicket: string
     otpClaim: string | null
     readinessStatus: string | null
@@ -2967,6 +3391,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   payments<T extends Prisma.Order$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   walletTransactions<T extends Prisma.Order$walletTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   noShowAuditLogs<T extends Prisma.Order$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  voucherRedemption<T extends Prisma.Order$voucherRedemptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$voucherRedemptionArgs<ExtArgs>>): Prisma.Prisma__VoucherRedemptionClient<runtime.Types.Result.GetResult<Prisma.$VoucherRedemptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3003,8 +3428,11 @@ export interface OrderFieldRefs {
   readonly seatsBooked: Prisma.FieldRef<"Order", 'Int'>
   readonly totalItemsCount: Prisma.FieldRef<"Order", 'Int'>
   readonly totalWeightKg: Prisma.FieldRef<"Order", 'Decimal'>
+  readonly subtotal: Prisma.FieldRef<"Order", 'Decimal'>
+  readonly discountAmount: Prisma.FieldRef<"Order", 'Decimal'>
   readonly totalPrice: Prisma.FieldRef<"Order", 'Decimal'>
   readonly adminFeePercentage: Prisma.FieldRef<"Order", 'Decimal'>
+  readonly voucherCode: Prisma.FieldRef<"Order", 'String'>
   readonly qrCodeTicket: Prisma.FieldRef<"Order", 'String'>
   readonly otpClaim: Prisma.FieldRef<"Order", 'String'>
   readonly readinessStatus: Prisma.FieldRef<"Order", 'String'>
@@ -3525,6 +3953,25 @@ export type Order$noShowAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.NoShowAuditLogScalarFieldEnum | Prisma.NoShowAuditLogScalarFieldEnum[]
+}
+
+/**
+ * Order.voucherRedemption
+ */
+export type Order$voucherRedemptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VoucherRedemption
+   */
+  select?: Prisma.VoucherRedemptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VoucherRedemption
+   */
+  omit?: Prisma.VoucherRedemptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VoucherRedemptionInclude<ExtArgs> | null
+  where?: Prisma.VoucherRedemptionWhereInput
 }
 
 /**

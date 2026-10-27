@@ -150,7 +150,8 @@ export const TransactionType = {
   credit: 'credit',
   debit: 'debit',
   escrow_hold: 'escrow_hold',
-  escrow_release: 'escrow_release'
+  escrow_release: 'escrow_release',
+  payment: 'payment'
 } as const
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
@@ -162,6 +163,23 @@ export const RewardType = {
 } as const
 
 export type RewardType = (typeof RewardType)[keyof typeof RewardType]
+
+
+export const DiscountType = {
+  percentage: 'percentage',
+  fixed_amount: 'fixed_amount'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const VoucherRedemptionStatus = {
+  reserved: 'reserved',
+  used: 'used',
+  released: 'released'
+} as const
+
+export type VoucherRedemptionStatus = (typeof VoucherRedemptionStatus)[keyof typeof VoucherRedemptionStatus]
 
 
 export const RedemptionStatus = {

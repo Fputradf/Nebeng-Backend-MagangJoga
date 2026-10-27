@@ -19,6 +19,7 @@
 ├── 📄 GPS_TRACKING_IMPLEMENTATION.md
 ├── 📄 HANDOFF_LANGKAH2.md
 ├── 📄 jest.integration.config.js
+├── 📄 migration.sql
 ├── 📄 nest-cli.json
 ├── 📄 NOTIFICATION_SYSTEM_BACKEND_SUMMARY.md
 ├── 📄 package-lock.json
@@ -53,6 +54,10 @@
 │   │   │   └── 📄 migration.sql
 │   │   ├── 📁 20261027000000_add_payment_late_refund_marker/
 │   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261027064344_remove_service_type_default/
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261027130909_add_vouchers/
+│   │   │   └── 📄 migration.sql
 │   │   └── 📄 migration_lock.toml
 │   ├── 📄 run-seed.js
 │   ├── 📄 schema.prisma
@@ -76,8 +81,11 @@
 │   │   │   └── 📄 http-exception.filter.ts
 │   │   ├── 📁 guards/
 │   │   │   └── 📄 roles.guard.ts
-│   │   └── 📁 interceptors/
-│   │       └── 📄 audit-log.interceptor.ts
+│   │   ├── 📁 interceptors/
+│   │   │   └── 📄 audit-log.interceptor.ts
+│   │   └── 📁 utils/
+│   │       ├── 📄 financial.util.ts
+│   │       └── 📄 geo.util.ts
 │   ├── 📄 env-guard.spec.ts
 │   ├── 📁 generated/
 │   │   └── 📁 prisma/
@@ -123,6 +131,8 @@
 │   │       │   ├── 📄 Vehicle.ts
 │   │       │   ├── 📄 Verification.ts
 │   │       │   ├── 📄 VerificationFile.ts
+│   │       │   ├── 📄 Voucher.ts
+│   │       │   ├── 📄 VoucherRedemption.ts
 │   │       │   ├── 📄 Wallet.ts
 │   │       │   └── 📄 WalletTransaction.ts
 │   │       └── 📄 models.ts
@@ -238,6 +248,7 @@
 │   │   │   │   └── 📄 create-order.dto.ts
 │   │   │   ├── 📁 mappers/
 │   │   │   │   └── 📄 order.mapper.ts
+│   │   │   ├── 📄 orders-cancellation.cron.ts
 │   │   │   ├── 📄 orders.controller.ts
 │   │   │   ├── 📄 orders.module.ts
 │   │   │   ├── 📄 orders.service.spec.ts
@@ -362,23 +373,41 @@
 │   │   │   ├── 📄 verification.controller.ts
 │   │   │   ├── 📄 verification.service.ts
 │   │   │   └── 📄 verifications.module.ts
+│   │   ├── 📁 vouchers/
+│   │   │   ├── 📁 dto/
+│   │   │   │   ├── 📄 create-voucher.dto.ts
+│   │   │   │   ├── 📄 update-voucher-status.dto.ts
+│   │   │   │   ├── 📄 update-voucher.dto.ts
+│   │   │   │   └── 📄 validate-voucher.dto.ts
+│   │   │   ├── 📁 mappers/
+│   │   │   │   └── 📄 voucher.mapper.ts
+│   │   │   ├── 📁 repository/
+│   │   │   │   └── 📄 vouchers.repository.ts
+│   │   │   ├── 📄 vouchers-admin.controller.ts
+│   │   │   ├── 📄 vouchers.controller.ts
+│   │   │   ├── 📄 vouchers.module.ts
+│   │   │   └── 📄 vouchers.service.ts
 │   │   └── 📁 wallets/
 │   │       ├── 📁 mappers/
 │   │       │   └── 📄 wallet.mapper.ts
 │   │       ├── 📁 repository/
 │   │       │   └── 📄 wallets.repository.ts
+│   │       ├── 📄 top-up-wallet.dto.ts
 │   │       ├── 📄 wallets.controller.ts
 │   │       ├── 📄 wallets.module.ts
 │   │       ├── 📄 wallets.service.spec.ts
 │   │       ├── 📄 wallets.service.ts
 │   │       └── 📄 withdraw-wallet.dto.ts
 │   ├── 📄 orders-cancel-test.int-spec.ts
+│   ├── 📄 payments-bypass-and-wallet.int-spec.ts
 │   ├── 📁 prisma/
 │   │   ├── 📄 prisma.module.ts
 │   │   └── 📄 prisma.service.ts
 │   ├── 📄 prisma-real-test.int-spec.ts
 │   ├── 📁 test-integration/
-│   └── 📄 upload.controller.ts
+│   ├── 📄 trip-service-type.int-spec.ts
+│   ├── 📄 upload.controller.ts
+│   └── 📄 voucher-orders.int-spec.ts
 ├── 📄 structure.md
 ├── 📄 structure.md.bak
 ├── 📄 structure_clean.md
@@ -409,7 +438,8 @@
     │   ├── 📄 avatar-1788334157596-716724118.jpeg
     │   ├── 📄 avatar-1792504180150-601611566.jpg
     │   ├── 📄 avatar-1792760847474-655824222.jpg
-    │   └── 📄 avatar-1792824417202-368141972.jpg
+    │   ├── 📄 avatar-1792824417202-368141972.jpg
+    │   └── 📄 avatar-1793104629310-192887533.jpg
     ├── 📁 banners/
     │   ├── 📄 banner-1792485389613-613940662.png
     │   ├── 📄 banner-1792485463576-927977587.jpg

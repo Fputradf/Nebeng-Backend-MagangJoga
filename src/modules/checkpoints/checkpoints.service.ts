@@ -21,6 +21,7 @@ import {
 } from '../../generated/prisma/enums';
 import { TrackingGateway } from '../tracking/tracking.gateway';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
 export class CheckpointsService {
@@ -163,9 +164,10 @@ export class CheckpointsService {
     console.log('  Trip Status:', trip.status);
 
     // Find order by ID or QR
-    const order = ticketData.isIdBased
-      ? await this.checkpointsRepository.findOrderById(ticketData.id!)
-      : await this.checkpointsRepository.findOrderByQr(ticketData.id!);
+    const order =
+      ticketData.isIdBased && this.checkpointsRepository.findOrderById
+        ? await this.checkpointsRepository.findOrderById(ticketData.id!)
+        : await this.checkpointsRepository.findOrderByQr(ticketData.id || dto.qrCodeTicket);
 
     if (!order) {
       throw new NotFoundException(
@@ -254,7 +256,7 @@ export class CheckpointsService {
       );
 
       await this.notificationHelper.notifyCheckpointScanned(
-        order.customerId.toString(),
+        order.customerId ? order.customerId.toString() : '',
         'checkin_origin',
         trip.originPoint.name,
       );
@@ -320,9 +322,14 @@ export class CheckpointsService {
       });
       const adminFeePercentage = pricingSetting
         ? Number(pricingSetting.adminFeePercentage)
-        : 10;
+        : (order.adminFeePercentage ? Number(order.adminFeePercentage) : 10);
 
-      const totalPriceNum = Number(order.totalPrice);
+      const financials = computeOrderFinancials({
+        subtotal: (order as any).subtotal || order.totalPrice,
+        totalPrice: order.totalPrice,
+        discountAmount: (order as any).discountAmount,
+        adminFeePercentage,
+      });
 
       const log =
         await this.checkpointsRepository.processCheckinDestinationAndReleaseEscrow(
@@ -332,9 +339,11 @@ export class CheckpointsService {
           operatorUserIdStr,
           trip.mitraId,
           order.customerId,
-          totalPriceNum,
+          financials.customerPaid,
           adminFeePercentage,
           dto.recipientName,
+          financials.subtotal,
+          financials.discount,
         );
 
       // Siarkan pembaruan real-time ke Customer & Regional Admin via WebSocket
@@ -364,10 +373,9 @@ export class CheckpointsService {
         trip.destinationPoint.name,
       );
 
-      const mitraShare = totalPriceNum * (1 - adminFeePercentage / 100);
       await this.notificationHelper.notifyEscrowReleased(
         trip.mitraId.toString(),
-        mitraShare,
+        financials.netMitra,
         order.id.toString(),
       );
 

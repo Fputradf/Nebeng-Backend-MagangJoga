@@ -118,11 +118,23 @@ enum TransactionType {
   debit
   escrow_hold
   escrow_release
+  payment
 }
 
 enum RewardType {
   earn
   redeem
+}
+
+enum DiscountType {
+  percentage
+  fixed_amount
+}
+
+enum VoucherRedemptionStatus {
+  reserved
+  used
+  released
 }
 
 enum RedemptionStatus {
@@ -245,6 +257,7 @@ model User {
   cancelledTrips          Trip[]                  @relation("CancelledBy")
   mitraSanctions          MitraSanction[]
   mitraSanctionAppeals    MitraSanctionAppeal[]
+  voucherRedemptions      VoucherRedemption[]
 
   @@index([role])
   @@index([status])
@@ -368,7 +381,7 @@ model Trip {
   remainingWeightCapacityKg Decimal     @map("remaining_weight_capacity_kg") @db.Decimal(8, 2)
   qrCodeTrip                String      @unique @map("qr_code_trip")
   status                    TripStatus  @default(scheduled)
-  serviceType               ServiceType @default(mobil) @map("service_type")
+  serviceType               ServiceType @map("service_type")
   mapsPolyline              String?     @map("maps_polyline") @db.Text
   createdAt                 DateTime    @default(now()) @map("created_at")
   updatedAt                 DateTime    @updatedAt @map("updated_at")
@@ -411,8 +424,11 @@ model Order {
   seatsBooked        Int          @default(0) @map("seats_booked")
   totalItemsCount    Int          @default(0) @map("total_items_count")
   totalWeightKg      Decimal      @default(0) @map("total_weight_kg") @db.Decimal(8, 2)
+  subtotal           Decimal      @default(0.00) @map("subtotal") @db.Decimal(10, 2)
+  discountAmount     Decimal      @default(0.00) @map("discount_amount") @db.Decimal(10, 2)
   totalPrice         Decimal      @map("total_price") @db.Decimal(10, 2)
   adminFeePercentage Decimal      @default(10.00) @map("admin_fee_percentage") @db.Decimal(5, 2)
+  voucherCode        String?      @map("voucher_code") @db.VarChar(50)
   qrCodeTicket       String       @unique @map("qr_code_ticket")
   otpClaim           String?      @map("otp_claim")
   readinessStatus    String?      @map("readiness_status")
@@ -435,6 +451,7 @@ model Order {
   payments           Payment[]
   walletTransactions WalletTransaction[]
   noShowAuditLogs    NoShowAuditLog[]
+  voucherRedemption  VoucherRedemption?
 
   @@index([status, escrowStatus])
   @@map("orders")
@@ -910,3 +927,49 @@ model MitraSanctionAppeal {
   @@index([mitraId, status])
   @@map("mitra_sanction_appeals")
 }
+
+// ------------------------------------------------------
+// 12. VOUCHERS & DISCOUNTS
+// ------------------------------------------------------
+
+model Voucher {
+  id                BigInt                  @id @default(autoincrement())
+  code              String                  @unique @db.VarChar(50)
+  title             String                  @db.VarChar(150)
+  description       String?                 @db.Text
+  appliesTo         OrderType?              @map("applies_to")
+  discountType      DiscountType            @map("discount_type")
+  discountValue     Decimal                 @map("discount_value") @db.Decimal(10, 2)
+  maxDiscountAmount Decimal?                @map("max_discount_amount") @db.Decimal(10, 2)
+  minOrderAmount    Decimal                 @default(0.00) @map("min_order_amount") @db.Decimal(10, 2)
+  usageLimit        Int?                    @map("usage_limit")
+  usagePerUserLimit Int                     @default(1) @map("usage_per_user_limit")
+  validFrom         DateTime                @map("valid_from")
+  validUntil        DateTime                @map("valid_until")
+  isActive          Boolean                 @default(true) @map("is_active")
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime                @updatedAt @map("updated_at")
+
+  redemptions       VoucherRedemption[]
+
+  @@map("vouchers")
+}
+
+model VoucherRedemption {
+  id             BigInt                  @id @default(autoincrement())
+  voucherId      BigInt                  @map("voucher_id")
+  voucher        Voucher                 @relation(fields: [voucherId], references: [id])
+  userId         BigInt                  @map("user_id")
+  user           User                    @relation(fields: [userId], references: [id])
+  orderId        BigInt                  @unique @map("order_id")
+  order          Order                   @relation(fields: [orderId], references: [id])
+  discountAmount Decimal                 @map("discount_amount") @db.Decimal(10, 2)
+  status         VoucherRedemptionStatus
+  createdAt      DateTime                @default(now()) @map("created_at")
+  updatedAt      DateTime                @updatedAt @map("updated_at")
+
+  @@index([voucherId, status])
+  @@index([userId, voucherId, status])
+  @@map("voucher_redemptions")
+}
+

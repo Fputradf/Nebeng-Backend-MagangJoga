@@ -6,6 +6,7 @@ import {
   PaymentStatus,
   TransactionType,
   TripStatus,
+  VoucherRedemptionStatus,
 } from '../../../generated/prisma/enums';
 
 @Injectable()
@@ -22,6 +23,153 @@ export class PaymentsRepository {
     }
   }
 
+  /**
+   * Logika bersama untuk memproses order menjadi lunas (paid) di dalam satu transaksi Prisma:
+   * - Update order status -> paid, escrowStatus -> held
+   * - Tambah heldEscrowBalance mitra & buat WalletTransaction escrow_hold
+   * - Tambah balance admin fee & buat WalletTransaction credit
+   * - Buat OrderQrSession checkin_origin untuk tiket
+   */
+  private async settleOrderAsPaidInTransaction(
+    tx: any,
+    parsedOrderId: bigint,
+    parsedMitraId: bigint,
+    orderIdStr: string,
+    adminFeeAmount: number,
+    netMitraAmount: number,
+    adminNetAmount?: number,
+  ) {
+    const order = await tx.order.update({
+      where: { id: parsedOrderId },
+      data: {
+        status: OrderStatus.paid,
+        escrowStatus: EscrowStatus.held,
+      },
+      include: {
+        trip: true,
+      },
+    });
+
+    let mitraWallet = await tx.wallet.findUnique({
+      where: { userId: parsedMitraId },
+    });
+
+    if (!mitraWallet) {
+      mitraWallet = await tx.wallet.create({
+        data: {
+          userId: parsedMitraId,
+          balance: 0,
+          heldEscrowBalance: 0,
+        },
+      });
+    }
+
+    const updatedWallet = await tx.wallet.update({
+      where: { id: mitraWallet.id },
+      data: {
+        heldEscrowBalance: { increment: netMitraAmount },
+      },
+    });
+
+    await tx.walletTransaction.create({
+      data: {
+        walletId: updatedWallet.id,
+        orderId: parsedOrderId,
+        amount: netMitraAmount,
+        type: TransactionType.escrow_hold,
+        description: `Dana ditahan Escrow Order #${orderIdStr} (Net Mitra setelah potongan admin)`,
+      },
+    });
+
+    const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
+    const parsedSystemAdminId = systemAdminIdEnv
+      ? this.safeParseBigInt(systemAdminIdEnv)
+      : null;
+
+    const adminUser = parsedSystemAdminId
+      ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
+      : await tx.user.findFirst({
+          where: { role: 'admin' },
+          orderBy: { id: 'asc' },
+        });
+
+    if (adminUser) {
+      let adminWallet = await tx.wallet.findUnique({
+        where: { userId: adminUser.id },
+      });
+
+      if (!adminWallet) {
+        adminWallet = await tx.wallet.create({
+          data: { userId: adminUser.id, balance: 0, heldEscrowBalance: 0 },
+        });
+      }
+
+      const effectiveAdminNet =
+        adminNetAmount !== undefined ? adminNetAmount : adminFeeAmount;
+
+      if (effectiveAdminNet >= 0) {
+        if (effectiveAdminNet > 0) {
+          await tx.wallet.update({
+            where: { id: adminWallet.id },
+            data: { balance: { increment: effectiveAdminNet } },
+          });
+
+          await tx.walletTransaction.create({
+            data: {
+              walletId: adminWallet.id,
+              orderId: parsedOrderId,
+              amount: effectiveAdminNet,
+              type: TransactionType.credit,
+              description: `Pendapatan Admin Fee Order #${orderIdStr}`,
+            },
+          });
+        }
+      } else {
+        // Subsidi voucher: debit admin wallet (saldo admin boleh menjadi negatif)
+        const subsidy = Math.abs(effectiveAdminNet);
+        await tx.wallet.update({
+          where: { id: adminWallet.id },
+          data: { balance: { decrement: subsidy } },
+        });
+
+        await tx.walletTransaction.create({
+          data: {
+            walletId: adminWallet.id,
+            orderId: parsedOrderId,
+            amount: subsidy,
+            type: TransactionType.debit,
+            description: `Subsidi voucher order #${orderIdStr}`,
+          },
+        });
+      }
+    }
+
+    // Ubah status voucher redemption dari reserved menjadi used
+    await tx.voucherRedemption.updateMany({
+      where: {
+        orderId: parsedOrderId,
+        status: VoucherRedemptionStatus.reserved,
+      },
+      data: {
+        status: VoucherRedemptionStatus.used,
+      },
+    });
+
+    // Buat sesi QR Check-in Pos Asal (ORIGIN) untuk tiket ini
+    const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
+    await tx.orderQrSession.create({
+      data: {
+        orderId: order.id,
+        qrToken: order.qrCodeTicket,
+        scanPhase: 'checkin_origin',
+        isUsed: false,
+        expiredAt: tokenExpiry,
+      },
+    });
+
+    return order;
+  }
+
   async processCheckoutTransaction(
     orderIdStr: string,
     mitraUserIdStr: string,
@@ -31,6 +179,7 @@ export class PaymentsRepository {
     adminFeeAmount: number,
     netMitraAmount: number,
     isWebhook: boolean = false,
+    adminNetAmount?: number,
   ) {
     const parsedOrderId = this.safeParseBigInt(orderIdStr);
     const parsedMitraId = this.safeParseBigInt(mitraUserIdStr);
@@ -62,8 +211,8 @@ export class PaymentsRepository {
       const tripStatus = tripLockResult[0].status as TripStatus;
 
       // 3. Baca ulang order dengan SELECT ... FOR UPDATE untuk mendapatkan snapshot terbaru
-      const orderLockResult = await tx.$queryRaw<Array<{ id: bigint; status: string; escrow_status: string }>>`
-        SELECT id, status, escrow_status FROM orders WHERE id = ${parsedOrderId} FOR UPDATE
+      const orderLockResult = await tx.$queryRaw<Array<{ id: bigint; status: string; escrow_status: string; customer_id: bigint }>>`
+        SELECT id, status, escrow_status, customer_id FROM orders WHERE id = ${parsedOrderId} FOR UPDATE
       `;
 
       if (!orderLockResult || orderLockResult.length === 0) {
@@ -71,10 +220,10 @@ export class PaymentsRepository {
       }
 
       const orderStatus = orderLockResult[0].status as string;
-      const orderEscrowStatus = orderLockResult[0].escrow_status as string;
+      const customerId = orderLockResult[0].customer_id;
 
       if (!isWebhook) {
-        // === JALUR CHECKOUT LANGSUNG ===
+        // === JALUR CHECKOUT LANGSUNG (WALLET / GATEWAY) ===
         // 4. Validasi status order dan trip tanpa mengubah data
         if (orderStatus !== 'pending_payment') {
           throw new BadRequestException(
@@ -88,7 +237,40 @@ export class PaymentsRepository {
           );
         }
 
-        // 5. Lanjut ke logika asli: buat Payment dan proses pembayaran
+        // Jika pembayaran memakai saldo WALLET, potong saldo secara kondisional atomik
+        if (paymentGateway === 'WALLET') {
+          const walletUpdateResult = await tx.wallet.updateMany({
+            where: {
+              userId: customerId,
+              balance: { gte: totalAmount },
+            },
+            data: {
+              balance: { decrement: totalAmount },
+            },
+          });
+
+          if (walletUpdateResult.count === 0) {
+            throw new BadRequestException(
+              'Saldo dompet tidak mencukupi untuk melakukan pembayaran.',
+            );
+          }
+
+          const customerWallet = await tx.wallet.findUnique({
+            where: { userId: customerId },
+          });
+
+          await tx.walletTransaction.create({
+            data: {
+              walletId: customerWallet!.id,
+              orderId: parsedOrderId,
+              amount: totalAmount,
+              type: TransactionType.payment,
+              description: `Pembayaran Tiket #${orderIdStr}`,
+            },
+          });
+        }
+
+        // Buat record Payment
         const payment = await tx.payment.create({
           data: {
             orderId: parsedOrderId,
@@ -99,86 +281,16 @@ export class PaymentsRepository {
           },
         });
 
-        const order = await tx.order.update({
-          where: { id: parsedOrderId },
-          data: {
-            status: OrderStatus.paid,
-            escrowStatus: EscrowStatus.held,
-          },
-          include: {
-            trip: true,
-          },
-        });
-
-        let mitraWallet = await tx.wallet.findUnique({
-          where: { userId: parsedMitraId },
-        });
-
-        if (!mitraWallet) {
-          mitraWallet = await tx.wallet.create({
-            data: {
-              userId: parsedMitraId,
-              balance: 0,
-              heldEscrowBalance: 0,
-            },
-          });
-        }
-
-        const updatedWallet = await tx.wallet.update({
-          where: { id: mitraWallet.id },
-          data: {
-            heldEscrowBalance: { increment: netMitraAmount },
-          },
-        });
-
-        await tx.walletTransaction.create({
-          data: {
-            walletId: updatedWallet.id,
-            orderId: parsedOrderId,
-            amount: netMitraAmount,
-            type: TransactionType.escrow_hold,
-            description: `Dana ditahan Escrow Order #${orderIdStr} (Net Mitra setelah potongan admin)`,
-          },
-        });
-
-        const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
-        const parsedSystemAdminId = systemAdminIdEnv
-          ? this.safeParseBigInt(systemAdminIdEnv)
-          : null;
-
-        const adminUser = parsedSystemAdminId
-          ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
-          : await tx.user.findFirst({
-              where: { role: 'admin' },
-              orderBy: { id: 'asc' },
-            });
-
-        if (adminUser) {
-          let adminWallet = await tx.wallet.findUnique({
-            where: { userId: adminUser.id },
-          });
-
-          if (!adminWallet) {
-            adminWallet = await tx.wallet.create({
-              data: { userId: adminUser.id, balance: 0, heldEscrowBalance: 0 },
-            });
-          }
-
-          await tx.wallet.update({
-            where: { id: adminWallet.id },
-            data: { balance: { increment: adminFeeAmount } },
-          });
-
-          await tx.walletTransaction.create({
-            data: {
-              walletId: adminWallet.id,
-              orderId: parsedOrderId,
-              amount: adminFeeAmount,
-              type: TransactionType.credit,
-              description: `Pendapatan Admin Fee Order #${orderIdStr}`,
-            },
-          });
-        }
+        // Jalankan alur bersama order menjadi lunas
+        const order = await this.settleOrderAsPaidInTransaction(
+          tx,
+          parsedOrderId,
+          parsedMitraId,
+          orderIdStr,
+          adminFeeAmount,
+          netMitraAmount,
+          adminNetAmount,
+        );
 
         return { payment, order };
       } else {
@@ -259,86 +371,16 @@ export class PaymentsRepository {
           },
         });
 
-        const order = await tx.order.update({
-          where: { id: parsedOrderId },
-          data: {
-            status: OrderStatus.paid,
-            escrowStatus: EscrowStatus.held,
-          },
-          include: {
-            trip: true,
-          },
-        });
-
-        let mitraWallet = await tx.wallet.findUnique({
-          where: { userId: parsedMitraId },
-        });
-
-        if (!mitraWallet) {
-          mitraWallet = await tx.wallet.create({
-            data: {
-              userId: parsedMitraId,
-              balance: 0,
-              heldEscrowBalance: 0,
-            },
-          });
-        }
-
-        const updatedWallet = await tx.wallet.update({
-          where: { id: mitraWallet.id },
-          data: {
-            heldEscrowBalance: { increment: netMitraAmount },
-          },
-        });
-
-        await tx.walletTransaction.create({
-          data: {
-            walletId: updatedWallet.id,
-            orderId: parsedOrderId,
-            amount: netMitraAmount,
-            type: TransactionType.escrow_hold,
-            description: `Dana ditahan Escrow Order #${orderIdStr} (Net Mitra setelah potongan admin)`,
-          },
-        });
-
-        const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
-        const parsedSystemAdminId = systemAdminIdEnv
-          ? this.safeParseBigInt(systemAdminIdEnv)
-          : null;
-
-        const adminUser = parsedSystemAdminId
-          ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
-          : await tx.user.findFirst({
-              where: { role: 'admin' },
-              orderBy: { id: 'asc' },
-            });
-
-        if (adminUser) {
-          let adminWallet = await tx.wallet.findUnique({
-            where: { userId: adminUser.id },
-          });
-
-          if (!adminWallet) {
-            adminWallet = await tx.wallet.create({
-              data: { userId: adminUser.id, balance: 0, heldEscrowBalance: 0 },
-            });
-          }
-
-          await tx.wallet.update({
-            where: { id: adminWallet.id },
-            data: { balance: { increment: adminFeeAmount } },
-          });
-
-          await tx.walletTransaction.create({
-            data: {
-              walletId: adminWallet.id,
-              orderId: parsedOrderId,
-              amount: adminFeeAmount,
-              type: TransactionType.credit,
-              description: `Pendapatan Admin Fee Order #${orderIdStr}`,
-            },
-          });
-        }
+        // Jalankan alur bersama order menjadi lunas
+        const order = await this.settleOrderAsPaidInTransaction(
+          tx,
+          parsedOrderId,
+          parsedMitraId,
+          orderIdStr,
+          adminFeeAmount,
+          netMitraAmount,
+          adminNetAmount,
+        );
 
         return { payment, order };
       }

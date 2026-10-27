@@ -85,7 +85,9 @@ export const ModelName = {
   NotificationLog: 'NotificationLog',
   UserNotification: 'UserNotification',
   MitraSanction: 'MitraSanction',
-  MitraSanctionAppeal: 'MitraSanctionAppeal'
+  MitraSanctionAppeal: 'MitraSanctionAppeal',
+  Voucher: 'Voucher',
+  VoucherRedemption: 'VoucherRedemption'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -274,8 +276,11 @@ export const OrderScalarFieldEnum = {
   seatsBooked: 'seatsBooked',
   totalItemsCount: 'totalItemsCount',
   totalWeightKg: 'totalWeightKg',
+  subtotal: 'subtotal',
+  discountAmount: 'discountAmount',
   totalPrice: 'totalPrice',
   adminFeePercentage: 'adminFeePercentage',
+  voucherCode: 'voucherCode',
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
   readinessStatus: 'readinessStatus',
@@ -665,6 +670,42 @@ export const MitraSanctionAppealScalarFieldEnum = {
 export type MitraSanctionAppealScalarFieldEnum = (typeof MitraSanctionAppealScalarFieldEnum)[keyof typeof MitraSanctionAppealScalarFieldEnum]
 
 
+export const VoucherScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  title: 'title',
+  description: 'description',
+  appliesTo: 'appliesTo',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  maxDiscountAmount: 'maxDiscountAmount',
+  minOrderAmount: 'minOrderAmount',
+  usageLimit: 'usageLimit',
+  usagePerUserLimit: 'usagePerUserLimit',
+  validFrom: 'validFrom',
+  validUntil: 'validUntil',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
+
+
+export const VoucherRedemptionScalarFieldEnum = {
+  id: 'id',
+  voucherId: 'voucherId',
+  userId: 'userId',
+  orderId: 'orderId',
+  discountAmount: 'discountAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VoucherRedemptionScalarFieldEnum = (typeof VoucherRedemptionScalarFieldEnum)[keyof typeof VoucherRedemptionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -762,6 +803,7 @@ export type TripOrderByRelevanceFieldEnum = (typeof TripOrderByRelevanceFieldEnu
 
 
 export const OrderOrderByRelevanceFieldEnum = {
+  voucherCode: 'voucherCode',
   qrCodeTicket: 'qrCodeTicket',
   otpClaim: 'otpClaim',
   readinessStatus: 'readinessStatus',
@@ -932,4 +974,13 @@ export const MitraSanctionAppealOrderByRelevanceFieldEnum = {
 } as const
 
 export type MitraSanctionAppealOrderByRelevanceFieldEnum = (typeof MitraSanctionAppealOrderByRelevanceFieldEnum)[keyof typeof MitraSanctionAppealOrderByRelevanceFieldEnum]
+
+
+export const VoucherOrderByRelevanceFieldEnum = {
+  code: 'code',
+  title: 'title',
+  description: 'description'
+} as const
+
+export type VoucherOrderByRelevanceFieldEnum = (typeof VoucherOrderByRelevanceFieldEnum)[keyof typeof VoucherOrderByRelevanceFieldEnum]
 

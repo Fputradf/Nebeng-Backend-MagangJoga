@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsArray,
 } from 'class-validator';
 
 export class UpdateRegionDto {
@@ -45,6 +44,5 @@ export class UpdateRegionDto {
     ],
   })
   @IsOptional()
-  @IsArray()
   boundaryPolygon?: any;
 }
