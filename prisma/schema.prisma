@@ -995,3 +995,22 @@ model VoucherRedemption {
   @@map("voucher_redemptions")
 }
 
+// ------------------------------------------------------
+// 11. SOCIAL MEDIA LINKS
+// ------------------------------------------------------
+
+model SocialLink {
+  id         BigInt   @id @default(autoincrement())
+  platform   String   @db.VarChar(100)
+  url        String   @db.LongText
+  logoUrl    String?  @map("logo_url") @db.LongText
+  iconType   String   @default("preset") @map("icon_type") @db.VarChar(50)
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("social_links")
+}
+
+

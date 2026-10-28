@@ -55,6 +55,26 @@
         ]
       }
     },
+    "/api/uploads/social-links": {
+      "post": {
+        "operationId": "UploadController_uploadSocialIcon",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload logo icon sosial media",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    },
     "/api/uploads/verifications/{filename}": {
       "get": {
         "operationId": "UploadController_getVerificationFile",
@@ -4534,6 +4554,162 @@
           "Banners"
         ]
       }
+    },
+    "/api/social-links": {
+      "get": {
+        "operationId": "SocialLinksController_findPublic",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Mendapatkan link sosmed aktif untuk publik / halaman login (max 5)",
+        "tags": [
+          "Social Links"
+        ]
+      },
+      "post": {
+        "operationId": "SocialLinksController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSocialLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Membuat link sosmed baru (Superadmin)",
+        "tags": [
+          "Social Links"
+        ]
+      }
+    },
+    "/api/social-links/admin": {
+      "get": {
+        "operationId": "SocialLinksController_findAllAdmin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan semua link sosmed untuk Superadmin",
+        "tags": [
+          "Social Links"
+        ]
+      }
+    },
+    "/api/social-links/{id}": {
+      "get": {
+        "operationId": "SocialLinksController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan detail link sosmed by ID",
+        "tags": [
+          "Social Links"
+        ]
+      },
+      "patch": {
+        "operationId": "SocialLinksController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSocialLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mengubah link sosmed (Superadmin)",
+        "tags": [
+          "Social Links"
+        ]
+      },
+      "delete": {
+        "operationId": "SocialLinksController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Menghapus link sosmed (Superadmin)",
+        "tags": [
+          "Social Links"
+        ]
+      }
     }
   },
   "info": {
@@ -6388,6 +6564,14 @@
         "properties": {}
       },
       "UpdateBannerDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateSocialLinkDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateSocialLinkDto": {
         "type": "object",
         "properties": {}
       }

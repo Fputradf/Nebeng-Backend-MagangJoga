@@ -123,6 +123,7 @@
 │   │       │   ├── 📄 PushSubscription.ts
 │   │       │   ├── 📄 Region.ts
 │   │       │   ├── 📄 RewardTransaction.ts
+│   │       │   ├── 📄 SocialLink.ts
 │   │       │   ├── 📄 Trip.ts
 │   │       │   ├── 📄 TripQrSession.ts
 │   │       │   ├── 📄 TripReview.ts
@@ -313,6 +314,13 @@
 │   │   │   ├── 📄 rewards.controller.ts
 │   │   │   ├── 📄 rewards.module.ts
 │   │   │   └── 📄 rewards.service.ts
+│   │   ├── 📁 social-links/
+│   │   │   ├── 📁 dto/
+│   │   │   │   ├── 📄 create-social-link.dto.ts
+│   │   │   │   └── 📄 update-social-link.dto.ts
+│   │   │   ├── 📄 social-links.controller.ts
+│   │   │   ├── 📄 social-links.module.ts
+│   │   │   └── 📄 social-links.service.ts
 │   │   ├── 📁 tracking/
 │   │   │   ├── 📁 dto/
 │   │   │   │   └── 📄 update-location.dto.ts

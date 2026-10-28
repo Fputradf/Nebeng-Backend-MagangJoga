@@ -88,7 +88,8 @@ export const ModelName = {
   MitraSanctionAppeal: 'MitraSanctionAppeal',
   Voucher: 'Voucher',
   UserVoucher: 'UserVoucher',
-  VoucherRedemption: 'VoucherRedemption'
+  VoucherRedemption: 'VoucherRedemption',
+  SocialLink: 'SocialLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -718,6 +719,21 @@ export const VoucherRedemptionScalarFieldEnum = {
 export type VoucherRedemptionScalarFieldEnum = (typeof VoucherRedemptionScalarFieldEnum)[keyof typeof VoucherRedemptionScalarFieldEnum]
 
 
+export const SocialLinkScalarFieldEnum = {
+  id: 'id',
+  platform: 'platform',
+  url: 'url',
+  logoUrl: 'logoUrl',
+  iconType: 'iconType',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof typeof SocialLinkScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -995,4 +1011,14 @@ export const VoucherOrderByRelevanceFieldEnum = {
 } as const
 
 export type VoucherOrderByRelevanceFieldEnum = (typeof VoucherOrderByRelevanceFieldEnum)[keyof typeof VoucherOrderByRelevanceFieldEnum]
+
+
+export const SocialLinkOrderByRelevanceFieldEnum = {
+  platform: 'platform',
+  url: 'url',
+  logoUrl: 'logoUrl',
+  iconType: 'iconType'
+} as const
+
+export type SocialLinkOrderByRelevanceFieldEnum = (typeof SocialLinkOrderByRelevanceFieldEnum)[keyof typeof SocialLinkOrderByRelevanceFieldEnum]
 

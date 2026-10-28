@@ -229,3 +229,8 @@ export type UserVoucher = Prisma.UserVoucherModel
  * 
  */
 export type VoucherRedemption = Prisma.VoucherRedemptionModel
+/**
+ * Model SocialLink
+ * 
+ */
+export type SocialLink = Prisma.SocialLinkModel
