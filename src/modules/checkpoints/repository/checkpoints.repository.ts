@@ -619,8 +619,10 @@ export class CheckpointsRepository {
         );
       }
 
-      // 3. Process Refund untuk semua active orders
+      // 3. Process Skenario C: Hanya customer yang sudah check-in di pos asal yang berhak refund
       for (const order of trip.orders) {
+        const isCustomerCheckedIn = order.status === OrderStatus.checked_in_origin;
+
         // Guard level order: updateMany dengan where id + status aktif yang sah
         const orderUpdateCount = await tx.order.updateMany({
           where: {
@@ -629,8 +631,15 @@ export class CheckpointsRepository {
             escrowStatus: EscrowStatus.held,
           },
           data: {
-            status: OrderStatus.cancelled,
+            status: isCustomerCheckedIn ? OrderStatus.cancelled : OrderStatus.no_show,
             escrowStatus: EscrowStatus.refunded,
+            ...(isCustomerCheckedIn
+              ? {}
+              : {
+                  noShowMarkedAt: new Date(),
+                  noShowMarkedBy: parsedUserId,
+                  noShowReason: 'Customer tidak hadir / check in di pos asal saat jadwal trip',
+                }),
           },
         });
 
@@ -697,32 +706,34 @@ export class CheckpointsRepository {
           );
         }
 
-        // a. Refund Customer
-        let customerWallet = await tx.wallet.findUnique({
-          where: { userId: order.customerId },
-        });
-        if (!customerWallet) {
-          customerWallet = await tx.wallet.create({
+        // a. Refund Customer HANYA jika customer sudah check-in di pos asal
+        if (isCustomerCheckedIn) {
+          let customerWallet = await tx.wallet.findUnique({
+            where: { userId: order.customerId },
+          });
+          if (!customerWallet) {
+            customerWallet = await tx.wallet.create({
+              data: {
+                userId: order.customerId,
+                balance: 0,
+                heldEscrowBalance: 0,
+              },
+            });
+          }
+          await tx.wallet.update({
+            where: { id: customerWallet.id },
+            data: { balance: { increment: financials.customerPaid } },
+          });
+          await tx.walletTransaction.create({
             data: {
-              userId: order.customerId,
-              balance: 0,
-              heldEscrowBalance: 0,
+              walletId: customerWallet.id,
+              orderId: order.id,
+              amount: financials.customerPaid,
+              type: TransactionType.credit,
+              description: `Refund (Mitra No-Show, Customer Hadir di Pos) #${order.id}`,
             },
           });
         }
-        await tx.wallet.update({
-          where: { id: customerWallet.id },
-          data: { balance: { increment: financials.customerPaid } },
-        });
-        await tx.walletTransaction.create({
-          data: {
-            walletId: customerWallet.id,
-            orderId: order.id,
-            amount: financials.customerPaid,
-            type: TransactionType.credit,
-            description: `Refund (Mitra No-Show) #${order.id}`,
-          },
-        });
 
         // b. Deduct Escrow from Mitra dengan syarat saldo mencukupi
         const mitraEscrowUpdateCount = await tx.wallet.updateMany({
@@ -1004,8 +1015,12 @@ export class CheckpointsRepository {
         );
       }
 
-      // Process refund untuk semua active orders
+      // Process Skenario C untuk active orders:
+      // Hanya customer yang sudah check-in di pos asal (checked_in_origin) yang berhak mendapat refund.
+      // Customer yang belum check-in (paid) dianggap tidak hadir (no_show) sehingga tiket hangus tanpa refund.
       for (const order of trip.orders) {
+        const isCustomerCheckedIn = order.status === OrderStatus.checked_in_origin;
+
         if (
           order.status === 'paid' ||
           order.status === 'checked_in_origin' ||
@@ -1019,34 +1034,36 @@ export class CheckpointsRepository {
             adminFeePercentage,
           });
 
-          // Refund Customer
-          let customerWallet = await tx.wallet.findUnique({
-            where: { userId: order.customerId },
-          });
-          if (!customerWallet) {
-            customerWallet = await tx.wallet.create({
+          // a. Refund Customer HANYA jika customer sudah check-in di pos asal
+          if (isCustomerCheckedIn) {
+            let customerWallet = await tx.wallet.findUnique({
+              where: { userId: order.customerId },
+            });
+            if (!customerWallet) {
+              customerWallet = await tx.wallet.create({
+                data: {
+                  userId: order.customerId,
+                  balance: 0,
+                  heldEscrowBalance: 0,
+                },
+              });
+            }
+            await tx.wallet.update({
+              where: { id: customerWallet.id },
+              data: { balance: { increment: financials.customerPaid } },
+            });
+            await tx.walletTransaction.create({
               data: {
-                userId: order.customerId,
-                balance: 0,
-                heldEscrowBalance: 0,
+                walletId: customerWallet.id,
+                orderId: order.id,
+                amount: financials.customerPaid,
+                type: TransactionType.credit,
+                description: `Refund (Mitra No-Show, Customer Hadir di Pos) #${order.id}`,
               },
             });
           }
-          await tx.wallet.update({
-            where: { id: customerWallet.id },
-            data: { balance: { increment: financials.customerPaid } },
-          });
-          await tx.walletTransaction.create({
-            data: {
-              walletId: customerWallet.id,
-              orderId: order.id,
-              amount: financials.customerPaid,
-              type: TransactionType.credit,
-              description: `Refund (Mitra No-Show) #${order.id}`,
-            },
-          });
 
-          // Deduct Escrow from Mitra
+          // b. Deduct Escrow from Mitra (karena mitra no show, uang ditarik dari escrow mitra)
           const mitraWallet = await tx.wallet.findUnique({
             where: { userId: trip.mitraId },
           });
@@ -1061,59 +1078,61 @@ export class CheckpointsRepository {
                 orderId: order.id,
                 amount: financials.netMitra,
                 type: TransactionType.debit,
-                description: `Pengembalian Dana Escrow (Mitra No-Show) #${order.id}`,
+                description: `Penarikan Dana Escrow (Mitra No-Show) #${order.id}`,
               },
             });
           }
 
-          // Deduct Admin Fee / Return Subsidy
-          const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
-          const parsedSystemAdminId = systemAdminIdEnv
-            ? BigInt(systemAdminIdEnv)
-            : null;
-          const adminUser = parsedSystemAdminId
-            ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
-            : await tx.user.findFirst({
-                where: { role: 'admin' },
-                orderBy: { id: 'asc' },
-              });
+          // c. Deduct Admin Fee / Return Subsidy jika customer di-refund
+          if (isCustomerCheckedIn) {
+            const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
+            const parsedSystemAdminId = systemAdminIdEnv
+              ? BigInt(systemAdminIdEnv)
+              : null;
+            const adminUser = parsedSystemAdminId
+              ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
+              : await tx.user.findFirst({
+                  where: { role: 'admin' },
+                  orderBy: { id: 'asc' },
+                });
 
-          if (adminUser) {
-            const adminWallet = await tx.wallet.findUnique({
-              where: { userId: adminUser.id },
-            });
-            if (adminWallet) {
-              if (financials.adminNet >= 0) {
-                if (financials.adminNet > 0) {
+            if (adminUser) {
+              const adminWallet = await tx.wallet.findUnique({
+                where: { userId: adminUser.id },
+              });
+              if (adminWallet) {
+                if (financials.adminNet >= 0) {
+                  if (financials.adminNet > 0) {
+                    await tx.wallet.update({
+                      where: { id: adminWallet.id },
+                      data: { balance: { decrement: financials.adminNet } },
+                    });
+                    await tx.walletTransaction.create({
+                      data: {
+                        walletId: adminWallet.id,
+                        orderId: order.id,
+                        amount: financials.adminNet,
+                        type: TransactionType.debit,
+                        description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
+                      },
+                    });
+                  }
+                } else {
+                  const refundSubsidy = Math.abs(financials.adminNet);
                   await tx.wallet.update({
                     where: { id: adminWallet.id },
-                    data: { balance: { decrement: financials.adminNet } },
+                    data: { balance: { increment: refundSubsidy } },
                   });
                   await tx.walletTransaction.create({
                     data: {
                       walletId: adminWallet.id,
                       orderId: order.id,
-                      amount: financials.adminNet,
-                      type: TransactionType.debit,
-                      description: `Pengembalian Admin Fee (Mitra No-Show) #${order.id}`,
+                      amount: refundSubsidy,
+                      type: TransactionType.credit,
+                      description: `Pengembalian Subsidi Voucher (Mitra No-Show) #${order.id}`,
                     },
                   });
                 }
-              } else {
-                const refundSubsidy = Math.abs(financials.adminNet);
-                await tx.wallet.update({
-                  where: { id: adminWallet.id },
-                  data: { balance: { increment: refundSubsidy } },
-                });
-                await tx.walletTransaction.create({
-                  data: {
-                    walletId: adminWallet.id,
-                    orderId: order.id,
-                    amount: refundSubsidy,
-                    type: TransactionType.credit,
-                    description: `Pengembalian Subsidi Voucher (Mitra No-Show) #${order.id}`,
-                  },
-                });
               }
             }
           }
@@ -1125,12 +1144,19 @@ export class CheckpointsRepository {
           });
         }
 
-        // Update semua orders ke cancelled
+        // Update status order: checked_in_origin -> cancelled (refunded), paid -> no_show (tanpa refund)
         await tx.order.update({
           where: { id: order.id },
           data: {
-            status: OrderStatus.cancelled,
+            status: isCustomerCheckedIn ? OrderStatus.cancelled : OrderStatus.no_show,
             escrowStatus: EscrowStatus.refunded,
+            ...(isCustomerCheckedIn
+              ? {}
+              : {
+                  noShowMarkedAt: now,
+                  noShowMarkedBy: operatorId,
+                  noShowReason: 'Customer tidak hadir / check in di pos asal',
+                }),
           },
         });
       }

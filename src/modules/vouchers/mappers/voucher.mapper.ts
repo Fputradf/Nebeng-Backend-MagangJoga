@@ -26,6 +26,7 @@ export class VoucherMapper {
       code: voucher.code,
       title: voucher.title,
       description: voucher.description ?? null,
+      claimType: voucher.claimType || 'direct_platform',
       appliesTo: voucher.appliesTo ?? null,
       discountType: voucher.discountType,
       discountValue: Number(voucher.discountValue),

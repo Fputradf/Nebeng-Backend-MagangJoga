@@ -173,6 +173,14 @@ export const DiscountType = {
 export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
 
 
+export const VoucherClaimType = {
+  code_redemption: 'code_redemption',
+  direct_platform: 'direct_platform'
+} as const
+
+export type VoucherClaimType = (typeof VoucherClaimType)[keyof typeof VoucherClaimType]
+
+
 export const VoucherRedemptionStatus = {
   reserved: 'reserved',
   used: 'used',

@@ -433,6 +433,7 @@ export const ModelName = {
   MitraSanction: 'MitraSanction',
   MitraSanctionAppeal: 'MitraSanctionAppeal',
   Voucher: 'Voucher',
+  UserVoucher: 'UserVoucher',
   VoucherRedemption: 'VoucherRedemption'
 } as const
 
@@ -449,7 +450,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "voucherRedemption"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "userVoucher" | "voucherRedemption"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2829,6 +2830,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UserVoucher: {
+      payload: Prisma.$UserVoucherPayload<ExtArgs>
+      fields: Prisma.UserVoucherFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserVoucherFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserVoucherFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        findFirst: {
+          args: Prisma.UserVoucherFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserVoucherFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        findMany: {
+          args: Prisma.UserVoucherFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>[]
+        }
+        create: {
+          args: Prisma.UserVoucherCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        createMany: {
+          args: Prisma.UserVoucherCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UserVoucherDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        update: {
+          args: Prisma.UserVoucherUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserVoucherDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserVoucherUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UserVoucherUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserVoucherPayload>
+        }
+        aggregate: {
+          args: Prisma.UserVoucherAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserVoucher>
+        }
+        groupBy: {
+          args: Prisma.UserVoucherGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserVoucherGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserVoucherCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserVoucherCountAggregateOutputType> | number
+        }
+      }
+    }
     VoucherRedemption: {
       payload: Prisma.$VoucherRedemptionPayload<ExtArgs>
       fields: Prisma.VoucherRedemptionFieldRefs
@@ -3503,6 +3570,7 @@ export const VoucherScalarFieldEnum = {
   code: 'code',
   title: 'title',
   description: 'description',
+  claimType: 'claimType',
   appliesTo: 'appliesTo',
   discountType: 'discountType',
   discountValue: 'discountValue',
@@ -3518,6 +3586,16 @@ export const VoucherScalarFieldEnum = {
 } as const
 
 export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
+
+
+export const UserVoucherScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  voucherId: 'voucherId',
+  claimedAt: 'claimedAt'
+} as const
+
+export type UserVoucherScalarFieldEnum = (typeof UserVoucherScalarFieldEnum)[keyof typeof UserVoucherScalarFieldEnum]
 
 
 export const VoucherRedemptionScalarFieldEnum = {
@@ -4016,6 +4094,13 @@ export type EnumAppealStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'VoucherClaimType'
+ */
+export type EnumVoucherClaimTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VoucherClaimType'>
+    
+
+
+/**
  * Reference to a field of type 'DiscountType'
  */
 export type EnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscountType'>
@@ -4222,6 +4307,7 @@ export type GlobalOmitConfig = {
   mitraSanction?: Prisma.MitraSanctionOmit
   mitraSanctionAppeal?: Prisma.MitraSanctionAppealOmit
   voucher?: Prisma.VoucherOmit
+  userVoucher?: Prisma.UserVoucherOmit
   voucherRedemption?: Prisma.VoucherRedemptionOmit
 }
 

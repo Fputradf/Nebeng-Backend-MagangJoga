@@ -54,7 +54,7 @@ export class SanctionService {
         return { scoreDeduction: 15, suspensionDays: 0, triggerSuspend: false };
 
       case SanctionViolationType.MITRA_NO_SHOW:
-        return { scoreDeduction: 30, suspensionDays: 7, triggerSuspend: true };
+        return { scoreDeduction: 30, suspensionDays: 1, triggerSuspend: true };
 
       default:
         return { scoreDeduction: 5, suspensionDays: 0, triggerSuspend: false };

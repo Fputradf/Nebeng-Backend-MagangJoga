@@ -5,6 +5,7 @@ import { CheckpointsRepository } from './repository/checkpoints.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException } from '@nestjs/common';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { SanctionService } from '../admin/sanction.service';
 
 describe('CheckpointsService (scanCheckpoint)', () => {
   let service: CheckpointsService;
@@ -86,6 +87,7 @@ describe('CheckpointsService (scanCheckpoint)', () => {
         { provide: TrackingGateway, useValue: trackingGateway },
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificationHelperService, useValue: mockNotificationHelper },
+        { provide: SanctionService, useValue: { applySanction: jest.fn() } },
       ],
     }).compile();
 

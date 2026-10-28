@@ -131,6 +131,11 @@ enum DiscountType {
   fixed_amount
 }
 
+enum VoucherClaimType {
+  code_redemption
+  direct_platform
+}
+
 enum VoucherRedemptionStatus {
   reserved
   used
@@ -258,6 +263,7 @@ model User {
   mitraSanctions          MitraSanction[]
   mitraSanctionAppeals    MitraSanctionAppeal[]
   voucherRedemptions      VoucherRedemption[]
+  userVouchers            UserVoucher[]
 
   @@index([role])
   @@index([status])
@@ -937,6 +943,7 @@ model Voucher {
   code              String                  @unique @db.VarChar(50)
   title             String                  @db.VarChar(150)
   description       String?                 @db.Text
+  claimType         VoucherClaimType        @default(direct_platform) @map("claim_type")
   appliesTo         OrderType?              @map("applies_to")
   discountType      DiscountType            @map("discount_type")
   discountValue     Decimal                 @map("discount_value") @db.Decimal(10, 2)
@@ -951,8 +958,23 @@ model Voucher {
   updatedAt         DateTime                @updatedAt @map("updated_at")
 
   redemptions       VoucherRedemption[]
+  userVouchers      UserVoucher[]
 
   @@map("vouchers")
+}
+
+model UserVoucher {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voucherId BigInt   @map("voucher_id")
+  voucher   Voucher  @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  claimedAt DateTime @default(now()) @map("claimed_at")
+
+  @@unique([userId, voucherId])
+  @@index([userId])
+  @@index([voucherId])
+  @@map("user_vouchers")
 }
 
 model VoucherRedemption {

@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { DiscountType, OrderType } from '../../../generated/prisma/enums';
+import { DiscountType, OrderType, VoucherClaimType } from '../../../generated/prisma/enums';
 
 export class UpdateVoucherDto {
   @ApiPropertyOptional({ description: 'Kode voucher unik (alfanumerik)' })
@@ -29,6 +29,14 @@ export class UpdateVoucherDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({
+    enum: VoucherClaimType,
+    description: 'Metode perolehan voucher (direct_platform atau code_redemption)',
+  })
+  @IsOptional()
+  @IsEnum(VoucherClaimType)
+  claimType?: VoucherClaimType;
 
   @ApiPropertyOptional({ enum: OrderType, description: 'Jenis order yang berlaku (null = semua)' })
   @IsOptional()

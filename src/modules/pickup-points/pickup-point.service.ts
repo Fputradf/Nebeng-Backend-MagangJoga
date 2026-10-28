@@ -45,7 +45,7 @@ export class PickupPointService {
     }
   }
 
-  private async validateRegionAndCity(regionIdStr: string, cityIdStr: string) {
+  private async validateRegionAndCity(regionIdStr: string, cityIdStr?: string) {
     const region = await this.pickupPointRepo.findRegionById(regionIdStr);
     if (!region) {
       throw new NotFoundException(
@@ -53,11 +53,13 @@ export class PickupPointService {
       );
     }
 
-    const city = await this.pickupPointRepo.findCityById(cityIdStr);
-    if (!city) {
-      throw new NotFoundException(
-        `Kota dengan ID ${cityIdStr} tidak ditemukan`,
-      );
+    if (cityIdStr) {
+      const city = await this.pickupPointRepo.findCityById(cityIdStr);
+      if (!city) {
+        throw new NotFoundException(
+          `Kota dengan ID ${cityIdStr} tidak ditemukan`,
+        );
+      }
     }
   }
 
@@ -105,13 +107,41 @@ export class PickupPointService {
 
     if (dto.operatorId) {
       await this.validateOperatorUser(dto.operatorId);
+      await this.pickupPointRepo.assignOperatorRegion(
+        dto.operatorId,
+        dto.regionId,
+      );
+    }
+
+    let resolvedCityId: bigint;
+    if (dto.cityId) {
+      resolvedCityId = BigInt(dto.cityId);
+    } else {
+      const region = await this.pickupPointRepo.findRegionById(dto.regionId);
+      const regionName = region?.name || 'Wilayah';
+      const matchingCity =
+        await this.pickupPointRepo.findCityByRegionName(regionName);
+      if (matchingCity) {
+        resolvedCityId = matchingCity.id;
+      } else {
+        const firstCity = await this.pickupPointRepo.findFirstCity();
+        if (firstCity) {
+          resolvedCityId = firstCity.id;
+        } else {
+          const newCity = await this.pickupPointRepo.createCity(
+            regionName,
+            regionName,
+          );
+          resolvedCityId = newCity.id;
+        }
+      }
     }
 
     const qrCodePos = await this.generateUniqueQrCodePos();
 
     const created = await this.pickupPointRepo.create({
       regionId: BigInt(dto.regionId),
-      cityId: BigInt(dto.cityId),
+      cityId: resolvedCityId,
       operatorId: dto.operatorId ? BigInt(dto.operatorId) : null,
       name: dto.name,
       address: dto.address,
@@ -187,6 +217,10 @@ export class PickupPointService {
 
     if (dto.operatorId) {
       await this.validateOperatorUser(dto.operatorId);
+      await this.pickupPointRepo.assignOperatorRegion(
+        dto.operatorId,
+        dto.regionId || pos.regionId.toString(),
+      );
     }
 
     const updated = await this.pickupPointRepo.update(id, {

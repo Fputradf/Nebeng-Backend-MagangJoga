@@ -127,19 +127,22 @@ export class UserRepository {
       },
     };
 
+    if (role) {
+      where.role = role.toLowerCase() as Role;
+    }
+
     if (regionId) {
       const parsedRegion = this.safeParseBigInt(regionId);
       if (parsedRegion) {
-        where.regionId = parsedRegion;
+        if (role === Role.operator || role?.toLowerCase() === 'operator') {
+          where.OR = [
+            { regionId: parsedRegion },
+            { regionId: null },
+          ];
+        } else {
+          where.regionId = parsedRegion;
+        }
       }
-    }
-
-    if (status && status !== 'All') {
-      where.status = status.toLowerCase() as UserStatus;
-    }
-
-    if (role) {
-      where.role = role.toLowerCase() as Role;
     }
 
     if (search && search.trim() !== '') {

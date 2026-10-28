@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -54,6 +55,12 @@ export class VouchersAdminController {
     @Body() dto: UpdateVoucherStatusDto,
   ) {
     return this.vouchersService.updateVoucherStatus(id, dto.isActive);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Menghapus voucher (Admin)' })
+  async deleteVoucher(@Param('id') id: string) {
+    return this.vouchersService.deleteVoucher(id);
   }
 }
 

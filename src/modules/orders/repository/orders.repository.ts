@@ -77,6 +77,25 @@ export class OrdersRepository {
           throw new BadRequestException('Voucher sudah kedaluwarsa.');
         }
 
+        // 2b. Jika voucher bertipe klaim kode (code_redemption), pastikan customer sudah mengklaimnya
+        const claimType =
+          voucher.claim_type || voucher.claimType || 'direct_platform';
+        if (claimType === 'code_redemption') {
+          const userClaim = await tx.userVoucher.findUnique({
+            where: {
+              userId_voucherId: {
+                userId: BigInt(customerId),
+                voucherId: BigInt(voucher.id),
+              },
+            },
+          });
+          if (!userClaim) {
+            throw new BadRequestException(
+              'Voucher ini memerlukan klaim kode terlebih dahulu. Silakan klaim voucher di menu Voucher Saya.',
+            );
+          }
+        }
+
         // 3. appliesTo cocok order.type
         const appliesTo = voucher.applies_to || voucher.appliesTo;
         if (appliesTo && appliesTo !== orderData.type) {

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { WalletsService } from './wallets.service';
 import { WalletsRepository } from './repository/wallets.repository';
 import { PrismaService } from '../../prisma/prisma.service';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 describe('WalletsService - WITHDRAW_ENABLED Flag', () => {
   let service: WalletsService;
@@ -19,6 +20,11 @@ describe('WalletsService - WITHDRAW_ENABLED Flag', () => {
     userProfile: {
       findUnique: jest.fn(),
     },
+  };
+
+  const mockNotificationHelper = {
+    notifyWithdrawalProcessed: jest.fn(),
+    notifyTopUpSuccess: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -38,6 +44,10 @@ describe('WalletsService - WITHDRAW_ENABLED Flag', () => {
           useValue: {
             get: jest.fn(),
           },
+        },
+        {
+          provide: NotificationHelperService,
+          useValue: mockNotificationHelper,
         },
       ],
     }).compile();

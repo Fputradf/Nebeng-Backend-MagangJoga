@@ -198,6 +198,11 @@ export type MitraSanctionAppeal = Prisma.MitraSanctionAppealModel
  */
 export type Voucher = Prisma.VoucherModel
 /**
+ * Model UserVoucher
+ * 
+ */
+export type UserVoucher = Prisma.UserVoucherModel
+/**
  * Model VoucherRedemption
  * 
  */

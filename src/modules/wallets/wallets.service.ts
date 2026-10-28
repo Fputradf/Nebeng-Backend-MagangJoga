@@ -8,6 +8,7 @@ import { WalletsRepository } from './repository/wallets.repository';
 import { WalletMapper } from './mappers/wallet.mapper';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
 
 @Injectable()
 export class WalletsService {
@@ -15,6 +16,7 @@ export class WalletsService {
     private readonly walletRepository: WalletsRepository,
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
+    private readonly notificationHelper: NotificationHelperService,
   ) {}
 
   private safeParseBigInt(id: string): bigint | null {
@@ -168,6 +170,17 @@ export class WalletsService {
         bankDetails + ` (TRX ID: ${disbursementId})`,
       );
 
+    try {
+      await this.notificationHelper.notifyWithdrawalProcessed(
+        userIdStr,
+        amount,
+        bankDetails,
+        disbursementId,
+      );
+    } catch (notifErr: any) {
+      console.warn(`[Wallet] Gagal mengirim notifikasi penarikan: ${notifErr.message}`);
+    }
+
     return {
       message: `Penarikan saldo sebesar Rp ${amount.toLocaleString('id-ID')} berhasil diproses via Xendit ke rekening ${bankDetails}.`,
       wallet: WalletMapper.toResponse(updatedWallet),
@@ -312,6 +325,16 @@ export class WalletsService {
           desc,
         );
 
+        try {
+          await this.notificationHelper.notifyTopUpSuccess(
+            userIdStr,
+            amount,
+            invoice.id,
+          );
+        } catch (notifErr: any) {
+          console.warn(`[Wallet] Gagal mengirim notifikasi top up: ${notifErr.message}`);
+        }
+
         return {
           status: invoice.status,
           message: `Top up sebesar Rp ${amount.toLocaleString('id-ID')} berhasil!`,
@@ -401,6 +424,16 @@ export class WalletsService {
               wallet = updatedWallet;
             }
             syncedCount++;
+
+            try {
+              await this.notificationHelper.notifyTopUpSuccess(
+                userIdStr,
+                amount,
+                inv.id,
+              );
+            } catch (notifErr: any) {
+              console.warn(`[Wallet] Gagal mengirim notifikasi sync top up: ${notifErr.message}`);
+            }
           }
         }
       }

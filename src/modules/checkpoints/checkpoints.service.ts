@@ -18,9 +18,11 @@ import {
   ScanType,
   ServiceType,
   TripStatus,
+  SanctionViolationType,
 } from '../../generated/prisma/enums';
 import { TrackingGateway } from '../tracking/tracking.gateway';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { SanctionService } from '../admin/sanction.service';
 import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
@@ -30,6 +32,7 @@ export class CheckpointsService {
     private readonly prisma: PrismaService,
     private readonly trackingGateway: TrackingGateway,
     private readonly notificationHelper: NotificationHelperService,
+    private readonly sanctionService: SanctionService,
   ) {}
 
   private safeParseBigInt(
@@ -135,35 +138,17 @@ export class CheckpointsService {
     const operatorUserIdStr = String(currentUser.id);
 
     // Extract ID or QR from scanned codes
-    const tripData = this.extractIdFromQr(dto.qrCodeTrip);
     const ticketData = this.extractIdFromQr(dto.qrCodeTicket);
 
     console.log('🔍 DEBUG SCAN:');
     console.log('  Operator ID:', operatorUserIdStr);
     console.log('  Target Pos ID:', targetPosId);
-    console.log('  Trip QR:', dto.qrCodeTrip);
-    console.log('  Trip Data:', tripData);
+    console.log('  Trip QR:', dto.qrCodeTrip || '(Auto-resolve dari Tiket)');
     console.log('  Ticket QR:', dto.qrCodeTicket);
     console.log('  Ticket Data:', ticketData);
     console.log('  Scan Type:', dto.scanType);
 
-    // Find trip by ID or QR
-    const trip = tripData.isIdBased
-      ? await this.checkpointsRepository.findTripById(tripData.id!)
-      : await this.checkpointsRepository.findTripByQr(tripData.id!);
-
-    if (!trip) {
-      throw new NotFoundException(
-        'Data Trip dengan QR tersebut tidak ditemukan.',
-      );
-    }
-
-    console.log('  Trip Found:', trip.id.toString());
-    console.log('  Trip Origin Pos ID:', trip.originPointId.toString());
-    console.log('  Trip Dest Pos ID:', trip.destinationPointId.toString());
-    console.log('  Trip Status:', trip.status);
-
-    // Find order by ID or QR
+    // Find order by ID or QR first
     const order =
       ticketData.isIdBased && this.checkpointsRepository.findOrderById
         ? await this.checkpointsRepository.findOrderById(ticketData.id!)
@@ -179,11 +164,39 @@ export class CheckpointsService {
     console.log('  Order Status:', order.status);
     console.log('  Order Escrow Status:', order.escrowStatus);
 
-    if (order.tripId !== trip.id) {
-      throw new BadRequestException(
-        'Tiket/Order ini tidak terdaftar pada Trip ini.',
-      );
+    // Find trip by ID/QR or auto-resolve from order
+    let trip: any = null;
+    if (dto.qrCodeTrip) {
+      const tripData = this.extractIdFromQr(dto.qrCodeTrip);
+      trip = tripData.isIdBased
+        ? await this.checkpointsRepository.findTripById(tripData.id!)
+        : await this.checkpointsRepository.findTripByQr(tripData.id!);
+
+      if (!trip) {
+        throw new NotFoundException(
+          'Data Trip dengan QR tersebut tidak ditemukan.',
+        );
+      }
+
+      if (order.tripId !== trip.id) {
+        throw new BadRequestException(
+          'Tiket/Order ini tidak terdaftar pada Trip ini.',
+        );
+      }
+    } else {
+      // Auto-resolve trip from order
+      trip = await this.checkpointsRepository.findTripById(order.tripId.toString());
+      if (!trip) {
+        throw new NotFoundException(
+          'Data Trip yang terhubung dengan Tiket/Order ini tidak ditemukan.',
+        );
+      }
     }
+
+    console.log('  Trip Found:', trip.id.toString());
+    console.log('  Trip Origin Pos ID:', trip.originPointId.toString());
+    console.log('  Trip Dest Pos ID:', trip.destinationPointId.toString());
+    console.log('  Trip Status:', trip.status);
 
     // =========================================================================
     // 1. CHECK-IN POS ASAL (ORIGIN)
@@ -372,6 +385,16 @@ export class CheckpointsService {
         'checkin_destination',
         trip.destinationPoint.name,
       );
+
+      try {
+        await this.notificationHelper.notifyTripArrivedAtDestination(
+          order.customerId.toString(),
+          trip.id.toString(),
+          trip.destinationPoint.name,
+        );
+      } catch (notifErr: any) {
+        console.warn(`[Checkpoints] Gagal kirim notif tiba di pos tujuan: ${notifErr.message}`);
+      }
 
       await this.notificationHelper.notifyEscrowReleased(
         trip.mitraId.toString(),
@@ -585,6 +608,15 @@ export class CheckpointsService {
       operatorUserIdStr,
     );
 
+    // Terapkan sanksi ke Mitra (skor -30, suspensi 1 hari)
+    if (updatedTrip) {
+      await this.sanctionService.applySanction(
+        updatedTrip.mitraId,
+        updatedTrip.id,
+        SanctionViolationType.MITRA_NO_SHOW,
+      );
+    }
+
     // Siarkan pembaruan status mitra no-show via WebSocket
     const originRegionId = trip.originPoint?.regionId
       ? trip.originPoint.regionId.toString()
@@ -597,13 +629,13 @@ export class CheckpointsService {
         tripId: trip.id.toString(),
         scanType: 'mitra_no_show',
         status: TripStatus.mitra_no_show,
-        message: 'Mitra tidak datang ke pos (No-Show). Trip dibatalkan, semua penumpang di-refund.',
+        message: 'Mitra tidak datang ke pos (No-Show). Trip dibatalkan, penumpang check-in di-refund, dan mitra disanksi.',
       },
     );
 
     return {
       message:
-        'Mitra no-show berhasil dicatat. Trip dibatalkan dan semua penumpang di-refund.',
+        'Mitra no-show berhasil dicatat. Trip dibatalkan, penumpang check-in di-refund, dan mitra disanksi.',
       trip: updatedTrip,
     };
   }
@@ -916,6 +948,15 @@ export class CheckpointsService {
       dto.evidenceUrl,
     );
 
+    // Terapkan sanksi ke Mitra (skor -30, suspensi 1 hari)
+    if (updatedTrip) {
+      await this.sanctionService.applySanction(
+        updatedTrip.mitraId,
+        updatedTrip.id,
+        SanctionViolationType.MITRA_NO_SHOW,
+      );
+    }
+
     // Kirim notifikasi ke mitra dan semua penumpang
     await this.notificationHelper.notifyMitraNoShow(
       updatedTrip.mitraId.toString(),
@@ -923,7 +964,7 @@ export class CheckpointsService {
     );
 
     return {
-      message: 'Mitra no-show berhasil dicatat. Trip dibatalkan dan semua penumpang di-refund.',
+      message: 'Mitra no-show berhasil dicatat. Trip dibatalkan, penumpang check-in di-refund, dan mitra disanksi.',
       trip: updatedTrip,
     };
   }

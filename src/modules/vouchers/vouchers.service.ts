@@ -13,6 +13,7 @@ import { VoucherMapper } from './mappers/voucher.mapper';
 import {
   DiscountType,
   OrderType,
+  VoucherClaimType,
   VoucherRedemptionStatus,
 } from '../../generated/prisma/enums';
 
@@ -104,6 +105,29 @@ export class VouchersService {
     }
     if (now > new Date(voucher.validUntil)) {
       throw new BadRequestException('Voucher sudah kedaluwarsa.');
+    }
+
+    // 2b. Jika voucher bertipe klaim kode (code_redemption), pastikan user sudah mengklaimnya
+    if (voucher.claimType === VoucherClaimType.code_redemption) {
+      if (!userId) {
+        throw new BadRequestException(
+          'Voucher ini memerlukan klaim kode terlebih dahulu. Silakan klaim voucher di menu Voucher Saya.',
+        );
+      }
+      const parsedUserId = BigInt(userId.toString());
+      const claim = await prismaClient.userVoucher.findUnique({
+        where: {
+          userId_voucherId: {
+            userId: parsedUserId,
+            voucherId: voucher.id,
+          },
+        },
+      });
+      if (!claim) {
+        throw new BadRequestException(
+          'Voucher ini memerlukan klaim kode terlebih dahulu. Silakan klaim voucher di menu Voucher Saya.',
+        );
+      }
     }
 
     // 3. appliesTo cocok order.type
@@ -213,6 +237,150 @@ export class VouchersService {
     };
   }
 
+  async getAvailableVouchers(userIdStr?: string) {
+    const parsedUserId = userIdStr ? this.safeParseBigInt(userIdStr) : null;
+    const vouchers = await this.vouchersRepository.findAvailableVouchers(
+      parsedUserId ?? undefined,
+    );
+
+    const result: any[] = [];
+    for (const v of vouchers) {
+      let reservedCount = 0;
+      let usedCount = 0;
+      let userUsageCount = 0;
+
+      for (const r of v.redemptions || []) {
+        if (r.status === VoucherRedemptionStatus.reserved) reservedCount++;
+        else if (r.status === VoucherRedemptionStatus.used) usedCount++;
+
+        if (
+          parsedUserId &&
+          r.userId === parsedUserId &&
+          (r.status === VoucherRedemptionStatus.reserved ||
+            r.status === VoucherRedemptionStatus.used)
+        ) {
+          userUsageCount++;
+        }
+      }
+
+      const totalCount = reservedCount + usedCount;
+      const isQuotaExceeded = v.usageLimit !== null && totalCount >= v.usageLimit;
+      const isUserLimitReached = parsedUserId
+        ? userUsageCount >= v.usagePerUserLimit
+        : false;
+
+      result.push({
+        id: v.id.toString(),
+        code: v.code,
+        title: v.title,
+        description: v.description,
+        claimType: v.claimType,
+        appliesTo: v.appliesTo,
+        discountType: v.discountType,
+        discountValue: Number(v.discountValue),
+        maxDiscountAmount: v.maxDiscountAmount
+          ? Number(v.maxDiscountAmount)
+          : null,
+        minOrderAmount: Number(v.minOrderAmount || 0),
+        usageLimit: v.usageLimit,
+        usagePerUserLimit: v.usagePerUserLimit,
+        validFrom: v.validFrom,
+        validUntil: v.validUntil,
+        isActive: v.isActive,
+        usedCount,
+        reservedCount,
+        totalUsageCount: totalCount,
+        userUsageCount,
+        isAvailable: !isQuotaExceeded && !isUserLimitReached,
+        quotaExceeded: isQuotaExceeded,
+        userLimitReached: isUserLimitReached,
+      });
+    }
+
+    return result;
+  }
+
+  async redeemVoucher(userIdStr: string, code: string) {
+    const parsedUserId = this.safeParseBigInt(userIdStr);
+    if (!parsedUserId) {
+      throw new BadRequestException('ID pengguna tidak valid.');
+    }
+
+    if (!code || typeof code !== 'string' || !code.trim()) {
+      throw new BadRequestException('Kode voucher wajib diisi.');
+    }
+
+    const normalizedCode = code.trim().toUpperCase();
+    const voucher = await this.vouchersRepository.findByCode(normalizedCode);
+
+    if (!voucher || !voucher.isActive) {
+      throw new NotFoundException('Kode voucher tidak ditemukan atau tidak aktif.');
+    }
+
+    const now = new Date();
+    if (now < new Date(voucher.validFrom)) {
+      throw new BadRequestException('Voucher belum dapat digunakan.');
+    }
+    if (now > new Date(voucher.validUntil)) {
+      throw new BadRequestException('Voucher sudah kedaluwarsa.');
+    }
+
+    // Opsi B: Mendapatkan langsung dari platform tanpa redeem
+    if (voucher.claimType === VoucherClaimType.direct_platform) {
+      throw new BadRequestException(
+        'Voucher ini sudah Anda miliki secara langsung dari platform dan hanya bisa didapatkan sekali.',
+      );
+    }
+
+    // Opsi A: Mendapatkan melalui redeem kode hanya sekali
+    if (voucher.claimType === VoucherClaimType.code_redemption) {
+      const existingClaim = await this.vouchersRepository.findClaimedVoucher(
+        parsedUserId,
+        voucher.id,
+      );
+      if (existingClaim) {
+        throw new BadRequestException(
+          'Voucher ini sudah Anda miliki / sudah pernah di-redeem dan hanya bisa didapatkan sekali.',
+        );
+      }
+
+      // Cek kuota global
+      if (voucher.usageLimit !== null && voucher.usageLimit !== undefined) {
+        const globalUsageCount = await this.vouchersRepository.countRedemptions(
+          voucher.id,
+          [VoucherRedemptionStatus.reserved, VoucherRedemptionStatus.used],
+        );
+        if (globalUsageCount >= voucher.usageLimit) {
+          throw new BadRequestException('Kuota penggunaan voucher ini sudah habis.');
+        }
+      }
+
+      await this.vouchersRepository.claimVoucher(parsedUserId, voucher.id);
+
+      return {
+        message: 'Voucher berhasil diklaim dan ditambahkan ke daftar voucher Anda!',
+        voucher: {
+          id: voucher.id.toString(),
+          code: voucher.code,
+          title: voucher.title,
+          description: voucher.description,
+          claimType: voucher.claimType,
+          appliesTo: voucher.appliesTo,
+          discountType: voucher.discountType,
+          discountValue: Number(voucher.discountValue),
+          maxDiscountAmount: voucher.maxDiscountAmount
+            ? Number(voucher.maxDiscountAmount)
+            : null,
+          minOrderAmount: Number(voucher.minOrderAmount || 0),
+          validFrom: voucher.validFrom,
+          validUntil: voucher.validUntil,
+        },
+      };
+    }
+
+    throw new BadRequestException('Tipe voucher tidak valid untuk di-redeem.');
+  }
+
   // --- ADMIN APIS ---
   async getAllVouchers() {
     const vouchers = await this.vouchersRepository.findAllWithRedemptionCounts();
@@ -248,6 +416,7 @@ export class VouchersService {
       code: normalizedCode,
       title: dto.title.trim(),
       description: dto.description?.trim() || null,
+      claimType: dto.claimType || VoucherClaimType.direct_platform,
       appliesTo: dto.appliesTo || null,
       discountType: dto.discountType,
       discountValue: dto.discountValue,
@@ -322,6 +491,7 @@ export class VouchersService {
     if (dto.title !== undefined) updateData.title = dto.title.trim();
     if (dto.description !== undefined)
       updateData.description = dto.description?.trim() || null;
+    if (dto.claimType !== undefined) updateData.claimType = dto.claimType;
     if (dto.appliesTo !== undefined) updateData.appliesTo = dto.appliesTo;
     if (dto.discountType !== undefined)
       updateData.discountType = dto.discountType;
@@ -382,6 +552,34 @@ export class VouchersService {
       isActive,
     );
     return VoucherMapper.toResponse(updated);
+  }
+
+  async deleteVoucher(idStr: string) {
+    const parsedId = this.safeParseBigInt(idStr);
+    if (!parsedId) {
+      throw new BadRequestException('ID voucher tidak valid.');
+    }
+
+    const voucher = await this.vouchersRepository.findById(parsedId);
+    if (!voucher) {
+      throw new NotFoundException('Voucher tidak ditemukan.');
+    }
+
+    const hasRedemptions =
+      await this.vouchersRepository.hasAnyRedemptions(parsedId);
+
+    if (hasRedemptions) {
+      throw new BadRequestException(
+        'Voucher tidak dapat dihapus karena sudah memiliki riwayat penggunaan pada pesanan. Silakan nonaktifkan voucher sebagai gantinya.',
+      );
+    }
+
+    await this.vouchersRepository.delete(parsedId);
+
+    return {
+      message: `Voucher '${voucher.code}' berhasil dihapus.`,
+      id: idStr,
+    };
   }
 }
 

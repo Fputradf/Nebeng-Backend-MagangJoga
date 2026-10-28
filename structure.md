@@ -58,6 +58,8 @@
 │   │   │   └── 📄 migration.sql
 │   │   ├── 📁 20261027130909_add_vouchers/
 │   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261028160000_add_user_vouchers/
+│   │   │   └── 📄 migration.sql
 │   │   └── 📄 migration_lock.toml
 │   ├── 📄 run-seed.js
 │   ├── 📄 schema.prisma
@@ -128,6 +130,7 @@
 │   │       │   ├── 📄 User.ts
 │   │       │   ├── 📄 UserNotification.ts
 │   │       │   ├── 📄 UserProfile.ts
+│   │       │   ├── 📄 UserVoucher.ts
 │   │       │   ├── 📄 Vehicle.ts
 │   │       │   ├── 📄 Verification.ts
 │   │       │   ├── 📄 VerificationFile.ts
@@ -330,6 +333,7 @@
 │   │   │   │   └── 📄 trip.mapper.ts
 │   │   │   ├── 📁 repository/
 │   │   │   │   └── 📄 trips.repository.ts
+│   │   │   ├── 📄 trips-expiration.cron.ts
 │   │   │   ├── 📄 trips.controller.ts
 │   │   │   ├── 📄 trips.module.ts
 │   │   │   ├── 📄 trips.service.spec.ts
@@ -376,6 +380,7 @@
 │   │   ├── 📁 vouchers/
 │   │   │   ├── 📁 dto/
 │   │   │   │   ├── 📄 create-voucher.dto.ts
+│   │   │   │   ├── 📄 redeem-voucher.dto.ts
 │   │   │   │   ├── 📄 update-voucher-status.dto.ts
 │   │   │   │   ├── 📄 update-voucher.dto.ts
 │   │   │   │   └── 📄 validate-voucher.dto.ts
@@ -386,6 +391,7 @@
 │   │   │   ├── 📄 vouchers-admin.controller.ts
 │   │   │   ├── 📄 vouchers.controller.ts
 │   │   │   ├── 📄 vouchers.module.ts
+│   │   │   ├── 📄 vouchers.service.spec.ts
 │   │   │   └── 📄 vouchers.service.ts
 │   │   └── 📁 wallets/
 │   │       ├── 📁 mappers/

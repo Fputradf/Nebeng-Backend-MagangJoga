@@ -234,6 +234,13 @@ export class TripsService {
         gte: startOfDay,
         lte: endOfDay,
       };
+    } else if (!query.status || query.status === TripStatus.scheduled) {
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      const startOfToday = new Date(`${todayStr}T00:00:00.000Z`);
+      filters.departureDate = {
+        gte: startOfToday,
+      };
     }
 
     if (query.search) {
@@ -318,7 +325,26 @@ export class TripsService {
       userOrders.forEach((o) => bookedTripIds.add(o.tripId.toString()));
     }
 
-    const mappedTrips = TripMapper.toResponseList(trips) as any[];
+    const now = new Date();
+    const TOLERANCE_MS = 15 * 60 * 1000;
+    const availableTrips = (!query.status || query.status === TripStatus.scheduled)
+      ? trips.filter((trip) => {
+          if (trip.status === TripStatus.scheduled) {
+            try {
+              const departureDateTime = this.combineDateAndTime(
+                trip.departureDate.toISOString(),
+                trip.departureTime.toISOString(),
+              );
+              return departureDateTime.getTime() + TOLERANCE_MS >= now.getTime();
+            } catch {
+              return true;
+            }
+          }
+          return true;
+        })
+      : trips;
+
+    const mappedTrips = TripMapper.toResponseList(availableTrips) as any[];
     const responseList = mappedTrips.map((trip) => ({
       ...trip,
       isBookedByMe: bookedTripIds.has(trip.id),
@@ -440,6 +466,41 @@ export class TripsService {
     }
 
     const updated = await this.tripsRepository.update(idStr, updateData);
+
+    // Jika Mitra update status bahwa sudah sampai di pos asal (in_origin_pos)
+    if (dto.status === TripStatus.in_origin_pos) {
+      try {
+        const activeOrders = await this.prisma.order.findMany({
+          where: {
+            tripId: trip.id,
+            status: {
+              in: [OrderStatus.paid, OrderStatus.checked_in_origin],
+            },
+          },
+          select: {
+            customerId: true,
+          },
+        });
+
+        const customerIds = [
+          ...new Set(activeOrders.map((o) => o.customerId.toString())),
+        ];
+
+        for (const cid of customerIds) {
+          await this.notificationHelper.notifyMitraArrivedAtOrigin(
+            cid,
+            trip.id.toString(),
+            trip.originPoint?.name || 'Pos Asal',
+            trip.mitra?.name || 'Mitra Nebeng',
+          );
+        }
+      } catch (err: any) {
+        this.logger.warn(
+          `Gagal mengirim notifikasi kedatangan mitra untuk trip #${idStr}: ${err.message}`,
+        );
+      }
+    }
+
     return TripMapper.toResponse(updated);
   }
 

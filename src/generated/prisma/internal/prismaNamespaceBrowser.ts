@@ -87,6 +87,7 @@ export const ModelName = {
   MitraSanction: 'MitraSanction',
   MitraSanctionAppeal: 'MitraSanctionAppeal',
   Voucher: 'Voucher',
+  UserVoucher: 'UserVoucher',
   VoucherRedemption: 'VoucherRedemption'
 } as const
 
@@ -675,6 +676,7 @@ export const VoucherScalarFieldEnum = {
   code: 'code',
   title: 'title',
   description: 'description',
+  claimType: 'claimType',
   appliesTo: 'appliesTo',
   discountType: 'discountType',
   discountValue: 'discountValue',
@@ -690,6 +692,16 @@ export const VoucherScalarFieldEnum = {
 } as const
 
 export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
+
+
+export const UserVoucherScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  voucherId: 'voucherId',
+  claimedAt: 'claimedAt'
+} as const
+
+export type UserVoucherScalarFieldEnum = (typeof UserVoucherScalarFieldEnum)[keyof typeof UserVoucherScalarFieldEnum]
 
 
 export const VoucherRedemptionScalarFieldEnum = {
