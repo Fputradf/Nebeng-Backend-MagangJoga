@@ -1067,10 +1067,12 @@ export type OrderCreateNestedOneWithoutCheckpointsLogsInput = {
   connect?: Prisma.OrderWhereUniqueInput
 }
 
-export type OrderUpdateOneRequiredWithoutCheckpointsLogsNestedInput = {
+export type OrderUpdateOneWithoutCheckpointsLogsNestedInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutCheckpointsLogsInput, Prisma.OrderUncheckedCreateWithoutCheckpointsLogsInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCheckpointsLogsInput
   upsert?: Prisma.OrderUpsertWithoutCheckpointsLogsInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
   connect?: Prisma.OrderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutCheckpointsLogsInput, Prisma.OrderUpdateWithoutCheckpointsLogsInput>, Prisma.OrderUncheckedUpdateWithoutCheckpointsLogsInput>
 }

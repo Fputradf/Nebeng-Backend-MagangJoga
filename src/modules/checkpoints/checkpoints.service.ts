@@ -137,8 +137,67 @@ export class CheckpointsService {
     const targetPosId = await this.resolvePosId(currentUser, dto.posId);
     const operatorUserIdStr = String(currentUser.id);
 
+    const hasTrip = Boolean(dto.qrCodeTrip && dto.qrCodeTrip.trim());
+    const hasTicket = Boolean(dto.qrCodeTicket && dto.qrCodeTicket.trim());
+
+    if (!hasTrip && !hasTicket) {
+      throw new BadRequestException(
+        'Harap masukkan minimal salah satu: QR Trip Mitra atau QR Tiket Customer.',
+      );
+    }
+
+    // =========================================================================
+    // CASE A: HANYA SCAN QR TRIP MITRA (Mitra tiba lebih dulu / stand-by di pos)
+    // =========================================================================
+    if (hasTrip && !hasTicket) {
+      const tripData = this.extractIdFromQr(dto.qrCodeTrip!);
+      const trip = tripData.isIdBased
+        ? await this.checkpointsRepository.findTripById(tripData.id!)
+        : await this.checkpointsRepository.findTripByQr(tripData.id!);
+
+      if (!trip) {
+        throw new NotFoundException('Data Trip dengan QR tersebut tidak ditemukan.');
+      }
+
+      const result = await this.checkpointsRepository.processTripOnlyCheckin(
+        trip.id,
+        targetPosId,
+        operatorUserIdStr,
+        dto.scanType,
+      );
+
+      const posName = result.trip?.originPoint?.name || 'Pos';
+      const isOrigin = dto.scanType === ScanType.checkin_origin;
+
+      const destRegionId = trip.destinationPoint?.regionId
+        ? trip.destinationPoint.regionId.toString()
+        : '';
+
+      this.trackingGateway.emitCheckpointScanned(
+        trip.id.toString(),
+        destRegionId,
+        {
+          tripId: trip.id.toString(),
+          scanType: dto.scanType,
+          status: isOrigin ? TripStatus.in_origin_pos : TripStatus.arrived_dest_pos,
+          message: isOrigin
+            ? `Mitra telah check-in dan stand-by di ${posName}.`
+            : 'Mitra telah tiba di pos tujuan.',
+          checkpoint: CheckpointMapper.toResponse(result.checkpoint),
+        },
+      );
+
+      return {
+        message: isOrigin
+          ? `Check-in Pos Asal Mitra berhasil! Status Trip: Di Pos Asal (Stand-by).`
+          : 'Check-in Pos Tujuan Mitra berhasil! Armada telah tiba.',
+        checkpoint: CheckpointMapper.toResponse(result.checkpoint),
+        trip: result.trip,
+      };
+    }
+
     // Extract ID or QR from scanned codes
-    const ticketData = this.extractIdFromQr(dto.qrCodeTicket);
+    const ticketData = this.extractIdFromQr(dto.qrCodeTicket!);
 
     console.log('🔍 DEBUG SCAN:');
     console.log('  Operator ID:', operatorUserIdStr);
@@ -152,7 +211,7 @@ export class CheckpointsService {
     const order =
       ticketData.isIdBased && this.checkpointsRepository.findOrderById
         ? await this.checkpointsRepository.findOrderById(ticketData.id!)
-        : await this.checkpointsRepository.findOrderByQr(ticketData.id || dto.qrCodeTicket);
+        : await this.checkpointsRepository.findOrderByQr(ticketData.id || dto.qrCodeTicket!);
 
     if (!order) {
       throw new NotFoundException(
@@ -650,58 +709,56 @@ export class CheckpointsService {
       throw new BadRequestException('ID Operator tidak valid');
     }
 
-    // Resolve posId dari query atau dari assignment operator
-    let targetPosId: bigint;
+    let targetPosId: bigint | undefined;
+    let targetPosIds: bigint[] = [];
+
+    // Ambil semua pos yang ditugaskan ke operator ini
+    const assignedPoints = await this.prisma.pickupPoint.findMany({
+      where: { operatorId: parsedOperatorId },
+    });
+
     if (query.posId) {
       const parsed = this.safeParseBigInt(query.posId);
       if (!parsed) {
         throw new BadRequestException('Format ID Pos tidak valid');
       }
       targetPosId = parsed;
-
-      // Validasi otorisasi: operator harus ditugaskan di pos tersebut
-      const assignedPos = await this.prisma.pickupPoint.findFirst({
-        where: {
-          id: targetPosId,
-          operatorId: parsedOperatorId,
-        },
-      });
-
-      if (!assignedPos) {
-        throw new ForbiddenException(
-          'Anda tidak berhak mengakses manifest pos ini. Anda tidak ditugaskan di pos tersebut.',
-        );
-      }
+      targetPosIds = [parsed];
     } else {
-      // Gunakan pos yang ditugaskan ke operator
-      const assignedPos = await this.prisma.pickupPoint.findFirst({
-        where: { operatorId: parsedOperatorId },
-      });
-
-      if (!assignedPos) {
-        throw new BadRequestException(
-          'Anda belum ditugaskan ke pos manapun. Hubungi admin.',
-        );
+      if (assignedPoints.length === 0) {
+        const user = await this.prisma.user.findUnique({ where: { id: parsedOperatorId } });
+        if (user?.regionId) {
+          const regionPoints = await this.prisma.pickupPoint.findMany({
+            where: { regionId: user.regionId },
+          });
+          targetPosIds = regionPoints.map((p) => p.id);
+          targetPosId = regionPoints[0]?.id;
+        } else {
+          const allPoints = await this.prisma.pickupPoint.findMany();
+          targetPosIds = allPoints.map((p) => p.id);
+          targetPosId = allPoints[0]?.id;
+        }
+      } else {
+        targetPosIds = assignedPoints.map((p) => p.id);
+        targetPosId = assignedPoints[0].id;
       }
-
-      targetPosId = assignedPos.id;
     }
 
     const dateStr = query.date || new Date().toISOString().split('T')[0];
     const gracePeriodMinutes = Number(process.env.NO_SHOW_GRACE_MINUTES || '15');
 
     const trips = await this.checkpointsRepository.getManifestForPos(
-      targetPosId,
+      targetPosIds,
       dateStr,
     );
 
     const now = new Date();
 
     const manifestData = trips.map((trip) => {
-      // Cek apakah QR trip sudah di-scan di pos ini
-      const tripScannedAtPos = trip.checkpointsLogs.some(
-        (log) => log.posId === targetPosId,
-      );
+      // Cek apakah QR trip sudah di-scan di pos terkait
+      const tripScannedAtPos =
+        trip.status === TripStatus.in_origin_pos ||
+        trip.checkpointsLogs.some((log) => targetPosIds.includes(log.posId));
 
       // Hitung grace period untuk mitra no-show
       const tripDateTime = new Date(
@@ -728,7 +785,7 @@ export class CheckpointsService {
           now > orderGracePeriodEnd &&
           order.status === OrderStatus.paid &&
           !trip.checkpointsLogs.some(
-            (log) => log.posId === targetPosId && log.orderId === order.id,
+            (log) => targetPosIds.includes(log.posId) && log.orderId === order.id,
           );
 
         return {
@@ -754,16 +811,20 @@ export class CheckpointsService {
         status: trip.status,
         originPoint: trip.originPoint.name,
         destinationPoint: trip.destinationPoint.name,
-        isOriginPos: trip.originPointId === targetPosId,
-        isDestPos: trip.destinationPointId === targetPosId,
+        isOriginPos: targetPosIds.includes(trip.originPointId),
+        isDestPos: targetPosIds.includes(trip.destinationPointId),
         canMarkMitraNoShow,
         passengers,
       };
     });
 
     return {
-      posId: targetPosId.toString(),
+      posId: targetPosId ? targetPosId.toString() : '',
       date: dateStr,
+      availablePos: assignedPoints.map((p) => ({
+        id: p.id.toString(),
+        name: p.name,
+      })),
       trips: manifestData,
     };
   }
@@ -843,7 +904,7 @@ export class CheckpointsService {
       );
     }
 
-    // Cek apakah trip sudah check-in di pos
+    // Cek apakah trip sudah check-in di pos atau stand-by di pos asal
     const tripScannedAtPos = await this.prisma.checkpointsLog.findFirst({
       where: {
         tripId: order.tripId,
@@ -852,7 +913,7 @@ export class CheckpointsService {
       },
     });
 
-    if (!tripScannedAtPos) {
+    if (!tripScannedAtPos && order.trip?.status !== TripStatus.in_origin_pos && order.trip?.status !== TripStatus.in_transit) {
       throw new BadRequestException(
         'Trip belum check-in di pos ini. Tidak dapat menandai penumpang no-show.',
       );

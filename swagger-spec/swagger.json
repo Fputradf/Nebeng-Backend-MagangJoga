@@ -6239,7 +6239,7 @@
           "qrCodeTicket": {
             "type": "string",
             "example": "TKT-SDJF12H",
-            "description": "Kode QR Tiket / Parcel milik customer"
+            "description": "Kode QR Tiket / Parcel milik customer (Opsional jika hanya scan trip mitra)"
           },
           "posId": {
             "type": "string",
@@ -6276,7 +6276,6 @@
           }
         },
         "required": [
-          "qrCodeTicket",
           "posId",
           "scanType"
         ]

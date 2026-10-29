@@ -67,7 +67,7 @@ export class CheckpointsRepository {
     securitySealQr?: string,
     photoUrl?: string,
   ) {
-    const parsedPosId = this.safeParseBigInt(posIdStr);
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
     if (!parsedPosId || !parsedUserId) {
       throw new BadRequestException('Format ID Pos atau ID User tidak valid');
@@ -142,7 +142,7 @@ export class CheckpointsRepository {
     subtotal?: number,
     discountAmount?: number,
   ) {
-    const parsedPosId = this.safeParseBigInt(posIdStr);
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
 
     if (!parsedUserId || !parsedPosId) {
@@ -268,7 +268,7 @@ export class CheckpointsRepository {
     totalPrice: number,
     adminFeePercentage: number = 10,
   ) {
-    const parsedPosId = this.safeParseBigInt(posIdStr);
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
 
     if (!parsedUserId || !parsedPosId) {
@@ -495,7 +495,7 @@ export class CheckpointsRepository {
     posIdStr: string,
     scannedByUserIdStr: string,
   ) {
-    const parsedPosId = this.safeParseBigInt(posIdStr);
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
 
     if (!parsedPosId || !parsedUserId) {
@@ -565,7 +565,7 @@ export class CheckpointsRepository {
     posIdStr: string,
     scannedByUserIdStr: string,
   ) {
-    const parsedPosId = this.safeParseBigInt(posIdStr);
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
     const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
 
     if (!parsedPosId || !parsedUserId) {
@@ -847,15 +847,16 @@ export class CheckpointsRepository {
     });
   }
 
-  async getManifestForPos(posId: bigint, dateStr: string) {
+  async getManifestForPos(posId: bigint | bigint[], dateStr: string) {
     const startOfDay = new Date(`${dateStr}T00:00:00.000Z`);
     const endOfDay = new Date(`${dateStr}T23:59:59.999Z`);
+    const posIdArray = Array.isArray(posId) ? posId : [posId];
 
     const trips = await this.prisma.trip.findMany({
       where: {
         OR: [
-          { originPointId: posId },
-          { destinationPointId: posId },
+          { originPointId: { in: posIdArray } },
+          { destinationPointId: { in: posIdArray } },
         ],
         departureDate: {
           gte: startOfDay,
@@ -876,7 +877,7 @@ export class CheckpointsRepository {
           },
         },
         checkpointsLogs: {
-          where: { posId },
+          where: { posId: { in: posIdArray } },
           orderBy: { createdAt: 'desc' },
         },
       },
@@ -886,6 +887,42 @@ export class CheckpointsRepository {
     });
 
     return trips;
+  }
+
+  async processTripOnlyCheckin(
+    tripId: bigint,
+    posIdStr: string,
+    scannedByUserIdStr: string,
+    scanType: ScanType,
+  ) {
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
+    const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
+
+    return this.prisma.$transaction(async (tx) => {
+      const newStatus =
+        scanType === ScanType.checkin_origin
+          ? TripStatus.in_origin_pos
+          : TripStatus.arrived_dest_pos;
+
+      const updatedTrip = await tx.trip.update({
+        where: { id: tripId },
+        data: { status: newStatus },
+        include: { originPoint: true, destinationPoint: true, mitra: true, vehicle: true },
+      });
+
+      const log = await tx.checkpointsLog.create({
+        data: {
+          tripId,
+          orderId: null,
+          posId: parsedPosId,
+          scannedByUserId: parsedUserId,
+          scanType,
+        },
+        include: { trip: true, pos: true },
+      });
+
+      return { trip: updatedTrip, checkpoint: log };
+    });
   }
 
   async processPassengerNoShowById(
