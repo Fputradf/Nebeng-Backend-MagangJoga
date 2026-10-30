@@ -68,6 +68,11 @@ export type Trip = Prisma.TripModel
  */
 export type Order = Prisma.OrderModel
 /**
+ * Model OrderPassenger
+ * 
+ */
+export type OrderPassenger = Prisma.OrderPassengerModel
+/**
  * Model ItemOrder
  * 
  */

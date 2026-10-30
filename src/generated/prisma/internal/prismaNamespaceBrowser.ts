@@ -61,6 +61,7 @@ export const ModelName = {
   PricingSetting: 'PricingSetting',
   Trip: 'Trip',
   Order: 'Order',
+  OrderPassenger: 'OrderPassenger',
   ItemOrder: 'ItemOrder',
   CheckpointsLog: 'CheckpointsLog',
   NoShowAuditLog: 'NoShowAuditLog',
@@ -298,6 +299,20 @@ export const OrderScalarFieldEnum = {
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderPassengerScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  seatNumber: 'seatNumber',
+  name: 'name',
+  phone: 'phone',
+  isContact: 'isContact',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderPassengerScalarFieldEnum = (typeof OrderPassengerScalarFieldEnum)[keyof typeof OrderPassengerScalarFieldEnum]
 
 
 export const ItemOrderScalarFieldEnum = {
@@ -839,6 +854,14 @@ export const OrderOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
+
+
+export const OrderPassengerOrderByRelevanceFieldEnum = {
+  name: 'name',
+  phone: 'phone'
+} as const
+
+export type OrderPassengerOrderByRelevanceFieldEnum = (typeof OrderPassengerOrderByRelevanceFieldEnum)[keyof typeof OrderPassengerOrderByRelevanceFieldEnum]
 
 
 export const ItemOrderOrderByRelevanceFieldEnum = {

@@ -407,6 +407,7 @@ export const ModelName = {
   PricingSetting: 'PricingSetting',
   Trip: 'Trip',
   Order: 'Order',
+  OrderPassenger: 'OrderPassenger',
   ItemOrder: 'ItemOrder',
   CheckpointsLog: 'CheckpointsLog',
   NoShowAuditLog: 'NoShowAuditLog',
@@ -451,7 +452,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "userVoucher" | "voucherRedemption" | "socialLink"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "orderPassenger" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "userVoucher" | "voucherRedemption" | "socialLink"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1112,6 +1113,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrderCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrderCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrderPassenger: {
+      payload: Prisma.$OrderPassengerPayload<ExtArgs>
+      fields: Prisma.OrderPassengerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrderPassengerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrderPassengerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        findFirst: {
+          args: Prisma.OrderPassengerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrderPassengerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        findMany: {
+          args: Prisma.OrderPassengerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>[]
+        }
+        create: {
+          args: Prisma.OrderPassengerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        createMany: {
+          args: Prisma.OrderPassengerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrderPassengerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        update: {
+          args: Prisma.OrderPassengerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrderPassengerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrderPassengerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrderPassengerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPassengerPayload>
+        }
+        aggregate: {
+          args: Prisma.OrderPassengerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrderPassenger>
+        }
+        groupBy: {
+          args: Prisma.OrderPassengerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderPassengerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrderPassengerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderPassengerCountAggregateOutputType> | number
         }
       }
     }
@@ -3260,6 +3327,20 @@ export const OrderScalarFieldEnum = {
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
+export const OrderPassengerScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  seatNumber: 'seatNumber',
+  name: 'name',
+  phone: 'phone',
+  isContact: 'isContact',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderPassengerScalarFieldEnum = (typeof OrderPassengerScalarFieldEnum)[keyof typeof OrderPassengerScalarFieldEnum]
+
+
 export const ItemOrderScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
@@ -3799,6 +3880,14 @@ export const OrderOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
+
+
+export const OrderPassengerOrderByRelevanceFieldEnum = {
+  name: 'name',
+  phone: 'phone'
+} as const
+
+export type OrderPassengerOrderByRelevanceFieldEnum = (typeof OrderPassengerOrderByRelevanceFieldEnum)[keyof typeof OrderPassengerOrderByRelevanceFieldEnum]
 
 
 export const ItemOrderOrderByRelevanceFieldEnum = {
@@ -4373,6 +4462,7 @@ export type GlobalOmitConfig = {
   pricingSetting?: Prisma.PricingSettingOmit
   trip?: Prisma.TripOmit
   order?: Prisma.OrderOmit
+  orderPassenger?: Prisma.OrderPassengerOmit
   itemOrder?: Prisma.ItemOrderOmit
   checkpointsLog?: Prisma.CheckpointsLogOmit
   noShowAuditLog?: Prisma.NoShowAuditLogOmit

@@ -122,6 +122,7 @@
 │   │       │   ├── 📄 NotificationLog.ts
 │   │       │   ├── 📄 NotificationPreference.ts
 │   │       │   ├── 📄 Order.ts
+│   │       │   ├── 📄 OrderPassenger.ts
 │   │       │   ├── 📄 OrderQrSession.ts
 │   │       │   ├── 📄 OsmRouteCache.ts
 │   │       │   ├── 📄 Payment.ts
@@ -256,6 +257,7 @@
 │   │   ├── 📁 orders/
 │   │   │   ├── 📁 dto/
 │   │   │   │   ├── 📄 create-order-item.dto.ts
+│   │   │   │   ├── 📄 create-order-passenger.dto.ts
 │   │   │   │   └── 📄 create-order.dto.ts
 │   │   │   ├── 📁 mappers/
 │   │   │   │   └── 📄 order.mapper.ts
@@ -532,6 +534,14 @@
         ├── 📄 verif-1793345801990-169314796.jpg
         ├── 📄 verif-1793345811298-433998241.jpg
         ├── 📄 verif-1793346253699-252723577.jpg
-        └── 📄 verif-1793346293867-842130419.jpg
+        ├── 📄 verif-1793346293867-842130419.jpg
+        ├── 📄 verif-1793346460067-423435834.jpg
+        ├── 📄 verif-1793351551352-867913206.jpg
+        ├── 📄 verif-1793351551455-378229465.jpg
+        ├── 📄 verif-1793351551478-185446926.jpg
+        ├── 📄 verif-1793351551499-777127449.jpg
+        ├── 📄 verif-1793351551516-296283440.jpg
+        ├── 📄 verif-1793351794533-776194608.jpg
+        └── 📄 verif-1793351794553-343147260.jpg
 ```
 <!-- PROJECT_STRUCTURE_END -->

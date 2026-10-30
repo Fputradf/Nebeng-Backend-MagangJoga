@@ -856,10 +856,22 @@ export class CheckpointsService {
             (log) => targetPosIds.includes(log.posId) && log.orderId === order.id,
           );
 
+        const primaryPassenger =
+          order.passengers && order.passengers.length > 0
+            ? order.passengers.find((p: any) => p.isContact) || order.passengers[0]
+            : null;
+
         return {
           orderId: order.id.toString(),
-          customerName: order.customer.name,
-          customerPhone: order.customer.phone,
+          customerName: primaryPassenger ? primaryPassenger.name : order.customer.name,
+          customerPhone: primaryPassenger ? primaryPassenger.phone : order.customer.phone,
+          passengers:
+            order.passengers?.map((p: any) => ({
+              name: p.name,
+              phone: p.phone,
+              seatNumber: p.seatNumber,
+              isContact: p.isContact,
+            })) || [],
           seatsBooked: order.seatsBooked,
           totalWeightKg: order.totalWeightKg,
           type: order.type,

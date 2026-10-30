@@ -5826,6 +5826,35 @@
           "reason"
         ]
       },
+      "CreateOrderPassengerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Budi Santoso",
+            "description": "Nama lengkap penumpang"
+          },
+          "phone": {
+            "type": "string",
+            "example": "081234567890",
+            "description": "Nomor WhatsApp / telepon penumpang"
+          },
+          "seatNumber": {
+            "type": "number",
+            "example": 1,
+            "description": "Nomor urut kursi"
+          },
+          "isContact": {
+            "type": "boolean",
+            "example": true,
+            "description": "Menandai apakah penumpang ini adalah kontak utama / PIC di lapangan"
+          }
+        },
+        "required": [
+          "name",
+          "phone"
+        ]
+      },
       "CreateOrderItemDto": {
         "type": "object",
         "properties": {
@@ -5903,6 +5932,13 @@
             "type": "number",
             "example": 1,
             "description": "Jumlah kursi (Wajib diisi jika type = passenger)"
+          },
+          "passengers": {
+            "description": "Daftar data detail penumpang (Wajib diisi jika type = passenger)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateOrderPassengerDto"
+            }
           },
           "items": {
             "description": "Daftar item paket (Wajib diisi jika type = parcel)",

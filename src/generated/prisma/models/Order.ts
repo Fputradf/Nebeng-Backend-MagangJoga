@@ -411,6 +411,7 @@ export type OrderWhereInput = {
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   noShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  passengers?: Prisma.OrderPassengerListRelationFilter
   itemOrders?: Prisma.ItemOrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.OrderQrSessionListRelationFilter
@@ -448,6 +449,7 @@ export type OrderOrderByWithRelationInput = {
   trip?: Prisma.TripOrderByWithRelationInput
   customer?: Prisma.UserOrderByWithRelationInput
   noShowMarkedByUser?: Prisma.UserOrderByWithRelationInput
+  passengers?: Prisma.OrderPassengerOrderByRelationAggregateInput
   itemOrders?: Prisma.ItemOrderOrderByRelationAggregateInput
   checkpointsLogs?: Prisma.CheckpointsLogOrderByRelationAggregateInput
   qrSessions?: Prisma.OrderQrSessionOrderByRelationAggregateInput
@@ -489,6 +491,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   noShowMarkedByUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  passengers?: Prisma.OrderPassengerListRelationFilter
   itemOrders?: Prisma.ItemOrderListRelationFilter
   checkpointsLogs?: Prisma.CheckpointsLogListRelationFilter
   qrSessions?: Prisma.OrderQrSessionListRelationFilter
@@ -585,6 +588,7 @@ export type OrderCreateInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -619,6 +623,7 @@ export type OrderUncheckedCreateInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -653,6 +658,7 @@ export type OrderUpdateInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -687,6 +693,7 @@ export type OrderUncheckedUpdateInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -1047,6 +1054,20 @@ export type EnumEscrowStatusFieldUpdateOperationsInput = {
   set?: $Enums.EscrowStatus
 }
 
+export type OrderCreateNestedOneWithoutPassengersInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutPassengersInput, Prisma.OrderUncheckedCreateWithoutPassengersInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutPassengersInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutPassengersNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutPassengersInput, Prisma.OrderUncheckedCreateWithoutPassengersInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutPassengersInput
+  upsert?: Prisma.OrderUpsertWithoutPassengersInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutPassengersInput, Prisma.OrderUpdateWithoutPassengersInput>, Prisma.OrderUncheckedUpdateWithoutPassengersInput>
+}
+
 export type OrderCreateNestedOneWithoutItemOrdersInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutItemOrdersInput, Prisma.OrderUncheckedCreateWithoutItemOrdersInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutItemOrdersInput
@@ -1175,6 +1196,7 @@ export type OrderCreateWithoutCustomerInput = {
   isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -1208,6 +1230,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -1251,6 +1274,7 @@ export type OrderCreateWithoutNoShowMarkedByUserInput = {
   isDisputed?: boolean
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -1284,6 +1308,7 @@ export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -1389,6 +1414,7 @@ export type OrderCreateWithoutTripInput = {
   isDisputed?: boolean
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -1422,6 +1448,7 @@ export type OrderUncheckedCreateWithoutTripInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -1457,6 +1484,158 @@ export type OrderUpdateManyWithWhereWithoutTripInput = {
   data: Prisma.XOR<Prisma.OrderUpdateManyMutationInput, Prisma.OrderUncheckedUpdateManyWithoutTripInput>
 }
 
+export type OrderCreateWithoutPassengersInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutPassengersInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutPassengersInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutPassengersInput, Prisma.OrderUncheckedCreateWithoutPassengersInput>
+}
+
+export type OrderUpsertWithoutPassengersInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutPassengersInput, Prisma.OrderUncheckedUpdateWithoutPassengersInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutPassengersInput, Prisma.OrderUncheckedCreateWithoutPassengersInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutPassengersInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutPassengersInput, Prisma.OrderUncheckedUpdateWithoutPassengersInput>
+}
+
+export type OrderUpdateWithoutPassengersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutPassengersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+}
+
 export type OrderCreateWithoutItemOrdersInput = {
   id?: bigint | number
   type: $Enums.OrderType
@@ -1482,6 +1661,7 @@ export type OrderCreateWithoutItemOrdersInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
@@ -1515,6 +1695,7 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -1564,6 +1745,7 @@ export type OrderUpdateWithoutItemOrdersInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
@@ -1597,6 +1779,7 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -1630,6 +1813,7 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
@@ -1663,6 +1847,7 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -1712,6 +1897,7 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
@@ -1745,6 +1931,7 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -1778,6 +1965,7 @@ export type OrderCreateWithoutNoShowAuditLogsInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -1811,6 +1999,7 @@ export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -1860,6 +2049,7 @@ export type OrderUpdateWithoutNoShowAuditLogsInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -1893,6 +2083,7 @@ export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -1926,6 +2117,7 @@ export type OrderCreateWithoutQrSessionsInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
@@ -1959,6 +2151,7 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -2008,6 +2201,7 @@ export type OrderUpdateWithoutQrSessionsInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
@@ -2041,6 +2235,7 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -2074,6 +2269,7 @@ export type OrderCreateWithoutPaymentsInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -2107,6 +2303,7 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -2156,6 +2353,7 @@ export type OrderUpdateWithoutPaymentsInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2189,6 +2387,7 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2222,6 +2421,7 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -2255,6 +2455,7 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -2304,6 +2505,7 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2337,6 +2539,7 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2370,6 +2573,7 @@ export type OrderCreateWithoutVoucherRedemptionInput = {
   trip: Prisma.TripCreateNestedOneWithoutOrdersInput
   customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
   noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
@@ -2403,6 +2607,7 @@ export type OrderUncheckedCreateWithoutVoucherRedemptionInput = {
   noShowReason?: string | null
   disputeDeadline?: Date | string | null
   isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
   itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
   qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
@@ -2452,6 +2657,7 @@ export type OrderUpdateWithoutVoucherRedemptionInput = {
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2485,6 +2691,7 @@ export type OrderUncheckedUpdateWithoutVoucherRedemptionInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2569,6 +2776,7 @@ export type OrderUpdateWithoutCustomerInput = {
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2602,6 +2810,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2661,6 +2870,7 @@ export type OrderUpdateWithoutNoShowMarkedByUserInput = {
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2694,6 +2904,7 @@ export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2779,6 +2990,7 @@ export type OrderUpdateWithoutTripInput = {
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
   noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
@@ -2812,6 +3024,7 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
   itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
   checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
   qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
@@ -2853,6 +3066,7 @@ export type OrderUncheckedUpdateManyWithoutTripInput = {
  */
 
 export type OrderCountOutputType = {
+  passengers: number
   itemOrders: number
   checkpointsLogs: number
   qrSessions: number
@@ -2862,6 +3076,7 @@ export type OrderCountOutputType = {
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  passengers?: boolean | OrderCountOutputTypeCountPassengersArgs
   itemOrders?: boolean | OrderCountOutputTypeCountItemOrdersArgs
   checkpointsLogs?: boolean | OrderCountOutputTypeCountCheckpointsLogsArgs
   qrSessions?: boolean | OrderCountOutputTypeCountQrSessionsArgs
@@ -2878,6 +3093,13 @@ export type OrderCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the OrderCountOutputType
    */
   select?: Prisma.OrderCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountPassengersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderPassengerWhereInput
 }
 
 /**
@@ -2951,6 +3173,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   noShowMarkedByUser?: boolean | Prisma.Order$noShowMarkedByUserArgs<ExtArgs>
+  passengers?: boolean | Prisma.Order$passengersArgs<ExtArgs>
   itemOrders?: boolean | Prisma.Order$itemOrdersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Order$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Order$qrSessionsArgs<ExtArgs>
@@ -2995,6 +3218,7 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   noShowMarkedByUser?: boolean | Prisma.Order$noShowMarkedByUserArgs<ExtArgs>
+  passengers?: boolean | Prisma.Order$passengersArgs<ExtArgs>
   itemOrders?: boolean | Prisma.Order$itemOrdersArgs<ExtArgs>
   checkpointsLogs?: boolean | Prisma.Order$checkpointsLogsArgs<ExtArgs>
   qrSessions?: boolean | Prisma.Order$qrSessionsArgs<ExtArgs>
@@ -3011,6 +3235,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     trip: Prisma.$TripPayload<ExtArgs>
     customer: Prisma.$UserPayload<ExtArgs>
     noShowMarkedByUser: Prisma.$UserPayload<ExtArgs> | null
+    passengers: Prisma.$OrderPassengerPayload<ExtArgs>[]
     itemOrders: Prisma.$ItemOrderPayload<ExtArgs>[]
     checkpointsLogs: Prisma.$CheckpointsLogPayload<ExtArgs>[]
     qrSessions: Prisma.$OrderQrSessionPayload<ExtArgs>[]
@@ -3387,6 +3612,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   noShowMarkedByUser<T extends Prisma.Order$noShowMarkedByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$noShowMarkedByUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  passengers<T extends Prisma.Order$passengersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$passengersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPassengerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   itemOrders<T extends Prisma.Order$itemOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$itemOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   checkpointsLogs<T extends Prisma.Order$checkpointsLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$checkpointsLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckpointsLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrSessions<T extends Prisma.Order$qrSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$qrSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderQrSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3811,6 +4037,30 @@ export type Order$noShowMarkedByUserArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Order.passengers
+ */
+export type Order$passengersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderPassenger
+   */
+  select?: Prisma.OrderPassengerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderPassenger
+   */
+  omit?: Prisma.OrderPassengerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderPassengerInclude<ExtArgs> | null
+  where?: Prisma.OrderPassengerWhereInput
+  orderBy?: Prisma.OrderPassengerOrderByWithRelationInput | Prisma.OrderPassengerOrderByWithRelationInput[]
+  cursor?: Prisma.OrderPassengerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderPassengerScalarFieldEnum | Prisma.OrderPassengerScalarFieldEnum[]
 }
 
 /**

@@ -874,6 +874,7 @@ export class CheckpointsRepository {
         orders: {
           include: {
             customer: true,
+            passengers: true,
           },
         },
         checkpointsLogs: {

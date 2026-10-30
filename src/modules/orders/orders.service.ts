@@ -137,6 +137,7 @@ export class OrdersService {
     let adminFeePercentage = 10;
     let otpClaim: string | null = null;
     const itemsDataProcessed: any[] = [];
+    const passengersDataProcessed: any[] = [];
 
     if (dto.type === OrderType.passenger) {
       const serviceType =
@@ -171,6 +172,39 @@ export class OrdersService {
       }
 
       totalPrice = unitPrice * seatsBooked;
+
+      if (dto.passengers && dto.passengers.length > 0) {
+        if (dto.passengers.length !== seatsBooked) {
+          throw new BadRequestException(
+            `Jumlah data penumpang (${dto.passengers.length}) harus sama dengan jumlah kursi yang dipesan (${seatsBooked}).`,
+          );
+        }
+        for (let i = 0; i < dto.passengers.length; i++) {
+          const p = dto.passengers[i];
+          if (!p.name || !p.name.trim()) {
+            throw new BadRequestException(`Nama penumpang ke-${i + 1} wajib diisi.`);
+          }
+          if (!p.phone || !p.phone.trim()) {
+            throw new BadRequestException(`Nomor WhatsApp penumpang ke-${i + 1} wajib diisi.`);
+          }
+          passengersDataProcessed.push({
+            name: p.name.trim(),
+            phone: p.phone.trim(),
+            seatNumber: p.seatNumber ?? (i + 1),
+            isContact: p.isContact ?? (i === 0),
+          });
+        }
+      } else {
+        const customerUser = await this.prisma.user.findUnique({
+          where: { id: BigInt(customerIdStr) },
+        });
+        passengersDataProcessed.push({
+          name: customerUser?.name || 'Penumpang 1',
+          phone: customerUser?.phone || '',
+          seatNumber: 1,
+          isContact: true,
+        });
+      }
     }
 
     if (dto.type === OrderType.parcel) {
@@ -263,6 +297,7 @@ export class OrdersService {
       itemsDataProcessed,
       seatsBooked,
       totalWeightKg,
+      passengersDataProcessed,
     );
 
     if (order) {

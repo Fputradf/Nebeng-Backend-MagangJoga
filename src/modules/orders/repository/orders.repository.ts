@@ -27,6 +27,7 @@ export class OrdersRepository {
     itemsData: any[],
     seatsToDeduct: number,
     weightToDeduct: number,
+    passengersData?: any[],
   ) {
     const parseTripId = this.safeParseBigInt(tripId);
     const parseCustomerId = this.safeParseBigInt(customerId);
@@ -253,6 +254,18 @@ export class OrdersRepository {
         });
       }
 
+      if (passengersData && passengersData.length > 0) {
+        await tx.orderPassenger.createMany({
+          data: passengersData.map((p, idx) => ({
+            orderId: createdOrder.id,
+            name: p.name,
+            phone: p.phone,
+            seatNumber: p.seatNumber ?? (idx + 1),
+            isContact: p.isContact ?? (idx === 0),
+          })),
+        });
+      }
+
       return tx.order.findUnique({
         where: { id: createdOrder.id },
         include: {
@@ -264,6 +277,7 @@ export class OrdersRepository {
             },
           },
           customer: true,
+          passengers: true,
           itemOrders: true,
           voucherRedemption: true,
         },
@@ -294,6 +308,7 @@ export class OrdersRepository {
           },
         },
         itemOrders: true,
+        passengers: true,
         checkpointsLogs: {
           include: {
             pos: true,
@@ -333,6 +348,7 @@ export class OrdersRepository {
           },
         },
         customer: true,
+        passengers: true,
         itemOrders: true,
         checkpointsLogs: {
           include: {
@@ -348,6 +364,11 @@ export class OrdersRepository {
   async findByTicketQr(qrCodeTicket: string) {
     return this.prisma.order.findUnique({
       where: { qrCodeTicket },
+      include: {
+        customer: true,
+        passengers: true,
+        trip: true,
+      },
     });
   }
 

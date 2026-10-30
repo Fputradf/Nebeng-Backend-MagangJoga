@@ -451,6 +451,7 @@ model Order {
   disputeDeadline    DateTime? @map("dispute_deadline")
   isDisputed         Boolean   @default(false) @map("is_disputed")
 
+  passengers         OrderPassenger[]
   itemOrders         ItemOrder[]
   checkpointsLogs    CheckpointsLog[]
   qrSessions         OrderQrSession[]
@@ -461,6 +462,20 @@ model Order {
 
   @@index([status, escrowStatus])
   @@map("orders")
+}
+
+model OrderPassenger {
+  id         BigInt   @id @default(autoincrement())
+  orderId    BigInt   @map("order_id")
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  seatNumber Int?     @map("seat_number")
+  name       String   @map("name")
+  phone      String   @map("phone")
+  isContact  Boolean  @default(false) @map("is_contact")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("order_passengers")
 }
 
 model ItemOrder {
