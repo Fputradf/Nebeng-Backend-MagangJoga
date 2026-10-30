@@ -3,21 +3,21 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ScanType } from '../../../generated/prisma/enums';
 
 export class ScanCheckpointDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'TRIP-A2D4CS13',
-    description: 'Kode QR Trip milik mitra',
+    description: 'Kode QR Trip milik mitra (Opsional - otomatis diambil dari tiket/order)',
   })
   @IsString()
-  @IsNotEmpty()
-  qrCodeTrip!: string;
+  @IsOptional()
+  qrCodeTrip?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'TKT-SDJF12H',
-    description: 'Kode QR Tiket / Parcel milik customer',
+    description: 'Kode QR Tiket / Parcel milik customer (Opsional jika hanya scan trip mitra)',
   })
   @IsString()
-  @IsNotEmpty()
-  qrCodeTicket!: string;
+  @IsOptional()
+  qrCodeTicket?: string;
 
   @ApiProperty({
     example: '10',

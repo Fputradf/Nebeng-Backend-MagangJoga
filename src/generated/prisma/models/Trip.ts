@@ -624,7 +624,7 @@ export type TripCreateInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -666,7 +666,7 @@ export type TripUncheckedCreateInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -780,7 +780,7 @@ export type TripCreateManyInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1382,7 +1382,7 @@ export type TripCreateWithoutMitraInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1422,7 +1422,7 @@ export type TripUncheckedCreateWithoutMitraInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1466,7 +1466,7 @@ export type TripCreateWithoutMitraNoShowMarkedByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1507,7 +1507,7 @@ export type TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1550,7 +1550,7 @@ export type TripCreateWithoutCancelledByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1591,7 +1591,7 @@ export type TripUncheckedCreateWithoutCancelledByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1715,7 +1715,7 @@ export type TripCreateWithoutOriginPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1755,7 +1755,7 @@ export type TripUncheckedCreateWithoutOriginPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1799,7 +1799,7 @@ export type TripCreateWithoutDestinationPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1839,7 +1839,7 @@ export type TripUncheckedCreateWithoutDestinationPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1915,7 +1915,7 @@ export type TripCreateWithoutOrdersInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1956,7 +1956,7 @@ export type TripUncheckedCreateWithoutOrdersInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2079,7 +2079,7 @@ export type TripCreateWithoutCheckpointsLogsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2120,7 +2120,7 @@ export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2243,7 +2243,7 @@ export type TripCreateWithoutNoShowAuditLogsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2284,7 +2284,7 @@ export type TripUncheckedCreateWithoutNoShowAuditLogsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2407,7 +2407,7 @@ export type TripCreateWithoutQrSessionsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2448,7 +2448,7 @@ export type TripUncheckedCreateWithoutQrSessionsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2571,7 +2571,7 @@ export type TripCreateWithoutTrackingsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2612,7 +2612,7 @@ export type TripUncheckedCreateWithoutTrackingsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2735,7 +2735,7 @@ export type TripCreateWithoutConversationsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2776,7 +2776,7 @@ export type TripUncheckedCreateWithoutConversationsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2899,7 +2899,7 @@ export type TripCreateWithoutReviewsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2940,7 +2940,7 @@ export type TripUncheckedCreateWithoutReviewsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3063,7 +3063,7 @@ export type TripCreateWithoutVehicleInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3103,7 +3103,7 @@ export type TripUncheckedCreateWithoutVehicleInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3163,7 +3163,7 @@ export type TripCreateWithoutMitraSanctionsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3204,7 +3204,7 @@ export type TripUncheckedCreateWithoutMitraSanctionsInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3330,7 +3330,7 @@ export type TripCreateManyMitraInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3360,7 +3360,7 @@ export type TripCreateManyMitraNoShowMarkedByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3389,7 +3389,7 @@ export type TripCreateManyCancelledByUserInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3726,7 +3726,7 @@ export type TripCreateManyOriginPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3755,7 +3755,7 @@ export type TripCreateManyDestinationPointInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3990,7 +3990,7 @@ export type TripCreateManyVehicleInput = {
   remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
   qrCodeTrip: string
   status?: $Enums.TripStatus
-  serviceType?: $Enums.ServiceType
+  serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string

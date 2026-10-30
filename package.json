@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./test/jest-e2e.json"
+    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
+    "test:int": "node --experimental-vm-modules node_modules/jest/bin/jest.js -c jest.integration.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -97,7 +98,7 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "ts-node --require dotenv/config prisma/seed.ts"
+    "seed": "node -r dotenv/config run-seed.js"
   },
   "allowScripts": {
     "bcrypt@6.0.0": true,

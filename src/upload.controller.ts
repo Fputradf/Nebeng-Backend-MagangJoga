@@ -123,6 +123,48 @@ export class UploadController {
     };
   }
 
+  @Post('social-links')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload logo icon sosial media' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = path.join(process.cwd(), 'uploads', 'social-links');
+          if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = path.extname(file.originalname);
+          cb(null, `social-${uniqueSuffix}${ext}`);
+        },
+      }),
+      limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+          return cb(new BadRequestException('Format file harus berupa gambar/vektor'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  uploadSocialIcon(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File tidak ditemukan');
+    }
+    return {
+      filePath: `/uploads/social-links/${file.filename}`,
+      fileType: file.mimetype,
+    };
+  }
+
   @Get('verifications/:filename')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

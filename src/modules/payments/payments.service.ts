@@ -10,10 +10,11 @@ import { PaymentsRepository } from './repository/payments.repository';
 import { OrdersRepository } from '../orders/repository/orders.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CheckoutPaymentDto } from './dto/checkout-payment.dto';
-import { OrderStatus, Role, ServiceType } from '../../generated/prisma/enums';
-import { randomBytes } from 'crypto';
+import { OrderStatus, Role, ServiceType, TransactionType } from '../../generated/prisma/enums';
+import { randomBytes, timingSafeEqual } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
 export class PaymentsService {
@@ -33,6 +34,11 @@ export class PaymentsService {
   }
 
   async checkoutPayment(userIdStr: string, dto: CheckoutPaymentDto) {
+    const ALLOWED_GATEWAYS = ['BANK_TRANSFER', 'QRIS', 'WALLET'];
+    if (!ALLOWED_GATEWAYS.includes(dto.paymentGateway)) {
+      throw new BadRequestException('Metode pembayaran tidak valid.');
+    }
+
     const parsedUserId = this.safeParseBigInt(userIdStr);
     if (!parsedUserId) {
       throw new BadRequestException('ID User tidak valid.');
@@ -75,8 +81,21 @@ export class PaymentsService {
       );
     }
 
+    if (dto.paymentGateway === 'WALLET') {
+      const customerWallet = await this.prisma.wallet.findUnique({
+        where: { userId: parsedUserId },
+      });
+      if (
+        !customerWallet ||
+        Number(customerWallet.balance) < Number(order.totalPrice)
+      ) {
+        throw new BadRequestException(
+          'Saldo dompet tidak mencukupi untuk melakukan pembayaran.',
+        );
+      }
+    }
+
     const transactionId = `TRX-${randomBytes(4).toString('hex').toUpperCase()}`;
-    const totalPrice = Number(order.totalPrice);
 
     let adminFeePercentage = order.adminFeePercentage
       ? Number(order.adminFeePercentage)
@@ -99,8 +118,12 @@ export class PaymentsService {
       }
     }
 
-    const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
-    const netMitraAmount = totalPrice - adminFeeAmount;
+    const financials = computeOrderFinancials({
+      subtotal: (order as any).subtotal || order.totalPrice,
+      totalPrice: order.totalPrice,
+      discountAmount: (order as any).discountAmount,
+      adminFeePercentage,
+    });
 
     const mitraUserId = order.trip.mitraId.toString();
 
@@ -110,20 +133,22 @@ export class PaymentsService {
         mitraUserId,
         dto.paymentGateway,
         transactionId,
-        totalPrice,
-        adminFeeAmount,
-        netMitraAmount,
+        financials.customerPaid,
+        financials.fee,
+        financials.netMitra,
+        false, // isWebhook = false untuk checkout langsung
+        ...(financials.discount > 0 ? [financials.adminNet] : []),
       );
 
     await this.notificationHelper.notifyOrderPaid(
       userIdStr,
       dto.orderId,
+      financials.customerPaid,
     );
 
-    await this.notificationHelper.notifyPaymentSuccess(
-      userIdStr,
-      totalPrice,
-    );
+    if (!payment) {
+      throw new BadRequestException('Payment gagal dibuat.');
+    }
 
     return {
       message:
@@ -132,8 +157,8 @@ export class PaymentsService {
         id: payment.id.toString(),
         transactionId: payment.transactionId,
         amount: Number(payment.amount),
-        adminFeeAmount,
-        netMitraAmount,
+        adminFeeAmount: financials.fee,
+        netMitraAmount: financials.netMitra,
         status: payment.status,
       },
     };
@@ -280,6 +305,7 @@ export class PaymentsService {
       data: formattedTransactions,
     };
   }
+
   /**
    * 1. MEMBUAT INVOICE XENDIT (Dipanggil saat Customer klik Bayar)
    */
@@ -312,41 +338,15 @@ export class PaymentsService {
       );
     }
 
-    const secretKey = process.env.XENDIT_SECRET_KEY || 'xnd_development_dummy';
+    const secretKey = process.env.XENDIT_SECRET_KEY;
+    if (!secretKey) {
+      throw new BadRequestException(
+        'Konfigurasi XENDIT_SECRET_KEY belum diatur di server.',
+      );
+    }
+
     const amount = Number(order.totalPrice);
     const externalId = `ORDER-${order.id.toString()}`;
-
-    // Mock for local testing with dummy key
-    if (secretKey.includes('dummy')) {
-      const invoiceId = `dummy_inv_${Date.now()}`;
-
-      // Catat record pembayaran status 'pending' di database
-      await this.prisma.payment.create({
-        data: {
-          orderId: order.id,
-          paymentGateway: 'XENDIT_DUMMY',
-          transactionId: invoiceId,
-          amount: amount,
-          status: 'pending',
-        },
-      });
-
-      // Langsung simulasikan webhook Xendit untuk memproses Escrow & mengubah status tiket
-      await this.handleXenditWebhook(process.env.XENDIT_CALLBACK_TOKEN || '', {
-        status: 'PAID',
-        external_id: externalId,
-        payment_method: 'DUMMY',
-        id: invoiceId,
-      });
-
-      return {
-        message: 'Pembayaran simulasi berhasil (Dummy Mode).',
-        invoiceUrl: '/customer/tickets', // Frontend akan redirect ke sini
-        invoiceId: invoiceId,
-        expiryDate: new Date(Date.now() + 86400000).toISOString(),
-        amount: amount,
-      };
-    }
 
     // Basic Auth Xendit: format "SECRET_KEY:" di-encode base64
     const basicAuth = Buffer.from(`${secretKey}:`).toString('base64');
@@ -372,13 +372,21 @@ export class PaymentsService {
         }),
       });
 
-      const invoiceData = await response.json();
+      const rawBody = await response.text();
 
       if (!response.ok) {
-        throw new Error(
-          invoiceData.message || 'Gagal berkomunikasi dengan gateway Xendit',
+        console.error('Xendit Invoice Creation Failed. Status:', response.status, 'Body:', rawBody);
+        let errMsg = 'Gagal berkomunikasi dengan gateway Xendit';
+        try {
+          const parsed = JSON.parse(rawBody);
+          if (parsed.message) errMsg = parsed.message;
+        } catch {}
+        throw new BadRequestException(
+          `Gagal membuat tagihan Xendit: ${errMsg}`,
         );
       }
+
+      const invoiceData = JSON.parse(rawBody);
 
       // Catat record pembayaran status 'pending' di database
       await this.prisma.payment.create({
@@ -399,6 +407,9 @@ export class PaymentsService {
         amount: amount,
       };
     } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       console.error('Xendit Invoice Creation Error:', error);
       throw new BadRequestException(
         `Gagal membuat tagihan Xendit: ${error.message}`,
@@ -418,7 +429,14 @@ export class PaymentsService {
       );
     }
 
-    if (callbackToken !== expectedToken) {
+    if (!callbackToken) {
+      throw new UnauthorizedException('Token verifikasi callback tidak valid.');
+    }
+
+    const bufA = Buffer.from(callbackToken);
+    const bufB = Buffer.from(expectedToken);
+
+    if (bufA.length !== bufB.length || !timingSafeEqual(bufA, bufB)) {
       throw new UnauthorizedException('Token verifikasi callback tidak valid.');
     }
 
@@ -427,9 +445,82 @@ export class PaymentsService {
       return { message: `Event status '${payload.status}' diabaikan.` };
     }
 
-    // Ekstrak ID Order dari external_id (contoh: "ORDER-12" -> "12")
+    // Ekstrak ID dari external_id
     const externalId = payload.external_id as string;
-    const orderIdStr = externalId ? externalId.replace('ORDER-', '') : null;
+    if (!externalId) {
+      throw new BadRequestException('Format external_id tidak dikenali.');
+    }
+
+    // A. Cabang Top Up Saldo Dompet
+    if (externalId.startsWith('TOPUP-')) {
+      const parts = externalId.split('-');
+      const userIdStr = parts[1];
+      const parsedUserId = this.safeParseBigInt(userIdStr);
+      if (!parsedUserId) {
+        throw new BadRequestException('User ID pada Top Up tidak valid.');
+      }
+
+      let wallet = await this.prisma.wallet.findUnique({
+        where: { userId: parsedUserId },
+      });
+
+      if (!wallet) {
+        wallet = await this.prisma.wallet.create({
+          data: { userId: parsedUserId },
+        });
+      }
+
+      // Validasi idempoten
+      const existingTx = await this.prisma.walletTransaction.findFirst({
+        where: {
+          walletId: wallet.id,
+          description: { contains: payload.id },
+        },
+      });
+
+      if (existingTx) {
+        return { message: 'Top up sudah pernah diproses sebelumnya (idempoten).' };
+      }
+
+      const amount = Number(payload.amount);
+      const paymentMethod = payload.payment_method || 'XENDIT';
+      const paymentChannel = payload.payment_channel || 'QRIS/VA';
+      const desc = `Top Up Saldo via ${paymentMethod} (${paymentChannel}) [ID: ${payload.id}]`;
+
+      await this.prisma.$transaction(async (tx) => {
+        await tx.wallet.update({
+          where: { id: wallet.id },
+          data: {
+            balance: { increment: amount },
+          },
+        });
+
+        await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            amount,
+            type: TransactionType.credit,
+            description: desc,
+          },
+        });
+      });
+
+      await this.notificationHelper.notifyPaymentSuccess(
+        userIdStr,
+        amount,
+      );
+
+      return {
+        message: 'Top up saldo berhasil diproses.',
+        userId: userIdStr,
+        amount,
+      };
+    }
+
+    // B. Cabang Pembayaran Tiket Order
+    const orderIdStr = externalId.startsWith('ORDER-')
+      ? externalId.replace('ORDER-', '')
+      : null;
     if (!orderIdStr) {
       throw new BadRequestException('Format external_id tidak dikenali.');
     }
@@ -448,40 +539,38 @@ export class PaymentsService {
       throw new NotFoundException(`Order ID ${orderIdStr} tidak ditemukan.`);
     }
 
-    // Idempotency: Jika order sudah dibayar sebelumnya, jangan proses ulang
-    if (order.status === OrderStatus.paid) {
-      return { message: 'Order sudah berstatus PAID sebelumnya.' };
-    }
-
-    const totalPrice = Number(order.totalPrice);
     const adminFeePercentage = Number(order.adminFeePercentage || 10);
-    const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
-    const netMitraAmount = totalPrice - adminFeeAmount;
+    const financials = computeOrderFinancials({
+      subtotal: (order as any).subtotal || order.totalPrice,
+      totalPrice: order.totalPrice,
+      discountAmount: (order as any).discountAmount,
+      adminFeePercentage,
+    });
     const mitraUserId = order.trip.mitraId.toString();
 
-    // B. Jalankan Transaksi Atomik Kunci Escrow
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const result = await this.paymentsRepository.processCheckoutTransaction(
+    // Validasi payload.id harus ada
+    if (!payload.id) {
+      throw new BadRequestException('Payload Xendit tidak menyertakan ID transaksi.');
+    }
+
+    // B. Jalankan Transaksi Atomik Kunci Escrow & Order Lunas
+    await this.paymentsRepository.processCheckoutTransaction(
       orderIdStr,
       mitraUserId,
       `XENDIT_${payload.payment_method || 'QRIS'}`,
-      payload.id || `TRX-${Date.now()}`,
-      totalPrice,
-      adminFeeAmount,
-      netMitraAmount,
+      payload.id,
+      financials.customerPaid,
+      financials.fee,
+      financials.netMitra,
+      true, // isWebhook = true untuk webhook Xendit
+      ...(financials.discount > 0 ? [financials.adminNet] : []),
     );
 
-    // C. Buat sesi QR Check-in Pos Asal (ORIGIN) untuk tiket ini
-    const tokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
-    await this.prisma.orderQrSession.create({
-      data: {
-        orderId: order.id,
-        qrToken: order.qrCodeTicket,
-        scanPhase: 'checkin_origin',
-        isUsed: false,
-        expiredAt: tokenExpiry,
-      },
-    });
+    await this.notificationHelper.notifyOrderPaid(
+      order.customerId.toString(),
+      orderIdStr,
+      financials.customerPaid,
+    );
 
     return {
       success: true,

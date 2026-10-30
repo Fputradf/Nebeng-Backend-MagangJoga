@@ -708,6 +708,101 @@ export type EnumAppealStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
 }
 
+export type EnumVoucherClaimTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherClaimType | Prisma.EnumVoucherClaimTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherClaimType[]
+  notIn?: $Enums.VoucherClaimType[]
+  not?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel> | $Enums.VoucherClaimType
+}
+
+export type EnumOrderTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OrderType[] | null
+  notIn?: $Enums.OrderType[] | null
+  not?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel> | $Enums.OrderType | null
+}
+
+export type EnumDiscountTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscountType | Prisma.EnumDiscountTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscountType[]
+  notIn?: $Enums.DiscountType[]
+  not?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel> | $Enums.DiscountType
+}
+
+export type IntNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | null
+  notIn?: number[] | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
+}
+
+export type EnumVoucherClaimTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherClaimType | Prisma.EnumVoucherClaimTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherClaimType[]
+  notIn?: $Enums.VoucherClaimType[]
+  not?: Prisma.NestedEnumVoucherClaimTypeWithAggregatesFilter<$PrismaModel> | $Enums.VoucherClaimType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel>
+}
+
+export type EnumOrderTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OrderType[] | null
+  notIn?: $Enums.OrderType[] | null
+  not?: Prisma.NestedEnumOrderTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.OrderType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel>
+}
+
+export type EnumDiscountTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscountType | Prisma.EnumDiscountTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscountType[]
+  notIn?: $Enums.DiscountType[]
+  not?: Prisma.NestedEnumDiscountTypeWithAggregatesFilter<$PrismaModel> | $Enums.DiscountType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel>
+}
+
+export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | null
+  notIn?: number[] | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
+export type EnumVoucherRedemptionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherRedemptionStatus | Prisma.EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherRedemptionStatus[]
+  notIn?: $Enums.VoucherRedemptionStatus[]
+  not?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel> | $Enums.VoucherRedemptionStatus
+}
+
+export type EnumVoucherRedemptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherRedemptionStatus | Prisma.EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherRedemptionStatus[]
+  notIn?: $Enums.VoucherRedemptionStatus[]
+  not?: Prisma.NestedEnumVoucherRedemptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.VoucherRedemptionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel>
+}
+
 export type NestedBigIntFilter<$PrismaModel = never> = {
   equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
   in?: bigint[] | number[]
@@ -1428,6 +1523,90 @@ export type NestedEnumAppealStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAppealStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumVoucherClaimTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherClaimType | Prisma.EnumVoucherClaimTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherClaimType[]
+  notIn?: $Enums.VoucherClaimType[]
+  not?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel> | $Enums.VoucherClaimType
+}
+
+export type NestedEnumOrderTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OrderType[] | null
+  notIn?: $Enums.OrderType[] | null
+  not?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel> | $Enums.OrderType | null
+}
+
+export type NestedEnumDiscountTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscountType | Prisma.EnumDiscountTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscountType[]
+  notIn?: $Enums.DiscountType[]
+  not?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel> | $Enums.DiscountType
+}
+
+export type NestedEnumVoucherClaimTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherClaimType | Prisma.EnumVoucherClaimTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherClaimType[]
+  notIn?: $Enums.VoucherClaimType[]
+  not?: Prisma.NestedEnumVoucherClaimTypeWithAggregatesFilter<$PrismaModel> | $Enums.VoucherClaimType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVoucherClaimTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumOrderTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OrderType[] | null
+  notIn?: $Enums.OrderType[] | null
+  not?: Prisma.NestedEnumOrderTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.OrderType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderTypeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumDiscountTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscountType | Prisma.EnumDiscountTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscountType[]
+  notIn?: $Enums.DiscountType[]
+  not?: Prisma.NestedEnumDiscountTypeWithAggregatesFilter<$PrismaModel> | $Enums.DiscountType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscountTypeFilter<$PrismaModel>
+}
+
+export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | null
+  notIn?: number[] | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumVoucherRedemptionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherRedemptionStatus | Prisma.EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherRedemptionStatus[]
+  notIn?: $Enums.VoucherRedemptionStatus[]
+  not?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel> | $Enums.VoucherRedemptionStatus
+}
+
+export type NestedEnumVoucherRedemptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VoucherRedemptionStatus | Prisma.EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VoucherRedemptionStatus[]
+  notIn?: $Enums.VoucherRedemptionStatus[]
+  not?: Prisma.NestedEnumVoucherRedemptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.VoucherRedemptionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVoucherRedemptionStatusFilter<$PrismaModel>
 }
 
 

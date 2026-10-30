@@ -43,6 +43,7 @@ export class AdminRepository {
         },
         _sum: {
           totalPrice: true,
+          discountAmount: true,
         },
       }),
       this.prisma.trip.count({
@@ -71,10 +72,12 @@ export class AdminRepository {
     ]);
 
     const totalRevenue = Number(paidOrdersAggregate._sum.totalPrice || 0);
+    const totalDiscount = Number(paidOrdersAggregate._sum.discountAmount || 0);
     const platformCommission = totalRevenue * 0.1;
 
     return {
       totalRevenue,
+      totalDiscount,
       platformCommission,
       activeTripsCount,
       totalTransactionsCount,

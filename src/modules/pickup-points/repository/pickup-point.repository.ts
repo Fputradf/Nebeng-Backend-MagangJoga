@@ -90,6 +90,38 @@ export class PickupPointRepository {
     });
   }
 
+  async findCityByRegionName(regionName: string) {
+    return this.prisma.city.findFirst({
+      where: {
+        OR: [
+          { name: { contains: regionName } },
+          { province: { contains: regionName } },
+        ],
+      },
+    });
+  }
+
+  async findFirstCity() {
+    return this.prisma.city.findFirst();
+  }
+
+  async createCity(name: string, province: string) {
+    return this.prisma.city.create({
+      data: { name, province },
+    });
+  }
+
+  async assignOperatorRegion(operatorId: string, regionId: string) {
+    const parseUserId = this.safeParseBigInt(operatorId);
+    const parseRegionId = this.safeParseBigInt(regionId);
+    if (!parseUserId || !parseRegionId) return;
+
+    await this.prisma.user.update({
+      where: { id: parseUserId },
+      data: { regionId: parseRegionId },
+    });
+  }
+
   async findAll(regionId?: string, cityId?: string, onlyActive = false) {
     const parsedRegionId = regionId
       ? this.safeParseBigInt(regionId)
