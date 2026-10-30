@@ -143,10 +143,6 @@ export class PaymentsService {
     await this.notificationHelper.notifyOrderPaid(
       userIdStr,
       dto.orderId,
-    );
-
-    await this.notificationHelper.notifyPaymentSuccess(
-      userIdStr,
       financials.customerPaid,
     );
 
@@ -573,10 +569,6 @@ export class PaymentsService {
     await this.notificationHelper.notifyOrderPaid(
       order.customerId.toString(),
       orderIdStr,
-    );
-
-    await this.notificationHelper.notifyPaymentSuccess(
-      order.customerId.toString(),
       financials.customerPaid,
     );
 

@@ -375,8 +375,19 @@ export class TripsService {
     } else if (query.status) {
       filters.status = query.status;
     } else {
+      // Tampilkan seluruh status trip milik mitra (termasuk saat stand-by di pos asal 'in_origin_pos' maupun tiba di tujuan 'arrived_dest_pos')
       filters.status = {
-        in: ['scheduled', 'in_transit', 'completed'],
+        in: [
+          'scheduled',
+          'in_origin_pos',
+          'in_transit',
+          'arrived_dest_pos',
+          'completed',
+          'cancelled',
+          'cancelled_by_mitra',
+          'mitra_no_show',
+          'pending_admin_review',
+        ],
       };
     }
 

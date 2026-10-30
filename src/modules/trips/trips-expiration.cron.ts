@@ -81,7 +81,7 @@ export class TripsExpirationCron {
               : timeIso.substring(0, 8);
           }
 
-          const departureDateTime = new Date(`${datePart}T${timePart}`);
+          const departureDateTime = new Date(`${datePart}T${timePart}Z`);
           if (isNaN(departureDateTime.getTime())) {
             continue;
           }
@@ -307,7 +307,7 @@ export class TripsExpirationCron {
               : timeIso.substring(0, 8);
           }
 
-          const departureDateTime = new Date(`${datePart}T${timePart}`);
+          const departureDateTime = new Date(`${datePart}T${timePart}Z`);
           if (isNaN(departureDateTime.getTime())) continue;
 
           // Selisih menit dari sekarang hingga waktu keberangkatan

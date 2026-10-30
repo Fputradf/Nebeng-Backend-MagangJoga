@@ -114,7 +114,7 @@ export class OrdersRepository {
         );
         if (orderData.subtotal < minOrder) {
           throw new BadRequestException(
-            `Total pemesanan belum memenuhi syarat minimum voucher (minimal Rp ${minOrder.toLocaleString('id-ID')}).`,
+            `Subtotal pemesanan belum memenuhi syarat minimum voucher (minimal Rp ${minOrder.toLocaleString('id-ID')}).`,
           );
         }
 
@@ -283,6 +283,14 @@ export class OrdersRepository {
             originPoint: true,
             destinationPoint: true,
             mitra: true,
+            vehicle: true,
+            checkpointsLogs: {
+              include: {
+                pos: true,
+                scannedByUser: true,
+              },
+              orderBy: { createdAt: 'asc' },
+            },
           },
         },
         itemOrders: true,
@@ -314,10 +322,25 @@ export class OrdersRepository {
             },
             destinationPoint: true,
             mitra: true,
+            vehicle: true,
+            checkpointsLogs: {
+              include: {
+                pos: true,
+                scannedByUser: true,
+              },
+              orderBy: { createdAt: 'asc' },
+            },
           },
         },
         customer: true,
         itemOrders: true,
+        checkpointsLogs: {
+          include: {
+            pos: true,
+            scannedByUser: true,
+          },
+          orderBy: { createdAt: 'asc' },
+        },
       },
     });
   }

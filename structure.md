@@ -25,6 +25,9 @@
 ├── 📄 package-lock.json
 ├── 📄 package.json
 ├── 📁 prisma/
+│   ├── 📁 data/
+│   │   ├── 📄 diy-polygon.json
+│   │   └── 📄 solo-polygon.json
 │   ├── 📁 migrations/
 │   │   ├── 📁 20260815125510_init/
 │   │   │   └── 📄 migration.sql
@@ -59,6 +62,10 @@
 │   │   ├── 📁 20261027130909_add_vouchers/
 │   │   │   └── 📄 migration.sql
 │   │   ├── 📁 20261028160000_add_user_vouchers/
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261029154500_add_social_links/
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20261029163600_make_checkpoints_log_order_id_nullable/
 │   │   │   └── 📄 migration.sql
 │   │   └── 📄 migration_lock.toml
 │   ├── 📄 run-seed.js
@@ -413,6 +420,7 @@
 │   │       ├── 📄 wallets.service.ts
 │   │       └── 📄 withdraw-wallet.dto.ts
 │   ├── 📄 orders-cancel-test.int-spec.ts
+│   ├── 📄 parcel-flow.int-spec.ts
 │   ├── 📄 payments-bypass-and-wallet.int-spec.ts
 │   ├── 📁 prisma/
 │   │   ├── 📄 prisma.module.ts
@@ -512,6 +520,18 @@
         ├── 📄 verif-1792657368795-402384805.jpg
         ├── 📄 verif-1792657368996-897121387.jpg
         ├── 📄 verif-1792657369021-860704079.jpg
-        └── 📄 verif-1792657369052-318036963.jpg
+        ├── 📄 verif-1792657369052-318036963.jpg
+        ├── 📄 verif-1793280124445-685732801.jpg
+        ├── 📄 verif-1793280130607-366006890.jpg
+        ├── 📄 verif-1793280131214-283454386.jpg
+        ├── 📄 verif-1793280687774-618740266.jpg
+        ├── 📄 verif-1793341968229-180279795.png
+        ├── 📄 verif-1793345257390-836665500.png
+        ├── 📄 verif-1793345259076-5753878.png
+        ├── 📄 verif-1793345305804-351515240.png
+        ├── 📄 verif-1793345801990-169314796.jpg
+        ├── 📄 verif-1793345811298-433998241.jpg
+        ├── 📄 verif-1793346253699-252723577.jpg
+        └── 📄 verif-1793346293867-842130419.jpg
 ```
 <!-- PROJECT_STRUCTURE_END -->

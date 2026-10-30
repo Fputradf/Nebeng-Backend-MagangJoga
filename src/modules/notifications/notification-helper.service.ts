@@ -23,16 +23,21 @@ export class NotificationHelperService {
     });
   }
 
-  async notifyOrderPaid(userId: string, orderId: string) {
+  async notifyOrderPaid(userId: string, orderId: string, amount?: number) {
+    const formattedAmount =
+      typeof amount === 'number' && amount > 0
+        ? ` sebesar Rp ${amount.toLocaleString('id-ID')}`
+        : '';
     return this.notificationsService.sendNotification({
       userId,
       type: NotificationType.order_paid,
       payload: {
         title: 'Pembayaran Berhasil',
-        body: `Pembayaran untuk pesanan #${orderId} telah berhasil. Tiket Anda telah diterbitkan.`,
+        body: `Pembayaran${formattedAmount} untuk pesanan #${orderId} telah berhasil. Tiket Anda telah diterbitkan.`,
         data: {
           orderId,
           type: 'order_paid',
+          ...(typeof amount === 'number' ? { amount } : {}),
         },
       },
     });

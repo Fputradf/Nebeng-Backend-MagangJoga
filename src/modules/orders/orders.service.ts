@@ -216,10 +216,13 @@ export class OrdersService {
           );
         }
 
-        const itemBaseRate = Number(parcelPricing.baseFare);
-        const itemFarePerKm = Number(parcelPricing.farePerKm) || 2000;
+        const itemBaseRate =
+          Number(trip.price) > 0
+            ? Number(trip.price)
+            : Number(parcelPricing.baseFare) +
+              (Number(parcelPricing.farePerKm) || 2000);
 
-        const singleItemPrice = (itemBaseRate + itemFarePerKm) * item.quantity;
+        const singleItemPrice = itemBaseRate * item.quantity;
         totalPrice += singleItemPrice;
 
         itemsDataProcessed.push({

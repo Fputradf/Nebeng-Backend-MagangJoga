@@ -1226,7 +1226,7 @@ export class CheckpointsRepository {
       await tx.checkpointsLog.create({
         data: {
           tripId,
-          orderId: BigInt(0),
+          orderId: null,
           posId,
           scannedByUserId: operatorId,
           scanType: ScanType.checkin_origin,

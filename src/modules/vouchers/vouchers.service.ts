@@ -145,7 +145,7 @@ export class VouchersService {
     const minOrder = Number(voucher.minOrderAmount || 0);
     if (subtotal < minOrder) {
       throw new BadRequestException(
-        `Total pemesanan belum memenuhi syarat minimum voucher (minimal Rp ${minOrder.toLocaleString('id-ID')}).`,
+        `Subtotal pemesanan belum memenuhi syarat minimum voucher (minimal Rp ${minOrder.toLocaleString('id-ID')}).`,
       );
     }
 
