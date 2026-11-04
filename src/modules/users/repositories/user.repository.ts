@@ -57,6 +57,16 @@ export class UserRepository {
     });
   }
 
+  async findProfileByKtpNumber(ktpNumber: string) {
+    if (!ktpNumber) return null;
+    const cleanKtp = ktpNumber.trim();
+    if (!cleanKtp) return null;
+    return this.prisma.userProfile.findFirst({
+      where: { ktpNumber: cleanKtp },
+      include: { user: true },
+    });
+  }
+
   async updateResetToken(
     id: string,
     token: string,

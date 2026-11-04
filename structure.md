@@ -112,6 +112,7 @@
 │   │       │   ├── 📄 City.ts
 │   │       │   ├── 📄 Conversation.ts
 │   │       │   ├── 📄 DeviceToken.ts
+│   │       │   ├── 📄 DisbursementBank.ts
 │   │       │   ├── 📄 ItemOrder.ts
 │   │       │   ├── 📄 MerchandiseItem.ts
 │   │       │   ├── 📄 MerchandiseRedemption.ts
@@ -122,6 +123,7 @@
 │   │       │   ├── 📄 NotificationLog.ts
 │   │       │   ├── 📄 NotificationPreference.ts
 │   │       │   ├── 📄 Order.ts
+│   │       │   ├── 📄 OrderPassenger.ts
 │   │       │   ├── 📄 OrderQrSession.ts
 │   │       │   ├── 📄 OsmRouteCache.ts
 │   │       │   ├── 📄 Payment.ts
@@ -131,6 +133,8 @@
 │   │       │   ├── 📄 Region.ts
 │   │       │   ├── 📄 RewardTransaction.ts
 │   │       │   ├── 📄 SocialLink.ts
+│   │       │   ├── 📄 SosAlert.ts
+│   │       │   ├── 📄 SystemSetting.ts
 │   │       │   ├── 📄 Trip.ts
 │   │       │   ├── 📄 TripQrSession.ts
 │   │       │   ├── 📄 TripReview.ts
@@ -138,6 +142,7 @@
 │   │       │   ├── 📄 User.ts
 │   │       │   ├── 📄 UserNotification.ts
 │   │       │   ├── 📄 UserProfile.ts
+│   │       │   ├── 📄 UserReport.ts
 │   │       │   ├── 📄 UserVoucher.ts
 │   │       │   ├── 📄 Vehicle.ts
 │   │       │   ├── 📄 Verification.ts
@@ -162,6 +167,7 @@
 │   │   │   │   ├── 📄 process-withdrawal.dto.ts
 │   │   │   │   ├── 📄 system-setting.dto.ts
 │   │   │   │   ├── 📄 update-pricing-policy.dto.ts
+│   │   │   │   ├── 📄 update-sanction-settings.dto.ts
 │   │   │   │   └── 📄 update-user-governance.dto.ts
 │   │   │   ├── 📁 mappers/
 │   │   │   │   └── 📄 admin.mapper.ts
@@ -223,6 +229,20 @@
 │   │   │   │   └── 📄 checkpoint.mapper.ts
 │   │   │   └── 📁 repository/
 │   │   │       └── 📄 checkpoints.repository.ts
+│   │   ├── 📁 disbursement-banks/
+│   │   │   ├── 📄 disbursement-banks.controller.ts
+│   │   │   ├── 📄 disbursement-banks.module.ts
+│   │   │   ├── 📄 disbursement-banks.service.ts
+│   │   │   └── 📁 dto/
+│   │   │       ├── 📄 create-disbursement-bank.dto.ts
+│   │   │       └── 📄 update-disbursement-bank.dto.ts
+│   │   ├── 📁 emergency/
+│   │   │   ├── 📁 dto/
+│   │   │   │   ├── 📄 create-sos.dto.ts
+│   │   │   │   └── 📄 resolve-sos.dto.ts
+│   │   │   ├── 📄 emergency.controller.ts
+│   │   │   ├── 📄 emergency.module.ts
+│   │   │   └── 📄 emergency.service.ts
 │   │   ├── 📁 merchandises/
 │   │   │   ├── 📁 dto/
 │   │   │   │   ├── 📄 create-merchandise.dto.ts
@@ -256,6 +276,7 @@
 │   │   ├── 📁 orders/
 │   │   │   ├── 📁 dto/
 │   │   │   │   ├── 📄 create-order-item.dto.ts
+│   │   │   │   ├── 📄 create-order-passenger.dto.ts
 │   │   │   │   └── 📄 create-order.dto.ts
 │   │   │   ├── 📁 mappers/
 │   │   │   │   └── 📄 order.mapper.ts
@@ -300,6 +321,14 @@
 │   │   │   ├── 📄 region.service.ts
 │   │   │   └── 📁 repositories/
 │   │   │       └── 📄 region.repository.ts
+│   │   ├── 📁 reports/
+│   │   │   ├── 📁 dto/
+│   │   │   │   ├── 📄 create-report.dto.ts
+│   │   │   │   ├── 📄 query-report.dto.ts
+│   │   │   │   └── 📄 resolve-report.dto.ts
+│   │   │   ├── 📄 reports.controller.ts
+│   │   │   ├── 📄 reports.module.ts
+│   │   │   └── 📄 reports.service.ts
 │   │   ├── 📁 reviews/
 │   │   │   ├── 📁 dto/
 │   │   │   │   └── 📄 create-review.dto.ts
@@ -419,6 +448,7 @@
 │   │       ├── 📄 wallets.service.spec.ts
 │   │       ├── 📄 wallets.service.ts
 │   │       └── 📄 withdraw-wallet.dto.ts
+│   ├── 📄 nik-uniqueness.int-spec.ts
 │   ├── 📄 orders-cancel-test.int-spec.ts
 │   ├── 📄 parcel-flow.int-spec.ts
 │   ├── 📄 payments-bypass-and-wallet.int-spec.ts
@@ -427,6 +457,7 @@
 │   │   └── 📄 prisma.service.ts
 │   ├── 📄 prisma-real-test.int-spec.ts
 │   ├── 📁 test-integration/
+│   ├── 📄 trip-scenarios.int-spec.ts
 │   ├── 📄 trip-service-type.int-spec.ts
 │   ├── 📄 upload.controller.ts
 │   └── 📄 voucher-orders.int-spec.ts
@@ -461,7 +492,11 @@
     │   ├── 📄 avatar-1792504180150-601611566.jpg
     │   ├── 📄 avatar-1792760847474-655824222.jpg
     │   ├── 📄 avatar-1792824417202-368141972.jpg
-    │   └── 📄 avatar-1793104629310-192887533.jpg
+    │   ├── 📄 avatar-1793104629310-192887533.jpg
+    │   ├── 📄 avatar-1793603651334-984643038.png
+    │   ├── 📄 avatar-1793604079866-261533505.jpg
+    │   ├── 📄 avatar-1793604553866-526787307.png
+    │   └── 📄 avatar-1793689102184-365216797.jpg
     ├── 📁 banners/
     │   ├── 📄 banner-1792485389613-613940662.png
     │   ├── 📄 banner-1792485463576-927977587.jpg
@@ -483,7 +518,8 @@
     │   ├── 📄 banner-1792827146020-188121364.jpeg
     │   ├── 📄 banner-1792827253214-769705733.jpg
     │   ├── 📄 banner-1792827267602-63497054.jpg
-    │   └── 📄 banner-1792827283172-536825223.jpg
+    │   ├── 📄 banner-1792827283172-536825223.jpg
+    │   └── 📄 banner-1793593361719-154838873.jpg
     └── 📁 verifications/
         ├── 📄 verif-1788583468306-156373500.jpg
         ├── 📄 verif-1788583468386-930793520.jpg
@@ -532,6 +568,22 @@
         ├── 📄 verif-1793345801990-169314796.jpg
         ├── 📄 verif-1793345811298-433998241.jpg
         ├── 📄 verif-1793346253699-252723577.jpg
-        └── 📄 verif-1793346293867-842130419.jpg
+        ├── 📄 verif-1793346293867-842130419.jpg
+        ├── 📄 verif-1793346460067-423435834.jpg
+        ├── 📄 verif-1793351551352-867913206.jpg
+        ├── 📄 verif-1793351551455-378229465.jpg
+        ├── 📄 verif-1793351551478-185446926.jpg
+        ├── 📄 verif-1793351551499-777127449.jpg
+        ├── 📄 verif-1793351551516-296283440.jpg
+        ├── 📄 verif-1793351794533-776194608.jpg
+        ├── 📄 verif-1793351794553-343147260.jpg
+        ├── 📄 verif-1793358012757-685269769.jpg
+        ├── 📄 verif-1793358012809-767113965.jpg
+        ├── 📄 verif-1793362911199-527825961.jpg
+        ├── 📄 verif-1793362911283-948278607.jpg
+        ├── 📄 verif-1793584003501-511098533.jpg
+        ├── 📄 verif-1793603535921-695621651.png
+        ├── 📄 verif-1793605359184-642000362.png
+        └── 📄 verif-1793605543264-455761354.jpg
 ```
 <!-- PROJECT_STRUCTURE_END -->

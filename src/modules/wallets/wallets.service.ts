@@ -4,11 +4,13 @@ import {
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { WalletsRepository } from './repository/wallets.repository';
 import { WalletMapper } from './mappers/wallet.mapper';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { OrderStatus, EscrowStatus } from '../../generated/prisma/enums';
 
 @Injectable()
 export class WalletsService {
@@ -28,13 +30,46 @@ export class WalletsService {
   }
 
   async getMyWallet(userIdStr: string) {
+    const parsedUserId = this.safeParseBigInt(userIdStr);
     let wallet = await this.walletRepository.findByUserId(userIdStr);
 
     if (!wallet) {
       wallet = await this.walletRepository.createWallets(userIdStr);
     }
 
-    return WalletMapper.toResponse(wallet);
+    let heldEscrow = Number(wallet.heldEscrowBalance);
+
+    if (parsedUserId) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: parsedUserId },
+        select: { role: true },
+      });
+
+      // Untuk Customer: hitung total nominal pesanan aktif yang dananya sedang ditahan di escrow
+      if (user?.role === 'customer') {
+        const activeHeldOrders = await this.prisma.order.aggregate({
+          where: {
+            customerId: parsedUserId,
+            escrowStatus: EscrowStatus.held,
+            status: {
+              in: [
+                OrderStatus.paid,
+                OrderStatus.checked_in_origin,
+                OrderStatus.in_transit,
+              ],
+            },
+          },
+          _sum: { totalPrice: true },
+        });
+        heldEscrow = Number(activeHeldOrders._sum.totalPrice || 0);
+      }
+    }
+
+    const response = WalletMapper.toResponse(wallet);
+    return {
+      ...response,
+      heldEscrowBalance: heldEscrow,
+    };
   }
 
   async holdEscrow(mitraUserIdStr: string, orderIdStr: string, amount: number) {
@@ -79,7 +114,7 @@ export class WalletsService {
     return WalletMapper.toResponse(updatedWallet);
   }
 
-  async requestWithdrawal(userIdStr: string, amount: number) {
+  async requestWithdrawal(userIdStr: string, amount: number, pin?: string) {
     const withdrawEnabled = this.configService.get<string>('WITHDRAW_ENABLED') === 'true';
     if (!withdrawEnabled) {
       throw new ServiceUnavailableException(
@@ -98,6 +133,21 @@ export class WalletsService {
       throw new BadRequestException('Format ID User tidak valid.');
     }
 
+    const user = await this.prisma.user.findUnique({
+      where: { id: parsedUserId },
+      select: { pinHash: true },
+    });
+
+    if (user?.pinHash) {
+      if (!pin) {
+        throw new BadRequestException('PIN transaksi wajib dimasukkan.');
+      }
+      const isPinValid = await bcrypt.compare(pin, user.pinHash);
+      if (!isPinValid) {
+        throw new BadRequestException('PIN transaksi yang dimasukkan salah.');
+      }
+    }
+
     const profile = await this.prisma.userProfile.findUnique({
       where: { userId: parsedUserId },
     });
@@ -106,6 +156,29 @@ export class WalletsService {
       throw new BadRequestException(
         'Informasi rekening bank belum diisi. Silakan lengkapi profil rekening Anda terlebih dahulu.',
       );
+    }
+
+    const userBankCodeOrName = (profile.bankName || '').trim();
+    const totalActiveBanks = await this.prisma.disbursementBank.count({
+      where: { isActive: true },
+    });
+
+    if (totalActiveBanks > 0) {
+      const activeBank = await this.prisma.disbursementBank.findFirst({
+        where: {
+          isActive: true,
+          OR: [
+            { bankCode: userBankCodeOrName.toUpperCase() },
+            { bankName: { contains: userBankCodeOrName } },
+          ],
+        },
+      });
+
+      if (!activeBank) {
+        throw new BadRequestException(
+          `Bank "${profile.bankName}" saat ini tidak didukung untuk pencairan atau dinonaktifkan oleh Administrator. Harap perbarui informasi rekening bank ke daftar bank yang aktif.`,
+        );
+      }
     }
 
     let wallet = await this.walletRepository.findByUserId(userIdStr);

@@ -681,14 +681,6 @@ export type EnumDiscountTypeFieldUpdateOperationsInput = {
   set?: $Enums.DiscountType
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type VoucherCreateNestedOneWithoutUserVouchersInput = {
   create?: Prisma.XOR<Prisma.VoucherCreateWithoutUserVouchersInput, Prisma.VoucherUncheckedCreateWithoutUserVouchersInput>
   connectOrCreate?: Prisma.VoucherCreateOrConnectWithoutUserVouchersInput

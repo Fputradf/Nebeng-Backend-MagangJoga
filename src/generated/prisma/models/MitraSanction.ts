@@ -283,6 +283,7 @@ export type MitraSanctionWhereInput = {
   mitra?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   trip?: Prisma.XOR<Prisma.TripNullableScalarRelationFilter, Prisma.TripWhereInput> | null
   appeals?: Prisma.MitraSanctionAppealListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }
 
 export type MitraSanctionOrderByWithRelationInput = {
@@ -300,6 +301,7 @@ export type MitraSanctionOrderByWithRelationInput = {
   mitra?: Prisma.UserOrderByWithRelationInput
   trip?: Prisma.TripOrderByWithRelationInput
   appeals?: Prisma.MitraSanctionAppealOrderByRelationAggregateInput
+  userReports?: Prisma.UserReportOrderByRelationAggregateInput
 }
 
 export type MitraSanctionWhereUniqueInput = Prisma.AtLeast<{
@@ -320,6 +322,7 @@ export type MitraSanctionWhereUniqueInput = Prisma.AtLeast<{
   mitra?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   trip?: Prisma.XOR<Prisma.TripNullableScalarRelationFilter, Prisma.TripWhereInput> | null
   appeals?: Prisma.MitraSanctionAppealListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }, "id">
 
 export type MitraSanctionOrderByWithAggregationInput = {
@@ -371,6 +374,7 @@ export type MitraSanctionCreateInput = {
   mitra: Prisma.UserCreateNestedOneWithoutMitraSanctionsInput
   trip?: Prisma.TripCreateNestedOneWithoutMitraSanctionsInput
   appeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionUncheckedCreateInput = {
@@ -386,6 +390,7 @@ export type MitraSanctionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionUpdateInput = {
@@ -401,6 +406,7 @@ export type MitraSanctionUpdateInput = {
   mitra?: Prisma.UserUpdateOneRequiredWithoutMitraSanctionsNestedInput
   trip?: Prisma.TripUpdateOneWithoutMitraSanctionsNestedInput
   appeals?: Prisma.MitraSanctionAppealUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateInput = {
@@ -416,6 +422,7 @@ export type MitraSanctionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionCreateManyInput = {
@@ -531,6 +538,11 @@ export type MitraSanctionScalarRelationFilter = {
   isNot?: Prisma.MitraSanctionWhereInput
 }
 
+export type MitraSanctionNullableScalarRelationFilter = {
+  is?: Prisma.MitraSanctionWhereInput | null
+  isNot?: Prisma.MitraSanctionWhereInput | null
+}
+
 export type MitraSanctionCreateNestedManyWithoutMitraInput = {
   create?: Prisma.XOR<Prisma.MitraSanctionCreateWithoutMitraInput, Prisma.MitraSanctionUncheckedCreateWithoutMitraInput> | Prisma.MitraSanctionCreateWithoutMitraInput[] | Prisma.MitraSanctionUncheckedCreateWithoutMitraInput[]
   connectOrCreate?: Prisma.MitraSanctionCreateOrConnectWithoutMitraInput | Prisma.MitraSanctionCreateOrConnectWithoutMitraInput[]
@@ -637,6 +649,22 @@ export type MitraSanctionUpdateOneRequiredWithoutAppealsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MitraSanctionUpdateToOneWithWhereWithoutAppealsInput, Prisma.MitraSanctionUpdateWithoutAppealsInput>, Prisma.MitraSanctionUncheckedUpdateWithoutAppealsInput>
 }
 
+export type MitraSanctionCreateNestedOneWithoutUserReportsInput = {
+  create?: Prisma.XOR<Prisma.MitraSanctionCreateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.MitraSanctionCreateOrConnectWithoutUserReportsInput
+  connect?: Prisma.MitraSanctionWhereUniqueInput
+}
+
+export type MitraSanctionUpdateOneWithoutUserReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.MitraSanctionCreateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.MitraSanctionCreateOrConnectWithoutUserReportsInput
+  upsert?: Prisma.MitraSanctionUpsertWithoutUserReportsInput
+  disconnect?: Prisma.MitraSanctionWhereInput | boolean
+  delete?: Prisma.MitraSanctionWhereInput | boolean
+  connect?: Prisma.MitraSanctionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MitraSanctionUpdateToOneWithWhereWithoutUserReportsInput, Prisma.MitraSanctionUpdateWithoutUserReportsInput>, Prisma.MitraSanctionUncheckedUpdateWithoutUserReportsInput>
+}
+
 export type MitraSanctionCreateWithoutMitraInput = {
   id?: bigint | number
   violationType: $Enums.SanctionViolationType
@@ -649,6 +677,7 @@ export type MitraSanctionCreateWithoutMitraInput = {
   updatedAt?: Date | string
   trip?: Prisma.TripCreateNestedOneWithoutMitraSanctionsInput
   appeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionUncheckedCreateWithoutMitraInput = {
@@ -663,6 +692,7 @@ export type MitraSanctionUncheckedCreateWithoutMitraInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionCreateOrConnectWithoutMitraInput = {
@@ -720,6 +750,7 @@ export type MitraSanctionCreateWithoutTripInput = {
   updatedAt?: Date | string
   mitra: Prisma.UserCreateNestedOneWithoutMitraSanctionsInput
   appeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionUncheckedCreateWithoutTripInput = {
@@ -734,6 +765,7 @@ export type MitraSanctionUncheckedCreateWithoutTripInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutSanctionInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionCreateOrConnectWithoutTripInput = {
@@ -774,6 +806,7 @@ export type MitraSanctionCreateWithoutAppealsInput = {
   updatedAt?: Date | string
   mitra: Prisma.UserCreateNestedOneWithoutMitraSanctionsInput
   trip?: Prisma.TripCreateNestedOneWithoutMitraSanctionsInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionUncheckedCreateWithoutAppealsInput = {
@@ -788,6 +821,7 @@ export type MitraSanctionUncheckedCreateWithoutAppealsInput = {
   status?: $Enums.SanctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutSanctionInput
 }
 
 export type MitraSanctionCreateOrConnectWithoutAppealsInput = {
@@ -818,6 +852,7 @@ export type MitraSanctionUpdateWithoutAppealsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitra?: Prisma.UserUpdateOneRequiredWithoutMitraSanctionsNestedInput
   trip?: Prisma.TripUpdateOneWithoutMitraSanctionsNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateWithoutAppealsInput = {
@@ -832,6 +867,83 @@ export type MitraSanctionUncheckedUpdateWithoutAppealsInput = {
   status?: Prisma.EnumSanctionStatusFieldUpdateOperationsInput | $Enums.SanctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutSanctionNestedInput
+}
+
+export type MitraSanctionCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  violationType: $Enums.SanctionViolationType
+  scoreDeduction?: number
+  tier?: number
+  isSuspended?: boolean
+  suspendedUntil?: Date | string | null
+  status?: $Enums.SanctionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitra: Prisma.UserCreateNestedOneWithoutMitraSanctionsInput
+  trip?: Prisma.TripCreateNestedOneWithoutMitraSanctionsInput
+  appeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutSanctionInput
+}
+
+export type MitraSanctionUncheckedCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  tripId?: bigint | number | null
+  violationType: $Enums.SanctionViolationType
+  scoreDeduction?: number
+  tier?: number
+  isSuspended?: boolean
+  suspendedUntil?: Date | string | null
+  status?: $Enums.SanctionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutSanctionInput
+}
+
+export type MitraSanctionCreateOrConnectWithoutUserReportsInput = {
+  where: Prisma.MitraSanctionWhereUniqueInput
+  create: Prisma.XOR<Prisma.MitraSanctionCreateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedCreateWithoutUserReportsInput>
+}
+
+export type MitraSanctionUpsertWithoutUserReportsInput = {
+  update: Prisma.XOR<Prisma.MitraSanctionUpdateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedUpdateWithoutUserReportsInput>
+  create: Prisma.XOR<Prisma.MitraSanctionCreateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedCreateWithoutUserReportsInput>
+  where?: Prisma.MitraSanctionWhereInput
+}
+
+export type MitraSanctionUpdateToOneWithWhereWithoutUserReportsInput = {
+  where?: Prisma.MitraSanctionWhereInput
+  data: Prisma.XOR<Prisma.MitraSanctionUpdateWithoutUserReportsInput, Prisma.MitraSanctionUncheckedUpdateWithoutUserReportsInput>
+}
+
+export type MitraSanctionUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  violationType?: Prisma.EnumSanctionViolationTypeFieldUpdateOperationsInput | $Enums.SanctionViolationType
+  scoreDeduction?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
+  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumSanctionStatusFieldUpdateOperationsInput | $Enums.SanctionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitra?: Prisma.UserUpdateOneRequiredWithoutMitraSanctionsNestedInput
+  trip?: Prisma.TripUpdateOneWithoutMitraSanctionsNestedInput
+  appeals?: Prisma.MitraSanctionAppealUpdateManyWithoutSanctionNestedInput
+}
+
+export type MitraSanctionUncheckedUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  violationType?: Prisma.EnumSanctionViolationTypeFieldUpdateOperationsInput | $Enums.SanctionViolationType
+  scoreDeduction?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
+  isSuspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumSanctionStatusFieldUpdateOperationsInput | $Enums.SanctionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionCreateManyMitraInput = {
@@ -859,6 +971,7 @@ export type MitraSanctionUpdateWithoutMitraInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trip?: Prisma.TripUpdateOneWithoutMitraSanctionsNestedInput
   appeals?: Prisma.MitraSanctionAppealUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateWithoutMitraInput = {
@@ -873,6 +986,7 @@ export type MitraSanctionUncheckedUpdateWithoutMitraInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateManyWithoutMitraInput = {
@@ -913,6 +1027,7 @@ export type MitraSanctionUpdateWithoutTripInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitra?: Prisma.UserUpdateOneRequiredWithoutMitraSanctionsNestedInput
   appeals?: Prisma.MitraSanctionAppealUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateWithoutTripInput = {
@@ -927,6 +1042,7 @@ export type MitraSanctionUncheckedUpdateWithoutTripInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutSanctionNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutSanctionNestedInput
 }
 
 export type MitraSanctionUncheckedUpdateManyWithoutTripInput = {
@@ -949,10 +1065,12 @@ export type MitraSanctionUncheckedUpdateManyWithoutTripInput = {
 
 export type MitraSanctionCountOutputType = {
   appeals: number
+  userReports: number
 }
 
 export type MitraSanctionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appeals?: boolean | MitraSanctionCountOutputTypeCountAppealsArgs
+  userReports?: boolean | MitraSanctionCountOutputTypeCountUserReportsArgs
 }
 
 /**
@@ -972,6 +1090,13 @@ export type MitraSanctionCountOutputTypeCountAppealsArgs<ExtArgs extends runtime
   where?: Prisma.MitraSanctionAppealWhereInput
 }
 
+/**
+ * MitraSanctionCountOutputType without action
+ */
+export type MitraSanctionCountOutputTypeCountUserReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
 
 export type MitraSanctionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -988,6 +1113,7 @@ export type MitraSanctionSelect<ExtArgs extends runtime.Types.Extensions.Interna
   mitra?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   trip?: boolean | Prisma.MitraSanction$tripArgs<ExtArgs>
   appeals?: boolean | Prisma.MitraSanction$appealsArgs<ExtArgs>
+  userReports?: boolean | Prisma.MitraSanction$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.MitraSanctionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mitraSanction"]>
 
@@ -1012,6 +1138,7 @@ export type MitraSanctionInclude<ExtArgs extends runtime.Types.Extensions.Intern
   mitra?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   trip?: boolean | Prisma.MitraSanction$tripArgs<ExtArgs>
   appeals?: boolean | Prisma.MitraSanction$appealsArgs<ExtArgs>
+  userReports?: boolean | Prisma.MitraSanction$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.MitraSanctionCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1021,6 +1148,7 @@ export type $MitraSanctionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     mitra: Prisma.$UserPayload<ExtArgs>
     trip: Prisma.$TripPayload<ExtArgs> | null
     appeals: Prisma.$MitraSanctionAppealPayload<ExtArgs>[]
+    userReports: Prisma.$UserReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -1377,6 +1505,7 @@ export interface Prisma__MitraSanctionClient<T, Null = never, ExtArgs extends ru
   mitra<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   trip<T extends Prisma.MitraSanction$tripArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MitraSanction$tripArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   appeals<T extends Prisma.MitraSanction$appealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MitraSanction$appealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MitraSanctionAppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userReports<T extends Prisma.MitraSanction$userReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MitraSanction$userReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1805,6 +1934,30 @@ export type MitraSanction$appealsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.MitraSanctionAppealScalarFieldEnum | Prisma.MitraSanctionAppealScalarFieldEnum[]
+}
+
+/**
+ * MitraSanction.userReports
+ */
+export type MitraSanction$userReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
 }
 
 /**

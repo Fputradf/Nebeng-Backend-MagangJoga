@@ -27,6 +27,7 @@ export class OrdersRepository {
     itemsData: any[],
     seatsToDeduct: number,
     weightToDeduct: number,
+    passengersData?: any[],
   ) {
     const parseTripId = this.safeParseBigInt(tripId);
     const parseCustomerId = this.safeParseBigInt(customerId);
@@ -253,6 +254,18 @@ export class OrdersRepository {
         });
       }
 
+      if (passengersData && passengersData.length > 0) {
+        await tx.orderPassenger.createMany({
+          data: passengersData.map((p, idx) => ({
+            orderId: createdOrder.id,
+            name: p.name,
+            phone: p.phone,
+            seatNumber: p.seatNumber ?? (idx + 1),
+            isContact: p.isContact ?? (idx === 0),
+          })),
+        });
+      }
+
       return tx.order.findUnique({
         where: { id: createdOrder.id },
         include: {
@@ -260,10 +273,17 @@ export class OrdersRepository {
             include: {
               originPoint: true,
               destinationPoint: true,
-              mitra: true,
+              mitra: {
+                include: {
+                  reviewsReceived: {
+                    select: { rating: true },
+                  },
+                },
+              },
             },
           },
           customer: true,
+          passengers: true,
           itemOrders: true,
           voucherRedemption: true,
         },
@@ -282,7 +302,13 @@ export class OrdersRepository {
           include: {
             originPoint: true,
             destinationPoint: true,
-            mitra: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
             vehicle: true,
             checkpointsLogs: {
               include: {
@@ -294,6 +320,7 @@ export class OrdersRepository {
           },
         },
         itemOrders: true,
+        passengers: true,
         checkpointsLogs: {
           include: {
             pos: true,
@@ -321,7 +348,13 @@ export class OrdersRepository {
               },
             },
             destinationPoint: true,
-            mitra: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
             vehicle: true,
             checkpointsLogs: {
               include: {
@@ -333,6 +366,7 @@ export class OrdersRepository {
           },
         },
         customer: true,
+        passengers: true,
         itemOrders: true,
         checkpointsLogs: {
           include: {
@@ -348,6 +382,24 @@ export class OrdersRepository {
   async findByTicketQr(qrCodeTicket: string) {
     return this.prisma.order.findUnique({
       where: { qrCodeTicket },
+      include: {
+        customer: true,
+        passengers: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
+            vehicle: true,
+          },
+        },
+      },
     });
   }
 
@@ -364,7 +416,20 @@ export class OrdersRepository {
         ...(escrowStatus && { escrowStatus }),
       },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
+            vehicle: true,
+          },
+        },
         itemOrders: true,
       },
     });

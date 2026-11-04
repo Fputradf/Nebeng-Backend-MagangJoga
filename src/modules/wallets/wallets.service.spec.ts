@@ -17,8 +17,15 @@ describe('WalletsService - WITHDRAW_ENABLED Flag', () => {
   };
 
   const mockPrismaService = {
+    user: {
+      findUnique: jest.fn().mockResolvedValue({ pinHash: null }),
+    },
     userProfile: {
       findUnique: jest.fn(),
+    },
+    disbursementBank: {
+      count: jest.fn().mockResolvedValue(0),
+      findFirst: jest.fn(),
     },
   };
 
@@ -161,6 +168,27 @@ describe('WalletsService - WITHDRAW_ENABLED Flag', () => {
         mockAmount,
         expect.stringContaining('TRX ID:'),
       );
+    });
+
+    it('should throw BadRequestException when user has PIN but no PIN provided', async () => {
+      (configService.get as jest.Mock).mockReturnValue('true');
+      const hashedPin = '$2b$10$abcdefghijklmnopqrstuvwxyz123456';
+      mockPrismaService.user.findUnique.mockResolvedValueOnce({ pinHash: hashedPin });
+
+      await expect(
+        service.requestWithdrawal(mockUserId, mockAmount),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should proceed when user has PIN and correct PIN is provided', async () => {
+      (configService.get as jest.Mock).mockReturnValue('true');
+      process.env.XENDIT_SECRET_KEY = 'xnd_development_dummy';
+      const bcrypt = require('bcrypt');
+      const hashedPin = await bcrypt.hash('123456', 10);
+      mockPrismaService.user.findUnique.mockResolvedValueOnce({ pinHash: hashedPin });
+
+      const result = await service.requestWithdrawal(mockUserId, mockAmount, '123456');
+      expect(result).toBeDefined();
     });
   });
 });

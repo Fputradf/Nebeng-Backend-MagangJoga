@@ -282,6 +282,7 @@ export type RegionWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Region"> | Date | string
   users?: Prisma.UserListRelationFilter
   pickupPoints?: Prisma.PickupPointListRelationFilter
+  sosAlerts?: Prisma.SosAlertListRelationFilter
 }
 
 export type RegionOrderByWithRelationInput = {
@@ -298,6 +299,7 @@ export type RegionOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
   pickupPoints?: Prisma.PickupPointOrderByRelationAggregateInput
+  sosAlerts?: Prisma.SosAlertOrderByRelationAggregateInput
   _relevance?: Prisma.RegionOrderByRelevanceInput
 }
 
@@ -318,6 +320,7 @@ export type RegionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Region"> | Date | string
   users?: Prisma.UserListRelationFilter
   pickupPoints?: Prisma.PickupPointListRelationFilter
+  sosAlerts?: Prisma.SosAlertListRelationFilter
 }, "id" | "code">
 
 export type RegionOrderByWithAggregationInput = {
@@ -370,6 +373,7 @@ export type RegionCreateInput = {
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutRegionInput
   pickupPoints?: Prisma.PickupPointCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutRegionInput
 }
 
 export type RegionUncheckedCreateInput = {
@@ -386,6 +390,7 @@ export type RegionUncheckedCreateInput = {
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutRegionInput
   pickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutRegionInput
 }
 
 export type RegionUpdateInput = {
@@ -402,6 +407,7 @@ export type RegionUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutRegionNestedInput
   pickupPoints?: Prisma.PickupPointUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutRegionNestedInput
 }
 
 export type RegionUncheckedUpdateInput = {
@@ -418,6 +424,7 @@ export type RegionUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutRegionNestedInput
   pickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutRegionNestedInput
 }
 
 export type RegionCreateManyInput = {
@@ -606,6 +613,20 @@ export type RegionUpdateOneRequiredWithoutPickupPointsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RegionUpdateToOneWithWhereWithoutPickupPointsInput, Prisma.RegionUpdateWithoutPickupPointsInput>, Prisma.RegionUncheckedUpdateWithoutPickupPointsInput>
 }
 
+export type RegionCreateNestedOneWithoutSosAlertsInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutSosAlertsInput, Prisma.RegionUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutSosAlertsInput
+  connect?: Prisma.RegionWhereUniqueInput
+}
+
+export type RegionUpdateOneRequiredWithoutSosAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.RegionCreateWithoutSosAlertsInput, Prisma.RegionUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.RegionCreateOrConnectWithoutSosAlertsInput
+  upsert?: Prisma.RegionUpsertWithoutSosAlertsInput
+  connect?: Prisma.RegionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegionUpdateToOneWithWhereWithoutSosAlertsInput, Prisma.RegionUpdateWithoutSosAlertsInput>, Prisma.RegionUncheckedUpdateWithoutSosAlertsInput>
+}
+
 export type RegionCreateWithoutUsersInput = {
   id?: bigint | number
   name: string
@@ -619,6 +640,7 @@ export type RegionCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pickupPoints?: Prisma.PickupPointCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutRegionInput
 }
 
 export type RegionUncheckedCreateWithoutUsersInput = {
@@ -634,6 +656,7 @@ export type RegionUncheckedCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutRegionInput
 }
 
 export type RegionCreateOrConnectWithoutUsersInput = {
@@ -665,6 +688,7 @@ export type RegionUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pickupPoints?: Prisma.PickupPointUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutRegionNestedInput
 }
 
 export type RegionUncheckedUpdateWithoutUsersInput = {
@@ -680,6 +704,7 @@ export type RegionUncheckedUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutRegionNestedInput
 }
 
 export type RegionCreateWithoutPickupPointsInput = {
@@ -695,6 +720,7 @@ export type RegionCreateWithoutPickupPointsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutRegionInput
 }
 
 export type RegionUncheckedCreateWithoutPickupPointsInput = {
@@ -710,6 +736,7 @@ export type RegionUncheckedCreateWithoutPickupPointsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutRegionInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutRegionInput
 }
 
 export type RegionCreateOrConnectWithoutPickupPointsInput = {
@@ -741,6 +768,7 @@ export type RegionUpdateWithoutPickupPointsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutRegionNestedInput
 }
 
 export type RegionUncheckedUpdateWithoutPickupPointsInput = {
@@ -756,6 +784,87 @@ export type RegionUncheckedUpdateWithoutPickupPointsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutRegionNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutRegionNestedInput
+}
+
+export type RegionCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  name: string
+  code: string
+  pricePerKm?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  radiusKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  boundaryPolygon?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutRegionInput
+  pickupPoints?: Prisma.PickupPointCreateNestedManyWithoutRegionInput
+}
+
+export type RegionUncheckedCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  name: string
+  code: string
+  pricePerKm?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  radiusKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  boundaryPolygon?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutRegionInput
+  pickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutRegionInput
+}
+
+export type RegionCreateOrConnectWithoutSosAlertsInput = {
+  where: Prisma.RegionWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegionCreateWithoutSosAlertsInput, Prisma.RegionUncheckedCreateWithoutSosAlertsInput>
+}
+
+export type RegionUpsertWithoutSosAlertsInput = {
+  update: Prisma.XOR<Prisma.RegionUpdateWithoutSosAlertsInput, Prisma.RegionUncheckedUpdateWithoutSosAlertsInput>
+  create: Prisma.XOR<Prisma.RegionCreateWithoutSosAlertsInput, Prisma.RegionUncheckedCreateWithoutSosAlertsInput>
+  where?: Prisma.RegionWhereInput
+}
+
+export type RegionUpdateToOneWithWhereWithoutSosAlertsInput = {
+  where?: Prisma.RegionWhereInput
+  data: Prisma.XOR<Prisma.RegionUpdateWithoutSosAlertsInput, Prisma.RegionUncheckedUpdateWithoutSosAlertsInput>
+}
+
+export type RegionUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  pricePerKm?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  radiusKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  boundaryPolygon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutRegionNestedInput
+  pickupPoints?: Prisma.PickupPointUpdateManyWithoutRegionNestedInput
+}
+
+export type RegionUncheckedUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  pricePerKm?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  radiusKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  boundaryPolygon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutRegionNestedInput
+  pickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutRegionNestedInput
 }
 
 
@@ -766,11 +875,13 @@ export type RegionUncheckedUpdateWithoutPickupPointsInput = {
 export type RegionCountOutputType = {
   users: number
   pickupPoints: number
+  sosAlerts: number
 }
 
 export type RegionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | RegionCountOutputTypeCountUsersArgs
   pickupPoints?: boolean | RegionCountOutputTypeCountPickupPointsArgs
+  sosAlerts?: boolean | RegionCountOutputTypeCountSosAlertsArgs
 }
 
 /**
@@ -797,6 +908,13 @@ export type RegionCountOutputTypeCountPickupPointsArgs<ExtArgs extends runtime.T
   where?: Prisma.PickupPointWhereInput
 }
 
+/**
+ * RegionCountOutputType without action
+ */
+export type RegionCountOutputTypeCountSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SosAlertWhereInput
+}
+
 
 export type RegionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -812,6 +930,7 @@ export type RegionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   updatedAt?: boolean
   users?: boolean | Prisma.Region$usersArgs<ExtArgs>
   pickupPoints?: boolean | Prisma.Region$pickupPointsArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Region$sosAlertsArgs<ExtArgs>
   _count?: boolean | Prisma.RegionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["region"]>
 
@@ -835,6 +954,7 @@ export type RegionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type RegionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Region$usersArgs<ExtArgs>
   pickupPoints?: boolean | Prisma.Region$pickupPointsArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Region$sosAlertsArgs<ExtArgs>
   _count?: boolean | Prisma.RegionCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -843,6 +963,7 @@ export type $RegionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     users: Prisma.$UserPayload<ExtArgs>[]
     pickupPoints: Prisma.$PickupPointPayload<ExtArgs>[]
+    sosAlerts: Prisma.$SosAlertPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -1198,6 +1319,7 @@ export interface Prisma__RegionClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   users<T extends Prisma.Region$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Region$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pickupPoints<T extends Prisma.Region$pickupPointsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Region$pickupPointsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PickupPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sosAlerts<T extends Prisma.Region$sosAlertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Region$sosAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SosAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1631,6 +1753,30 @@ export type Region$pickupPointsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.PickupPointScalarFieldEnum | Prisma.PickupPointScalarFieldEnum[]
+}
+
+/**
+ * Region.sosAlerts
+ */
+export type Region$sosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SosAlert
+   */
+  select?: Prisma.SosAlertSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SosAlert
+   */
+  omit?: Prisma.SosAlertOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SosAlertInclude<ExtArgs> | null
+  where?: Prisma.SosAlertWhereInput
+  orderBy?: Prisma.SosAlertOrderByWithRelationInput | Prisma.SosAlertOrderByWithRelationInput[]
+  cursor?: Prisma.SosAlertWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SosAlertScalarFieldEnum | Prisma.SosAlertScalarFieldEnum[]
 }
 
 /**

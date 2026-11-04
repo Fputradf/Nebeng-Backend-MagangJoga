@@ -35,6 +35,26 @@
         ]
       }
     },
+    "/api/uploads/appeals": {
+      "post": {
+        "operationId": "UploadController_uploadAppealEvidence",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload file foto bukti banding mitra",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    },
     "/api/uploads/banners": {
       "post": {
         "operationId": "UploadController_uploadBanner",
@@ -935,6 +955,41 @@
         ]
       }
     },
+    "/api/admin/sanctions/appeals": {
+      "get": {
+        "operationId": "AdminController_getSanctionAppeals",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Filter berdasarkan status banding (PENDING, APPROVED, REJECTED)",
+            "schema": {
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daftar permohonan banding berhasil diambil"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat seluruh daftar banding sanksi mitra (Superadmin & Regional Admin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
     "/api/admin/mitra/{id}/sanctions": {
       "get": {
         "operationId": "AdminController_getMitraSanctionsAdmin",
@@ -993,6 +1048,54 @@
         ]
       }
     },
+    "/api/admin/settings/sanctions": {
+      "get": {
+        "operationId": "AdminController_getSanctionSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Konfigurasi sanksi berhasil diambil"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan seluruh aturan sanksi dan batas toleransi telat (Superadmin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      },
+      "patch": {
+        "operationId": "AdminController_updateSanctionSettings",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSanctionSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Konfigurasi sanksi berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Memperbarui aturan sanksi dan batas toleransi keterlambatan (Superadmin)",
+        "tags": [
+          "Admin Governance"
+        ]
+      }
+    },
     "/api/auth/register": {
       "post": {
         "operationId": "AuthController_register",
@@ -1023,6 +1126,31 @@
           }
         },
         "summary": "Membuat akun pengguna baru (Public: Customer / Mitra)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/check-nik": {
+      "get": {
+        "operationId": "AuthController_checkNik",
+        "parameters": [
+          {
+            "name": "nik",
+            "required": true,
+            "in": "query",
+            "description": "16 digit NIK KTP",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status ketersediaan NIK"
+          }
+        },
+        "summary": "Mengecek ketersediaan NIK / KTP (Public)",
         "tags": [
           "Auth"
         ]
@@ -1330,6 +1458,36 @@
           }
         ],
         "summary": "Melihat status pengajuan verifikasi milik sendiri",
+        "tags": [
+          "Verifications"
+        ]
+      }
+    },
+    "/api/verifications/check-nik": {
+      "get": {
+        "operationId": "VerificationController_checkNik",
+        "parameters": [
+          {
+            "name": "nik",
+            "required": true,
+            "in": "query",
+            "description": "16 digit NIK KTP",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status ketersediaan NIK"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mengecek ketersediaan NIK / KTP",
         "tags": [
           "Verifications"
         ]
@@ -2364,6 +2522,33 @@
             }
           },
           {
+            "name": "originRegionId",
+            "required": false,
+            "in": "query",
+            "description": "Filter ID Region Pos Keberangkatan / Asal",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destinationRegionId",
+            "required": false,
+            "in": "query",
+            "description": "Filter ID Region Pos Tujuan / Kedatangan",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "Lingkup filter region: \"all\" (asal/tujuan), \"origin\" (pos asal), atau \"destination\" (pos tujuan)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "status",
             "required": false,
             "in": "query",
@@ -2511,6 +2696,33 @@
             }
           },
           {
+            "name": "originRegionId",
+            "required": false,
+            "in": "query",
+            "description": "Filter ID Region Pos Keberangkatan / Asal",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destinationRegionId",
+            "required": false,
+            "in": "query",
+            "description": "Filter ID Region Pos Tujuan / Kedatangan",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "Lingkup filter region: \"all\" (asal/tujuan), \"origin\" (pos asal), atau \"destination\" (pos tujuan)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "status",
             "required": false,
             "in": "query",
@@ -2608,6 +2820,46 @@
           }
         ],
         "summary": "Daftar Trip milik Mitra yang sedang login",
+        "tags": [
+          "Trips"
+        ]
+      }
+    },
+    "/api/trips/estimate-fare": {
+      "get": {
+        "operationId": "TripsController_estimateFare",
+        "parameters": [
+          {
+            "name": "originPointId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destinationPointId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serviceType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estimasi tarif dan rute berhasil dihitung"
+          }
+        },
+        "summary": "Estimasi tarif perjalanan dan rute berdasarkan jarak (OSRM)",
         "tags": [
           "Trips"
         ]
@@ -2725,6 +2977,213 @@
         "summary": "Pembatalan Trip oleh Mitra (Fase 10 - Sebelum Jadwal)",
         "tags": [
           "Trips"
+        ]
+      }
+    },
+    "/api/tracking/route": {
+      "get": {
+        "operationId": "TrackingController_calculateRoute",
+        "parameters": [
+          {
+            "name": "originLat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "originLng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destLat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destLng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/eta/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_getETA",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/geofence/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_checkGeofencing",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/deviation/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_detectDeviation",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/history/{tripId}": {
+      "get": {
+        "operationId": "TrackingController_getTripHistory",
+        "parameters": [
+          {
+            "name": "tripId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/geocode": {
+      "get": {
+        "operationId": "TrackingController_geocode",
+        "parameters": [
+          {
+            "name": "address",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/reverse-geocode": {
+      "get": {
+        "operationId": "TrackingController_reverseGeocode",
+        "parameters": [
+          {
+            "name": "lat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/api/tracking/cleanup": {
+      "post": {
+        "operationId": "TrackingController_cleanupOldData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tracking"
         ]
       }
     },
@@ -3419,6 +3878,26 @@
               "example": 10,
               "type": "number"
             }
+          },
+          {
+            "name": "month",
+            "required": false,
+            "in": "query",
+            "description": "Bulan transaksi (1-12)",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "year",
+            "required": false,
+            "in": "query",
+            "description": "Tahun transaksi (e.g. 2026)",
+            "schema": {
+              "example": 2026,
+              "type": "number"
+            }
           }
         ],
         "responses": {
@@ -3676,213 +4155,6 @@
         "summary": "Catat Mitra No-Show (Tidak Datang ke Pos) berdasarkan Trip ID - Trip dibatalkan, semua penumpang di-refund",
         "tags": [
           "Checkpoints"
-        ]
-      }
-    },
-    "/api/tracking/route": {
-      "get": {
-        "operationId": "TrackingController_calculateRoute",
-        "parameters": [
-          {
-            "name": "originLat",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "originLng",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "destLat",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "destLng",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/eta/{tripId}": {
-      "get": {
-        "operationId": "TrackingController_getETA",
-        "parameters": [
-          {
-            "name": "tripId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/geofence/{tripId}": {
-      "get": {
-        "operationId": "TrackingController_checkGeofencing",
-        "parameters": [
-          {
-            "name": "tripId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/deviation/{tripId}": {
-      "get": {
-        "operationId": "TrackingController_detectDeviation",
-        "parameters": [
-          {
-            "name": "tripId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/history/{tripId}": {
-      "get": {
-        "operationId": "TrackingController_getTripHistory",
-        "parameters": [
-          {
-            "name": "tripId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/geocode": {
-      "get": {
-        "operationId": "TrackingController_geocode",
-        "parameters": [
-          {
-            "name": "address",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/reverse-geocode": {
-      "get": {
-        "operationId": "TrackingController_reverseGeocode",
-        "parameters": [
-          {
-            "name": "lat",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "lng",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
-        ]
-      }
-    },
-    "/api/tracking/cleanup": {
-      "post": {
-        "operationId": "TrackingController_cleanupOldData",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Tracking"
         ]
       }
     },
@@ -4710,6 +4982,517 @@
           "Social Links"
         ]
       }
+    },
+    "/api/emergency/sos": {
+      "post": {
+        "operationId": "EmergencyController_triggerSos",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSosDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sinyal SOS berhasil diterima dan disiarkan ke Admin Regional & Web Push"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Pemicu Sinyal Bahaya / SOS oleh Customer saat Perjalanan Aktif",
+        "tags": [
+          "Emergency SOS"
+        ]
+      }
+    },
+    "/api/emergency/sos/active": {
+      "get": {
+        "operationId": "EmergencyController_getActiveSos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Daftar insiden SOS aktif"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Daftar Insiden Darurat SOS Aktif di Wilayah Kerja Admin Regional, Superadmin & Mitra Pos",
+        "tags": [
+          "Emergency SOS"
+        ]
+      }
+    },
+    "/api/emergency/sos/{id}/resolve": {
+      "patch": {
+        "operationId": "EmergencyController_resolveSos",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveSosDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Insiden SOS berhasil ditandai selesai/aman"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Penyelesaian / Penutupan Insiden Darurat SOS oleh Admin Regional, Superadmin & Mitra Pos",
+        "tags": [
+          "Emergency SOS"
+        ]
+      }
+    },
+    "/api/reports": {
+      "post": {
+        "operationId": "ReportsController_createReport",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Laporan berhasil dibuat dan masuk antrean investigasi"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buat Laporan Pelanggaran Lapangan (Customer ↔ Driver ↔ Pos Operator)",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/reports/my-reports": {
+      "get": {
+        "operationId": "ReportsController_getMySubmittedReports",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Daftar laporan terkirim"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Riwayat Laporan yang Diajukan oleh Pengguna Sendiri",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/reports/against-me": {
+      "get": {
+        "operationId": "ReportsController_getReportsTargetingMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Daftar aduan terhadap akun pengguna"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Daftar Laporan yang Ditujukan kepada Pengguna (Blind: Pelapor Disamarkan)",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/reports/admin": {
+      "get": {
+        "operationId": "ReportsController_getAllReportsForAdmin",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Filter berdasarkan status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "INVESTIGATING",
+                "RESOLVED_VALID",
+                "RESOLVED_INVALID",
+                "DISMISSED"
+              ]
+            }
+          },
+          {
+            "name": "severity",
+            "required": false,
+            "in": "query",
+            "description": "Filter berdasarkan tingkat keparahan",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "CRITICAL"
+              ]
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "Filter berdasarkan kategori laporan",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SAFETY_AND_HARASSMENT",
+                "FRAUD_OR_EXTORTION",
+                "FACILITY_AND_SERVICE",
+                "CARGO_VIOLATION",
+                "DISPUTE_NO_SHOW",
+                "VEHICLE_CONDITION",
+                "OTHER"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Pencarian kata kunci (nomor tiket, nama user)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Nomor halaman",
+            "schema": {
+              "example": "1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Jumlah per halaman",
+            "schema": {
+              "example": "10",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daftar tiket investigasi"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Daftar Seluruh Laporan Lapangan untuk Admin / Regional Manager",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/reports/{id}": {
+      "get": {
+        "operationId": "ReportsController_getReportDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data detail laporan"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Detail Tiket Laporan berdasarkan ID",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/reports/{id}/resolve": {
+      "patch": {
+        "operationId": "ReportsController_resolveReport",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Laporan berhasil diperbarui"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Tindak Lanjut & Penyelesaian Laporan oleh Admin / Regional (Pemberian Sanksi)",
+        "tags": [
+          "User Reports (Tripartite Reporting)"
+        ]
+      }
+    },
+    "/api/disbursement-banks": {
+      "get": {
+        "operationId": "DisbursementBanksController_findActive",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Daftar bank aktif"
+          }
+        },
+        "summary": "Mendapatkan daftar bank pencairan yang aktif untuk Customer & Mitra",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      },
+      "post": {
+        "operationId": "DisbursementBanksController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDisbursementBankDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Menambahkan konfigurasi bank pencairan baru (Superadmin)",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      }
+    },
+    "/api/disbursement-banks/admin": {
+      "get": {
+        "operationId": "DisbursementBanksController_findAllAdmin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan semua data bank pencairan untuk Superadmin (aktif & nonaktif)",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      }
+    },
+    "/api/disbursement-banks/{id}": {
+      "get": {
+        "operationId": "DisbursementBanksController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan detail konfigurasi bank berdasarkan ID",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      },
+      "patch": {
+        "operationId": "DisbursementBanksController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDisbursementBankDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Memperbarui konfigurasi bank pencairan (Superadmin)",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      },
+      "delete": {
+        "operationId": "DisbursementBanksController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Menghapus bank pencairan (Superadmin)",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      }
+    },
+    "/api/disbursement-banks/{id}/toggle": {
+      "patch": {
+        "operationId": "DisbursementBanksController_toggleActive",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Toggle status aktif/nonaktif bank pencairan (Superadmin)",
+        "tags": [
+          "Disbursement Banks"
+        ]
+      }
     }
   },
   "info": {
@@ -4779,6 +5562,16 @@
           "avatar": {
             "type": "string",
             "example": "base64_string_or_url"
+          },
+          "nik": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
+          },
+          "ktpNumber": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
           }
         }
       },
@@ -4792,6 +5585,17 @@
           "regionId": {
             "type": "object",
             "example": "1"
+          },
+          "regionName": {
+            "type": "object",
+            "example": "Solo Raya"
+          },
+          "regionCode": {
+            "type": "object",
+            "example": "SLO"
+          },
+          "region": {
+            "type": "object"
           },
           "name": {
             "type": "string",
@@ -5014,6 +5818,16 @@
           "avatar": {
             "type": "string",
             "example": "base64_string_or_url"
+          },
+          "nik": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
+          },
+          "ktpNumber": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
           }
         },
         "required": [
@@ -5073,6 +5887,16 @@
           "avatar": {
             "type": "string",
             "example": "base64_string_or_url"
+          },
+          "nik": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
+          },
+          "ktpNumber": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
           }
         }
       },
@@ -5220,6 +6044,40 @@
           "pricePerKm"
         ]
       },
+      "UpdateSanctionSettingsDto": {
+        "type": "object",
+        "properties": {
+          "lateToleranceMinutes": {
+            "type": "number",
+            "example": 15,
+            "description": "Batas toleransi keterlambatan mitra/customer dalam menit (5 - 120 menit)"
+          },
+          "earlyCancelHours": {
+            "type": "number",
+            "example": 4,
+            "description": "Batas jam pembatalan dini"
+          },
+          "baseScore": {
+            "type": "number",
+            "example": 100,
+            "description": "Skor awal reputasi mitra"
+          },
+          "warningThreshold": {
+            "type": "number",
+            "example": 80,
+            "description": "Ambang batas peringatan skor"
+          },
+          "suspensionThreshold": {
+            "type": "number",
+            "example": 50,
+            "description": "Ambang batas suspensi otomatis"
+          },
+          "policies": {
+            "type": "object",
+            "description": "Aturan kebijakan sanksi spesifik per kategori"
+          }
+        }
+      },
       "RegisterDto": {
         "type": "object",
         "properties": {
@@ -5250,6 +6108,16 @@
           "regionId": {
             "type": "string",
             "example": "Surakarta"
+          },
+          "nik": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
+          },
+          "ktpNumber": {
+            "type": "string",
+            "example": "3374123456789001",
+            "description": "Nomor NIK KTP 16 digit"
           }
         },
         "required": [
@@ -5767,6 +6635,21 @@
             ],
             "example": "mobil",
             "description": "Tipe layanan (motor, mobil, barang)"
+          },
+          "mapsPolyline": {
+            "type": "string",
+            "example": "{\"type\":\"LineString\",\"coordinates\":[]}",
+            "description": "GeoJSON polyline rute jalan OSRM (Opsional)"
+          },
+          "distanceKm": {
+            "type": "number",
+            "example": 24.5,
+            "description": "Jarak rute perjalanan dalam kilometer (Opsional)"
+          },
+          "estimatedDurationMinutes": {
+            "type": "number",
+            "example": 45,
+            "description": "Estimasi durasi waktu tempuh perjalanan dalam menit (Opsional)"
           }
         },
         "required": [
@@ -5824,6 +6707,35 @@
         },
         "required": [
           "reason"
+        ]
+      },
+      "CreateOrderPassengerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Budi Santoso",
+            "description": "Nama lengkap penumpang"
+          },
+          "phone": {
+            "type": "string",
+            "example": "081234567890",
+            "description": "Nomor WhatsApp / telepon penumpang"
+          },
+          "seatNumber": {
+            "type": "number",
+            "example": 1,
+            "description": "Nomor urut kursi"
+          },
+          "isContact": {
+            "type": "boolean",
+            "example": true,
+            "description": "Menandai apakah penumpang ini adalah kontak utama / PIC di lapangan"
+          }
+        },
+        "required": [
+          "name",
+          "phone"
         ]
       },
       "CreateOrderItemDto": {
@@ -5903,6 +6815,13 @@
             "type": "number",
             "example": 1,
             "description": "Jumlah kursi (Wajib diisi jika type = passenger)"
+          },
+          "passengers": {
+            "description": "Daftar data detail penumpang (Wajib diisi jika type = passenger)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateOrderPassengerDto"
+            }
           },
           "items": {
             "description": "Daftar item paket (Wajib diisi jika type = parcel)",
@@ -6179,6 +7098,11 @@
             "type": "number",
             "example": 50000,
             "description": "Jumlah saldo yang ingin ditarik"
+          },
+          "pin": {
+            "type": "string",
+            "example": "123456",
+            "description": "PIN transaksi keamanan 6 digit"
           }
         },
         "required": [
@@ -6573,6 +7497,262 @@
       "UpdateSocialLinkDto": {
         "type": "object",
         "properties": {}
+      },
+      "CreateSosDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "object",
+            "description": "ID Order tiket yang sedang aktif",
+            "example": "12"
+          },
+          "tripId": {
+            "type": "object",
+            "description": "ID Perjalanan / Trip terkait",
+            "example": "5"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Garis lintang (latitude) GPS customer",
+            "example": -7.7956
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Garis bujur (longitude) GPS customer",
+            "example": 110.3695
+          },
+          "category": {
+            "type": "string",
+            "description": "Kategori darurat (kejahatan, kecelakaan, medis, mogok, dll)",
+            "example": "ancaman_kejahatan"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Catatan tambahan dari customer"
+          }
+        },
+        "required": [
+          "orderId",
+          "tripId",
+          "latitude",
+          "longitude",
+          "category"
+        ]
+      },
+      "ResolveSosDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status resolusi",
+            "enum": [
+              "RESOLVED",
+              "FALSE_ALARM"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "description": "Catatan penanganan oleh admin"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "CreateReportDto": {
+        "type": "object",
+        "properties": {
+          "reportedUserId": {
+            "type": "object",
+            "description": "ID user yang dilaporkan (Customer, Mitra Driver, atau Operator Pos)",
+            "example": "15"
+          },
+          "tripId": {
+            "type": "object",
+            "description": "ID Trip terkait (opsional jika ada orderId atau pickupPointId)",
+            "example": "8"
+          },
+          "orderId": {
+            "type": "object",
+            "description": "ID Order terkait (opsional jika ada tripId atau pickupPointId)",
+            "example": "24"
+          },
+          "pickupPointId": {
+            "type": "object",
+            "description": "ID Pos / Pickup Point terkait (opsional jika ada tripId atau orderId)",
+            "example": "3"
+          },
+          "category": {
+            "type": "string",
+            "description": "Kategori pelanggaran yang dilaporkan",
+            "enum": [
+              "SAFETY_AND_HARASSMENT",
+              "FRAUD_OR_EXTORTION",
+              "FACILITY_AND_SERVICE",
+              "CARGO_VIOLATION",
+              "DISPUTE_NO_SHOW",
+              "VEHICLE_CONDITION",
+              "OTHER"
+            ],
+            "example": "SAFETY_AND_HARASSMENT"
+          },
+          "severity": {
+            "type": "string",
+            "description": "Tingkat urgensi / keparahan insiden",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ],
+            "example": "MEDIUM"
+          },
+          "description": {
+            "type": "string",
+            "description": "Deskripsi kronologi kejadian secara detail",
+            "example": "Driver meminta tambahan ongkos di luar aplikasi dan mengemudi membahayakan."
+          },
+          "evidenceUrls": {
+            "description": "Daftar URL bukti lampiran (foto, video, screenshot)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "reportedUserId",
+          "category",
+          "description"
+        ]
+      },
+      "ResolveReportDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status akhir laporan setelah diinvestigasi",
+            "enum": [
+              "PENDING",
+              "INVESTIGATING",
+              "RESOLVED_VALID",
+              "RESOLVED_INVALID",
+              "DISMISSED"
+            ],
+            "example": "RESOLVED_VALID"
+          },
+          "actionNotes": {
+            "type": "string",
+            "description": "Catatan tindakan / tindak lanjut investigasi oleh admin",
+            "example": "Laporan diverifikasi valid melalui bukti foto dan rekaman chat. Sanksi diterapkan pada mitra driver."
+          },
+          "applySanction": {
+            "type": "boolean",
+            "description": "Apakah ingin menerbitkan sanksi otomatis ke Mitra (jika terlapor adalah mitra driver)",
+            "example": true
+          },
+          "scoreDeduction": {
+            "type": "number",
+            "description": "Pengurangan skor performa mitra jika diberi sanksi",
+            "example": 10
+          },
+          "isSuspended": {
+            "type": "boolean",
+            "description": "Apakah mitra ditangguhkan (suspend)",
+            "example": false
+          },
+          "suspendedUntil": {
+            "type": "string",
+            "description": "Tanggal akhir masa penangguhan (ISO 8601 string)",
+            "example": "2026-11-07T00:00:00.000Z"
+          },
+          "penalizeReporter": {
+            "type": "boolean",
+            "description": "Apakah pelapor diberi penalti karena laporan palsu (RESOLVED_INVALID yang disengaja)",
+            "example": false
+          }
+        },
+        "required": [
+          "status",
+          "actionNotes"
+        ]
+      },
+      "CreateDisbursementBankDto": {
+        "type": "object",
+        "properties": {
+          "bankCode": {
+            "type": "string",
+            "example": "BCA",
+            "description": "Kode Bank (standar kliring/gateway, misal: BCA, BNI, BRI)"
+          },
+          "bankName": {
+            "type": "string",
+            "example": "Bank Central Asia (BCA)",
+            "description": "Nama resmi atau tampilan bank"
+          },
+          "accountNumberSample": {
+            "type": "string",
+            "example": "1234567890",
+            "description": "Contoh format nomor rekening"
+          },
+          "logoUrl": {
+            "type": "string",
+            "example": "https://...",
+            "description": "URL logo / favicon bank"
+          },
+          "orderIndex": {
+            "type": "number",
+            "example": 1,
+            "description": "Urutan tampilan dalam daftar"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true,
+            "description": "Status aktif bank"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Pencairan instan 24 jam",
+            "description": "Catatan tambahan / SLA"
+          }
+        },
+        "required": [
+          "bankCode",
+          "bankName"
+        ]
+      },
+      "UpdateDisbursementBankDto": {
+        "type": "object",
+        "properties": {
+          "bankCode": {
+            "type": "string",
+            "example": "BCA"
+          },
+          "bankName": {
+            "type": "string",
+            "example": "Bank Central Asia (BCA)"
+          },
+          "accountNumberSample": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "logoUrl": {
+            "type": "string",
+            "example": "https://..."
+          },
+          "orderIndex": {
+            "type": "number",
+            "example": 1
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "example": "Pencairan instan"
+          }
+        }
       }
     }
   }

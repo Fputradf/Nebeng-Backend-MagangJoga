@@ -391,6 +391,8 @@ export class PaymentsRepository {
     operatorUserIdStr: string,
     page: number = 1,
     limit: number = 10,
+    month?: number,
+    year?: number,
   ) {
     const parsedOperatorId = this.safeParseBigInt(operatorUserIdStr);
     if (!parsedOperatorId) {
@@ -403,7 +405,7 @@ export class PaymentsRepository {
 
     const skip = (page - 1) * limit;
 
-    const whereCondition = {
+    const whereCondition: any = {
       order: {
         trip: {
           originPoint: {
@@ -413,7 +415,31 @@ export class PaymentsRepository {
       },
     };
 
-    const [payments, totalItems] = await Promise.all([
+    if (year && month) {
+      const startDate = new Date(Date.UTC(Number(year), Number(month) - 1, 1, 0, 0, 0, 0));
+      const endDate = new Date(Date.UTC(Number(year), Number(month), 1, 0, 0, 0, 0));
+      whereCondition.createdAt = {
+        gte: startDate,
+        lt: endDate,
+      };
+    } else if (year) {
+      const startDate = new Date(Date.UTC(Number(year), 0, 1, 0, 0, 0, 0));
+      const endDate = new Date(Date.UTC(Number(year) + 1, 0, 1, 0, 0, 0, 0));
+      whereCondition.createdAt = {
+        gte: startDate,
+        lt: endDate,
+      };
+    } else if (month) {
+      const currentYear = new Date().getFullYear();
+      const startDate = new Date(Date.UTC(currentYear, Number(month) - 1, 1, 0, 0, 0, 0));
+      const endDate = new Date(Date.UTC(currentYear, Number(month), 1, 0, 0, 0, 0));
+      whereCondition.createdAt = {
+        gte: startDate,
+        lt: endDate,
+      };
+    }
+
+    const [payments, totalItems, aggregateResult] = await Promise.all([
       this.prisma.payment.findMany({
         where: whereCondition,
         skip,
@@ -433,8 +459,16 @@ export class PaymentsRepository {
         orderBy: { createdAt: 'desc' },
       }),
       this.prisma.payment.count({ where: whereCondition }),
+      this.prisma.payment.aggregate({
+        where: whereCondition,
+        _sum: {
+          amount: true,
+        },
+      }),
     ]);
 
-    return { payments, totalItems, assignedPos };
+    const totalRevenue = Number(aggregateResult._sum.amount || 0);
+
+    return { payments, totalItems, assignedPos, totalRevenue };
   }
 }

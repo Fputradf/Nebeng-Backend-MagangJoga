@@ -35,6 +35,15 @@ export class OrderMapper {
             email: order.customer.email,
           }
         : undefined,
+      passengers: order.passengers
+        ? order.passengers.map((p: any) => ({
+            id: p.id ? p.id.toString() : undefined,
+            name: p.name,
+            phone: p.phone,
+            seatNumber: p.seatNumber ? Number(p.seatNumber) : undefined,
+            isContact: Boolean(p.isContact),
+          }))
+        : [],
       itemOrders: order.itemOrders
         ? order.itemOrders.map((item: any) => ({
             id: item.id.toString(),

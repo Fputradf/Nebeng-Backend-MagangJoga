@@ -13,15 +13,20 @@ import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UserMapper } from './mappers/user.mapper';
-import { Role } from '../../generated/prisma/enums';
+import { Role, RewardType } from '../../generated/prisma/enums';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const cleanEmail = createUserDto.email.toLocaleLowerCase().trim();
     const cleanPhone = createUserDto.phone.toLocaleLowerCase().trim();
+    const cleanKtp = (createUserDto.ktpNumber || createUserDto.nik)?.trim();
 
     const exsistingEmail = await this.userRepository.findByEmail(cleanEmail);
     if (exsistingEmail) {
@@ -31,6 +36,13 @@ export class UsersService {
     const exsistingPhone = await this.userRepository.findByPhone(cleanPhone);
     if (exsistingPhone) {
       throw new ConflictException('Nomor telepon sudah terdaftar');
+    }
+
+    if (cleanKtp) {
+      const existingKtp = await this.userRepository.findProfileByKtpNumber(cleanKtp);
+      if (existingKtp) {
+        throw new ConflictException('Nomor NIK / KTP sudah terdaftar oleh pengguna lain.');
+      }
     }
 
     if (createUserDto.role === Role.regional && !createUserDto.regionId) {
@@ -55,6 +67,10 @@ export class UsersService {
       ? 'approved'
       : 'unverified';
 
+    // Pengguna baru (Customer/Mitra) otomatis mendapatkan bonus 100 poin loyalty awal
+    const isInternalRole = internalRoles.includes(createUserDto.role);
+    const initialRewardPoints = isInternalRole ? 0 : 100;
+
     const newUser = await this.userRepository.create({
       name: createUserDto.name,
       email: cleanEmail,
@@ -63,10 +79,28 @@ export class UsersService {
       role: createUserDto.role,
       status: createUserDto.status,
       statusVerification,
+      rewardPoints: initialRewardPoints,
       region: createUserDto.regionId
         ? { connect: { id: BigInt(createUserDto.regionId) } }
         : undefined,
+      rewardTransactions:
+        initialRewardPoints > 0
+          ? {
+              create: {
+                points: initialRewardPoints,
+                type: RewardType.earn,
+                description:
+                  'Bonus Poin Selamat Datang Pengguna Baru (+100 Poin Loyalty)',
+              },
+            }
+          : undefined,
     });
+
+    if (cleanKtp) {
+      await this.userRepository.upsertProfile(newUser.id.toString(), {
+        ktpNumber: cleanKtp,
+      });
+    }
 
     return UserMapper.toResponse(newUser);
   }
@@ -200,8 +234,45 @@ export class UsersService {
       throw new NotFoundException(`User dengan ID ${userId} tidak ditemukan`);
     }
 
+    const cleanKtpNumber = dto.ktpNumber?.trim();
+    if (cleanKtpNumber) {
+      const existingProfile =
+        await this.userRepository.findProfileByKtpNumber(cleanKtpNumber);
+      if (
+        existingProfile &&
+        existingProfile.userId.toString() !== userId
+      ) {
+        throw new ConflictException(
+          'Nomor NIK / KTP sudah terdaftar oleh pengguna lain.',
+        );
+      }
+    }
+
+    if (dto.bankName) {
+      const cleanBank = dto.bankName.trim();
+      const totalActiveBanks = await this.prisma.disbursementBank.count({
+        where: { isActive: true },
+      });
+      if (totalActiveBanks > 0) {
+        const activeBank = await this.prisma.disbursementBank.findFirst({
+          where: {
+            isActive: true,
+            OR: [
+              { bankCode: cleanBank.toUpperCase() },
+              { bankName: { contains: cleanBank } },
+            ],
+          },
+        });
+        if (!activeBank) {
+          throw new BadRequestException(
+            `Bank "${cleanBank}" saat ini tidak didukung atau dinonaktifkan oleh Administrator. Silakan pilih dari daftar bank pencairan yang tersedia.`,
+          );
+        }
+      }
+    }
+
     const profilePayload = {
-      ktpNumber: dto.ktpNumber?.trim(),
+      ktpNumber: cleanKtpNumber,
       fullNameKtp: dto.fullNameKtp?.trim(),
       addressKtp: dto.addressKtp?.trim(),
       faceImageUrl: dto.faceImageUrl?.trim(),

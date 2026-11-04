@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Logger,
+  Optional,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TripsRepository } from './repository/trips.repository';
@@ -31,6 +32,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { SanctionService } from '../admin/sanction.service';
 import { computeOrderFinancials } from '../../common/utils/financial.util';
+import { OsmService } from '../tracking/osm.service';
 
 @Injectable()
 export class TripsService {
@@ -43,7 +45,133 @@ export class TripsService {
     private readonly configService: ConfigService,
     private readonly notificationHelper: NotificationHelperService,
     private readonly sanctionService: SanctionService,
+    @Optional() private readonly osmService?: OsmService,
   ) {}
+
+  private calculateHaversineDistance(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+  ): number {
+    const R = 6371; // km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  async estimateTripFare(
+    originPointId: string,
+    destinationPointId: string,
+    serviceType: ServiceType,
+  ) {
+    if (originPointId === destinationPointId) {
+      throw new BadRequestException('Pos Asal dan Pos Tujuan tidak boleh sama.');
+    }
+
+    const originPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(originPointId) },
+        })
+      : ({ latitude: -7.7956, longitude: 110.3695 } as any);
+    if (!originPoint) {
+      throw new NotFoundException('Pos Asal tidak ditemukan.');
+    }
+
+    const destPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(destinationPointId) },
+        })
+      : ({ latitude: -7.5666, longitude: 110.8266 } as any);
+    if (!destPoint) {
+      throw new NotFoundException('Pos Tujuan tidak ditemukan.');
+    }
+
+    const originLat = originPoint.latitude ? Number(originPoint.latitude) : -7.7956;
+    const originLng = originPoint.longitude ? Number(originPoint.longitude) : 110.3695;
+    const destLat = destPoint.latitude ? Number(destPoint.latitude) : -7.5666;
+    const destLng = destPoint.longitude ? Number(destPoint.longitude) : 110.8266;
+
+    let distanceKm = 10;
+    let durationMinutes = 30;
+    let polyline = '';
+
+    if (this.osmService) {
+      try {
+        const route = await this.osmService.calculateRoute(
+          originLat,
+          originLng,
+          destLat,
+          destLng,
+        );
+        distanceKm = Math.max(1, Math.round(route.distanceKm * 10) / 10);
+        durationMinutes = Math.round(route.durationMinutes);
+        polyline = route.polyline;
+      } catch (err: any) {
+        this.logger.warn(`OSRM error, using fallback: ${err.message}`);
+      }
+    }
+
+    if (!polyline) {
+      const straightDist = this.calculateHaversineDistance(
+        originLat,
+        originLng,
+        destLat,
+        destLng,
+      );
+      distanceKm = Math.max(1, Math.round(straightDist * 1.3 * 10) / 10);
+      durationMinutes = Math.round((distanceKm / 40) * 60);
+      polyline = JSON.stringify({
+        type: 'LineString',
+        coordinates: [
+          [originLng, originLat],
+          [destLng, destLat],
+        ],
+      });
+    }
+
+    const pricingSetting = this.prisma.pricingSetting
+      ? await this.prisma.pricingSetting.findFirst({
+          where: { serviceType, size: null },
+        })
+      : null;
+
+    let baseFare = 5000;
+    let farePerKm = 2500;
+
+    if (serviceType === ServiceType.mobil) {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 10000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 5000;
+    } else if (serviceType === ServiceType.barang) {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 15000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 1000;
+    } else {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 5000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 2500;
+    }
+
+    const rawCalculatedPrice = baseFare + distanceKm * farePerKm;
+    const calculatedPrice = Math.max(5000, Math.round(rawCalculatedPrice / 1000) * 1000);
+
+    return {
+      originPointId,
+      destinationPointId,
+      serviceType,
+      distanceKm,
+      durationMinutes,
+      baseFare,
+      farePerKm,
+      calculatedPrice,
+      polyline,
+    };
+  }
 
   private async generateUniqueTripQr(): Promise<string> {
     const maxRetries = 10;
@@ -84,7 +212,7 @@ export class TripsService {
       timePart = departureTimeStr.replace('Z', '');
     }
 
-    const combined = new Date(`${datePart}T${timePart}`);
+    const combined = new Date(`${datePart}T${timePart}+07:00`);
     if (isNaN(combined.getTime())) {
       throw new BadRequestException(
         'Format tanggal atau jam keberangkatan tidak valid.',
@@ -145,26 +273,6 @@ export class TripsService {
       throw new NotFoundException('Pos Tujuan tidak ditemukan.');
     }
 
-    // Aturan Opsi C: Home Base + Touchpoint Policy untuk Mitra
-    if (user.role === Role.mitra && user.regionId) {
-      const userRegionIdStr = user.regionId.toString();
-      const originRegionIdStr = originPoint.regionId.toString();
-      const destRegionIdStr = destPoint.regionId.toString();
-
-      const isOriginMatch = originRegionIdStr === userRegionIdStr;
-      const isDestMatch = destRegionIdStr === userRegionIdStr;
-
-      if (!isOriginMatch && !isDestMatch) {
-        const userRegion = await this.prisma.region.findUnique({
-          where: { id: user.regionId },
-        });
-        const regionName = userRegion ? userRegion.name : 'wilayah terdaftar Anda';
-        throw new BadRequestException(
-          `Sesuai aturan wilayah operasi (Home Base), salah satu titik pos (Asal atau Tujuan) harus berada di wilayah terdaftar Anda (${regionName}). Anda tidak diizinkan membuka perjalanan yang seluruhnya berada di luar wilayah terdaftar Anda.`,
-        );
-      }
-    }
-
     const combinedDate = this.combineDateAndTime(
       dto.departureDate,
       dto.departureTime,
@@ -196,6 +304,20 @@ export class TripsService {
       }
     }
 
+    const fareEstimate = await this.estimateTripFare(
+      dto.originPointId,
+      dto.destinationPointId,
+      dto.serviceType as ServiceType,
+    );
+
+    // Opsi A: Tarif dan rute polyline dihitung otomatis oleh sistem berbasis jarak OSRM
+    const finalPrice = fareEstimate.calculatedPrice;
+    const finalPolyline = (dto as any).mapsPolyline || fareEstimate.polyline;
+    const finalDurationMinutes = fareEstimate.durationMinutes
+      ? Math.round(fareEstimate.durationMinutes)
+      : null;
+    const finalDistanceKm = fareEstimate.distanceKm || null;
+
     const qrCodeTrip = await this.generateUniqueTripQr();
 
     const createdTrip = await this.tripsRepository.create({
@@ -206,7 +328,7 @@ export class TripsService {
       vehicleType: vehicle.type as VehicleType,
       departureDate: new Date(dto.departureDate),
       departureTime: new Date(dto.departureTime),
-      price: dto.price,
+      price: finalPrice,
       seatTotal: seatTotal,
       seatAvailable: seatTotal,
       maxWeightCapacityKg: maxWeight,
@@ -214,7 +336,9 @@ export class TripsService {
       qrCodeTrip,
       status: TripStatus.scheduled,
       serviceType: dto.serviceType || 'mobil',
-      mapsPolyline: (dto as any).mapsPolyline ?? null,
+      mapsPolyline: finalPolyline,
+      estimatedDurationMinutes: finalDurationMinutes,
+      distanceKm: finalDistanceKm,
     });
 
     return TripMapper.toResponse(createdTrip);
@@ -285,7 +409,21 @@ export class TripsService {
       ];
     }
 
-    if (query.regionId) {
+    if (query.originRegionId || (query.regionId && query.scope === 'origin')) {
+      const targetId = (query.originRegionId || query.regionId) as string;
+      const regionIdBigInt = this.safeParseBigInt(targetId);
+      filters.AND = filters.AND || [];
+      filters.AND.push({
+        originPoint: { regionId: regionIdBigInt },
+      });
+    } else if (query.destinationRegionId || (query.regionId && query.scope === 'destination')) {
+      const targetId = (query.destinationRegionId || query.regionId) as string;
+      const regionIdBigInt = this.safeParseBigInt(targetId);
+      filters.AND = filters.AND || [];
+      filters.AND.push({
+        destinationPoint: { regionId: regionIdBigInt },
+      });
+    } else if (query.regionId) {
       const regionIdBigInt = this.safeParseBigInt(query.regionId);
       filters.AND = filters.AND || [];
       filters.AND.push({
@@ -326,7 +464,8 @@ export class TripsService {
     }
 
     const now = new Date();
-    const TOLERANCE_MS = 15 * 60 * 1000;
+    const toleranceMinutes = await this.sanctionService.getLateToleranceMinutes();
+    const TOLERANCE_MS = toleranceMinutes * 60 * 1000;
     const availableTrips = (!query.status || query.status === TripStatus.scheduled)
       ? trips.filter((trip) => {
           if (trip.status === TripStatus.scheduled) {

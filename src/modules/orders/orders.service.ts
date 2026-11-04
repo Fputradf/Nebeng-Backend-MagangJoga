@@ -137,6 +137,7 @@ export class OrdersService {
     let adminFeePercentage = 10;
     let otpClaim: string | null = null;
     const itemsDataProcessed: any[] = [];
+    const passengersDataProcessed: any[] = [];
 
     if (dto.type === OrderType.passenger) {
       const serviceType =
@@ -171,6 +172,39 @@ export class OrdersService {
       }
 
       totalPrice = unitPrice * seatsBooked;
+
+      if (dto.passengers && dto.passengers.length > 0) {
+        if (dto.passengers.length !== seatsBooked) {
+          throw new BadRequestException(
+            `Jumlah data penumpang (${dto.passengers.length}) harus sama dengan jumlah kursi yang dipesan (${seatsBooked}).`,
+          );
+        }
+        for (let i = 0; i < dto.passengers.length; i++) {
+          const p = dto.passengers[i];
+          if (!p.name || !p.name.trim()) {
+            throw new BadRequestException(`Nama penumpang ke-${i + 1} wajib diisi.`);
+          }
+          if (!p.phone || !p.phone.trim()) {
+            throw new BadRequestException(`Nomor WhatsApp penumpang ke-${i + 1} wajib diisi.`);
+          }
+          passengersDataProcessed.push({
+            name: p.name.trim(),
+            phone: p.phone.trim(),
+            seatNumber: p.seatNumber ?? (i + 1),
+            isContact: p.isContact ?? (i === 0),
+          });
+        }
+      } else {
+        const customerUser = await this.prisma.user.findUnique({
+          where: { id: BigInt(customerIdStr) },
+        });
+        passengersDataProcessed.push({
+          name: customerUser?.name || 'Penumpang 1',
+          phone: customerUser?.phone || '',
+          seatNumber: 1,
+          isContact: true,
+        });
+      }
     }
 
     if (dto.type === OrderType.parcel) {
@@ -216,11 +250,30 @@ export class OrdersService {
           );
         }
 
+        const parcelBaseFare = Number(parcelPricing.baseFare);
+        const parcelFarePerKm = Number(parcelPricing.farePerKm) || 1000;
+        let tripDistanceKm = 10;
+        if (trip.originPoint && trip.destinationPoint) {
+          const oLat = Number(trip.originPoint.latitude || 0);
+          const oLng = Number(trip.originPoint.longitude || 0);
+          const dLat = Number(trip.destinationPoint.latitude || 0);
+          const dLng = Number(trip.destinationPoint.longitude || 0);
+          if (oLat && dLat) {
+            const R = 6371;
+            const dL = ((dLat - oLat) * Math.PI) / 180;
+            const dG = ((dLng - oLng) * Math.PI) / 180;
+            const a =
+              Math.sin(dL / 2) * Math.sin(dL / 2) +
+              Math.cos((oLat * Math.PI) / 180) *
+                Math.cos((dLat * Math.PI) / 180) *
+                Math.sin(dG / 2) *
+                Math.sin(dG / 2);
+            tripDistanceKm = Math.max(1, Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 1.3));
+          }
+        }
+
         const itemBaseRate =
-          Number(trip.price) > 0
-            ? Number(trip.price)
-            : Number(parcelPricing.baseFare) +
-              (Number(parcelPricing.farePerKm) || 2000);
+          parcelBaseFare + Math.round(tripDistanceKm * parcelFarePerKm);
 
         const singleItemPrice = itemBaseRate * item.quantity;
         totalPrice += singleItemPrice;
@@ -263,6 +316,7 @@ export class OrdersService {
       itemsDataProcessed,
       seatsBooked,
       totalWeightKg,
+      passengersDataProcessed,
     );
 
     if (order) {

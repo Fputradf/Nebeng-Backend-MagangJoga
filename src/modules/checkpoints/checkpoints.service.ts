@@ -173,14 +173,49 @@ export class CheckpointsService {
 
       // Validasi pencegahan scan ganda untuk Trip Mitra
       if (dto.scanType === ScanType.checkin_origin) {
-        if (trip.status === TripStatus.in_origin_pos || trip.status === TripStatus.in_transit) {
-          throw new BadRequestException('Mitra/Trip ini sudah melakukan check-in di Pos Asal.');
+        if (trip.status === TripStatus.in_transit) {
+          throw new BadRequestException('Mitra/Trip ini sudah dalam perjalanan (In-Transit).');
         }
         if (trip.status === TripStatus.arrived_dest_pos || trip.status === TripStatus.completed) {
           throw new BadRequestException('Trip ini sudah tiba di pos tujuan atau sudah selesai.');
         }
         if (trip.status === TripStatus.cancelled) {
           throw new BadRequestException('Trip ini sudah dibatalkan.');
+        }
+        if (trip.status === TripStatus.mitra_no_show) {
+          throw new BadRequestException('Trip ini sudah dibatalkan karena Mitra tidak hadir (No-Show).');
+        }
+
+        // JIKA STATUS SUDAH in_origin_pos:
+        // Scan kedua di Pos Asal menandakan KEBERANGKATAN ARMADA (Dispatch / Depart)!
+        if (trip.status === TripStatus.in_origin_pos) {
+          const dispatchResult = await this.checkpointsRepository.processTripDeparture(
+            trip.id,
+            targetPosId,
+            operatorUserIdStr,
+          );
+
+          const destRegionId = trip.destinationPoint?.regionId
+            ? trip.destinationPoint.regionId.toString()
+            : '';
+
+          this.trackingGateway.emitCheckpointScanned(
+            trip.id.toString(),
+            destRegionId,
+            {
+              tripId: trip.id.toString(),
+              scanType: 'departure',
+              status: TripStatus.in_transit,
+              message: `Armada resmi diberangkatkan menuju pos tujuan. Semoga selamat sampai tujuan!`,
+              checkpoint: CheckpointMapper.toResponse(dispatchResult.checkpoint),
+            },
+          );
+
+          return {
+            message: 'Armada resmi diberangkatkan! Status Trip dan Penumpang kini IN_TRANSIT.',
+            checkpoint: CheckpointMapper.toResponse(dispatchResult.checkpoint),
+            trip: dispatchResult.trip,
+          };
         }
       }
 
@@ -353,10 +388,15 @@ export class CheckpointsService {
         console.log('    Current:', targetPosId);
       }
 
-      // Cegah check-in origin jika trip sudah selesai atau dibatalkan
-      if (trip.status === TripStatus.completed || trip.status === TripStatus.cancelled) {
+      // Cegah check-in origin jika trip sudah selesai, dibatalkan, atau mitra tidak hadir
+      if (
+        trip.status === TripStatus.completed ||
+        trip.status === TripStatus.cancelled ||
+        trip.status === TripStatus.mitra_no_show ||
+        trip.status === TripStatus.cancelled_by_mitra
+      ) {
         throw new BadRequestException(
-          'Trip ini sudah selesai atau dibatalkan. Tidak dapat melakukan check-in origin.',
+          'Trip ini sudah tidak aktif (selesai, dibatalkan, atau mitra tidak hadir melewati batas toleransi).',
         );
       }
 
@@ -381,9 +421,12 @@ export class CheckpointsService {
           orderId: order.id.toString(),
           tripId: trip.id.toString(),
           scanType: 'checkin_origin',
-          status: OrderStatus.in_transit,
+          status: OrderStatus.checked_in_origin,
           newQrCode: log.order?.qrCodeTicket,
-          message: 'Check-in Pos Asal selesai. Armada sedang dalam perjalanan.',
+          message:
+            order.type === OrderType.parcel
+              ? 'Paket telah diterima di Pos Asal. Menunggu keberangkatan armada.'
+              : 'Check-in Pos Asal selesai. Silakan menunggu di ruang tunggu keberangkatan.',
           checkpoint: CheckpointMapper.toResponse(log),
         },
       );
@@ -391,12 +434,14 @@ export class CheckpointsService {
       await this.notificationHelper.notifyCheckpointScanned(
         order.customerId ? order.customerId.toString() : '',
         'checkin_origin',
-        trip.originPoint.name,
+        trip.originPoint?.name || 'Pos Asal',
       );
 
       return {
         message:
-          'Check-in Pos Asal berhasil. Status Trip dan Order kini IN_TRANSIT.',
+          order.type === OrderType.parcel
+            ? 'Check-in Pos Asal berhasil. Paket telah diterima dan siap diberangkatkan.'
+            : 'Check-in Pos Asal berhasil. Tiket telah divalidasi (Menunggu Keberangkatan).',
         checkpoint: CheckpointMapper.toResponse(log),
       };
     }
@@ -438,19 +483,6 @@ export class CheckpointsService {
         throw new BadRequestException(
           'Trip ini sudah selesai. Tidak dapat melakukan check-in destination lagi.',
         );
-      }
-
-      if (order.type === OrderType.parcel) {
-        if (!dto.otpClaim) {
-          throw new BadRequestException(
-            'Kode OTP Klaim penerima wajib diisi untuk penyerahan paket.',
-          );
-        }
-        if (order.otpClaim !== dto.otpClaim) {
-          throw new BadRequestException(
-            'Kode OTP Klaim yang dimasukkan salah/tidak cocok.',
-          );
-        }
       }
 
       const serviceType =
@@ -569,14 +601,6 @@ export class CheckpointsService {
 
     if (!trip) {
       throw new NotFoundException('Trip terkait tidak ditemukan.');
-    }
-
-    if (
-      order.type === OrderType.parcel &&
-      order.otpClaim &&
-      order.otpClaim !== otpClaim
-    ) {
-      throw new BadRequestException('Kode OTP Klaim paket tidak cocok.');
     }
 
     const pricingSetting = await this.prisma.pricingSetting.findFirst({
@@ -818,54 +842,85 @@ export class CheckpointsService {
     const trips = await this.checkpointsRepository.getManifestForPos(
       targetPosIds,
       dateStr,
+      query.scope,
     );
 
     const now = new Date();
 
     const manifestData = trips.map((trip) => {
-      // Cek apakah QR trip sudah di-scan di pos terkait
+      // Cek apakah QR trip sudah di-scan di pos terkait oleh Mitra
       const tripScannedAtPos =
         trip.status === TripStatus.in_origin_pos ||
-        trip.checkpointsLogs.some((log) => targetPosIds.includes(log.posId));
+        trip.status === TripStatus.in_transit ||
+        trip.checkpointsLogs.some(
+          (log) => targetPosIds.includes(log.posId) && log.orderId === null,
+        );
 
-      // Hitung grace period untuk mitra no-show
-      const tripDateTime = new Date(
-        `${trip.departureDate.toISOString().split('T')[0]}T${trip.departureTime.toISOString().split('T')[1]}`,
-      );
+      // Hitung grace period untuk mitra no-show dengan offset WIB (+07:00) yang tepat
+      const datePart = trip.departureDate.toISOString().split('T')[0];
+      let timePart = '23:59:59';
+      if (trip.departureTime) {
+        const timeIso = trip.departureTime.toISOString();
+        timePart = timeIso.includes('T')
+          ? timeIso.split('T')[1].substring(0, 8)
+          : timeIso.substring(0, 8);
+      }
+      const tripDateTime = new Date(`${datePart}T${timePart}+07:00`);
       const gracePeriodEnd = new Date(
         tripDateTime.getTime() + gracePeriodMinutes * 60 * 1000,
       );
+      const isPastGracePeriod = now > gracePeriodEnd;
+      const isMitraCheckedIn = tripScannedAtPos;
+
       const canMarkMitraNoShow =
-        !tripScannedAtPos &&
-        now > gracePeriodEnd &&
+        !isMitraCheckedIn &&
+        isPastGracePeriod &&
         trip.status !== TripStatus.mitra_no_show &&
-        trip.status !== TripStatus.completed;
+        trip.status !== TripStatus.completed &&
+        trip.status !== TripStatus.cancelled;
 
       // Process passengers
       const passengers = trip.orders.map((order) => {
-        const orderPaidAt = order.createdAt;
-        const orderGracePeriodEnd = new Date(
-          orderPaidAt.getTime() + gracePeriodMinutes * 60 * 1000,
-        );
-
-        const canMarkNoShow =
-          tripScannedAtPos &&
-          now > orderGracePeriodEnd &&
-          order.status === OrderStatus.paid &&
-          !trip.checkpointsLogs.some(
+        const isOrderCheckedIn =
+          order.status === OrderStatus.checked_in_origin ||
+          order.status === OrderStatus.in_transit ||
+          order.status === OrderStatus.completed ||
+          trip.checkpointsLogs.some(
             (log) => targetPosIds.includes(log.posId) && log.orderId === order.id,
           );
 
+        // Penumpang dapat ditandai no-show jika belum check-in, status order masih 'paid',
+        // dan (sopir sudah tiba di pos asal ATAU batas toleransi keberangkatan sudah terlampaui)
+        const canMarkNoShow =
+          !isOrderCheckedIn &&
+          order.status === OrderStatus.paid &&
+          (isMitraCheckedIn || isPastGracePeriod) &&
+          trip.status !== TripStatus.cancelled &&
+          trip.status !== TripStatus.mitra_no_show;
+
+        const primaryPassenger =
+          order.passengers && order.passengers.length > 0
+            ? order.passengers.find((p: any) => p.isContact) || order.passengers[0]
+            : null;
+
         return {
           orderId: order.id.toString(),
-          customerName: order.customer.name,
-          customerPhone: order.customer.phone,
+          customerName: primaryPassenger ? primaryPassenger.name : order.customer.name,
+          customerPhone: primaryPassenger ? primaryPassenger.phone : order.customer.phone,
+          passengers:
+            order.passengers?.map((p: any) => ({
+              name: p.name,
+              phone: p.phone,
+              seatNumber: p.seatNumber,
+              isContact: p.isContact,
+            })) || [],
           seatsBooked: order.seatsBooked,
           totalWeightKg: order.totalWeightKg,
           type: order.type,
           qrCodeTicket: order.qrCodeTicket,
           status: order.status,
           canMarkNoShow,
+          isOrderCheckedIn,
         };
       });
 
@@ -877,6 +932,9 @@ export class CheckpointsService {
           ? `${trip.vehicle.model} (${trip.vehicle.plateNumber})`
           : 'Kendaraan Resmi',
         vehicleType: trip.vehicleType,
+        departureDate: trip.departureDate
+          ? trip.departureDate.toISOString().split('T')[0]
+          : null,
         departureTime: trip.departureTime,
         status: trip.status,
         originPoint: trip.originPoint.name,
@@ -884,6 +942,10 @@ export class CheckpointsService {
         isOriginPos: targetPosIds.includes(trip.originPointId),
         isDestPos: targetPosIds.includes(trip.destinationPointId),
         canMarkMitraNoShow,
+        isMitraCheckedIn,
+        isPastGracePeriod,
+        gracePeriodEnd: gracePeriodEnd.toISOString(),
+        gracePeriodMinutes,
         passengers,
       };
     });
@@ -891,6 +953,7 @@ export class CheckpointsService {
     return {
       posId: targetPosId ? targetPosId.toString() : '',
       date: dateStr,
+      scope: query.scope || 'date',
       availablePos: assignedPoints.map((p) => ({
         id: p.id.toString(),
         name: p.name,

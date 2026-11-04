@@ -1,4 +1,4 @@
-﻿import { SanctionService } from './sanction.service';
+import { SanctionService } from './sanction.service';
 import {
   Body,
   Controller,
@@ -20,13 +20,14 @@ import { UpdateUserGovernanceDto } from './dto/update-user-governance.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { Role } from '../../generated/prisma/enums';
+import { Role, AppealStatus } from '../../generated/prisma/enums';
 import { GetUser } from '../../common/decorators/get-user.decorators';
 import { UpdatePricingPolicyDto } from './dto/update-pricing-policy.dto';
 import {
   UpdatePlatformCommissionDto,
   UpdateRegionRateDto,
 } from './dto/system-setting.dto';
+import { UpdateSanctionSettingsDto } from './dto/update-sanction-settings.dto';
 
 @ApiTags('Admin Governance')
 @ApiBearerAuth()
@@ -179,6 +180,20 @@ export class AdminController {
   // ------------------------------------------------------
   // FASE 10: TATA KELOLA SANKSI & BANDING MITRA
   // ------------------------------------------------------
+  @Get('sanctions/appeals')
+  @Roles(Role.admin, Role.regional)
+  @ApiOperation({ summary: 'Melihat seluruh daftar banding sanksi mitra (Superadmin & Regional Admin)' })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: AppealStatus,
+    description: 'Filter berdasarkan status banding (PENDING, APPROVED, REJECTED)',
+  })
+  @ApiResponse({ status: 200, description: 'Daftar permohonan banding berhasil diambil' })
+  async getSanctionAppeals(@Query('status') status?: AppealStatus) {
+    return this.sanctionService.getAllAppeals(status);
+  }
+
   @Get('mitra/:id/sanctions')
   @Roles(Role.admin, Role.regional)
   @ApiOperation({ summary: 'Melihat riwayat sanksi mitra (Admin/Regional)' })
@@ -197,5 +212,31 @@ export class AdminController {
     @Body() dto: { approved: boolean; reviewNotes?: string },
   ) {
     return this.sanctionService.reviewAppeal(String(adminId), appealId, dto);
+  }
+
+  @Get('settings/sanctions')
+  @Roles(Role.admin)
+  @ApiOperation({ summary: 'Mendapatkan seluruh aturan sanksi dan batas toleransi telat (Superadmin)' })
+  @ApiResponse({ status: 200, description: 'Konfigurasi sanksi berhasil diambil' })
+  async getSanctionSettings() {
+    const data = await this.sanctionService.getSanctionSettings();
+    return {
+      statusCode: 200,
+      message: 'Konfigurasi sanksi dan batas toleransi berhasil diambil',
+      data,
+    };
+  }
+
+  @Patch('settings/sanctions')
+  @Roles(Role.admin)
+  @ApiOperation({ summary: 'Memperbarui aturan sanksi dan batas toleransi keterlambatan (Superadmin)' })
+  @ApiResponse({ status: 200, description: 'Konfigurasi sanksi berhasil diperbarui' })
+  async updateSanctionSettings(@Body() dto: UpdateSanctionSettingsDto) {
+    const data = await this.sanctionService.updateSanctionSettings(dto);
+    return {
+      statusCode: 200,
+      message: 'Konfigurasi sanksi dan batas toleransi keterlambatan berhasil diperbarui',
+      data,
+    };
   }
 }

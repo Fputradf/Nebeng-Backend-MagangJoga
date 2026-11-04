@@ -124,6 +124,8 @@ export class PaymentsController {
       String(operatorUserId),
       query.page,
       query.limit,
+      query.month,
+      query.year,
     );
   }
 

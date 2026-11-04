@@ -89,6 +89,18 @@ export class VerificationController {
     return this.verificationService.findByUserId(String(userId));
   }
 
+  @Get('check-nik')
+  @Roles(Role.customer, Role.mitra, Role.admin, Role.regional)
+  @ApiOperation({ summary: 'Mengecek ketersediaan NIK / KTP' })
+  @ApiQuery({ name: 'nik', required: true, description: '16 digit NIK KTP' })
+  @ApiResponse({ status: 200, description: 'Status ketersediaan NIK' })
+  async checkNik(
+    @GetUser('id') userId: string,
+    @Query('nik') nik: string,
+  ) {
+    return this.verificationService.checkNikAvailability(nik, String(userId));
+  }
+
   @Get(':id')
   @Roles(Role.admin, Role.regional, Role.mitra, Role.customer)
   @ApiOperation({ summary: 'Melihat detail verifikasi berdasarkan ID' })
