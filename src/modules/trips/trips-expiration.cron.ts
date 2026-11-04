@@ -10,6 +10,7 @@ import {
 } from '../../generated/prisma/enums';
 import { SanctionService } from '../admin/sanction.service';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { TrackingGateway } from '../tracking/tracking.gateway';
 import { computeOrderFinancials } from '../../common/utils/financial.util';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class TripsExpirationCron {
     private readonly prisma: PrismaService,
     private readonly sanctionService: SanctionService,
     private readonly notificationHelper: NotificationHelperService,
+    private readonly trackingGateway: TrackingGateway,
   ) {}
 
   /**
@@ -39,17 +41,20 @@ export class TripsExpirationCron {
       const toleranceMinutes = await this.sanctionService.getLateToleranceMinutes();
       const toleranceMs = toleranceMinutes * 60 * 1000;
 
-      // Cari trip yang masih scheduled dengan departureDate <= hari esok (mengantisipasi offset WIB +7)
+      // Cari trip yang masih scheduled atau in_origin_pos dengan departureDate <= hari esok (mengantisipasi offset WIB +7)
       const lookAheadDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
       const scheduledTrips = await this.prisma.trip.findMany({
         where: {
-          status: TripStatus.scheduled,
+          status: {
+            in: [TripStatus.scheduled, TripStatus.in_origin_pos],
+          },
           departureDate: {
             lte: lookAheadDate,
           },
         },
         include: {
           originPoint: true,
+          destinationPoint: true,
           orders: {
             where: {
               status: {
@@ -115,7 +120,127 @@ export class TripsExpirationCron {
             continue;
           }
 
-          // B. Trip Memiliki Order Aktif -> Mitra No-Show & Pembatalan Otomatis
+          // SKENARIO B+: Mitra hadir di Pos Asal (in_origin_pos) tapi SEMUA Customer tidak hadir (0 checked-in)
+          if (trip.status === TripStatus.in_origin_pos) {
+            const hasCheckedInCustomers = trip.orders.some(
+              (o) => o.status === OrderStatus.checked_in_origin,
+            );
+
+            // Jika ada customer yang sudah check-in, supir dan customer yang hadir siap berangkat.
+            // Cukup tandai customer yang belum check-in (masih paid) sebagai no_show.
+            if (hasCheckedInCustomers) {
+              await this.prisma.$transaction(async (tx) => {
+                for (const order of trip.orders) {
+                  if (order.status === OrderStatus.paid) {
+                    await tx.order.update({
+                      where: { id: order.id },
+                      data: {
+                        status: OrderStatus.no_show,
+                        noShowMarkedAt: now,
+                        noShowReason: `Customer tidak hadir di pos asal melewati batas toleransi ${toleranceMinutes} menit`,
+                      },
+                    });
+                  }
+                }
+              });
+              continue;
+            }
+
+            // Skenario B+: TIDAK ADA satupun customer yang hadir (100% no-show)
+            // Mitra sudah hadir di pos asal -> Mitra TIDAK PERLU meluncur ke pos tujuan!
+            // Trip diselesaikan otomatis di Pos Asal & dana kompensasi tiket dicairkan ke Mitra!
+            const releasedOrders: { id: string; netMitra: number }[] = [];
+
+            await this.prisma.$transaction(async (tx) => {
+              let mitraWallet = await tx.wallet.findUnique({
+                where: { userId: trip.mitraId },
+              });
+              if (!mitraWallet) {
+                mitraWallet = await tx.wallet.create({
+                  data: { userId: trip.mitraId, balance: 0, heldEscrowBalance: 0 },
+                });
+              }
+
+              for (const order of trip.orders) {
+                const adminFeePercentage = Number(order.adminFeePercentage || 10);
+                const financials = computeOrderFinancials({
+                  subtotal: (order as any).subtotal || order.totalPrice,
+                  totalPrice: order.totalPrice,
+                  discountAmount: (order as any).discountAmount,
+                  adminFeePercentage,
+                });
+
+                releasedOrders.push({
+                  id: order.id.toString(),
+                  netMitra: financials.netMitra,
+                });
+
+                // Cairkan dana escrow ke mitra (karena customer no-show, tiket hangus tanpa refund)
+                await tx.wallet.update({
+                  where: { id: mitraWallet.id },
+                  data: {
+                    heldEscrowBalance: { decrement: financials.netMitra },
+                    balance: { increment: financials.netMitra },
+                  },
+                });
+
+                await tx.walletTransaction.create({
+                  data: {
+                    walletId: mitraWallet.id,
+                    orderId: order.id,
+                    amount: financials.netMitra,
+                    type: TransactionType.escrow_release,
+                    description: `Pencairan Kompensasi Penumpang No-Show #${order.id}`,
+                  },
+                });
+
+                await tx.order.update({
+                  where: { id: order.id },
+                  data: {
+                    status: OrderStatus.no_show,
+                    escrowStatus: EscrowStatus.released,
+                    noShowMarkedAt: now,
+                    noShowReason: `Penumpang tidak hadir ke pos asal melewati toleransi ${toleranceMinutes} menit (Tiket hangus)`,
+                  },
+                });
+
+                await tx.orderQrSession.updateMany({
+                  where: { orderId: order.id, isUsed: false },
+                  data: { isUsed: true, expiredAt: now },
+                });
+              }
+
+              // Selesaikan trip otomatis di Pos Asal
+              await tx.trip.update({
+                where: { id: trip.id },
+                data: {
+                  status: TripStatus.completed,
+                },
+              });
+
+              await tx.tripQrSession.updateMany({
+                where: { tripId: trip.id, isUsed: false },
+                data: { isUsed: true, expiredAt: now },
+              });
+            });
+
+            this.logger.log(
+              `Trip #${trip.id} otomatis diselesaikan di pos asal (Skenario B+: Seluruh penumpang no-show, kompensasi dicairkan ke Mitra).`,
+            );
+
+            // Notifikasi ke Mitra untuk setiap order yang dicairkan
+            for (const ro of releasedOrders) {
+              await this.notificationHelper.notifyEscrowReleased(
+                trip.mitraId.toString(),
+                ro.netMitra,
+                ro.id,
+              );
+            }
+
+            continue;
+          }
+
+          // B. Trip Memiliki Order Aktif & Mitra Tidak Hadir (status === scheduled) -> Mitra No-Show & Pembatalan Otomatis
           await this.prisma.$transaction(async (tx) => {
             const activeOrders = trip.orders;
 
@@ -235,7 +360,7 @@ export class TripsExpirationCron {
             );
           });
 
-          // Notifikasi No Show & Sanksi
+          // Notifikasi No Show & Sanksi ke Mitra
           await this.notificationHelper.notifyMitraNoShow(
             trip.mitraId.toString(),
             trip.id.toString(),
@@ -249,6 +374,43 @@ export class TripsExpirationCron {
             );
           } catch (notifErr: any) {
             this.logger.warn(`Gagal kirim notif sanksi no-show mitra: ${notifErr.message}`);
+          }
+
+          // Notifikasi pembatalan & refund ke seluruh customer
+          for (const order of trip.orders) {
+            try {
+              const isCheckedIn = order.status === OrderStatus.checked_in_origin;
+              await this.notificationHelper.notifyTripCancelledByMitra(
+                order.customerId.toString(),
+                trip.id.toString(),
+                Number(order.totalPrice),
+                0,
+                trip.originPoint?.name || 'Pos Asal',
+                (trip as any).destinationPoint?.name || 'Pos Tujuan',
+                trip.departureDate.toISOString().split('T')[0],
+              );
+            } catch (notifCustErr: any) {
+              this.logger.warn(`Gagal kirim notif refund customer #${order.customerId}: ${notifCustErr.message}`);
+            }
+          }
+
+          // Siarkan pembaruan real-time ke UI Customer via WebSocket
+          try {
+            const originRegionId = trip.originPoint?.regionId
+              ? trip.originPoint.regionId.toString()
+              : '';
+            this.trackingGateway.emitCheckpointScanned(
+              trip.id.toString(),
+              originRegionId,
+              {
+                tripId: trip.id.toString(),
+                scanType: 'mitra_no_show',
+                status: TripStatus.mitra_no_show,
+                message: `Perjalanan otomatis dibatalkan karena Mitra tidak hadir melebihi batas toleransi ${toleranceMinutes} menit. Dana telah dikembalikan ke wallet Anda.`,
+              },
+            );
+          } catch (wsErr: any) {
+            this.logger.warn(`Gagal emit websocket mitra_no_show: ${wsErr.message}`);
           }
 
           this.logger.log(

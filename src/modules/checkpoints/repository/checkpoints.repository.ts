@@ -77,17 +77,12 @@ export class CheckpointsRepository {
     const now = new Date();
     const tokenExpiry = new Date(now.getTime() + 48 * 60 * 60 * 1000); // Aktif 48 jam
     return this.prisma.$transaction(async (tx) => {
-      // 1. Update status trip menjadi in_transit
-      await tx.trip.update({
-        where: { id: tripId },
-        data: { status: TripStatus.in_transit },
-      });
-      // 2. Hanguskan sesi QR sebelumnya (Pos Asal)
+      // 1. Hanguskan sesi QR sebelumnya (Pos Asal)
       await tx.orderQrSession.updateMany({
         where: { orderId, isUsed: false },
         data: { isUsed: true, usedAt: now },
       });
-      // 3. Buat sesi QR baru untuk Pos Tujuan
+      // 2. Buat sesi QR baru untuk Pos Tujuan
       await tx.orderQrSession.create({
         data: {
           orderId,
@@ -97,7 +92,7 @@ export class CheckpointsRepository {
           expiredAt: tokenExpiry,
         },
       });
-      // 4. Update order dengan kode QR tujuan baru & status in_transit
+      // 3. Update order dengan kode QR tujuan baru & status checked_in_origin
       await tx.order.update({
         where: { id: orderId },
         data: {
@@ -105,7 +100,7 @@ export class CheckpointsRepository {
           qrCodeTicket: nextDestQrToken, // Rotasi QR tiket
         },
       });
-      // 5. Simpan segel fisik jika pengiriman paket barang
+      // 4. Simpan segel fisik jika pengiriman paket barang
       if (securitySealQr || photoUrl) {
         await tx.itemOrder.updateMany({
           where: { orderId },
@@ -115,7 +110,7 @@ export class CheckpointsRepository {
           },
         });
       }
-      // 6. Catat riwayat log checkpoint
+      // 5. Catat riwayat log checkpoint
       return tx.checkpointsLog.create({
         data: {
           tripId,
@@ -945,6 +940,49 @@ export class CheckpointsRepository {
     });
   }
 
+  async processTripDeparture(
+    tripId: bigint,
+    posIdStr: string,
+    scannedByUserIdStr: string,
+  ) {
+    const parsedPosId = this.safeParseBigInt(posIdStr) ?? BigInt(1);
+    const parsedUserId = this.safeParseBigInt(scannedByUserIdStr);
+
+    return this.prisma.$transaction(async (tx) => {
+      // 1. Update status trip menjadi in_transit
+      const trip = await tx.trip.update({
+        where: { id: tripId },
+        data: { status: TripStatus.in_transit },
+        include: { originPoint: true, destinationPoint: true, mitra: true, vehicle: true },
+      });
+
+      // 2. Update semua order yang sudah check-in di pos asal menjadi in_transit
+      await tx.order.updateMany({
+        where: {
+          tripId,
+          status: OrderStatus.checked_in_origin,
+        },
+        data: {
+          status: OrderStatus.in_transit,
+        },
+      });
+
+      // 3. Catat riwayat log checkpoint keberangkatan
+      const log = await tx.checkpointsLog.create({
+        data: {
+          tripId,
+          orderId: null,
+          posId: parsedPosId,
+          scannedByUserId: parsedUserId,
+          scanType: ScanType.checkin_origin,
+        },
+        include: { trip: true, pos: true },
+      });
+
+      return { trip, checkpoint: log };
+    });
+  }
+
   async processPassengerNoShowById(
     orderId: bigint,
     tripId: bigint,
@@ -1018,6 +1056,88 @@ export class CheckpointsRepository {
           scanType: ScanType.checkin_origin,
         },
       });
+
+      // SKENARIO B+: Cek apakah seluruh order pada trip ini sekarang sudah no_show dan supir sudah di pos asal
+      const allTripOrders = await tx.order.findMany({
+        where: { tripId },
+        select: {
+          id: true,
+          status: true,
+          escrowStatus: true,
+          totalPrice: true,
+          subtotal: true,
+          discountAmount: true,
+          adminFeePercentage: true,
+        },
+      });
+
+      const checkedInOrders = allTripOrders.filter(
+        (o) => o.status === OrderStatus.checked_in_origin || o.status === OrderStatus.in_transit,
+      );
+      const remainingPaidOrders = allTripOrders.filter(
+        (o) => o.id !== orderId && o.status === OrderStatus.paid,
+      );
+
+      // Jika tidak ada order yang checked-in dan tidak ada lagi yang berstatus paid (semua 100% no-show)
+      // dan mitra sudah berada di pos asal (in_origin_pos):
+      if (
+        checkedInOrders.length === 0 &&
+        remainingPaidOrders.length === 0 &&
+        order.trip?.status === TripStatus.in_origin_pos
+      ) {
+        // Selesaikan trip otomatis di Pos Asal
+        await tx.trip.update({
+          where: { id: tripId },
+          data: { status: TripStatus.completed },
+        });
+
+        // Cairkan semua escrow order no_show pada trip ini ke dompet mitra
+        let mitraWallet = await tx.wallet.findUnique({
+          where: { userId: order.trip.mitraId },
+        });
+        if (!mitraWallet) {
+          mitraWallet = await tx.wallet.create({
+            data: { userId: order.trip.mitraId, balance: 0, heldEscrowBalance: 0 },
+          });
+        }
+
+        const ordersToRelease = allTripOrders.filter(
+          (o) => (o.id === orderId || o.status === OrderStatus.no_show) && o.escrowStatus === EscrowStatus.held,
+        );
+
+        for (const o of ordersToRelease) {
+          const adminFeePercentage = Number(o.adminFeePercentage || 10);
+          const financials = computeOrderFinancials({
+            subtotal: (o as any).subtotal || o.totalPrice,
+            totalPrice: o.totalPrice,
+            discountAmount: (o as any).discountAmount,
+            adminFeePercentage,
+          });
+
+          await tx.wallet.update({
+            where: { id: mitraWallet.id },
+            data: {
+              heldEscrowBalance: { decrement: financials.netMitra },
+              balance: { increment: financials.netMitra },
+            },
+          });
+
+          await tx.walletTransaction.create({
+            data: {
+              walletId: mitraWallet.id,
+              orderId: o.id,
+              amount: financials.netMitra,
+              type: TransactionType.escrow_release,
+              description: `Pencairan Kompensasi Penumpang No-Show #${o.id} (Semua Penumpang No-Show)`,
+            },
+          });
+
+          await tx.order.update({
+            where: { id: o.id },
+            data: { escrowStatus: EscrowStatus.released },
+          });
+        }
+      }
 
       return updatedOrder;
     });

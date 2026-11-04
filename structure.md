@@ -457,6 +457,7 @@
 │   │   └── 📄 prisma.service.ts
 │   ├── 📄 prisma-real-test.int-spec.ts
 │   ├── 📁 test-integration/
+│   ├── 📄 trip-scenarios.int-spec.ts
 │   ├── 📄 trip-service-type.int-spec.ts
 │   ├── 📄 upload.controller.ts
 │   └── 📄 voucher-orders.int-spec.ts

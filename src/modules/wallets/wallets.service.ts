@@ -10,6 +10,7 @@ import { WalletMapper } from './mappers/wallet.mapper';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { OrderStatus, EscrowStatus } from '../../generated/prisma/enums';
 
 @Injectable()
 export class WalletsService {
@@ -29,13 +30,46 @@ export class WalletsService {
   }
 
   async getMyWallet(userIdStr: string) {
+    const parsedUserId = this.safeParseBigInt(userIdStr);
     let wallet = await this.walletRepository.findByUserId(userIdStr);
 
     if (!wallet) {
       wallet = await this.walletRepository.createWallets(userIdStr);
     }
 
-    return WalletMapper.toResponse(wallet);
+    let heldEscrow = Number(wallet.heldEscrowBalance);
+
+    if (parsedUserId) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: parsedUserId },
+        select: { role: true },
+      });
+
+      // Untuk Customer: hitung total nominal pesanan aktif yang dananya sedang ditahan di escrow
+      if (user?.role === 'customer') {
+        const activeHeldOrders = await this.prisma.order.aggregate({
+          where: {
+            customerId: parsedUserId,
+            escrowStatus: EscrowStatus.held,
+            status: {
+              in: [
+                OrderStatus.paid,
+                OrderStatus.checked_in_origin,
+                OrderStatus.in_transit,
+              ],
+            },
+          },
+          _sum: { totalPrice: true },
+        });
+        heldEscrow = Number(activeHeldOrders._sum.totalPrice || 0);
+      }
+    }
+
+    const response = WalletMapper.toResponse(wallet);
+    return {
+      ...response,
+      heldEscrowBalance: heldEscrow,
+    };
   }
 
   async holdEscrow(mitraUserIdStr: string, orderIdStr: string, amount: number) {
