@@ -54,4 +54,14 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   avatar?: string;
+
+  @ApiPropertyOptional({ example: '3374123456789001', description: 'Nomor NIK KTP 16 digit' })
+  @IsOptional()
+  @IsString()
+  nik?: string;
+
+  @ApiPropertyOptional({ example: '3374123456789001', description: 'Nomor NIK KTP 16 digit' })
+  @IsOptional()
+  @IsString()
+  ktpNumber?: string;
 }

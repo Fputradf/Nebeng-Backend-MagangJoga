@@ -299,10 +299,10 @@ export type UserProfileOrderByWithRelationInput = {
 export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
   userId?: bigint | number
+  ktpNumber?: string
   AND?: Prisma.UserProfileWhereInput | Prisma.UserProfileWhereInput[]
   OR?: Prisma.UserProfileWhereInput[]
   NOT?: Prisma.UserProfileWhereInput | Prisma.UserProfileWhereInput[]
-  ktpNumber?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   fullNameKtp?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   addressKtp?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   faceImageUrl?: Prisma.StringNullableFilter<"UserProfile"> | string | null
@@ -313,7 +313,7 @@ export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "userId" | "ktpNumber">
 
 export type UserProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

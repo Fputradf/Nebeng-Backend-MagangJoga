@@ -1,4 +1,4 @@
-﻿import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { NotificationType } from '../../generated/prisma/enums';
 
@@ -23,16 +23,21 @@ export class NotificationHelperService {
     });
   }
 
-  async notifyOrderPaid(userId: string, orderId: string) {
+  async notifyOrderPaid(userId: string, orderId: string, amount?: number) {
+    const formattedAmount =
+      typeof amount === 'number' && amount > 0
+        ? ` sebesar Rp ${amount.toLocaleString('id-ID')}`
+        : '';
     return this.notificationsService.sendNotification({
       userId,
       type: NotificationType.order_paid,
       payload: {
         title: 'Pembayaran Berhasil',
-        body: `Pembayaran untuk pesanan #${orderId} telah berhasil. Tiket Anda telah diterbitkan.`,
+        body: `Pembayaran${formattedAmount} untuk pesanan #${orderId} telah berhasil. Tiket Anda telah diterbitkan.`,
         data: {
           orderId,
           type: 'order_paid',
+          ...(typeof amount === 'number' ? { amount } : {}),
         },
       },
     });
@@ -269,6 +274,178 @@ export class NotificationHelperService {
           remainingScore,
           isSuspended,
           type: 'mitra_sanction_applied',
+        },
+      },
+    });
+  }
+
+  async notifyTopUpSuccess(userId: string, amount: number, invoiceId?: string) {
+    const formattedAmount = amount.toLocaleString('id-ID');
+    return this.notificationsService.sendNotification({
+      userId,
+      type: NotificationType.payment_success,
+      payload: {
+        title: 'Top Up Saldo Berhasil',
+        body: `Top up saldo sebesar Rp ${formattedAmount} telah berhasil ditambahkan ke dompet digital Anda.`,
+        data: {
+          type: 'wallet_topup',
+          amount,
+          invoiceId,
+          priority: 'normal',
+          actionUrl: '/wallet',
+        },
+      },
+    });
+  }
+
+  async notifyWithdrawalProcessed(
+    userId: string,
+    amount: number,
+    bankDetails: string,
+    trxId?: string,
+  ) {
+    const formattedAmount = amount.toLocaleString('id-ID');
+    return this.notificationsService.sendNotification({
+      userId,
+      type: NotificationType.payment_success,
+      payload: {
+        title: 'Penarikan Saldo Berhasil',
+        body: `Penarikan saldo sebesar Rp ${formattedAmount} ke rekening ${bankDetails} telah berhasil diproses.`,
+        data: {
+          type: 'wallet_withdrawal',
+          amount,
+          bankDetails,
+          trxId,
+          priority: 'high',
+          actionUrl: '/wallet',
+        },
+      },
+    });
+  }
+
+  async notifyMitraArrivedAtOrigin(
+    customerId: string,
+    tripId: string,
+    originPosName: string,
+    mitraName: string,
+  ) {
+    return this.notificationsService.sendNotification({
+      userId: customerId,
+      type: NotificationType.trip_arrived,
+      payload: {
+        title: 'Mitra Sudah Tiba di Pos Asal',
+        body: `Mitra ${mitraName} telah tiba di ${originPosName} untuk Trip #${tripId}. Silakan merapat ke pos untuk verifikasi check-in & boarding.`,
+        data: {
+          type: 'mitra_arrived_origin',
+          tripId,
+          posName: originPosName,
+          mitraName,
+          priority: 'high',
+          actionUrl: '/customer/tickets',
+        },
+      },
+    });
+  }
+
+  async notifyTripArrivedAtDestination(
+    customerId: string,
+    tripId: string,
+    destPosName: string,
+  ) {
+    return this.notificationsService.sendNotification({
+      userId: customerId,
+      type: NotificationType.trip_arrived,
+      payload: {
+        title: 'Armada Tiba di Pos Tujuan',
+        body: `Perjalanan Trip #${tripId} telah tiba di pos tujuan (${destPosName}). Silakan ambil barang bawaan Anda. Terima kasih telah menggunakan Nebeng!`,
+        data: {
+          type: 'trip_arrived_destination',
+          tripId,
+          posName: destPosName,
+          priority: 'normal',
+          actionUrl: '/customer/tickets',
+        },
+      },
+    });
+  }
+
+  async notifyTripDepartureReminderH30(
+    userId: string,
+    tripId: string,
+    role: 'mitra' | 'customer',
+    posName: string,
+    minutesLeft: number = 30,
+  ) {
+    const isMitra = role === 'mitra';
+    return this.notificationsService.sendNotification({
+      userId,
+      type: NotificationType.trip_started,
+      payload: {
+        title: isMitra
+          ? `⏰ Pengingat: Trip #${tripId} Berangkat dalam ${minutesLeft} Menit`
+          : `⏰ Pengingat: Trip #${tripId} Anda Berangkat dalam ${minutesLeft} Menit`,
+        body: isMitra
+          ? `Trip #${tripId} dijadwalkan berangkat dalam ${minutesLeft} menit dari ${posName}. Harap segera bersiap dan merapat ke pos asal.`
+          : `Trip #${tripId} Anda dijadwalkan berangkat dalam ${minutesLeft} menit dari ${posName}. Silakan siapkan QR tiket Anda.`,
+        data: {
+          type: 'trip_departure_reminder_h30',
+          tripId,
+          minutesLeft,
+          posName,
+          role,
+          priority: isMitra ? 'high' : 'normal',
+          actionUrl: isMitra ? '/mitra/trip' : '/customer/tickets',
+        },
+      },
+    });
+  }
+
+  async notifyTripDepartureUrgencyH0(
+    userId: string,
+    tripId: string,
+    role: 'mitra' | 'customer',
+    posName: string,
+  ) {
+    const isMitra = role === 'mitra';
+    return this.notificationsService.sendNotification({
+      userId,
+      type: NotificationType.trip_started,
+      payload: {
+        title: isMitra
+          ? `🚨 URGENT: Waktu Keberangkatan Trip #${tripId} Telah Tiba!`
+          : `📢 Jadwal Keberangkatan Trip #${tripId} Telah Tiba`,
+        body: isMitra
+          ? `Jadwal keberangkatan Trip #${tripId} telah tiba. Harap segera tiba di ${posName} dan lakukan check-in sebelum toleransi 15 menit habis untuk menghindari sanksi penalti.`
+          : `Jadwal keberangkatan Trip #${tripId} di ${posName} telah tiba. Menunggu konfirmasi kedatangan armada di pos asal.`,
+        data: {
+          type: 'trip_departure_urgency_h0',
+          tripId,
+          posName,
+          role,
+          priority: 'high',
+          actionUrl: isMitra ? '/mitra/trip' : '/customer/tickets',
+        },
+      },
+    });
+  }
+
+  async notifyMitraLateSanction(
+    mitraId: string,
+    tripId: string,
+    posName: string,
+  ) {
+    return this.notificationsService.sendNotification({
+      userId: mitraId,
+      type: NotificationType.order_cancelled,
+      payload: {
+        title: '🚨 Anda Dinyatakan No-Show & Terkena Sanksi',
+        body: `Anda melewati batas toleransi 15 menit keterlambatan untuk Trip #${tripId} di ${posName}. Perjalanan dibatalkan dan sanksi keterlambatan (-30 poin skor reputasi & penangguhan akun) telah diterapkan.`,
+        data: {
+          type: 'mitra_late_sanction',
+          tripId,
+          posName,
+          priority: 'high',
+          actionUrl: '/mitra/dashboard',
         },
       },
     });

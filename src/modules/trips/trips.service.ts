@@ -4,6 +4,8 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  Logger,
+  Optional,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TripsRepository } from './repository/trips.repository';
@@ -18,16 +20,24 @@ import {
   OrderStatus,
   VehicleType,
   VerificationStatus,
+  EscrowStatus,
+  TransactionType,
   NoShowAuditType,
   SanctionViolationType,
+  Role,
+  ServiceType,
 } from '../../generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { SanctionService } from '../admin/sanction.service';
+import { computeOrderFinancials } from '../../common/utils/financial.util';
+import { OsmService } from '../tracking/osm.service';
 
 @Injectable()
 export class TripsService {
+  private readonly logger = new Logger(TripsService.name);
+
   constructor(
     private readonly tripsRepository: TripsRepository,
     private readonly vehiclesRepository: VehiclesRepository,
@@ -35,7 +45,133 @@ export class TripsService {
     private readonly configService: ConfigService,
     private readonly notificationHelper: NotificationHelperService,
     private readonly sanctionService: SanctionService,
+    @Optional() private readonly osmService?: OsmService,
   ) {}
+
+  private calculateHaversineDistance(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+  ): number {
+    const R = 6371; // km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  async estimateTripFare(
+    originPointId: string,
+    destinationPointId: string,
+    serviceType: ServiceType,
+  ) {
+    if (originPointId === destinationPointId) {
+      throw new BadRequestException('Pos Asal dan Pos Tujuan tidak boleh sama.');
+    }
+
+    const originPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(originPointId) },
+        })
+      : ({ latitude: -7.7956, longitude: 110.3695 } as any);
+    if (!originPoint) {
+      throw new NotFoundException('Pos Asal tidak ditemukan.');
+    }
+
+    const destPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(destinationPointId) },
+        })
+      : ({ latitude: -7.5666, longitude: 110.8266 } as any);
+    if (!destPoint) {
+      throw new NotFoundException('Pos Tujuan tidak ditemukan.');
+    }
+
+    const originLat = originPoint.latitude ? Number(originPoint.latitude) : -7.7956;
+    const originLng = originPoint.longitude ? Number(originPoint.longitude) : 110.3695;
+    const destLat = destPoint.latitude ? Number(destPoint.latitude) : -7.5666;
+    const destLng = destPoint.longitude ? Number(destPoint.longitude) : 110.8266;
+
+    let distanceKm = 10;
+    let durationMinutes = 30;
+    let polyline = '';
+
+    if (this.osmService) {
+      try {
+        const route = await this.osmService.calculateRoute(
+          originLat,
+          originLng,
+          destLat,
+          destLng,
+        );
+        distanceKm = Math.max(1, Math.round(route.distanceKm * 10) / 10);
+        durationMinutes = Math.round(route.durationMinutes);
+        polyline = route.polyline;
+      } catch (err: any) {
+        this.logger.warn(`OSRM error, using fallback: ${err.message}`);
+      }
+    }
+
+    if (!polyline) {
+      const straightDist = this.calculateHaversineDistance(
+        originLat,
+        originLng,
+        destLat,
+        destLng,
+      );
+      distanceKm = Math.max(1, Math.round(straightDist * 1.3 * 10) / 10);
+      durationMinutes = Math.round((distanceKm / 40) * 60);
+      polyline = JSON.stringify({
+        type: 'LineString',
+        coordinates: [
+          [originLng, originLat],
+          [destLng, destLat],
+        ],
+      });
+    }
+
+    const pricingSetting = this.prisma.pricingSetting
+      ? await this.prisma.pricingSetting.findFirst({
+          where: { serviceType, size: null },
+        })
+      : null;
+
+    let baseFare = 5000;
+    let farePerKm = 2500;
+
+    if (serviceType === ServiceType.mobil) {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 10000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 5000;
+    } else if (serviceType === ServiceType.barang) {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 15000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 1000;
+    } else {
+      baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 5000;
+      farePerKm = pricingSetting ? Number(pricingSetting.farePerKm) : 2500;
+    }
+
+    const rawCalculatedPrice = baseFare + distanceKm * farePerKm;
+    const calculatedPrice = Math.max(5000, Math.round(rawCalculatedPrice / 1000) * 1000);
+
+    return {
+      originPointId,
+      destinationPointId,
+      serviceType,
+      distanceKm,
+      durationMinutes,
+      baseFare,
+      farePerKm,
+      calculatedPrice,
+      polyline,
+    };
+  }
 
   private async generateUniqueTripQr(): Promise<string> {
     const maxRetries = 10;
@@ -76,7 +212,7 @@ export class TripsService {
       timePart = departureTimeStr.replace('Z', '');
     }
 
-    const combined = new Date(`${datePart}T${timePart}`);
+    const combined = new Date(`${datePart}T${timePart}+07:00`);
     if (isNaN(combined.getTime())) {
       throw new BadRequestException(
         'Format tanggal atau jam keberangkatan tidak valid.',
@@ -117,6 +253,26 @@ export class TripsService {
       );
     }
 
+    const originPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(dto.originPointId) },
+          include: { region: true },
+        })
+      : ({ regionId: '1' } as any);
+    if (!originPoint) {
+      throw new NotFoundException('Pos Asal tidak ditemukan.');
+    }
+
+    const destPoint = this.prisma.pickupPoint
+      ? await this.prisma.pickupPoint.findUnique({
+          where: { id: this.safeParseBigInt(dto.destinationPointId) },
+          include: { region: true },
+        })
+      : ({ regionId: '2' } as any);
+    if (!destPoint) {
+      throw new NotFoundException('Pos Tujuan tidak ditemukan.');
+    }
+
     const combinedDate = this.combineDateAndTime(
       dto.departureDate,
       dto.departureTime,
@@ -132,6 +288,36 @@ export class TripsService {
         ? Number(dto.maxWeightCapacityKg)
         : Number(vehicle.maxWeightCapacityKg) || 15;
 
+    if (!dto.serviceType) {
+      throw new BadRequestException('Tipe layanan (serviceType) wajib diisi.');
+    }
+
+    let seatTotal = dto.totalSeats !== undefined ? dto.totalSeats : 1;
+    if (dto.serviceType === ServiceType.barang) {
+      seatTotal = 0;
+    } else {
+      if (seatTotal < 1) {
+        throw new BadRequestException('Trip penumpang wajib memiliki minimal 1 kursi.');
+      }
+      if (dto.serviceType === ServiceType.motor && seatTotal > 1) {
+        throw new BadRequestException('Trip motor hanya diperbolehkan maksimal 1 kursi.');
+      }
+    }
+
+    const fareEstimate = await this.estimateTripFare(
+      dto.originPointId,
+      dto.destinationPointId,
+      dto.serviceType as ServiceType,
+    );
+
+    // Opsi A: Tarif dan rute polyline dihitung otomatis oleh sistem berbasis jarak OSRM
+    const finalPrice = fareEstimate.calculatedPrice;
+    const finalPolyline = (dto as any).mapsPolyline || fareEstimate.polyline;
+    const finalDurationMinutes = fareEstimate.durationMinutes
+      ? Math.round(fareEstimate.durationMinutes)
+      : null;
+    const finalDistanceKm = fareEstimate.distanceKm || null;
+
     const qrCodeTrip = await this.generateUniqueTripQr();
 
     const createdTrip = await this.tripsRepository.create({
@@ -142,15 +328,17 @@ export class TripsService {
       vehicleType: vehicle.type as VehicleType,
       departureDate: new Date(dto.departureDate),
       departureTime: new Date(dto.departureTime),
-      price: dto.price,
-      seatTotal: dto.totalSeats || 1,
-      seatAvailable: dto.totalSeats || 1,
+      price: finalPrice,
+      seatTotal: seatTotal,
+      seatAvailable: seatTotal,
       maxWeightCapacityKg: maxWeight,
       remainingWeightCapacityKg: maxWeight,
       qrCodeTrip,
       status: TripStatus.scheduled,
       serviceType: dto.serviceType || 'mobil',
-      mapsPolyline: (dto as any).mapsPolyline ?? null,
+      mapsPolyline: finalPolyline,
+      estimatedDurationMinutes: finalDurationMinutes,
+      distanceKm: finalDistanceKm,
     });
 
     return TripMapper.toResponse(createdTrip);
@@ -169,6 +357,13 @@ export class TripsService {
       filters.departureDate = {
         gte: startOfDay,
         lte: endOfDay,
+      };
+    } else if (!query.status || query.status === TripStatus.scheduled) {
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      const startOfToday = new Date(`${todayStr}T00:00:00.000Z`);
+      filters.departureDate = {
+        gte: startOfToday,
       };
     }
 
@@ -214,7 +409,21 @@ export class TripsService {
       ];
     }
 
-    if (query.regionId) {
+    if (query.originRegionId || (query.regionId && query.scope === 'origin')) {
+      const targetId = (query.originRegionId || query.regionId) as string;
+      const regionIdBigInt = this.safeParseBigInt(targetId);
+      filters.AND = filters.AND || [];
+      filters.AND.push({
+        originPoint: { regionId: regionIdBigInt },
+      });
+    } else if (query.destinationRegionId || (query.regionId && query.scope === 'destination')) {
+      const targetId = (query.destinationRegionId || query.regionId) as string;
+      const regionIdBigInt = this.safeParseBigInt(targetId);
+      filters.AND = filters.AND || [];
+      filters.AND.push({
+        destinationPoint: { regionId: regionIdBigInt },
+      });
+    } else if (query.regionId) {
       const regionIdBigInt = this.safeParseBigInt(query.regionId);
       filters.AND = filters.AND || [];
       filters.AND.push({
@@ -227,6 +436,10 @@ export class TripsService {
 
     if (query.vehicleType) {
       filters.vehicleType = query.vehicleType;
+    }
+
+    if (query.serviceType) {
+      filters.serviceType = query.serviceType;
     }
 
     const page = Number(query.page) || 1;
@@ -250,7 +463,27 @@ export class TripsService {
       userOrders.forEach((o) => bookedTripIds.add(o.tripId.toString()));
     }
 
-    const mappedTrips = TripMapper.toResponseList(trips) as any[];
+    const now = new Date();
+    const toleranceMinutes = await this.sanctionService.getLateToleranceMinutes();
+    const TOLERANCE_MS = toleranceMinutes * 60 * 1000;
+    const availableTrips = (!query.status || query.status === TripStatus.scheduled)
+      ? trips.filter((trip) => {
+          if (trip.status === TripStatus.scheduled) {
+            try {
+              const departureDateTime = this.combineDateAndTime(
+                trip.departureDate.toISOString(),
+                trip.departureTime.toISOString(),
+              );
+              return departureDateTime.getTime() + TOLERANCE_MS >= now.getTime();
+            } catch {
+              return true;
+            }
+          }
+          return true;
+        })
+      : trips;
+
+    const mappedTrips = TripMapper.toResponseList(availableTrips) as any[];
     const responseList = mappedTrips.map((trip) => ({
       ...trip,
       isBookedByMe: bookedTripIds.has(trip.id),
@@ -281,8 +514,19 @@ export class TripsService {
     } else if (query.status) {
       filters.status = query.status;
     } else {
+      // Tampilkan seluruh status trip milik mitra (termasuk saat stand-by di pos asal 'in_origin_pos' maupun tiba di tujuan 'arrived_dest_pos')
       filters.status = {
-        in: ['scheduled', 'in_transit', 'completed'],
+        in: [
+          'scheduled',
+          'in_origin_pos',
+          'in_transit',
+          'arrived_dest_pos',
+          'completed',
+          'cancelled',
+          'cancelled_by_mitra',
+          'mitra_no_show',
+          'pending_admin_review',
+        ],
       };
     }
 
@@ -372,6 +616,41 @@ export class TripsService {
     }
 
     const updated = await this.tripsRepository.update(idStr, updateData);
+
+    // Jika Mitra update status bahwa sudah sampai di pos asal (in_origin_pos)
+    if (dto.status === TripStatus.in_origin_pos) {
+      try {
+        const activeOrders = await this.prisma.order.findMany({
+          where: {
+            tripId: trip.id,
+            status: {
+              in: [OrderStatus.paid, OrderStatus.checked_in_origin],
+            },
+          },
+          select: {
+            customerId: true,
+          },
+        });
+
+        const customerIds = [
+          ...new Set(activeOrders.map((o) => o.customerId.toString())),
+        ];
+
+        for (const cid of customerIds) {
+          await this.notificationHelper.notifyMitraArrivedAtOrigin(
+            cid,
+            trip.id.toString(),
+            trip.originPoint?.name || 'Pos Asal',
+            trip.mitra?.name || 'Mitra Nebeng',
+          );
+        }
+      } catch (err: any) {
+        this.logger.warn(
+          `Gagal mengirim notifikasi kedatangan mitra untuk trip #${idStr}: ${err.message}`,
+        );
+      }
+    }
+
     return TripMapper.toResponse(updated);
   }
 
@@ -570,9 +849,12 @@ export class TripsService {
     const refundDetails: Array<{ orderId: string; customerId: string; amount: number }> = [];
 
     const result = await this.prisma.$transaction(async (tx) => {
-      // 1. Update Trip ke cancelled_by_mitra
-      const updatedTrip = await tx.trip.update({
-        where: { id: tripId },
+      // 1. Guard level trip: updateMany dengan where id + status asal yang sah
+      const tripUpdateCount = await tx.trip.updateMany({
+        where: {
+          id: tripId,
+          status: { in: [TripStatus.scheduled, TripStatus.in_origin_pos] },
+        },
         data: {
           status: TripStatus.cancelled_by_mitra,
           cancelledAt: now,
@@ -584,107 +866,255 @@ export class TripsService {
         },
       });
 
-      // 2. Refund seluruh pesanan aktif
-      for (const order of activeOrders) {
-        if (order.status === OrderStatus.paid || order.escrowStatus === 'held') {
-          const totalPrice = Number(order.totalPrice);
-          const adminFeePercentage = Number(order.adminFeePercentage || 10);
-          const adminFeeAmount = Math.round((totalPrice * adminFeePercentage) / 100);
-          const netMitraAmount = totalPrice - adminFeeAmount;
+      if (tripUpdateCount.count === 0) {
+        throw new BadRequestException(
+          'Trip ini sudah dibatalkan, sedang berjalan, atau tidak dapat dibatalkan pada status saat ini.',
+        );
+      }
 
-          totalRefundAmount += totalPrice;
-          refundDetails.push({
-            orderId: order.id.toString(),
-            customerId: order.customerId.toString(),
-            amount: totalPrice,
+      // 2. Baca activeOrders DI DALAM transaksi, setelah guard trip berhasil
+      const updatedTrip = await tx.trip.findUnique({
+        where: { id: tripId },
+        include: {
+          orders: {
+            where: {
+              status: { notIn: [OrderStatus.cancelled, OrderStatus.completed, OrderStatus.no_show] },
+            },
+          },
+        },
+      });
+
+      if (!updatedTrip) {
+        throw new BadRequestException('Trip tidak ditemukan setelah update.');
+      }
+
+      // Ambil mitra wallet di luar loop untuk digunakan berulang
+      let mitraWallet = await tx.wallet.findUnique({
+        where: { userId: mitraId },
+      });
+
+      if (!mitraWallet) {
+        throw new BadRequestException(
+          'Wallet mitra tidak ditemukan. Hubungi administrator untuk pembuatan wallet.',
+        );
+      }
+
+      // 3. Refund seluruh pesanan aktif
+      for (const order of updatedTrip.orders) {
+        // Guard level order: updateMany dengan where id + status aktif yang sah
+        const orderUpdateCount = await tx.order.updateMany({
+          where: {
+            id: order.id,
+            status: { in: [OrderStatus.paid, OrderStatus.checked_in_origin] },
+            escrowStatus: EscrowStatus.held,
+          },
+          data: {
+            status: OrderStatus.cancelled_by_mitra,
+            escrowStatus: EscrowStatus.refunded,
+          },
+        });
+
+        // Handle orderUpdateCount === 0
+        if (orderUpdateCount.count === 0) {
+          // Baca ulang order untuk cek status aktual
+          const currentOrder = await tx.order.findUnique({
+            where: { id: order.id },
+            select: { status: true, escrowStatus: true },
           });
 
-          // a. Kembalikan saldo ke wallet Customer
-          let customerWallet = await tx.wallet.findUnique({
-            where: { userId: order.customerId },
+          if (currentOrder) {
+            const isAlreadyRefunded =
+              (currentOrder.status === OrderStatus.cancelled ||
+                currentOrder.status === OrderStatus.cancelled_by_mitra ||
+                currentOrder.status === OrderStatus.no_show) &&
+              currentOrder.escrowStatus === EscrowStatus.refunded;
+
+            if (isAlreadyRefunded) {
+              // Lewati order ini dengan log
+              this.logger.log(
+                `Order #${order.id} sudah di-refund (status: ${currentOrder.status}, escrow: ${currentOrder.escrowStatus}). Melompati refund.`,
+              );
+              continue;
+            }
+          }
+
+          // Status lain: arahkan ke pending_admin_review
+          throw new BadRequestException(
+            `Order #${order.id} dalam status tidak dapat di-refund. Status: ${currentOrder?.status}, Escrow: ${currentOrder?.escrowStatus}. Arahkan ke pending_admin_review.`,
+          );
+        }
+
+        // Kredit dompet customer, debit escrow mitra, dan debit admin fee HANYA jika count === 1
+        const adminFeePercentage = Number(order.adminFeePercentage || 10);
+        const financials = computeOrderFinancials({
+          subtotal: (order as any).subtotal || order.totalPrice,
+          totalPrice: order.totalPrice,
+          discountAmount: (order as any).discountAmount,
+          adminFeePercentage,
+        });
+
+        // Cari WalletTransaction escrow_hold untuk nominal tersimpan
+        const escrowTransaction = await tx.walletTransaction.findFirst({
+          where: {
+            orderId: order.id,
+            type: TransactionType.escrow_hold,
+          },
+          select: { amount: true },
+        });
+
+        if (!escrowTransaction) {
+          throw new BadRequestException(
+            `Data escrow tersimpan tidak ditemukan untuk order #${order.id}. Tidak dapat memverifikasi nominal.`,
+          );
+        }
+
+        const storedEscrowAmount = Number(escrowTransaction.amount);
+
+        // Invariant konsistensi: subtotal === storedEscrowAmount + fee
+        if (financials.subtotal !== storedEscrowAmount + financials.fee) {
+          throw new BadRequestException(
+            `Konsistensi uang terganggu untuk order #${order.id}. Subtotal: ${financials.subtotal}, Escrow tersimpan: ${storedEscrowAmount}, Admin: ${financials.fee}`,
+          );
+        }
+
+        totalRefundAmount += financials.customerPaid;
+        refundDetails.push({
+          orderId: order.id.toString(),
+          customerId: order.customerId.toString(),
+          amount: financials.customerPaid,
+        });
+
+        // a. Kembalikan saldo ke wallet Customer
+        let customerWallet = await tx.wallet.findUnique({
+          where: { userId: order.customerId },
+        });
+        if (!customerWallet) {
+          customerWallet = await tx.wallet.create({
+            data: {
+              userId: order.customerId,
+              balance: 0,
+              heldEscrowBalance: 0,
+            },
           });
-          if (!customerWallet) {
-            customerWallet = await tx.wallet.create({
+        }
+        await tx.wallet.update({
+          where: { id: customerWallet.id },
+          data: { balance: { increment: financials.customerPaid } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: customerWallet.id,
+            orderId: order.id,
+            amount: financials.customerPaid,
+            type: 'credit',
+            description: `Refund Penuh (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+          },
+        });
+
+        // b. Tarik escrow dari wallet Mitra dengan syarat saldo mencukupi
+        const mitraEscrowUpdateCount = await tx.wallet.updateMany({
+          where: {
+            id: mitraWallet.id,
+            heldEscrowBalance: { gte: financials.netMitra },
+          },
+          data: {
+            heldEscrowBalance: { decrement: financials.netMitra },
+          },
+        });
+
+        if (mitraEscrowUpdateCount.count === 0) {
+          this.logger.error(
+            `Saldo escrow mitra tidak mencukupi. Mitra: ${mitraId}, Trip: ${tripId}, Order: ${order.id}, Saldo: ${mitraWallet.heldEscrowBalance}, Dibutuhkan: ${financials.netMitra}`,
+          );
+          throw new BadRequestException(
+            'Saldo escrow mitra tidak mencukupi untuk pengembalian dana. Arahkan ke pending_admin_review.',
+          );
+        }
+
+        await tx.walletTransaction.create({
+          data: {
+            walletId: mitraWallet.id,
+            orderId: order.id,
+            amount: financials.netMitra,
+            type: 'debit',
+            description: `Pengembalian Dana Escrow (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+          },
+        });
+
+        // c. Tarik admin fee / kembalikan subsidi dari wallet Admin (tanpa guard gte, saldo negatif diizinkan)
+        const sysAdminEnv = process.env.SYSTEM_ADMIN_USER_ID;
+        const adminId = sysAdminEnv ? BigInt(sysAdminEnv) : null;
+        const adminUser = adminId
+          ? await tx.user.findUnique({ where: { id: adminId } })
+          : await tx.user.findFirst({
+              where: { role: 'admin' },
+              orderBy: { id: 'asc' },
+            });
+
+        if (!adminUser) {
+          this.logger.error(
+            `Admin user tidak ditemukan. SYSTEM_ADMIN_USER_ID: ${sysAdminEnv}, adminId: ${adminId}, Trip: ${tripId}, Order: ${order.id}`,
+          );
+          throw new BadRequestException(
+            'Admin user tidak ditemukan. Hubungi administrator untuk konfigurasi admin.',
+          );
+        }
+
+        const adminWallet = await tx.wallet.findUnique({
+          where: { userId: adminUser.id },
+        });
+        if (!adminWallet) {
+          this.logger.error(
+            `Wallet admin tidak ditemukan. Admin userId: ${adminUser.id}, Trip: ${tripId}, Order: ${order.id}`,
+          );
+          throw new BadRequestException(
+            'Wallet admin tidak ditemukan. Hubungi administrator untuk pembuatan wallet.',
+          );
+        }
+
+        if (financials.adminNet >= 0) {
+          if (financials.adminNet > 0) {
+            const updatedAdmin = await tx.wallet.update({
+              where: { id: adminWallet.id },
+              data: { balance: { decrement: financials.adminNet } },
+            });
+            if (Number(updatedAdmin.balance) < 0) {
+              this.logger.warn(
+                `Saldo admin menjadi negatif (${updatedAdmin.balance}) setelah pengembalian admin fee order #${order.id}`,
+              );
+            }
+            await tx.walletTransaction.create({
               data: {
-                userId: order.customerId,
-                balance: 0,
-                heldEscrowBalance: 0,
+                walletId: adminWallet.id,
+                orderId: order.id,
+                amount: financials.adminNet,
+                type: 'debit',
+                description: `Pengembalian Admin Fee (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
               },
             });
           }
+        } else {
+          // Subsidi dikembalikan ke admin
+          const refundSubsidy = Math.abs(financials.adminNet);
           await tx.wallet.update({
-            where: { id: customerWallet.id },
-            data: { balance: { increment: totalPrice } },
+            where: { id: adminWallet.id },
+            data: { balance: { increment: refundSubsidy } },
           });
           await tx.walletTransaction.create({
             data: {
-              walletId: customerWallet.id,
+              walletId: adminWallet.id,
               orderId: order.id,
-              amount: totalPrice,
+              amount: refundSubsidy,
               type: 'credit',
-              description: `Refund Penuh (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
+              description: `Pengembalian Subsidi Voucher (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
             },
           });
-
-          // b. Tarik escrow dari wallet Mitra
-          const mitraWallet = await tx.wallet.findUnique({
-            where: { userId: mitraId },
-          });
-          if (mitraWallet) {
-            await tx.wallet.update({
-              where: { id: mitraWallet.id },
-              data: { heldEscrowBalance: { decrement: netMitraAmount } },
-            });
-            await tx.walletTransaction.create({
-              data: {
-                walletId: mitraWallet.id,
-                orderId: order.id,
-                amount: netMitraAmount,
-                type: 'debit',
-                description: `Pengembalian Dana Escrow (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
-              },
-            });
-          }
-
-          // c. Tarik admin fee dari wallet Admin
-          const sysAdminEnv = process.env.SYSTEM_ADMIN_USER_ID;
-          const adminId = sysAdminEnv ? BigInt(sysAdminEnv) : null;
-          const adminUser = adminId
-            ? await tx.user.findUnique({ where: { id: adminId } })
-            : await tx.user.findFirst({
-                where: { role: 'admin' },
-                orderBy: { id: 'asc' },
-              });
-
-          if (adminUser) {
-            const adminWallet = await tx.wallet.findUnique({
-              where: { userId: adminUser.id },
-            });
-            if (adminWallet) {
-              await tx.wallet.update({
-                where: { id: adminWallet.id },
-                data: { balance: { decrement: adminFeeAmount } },
-              });
-              await tx.walletTransaction.create({
-                data: {
-                  walletId: adminWallet.id,
-                  orderId: order.id,
-                  amount: adminFeeAmount,
-                  type: 'debit',
-                  description: `Pengembalian Admin Fee (Trip #${tripId} Dibatalkan Mitra) #${order.id}`,
-                },
-              });
-            }
-          }
         }
 
-        // d. Update status Order ke cancelled_by_mitra & escrowStatus refunded
-        await tx.order.update({
-          where: { id: order.id },
-          data: {
-            status: OrderStatus.cancelled_by_mitra,
-            escrowStatus: 'refunded',
-          },
+        // d. Release voucher redemption
+        await tx.voucherRedemption.updateMany({
+          where: { orderId: order.id },
+          data: { status: 'released' },
         });
 
         // e. Berikan poin kompensasi ke penumpang jika > 0
@@ -717,7 +1147,7 @@ export class TripsService {
           tripId,
           posId: trip.originPointId,
           operatorId: mitraId,
-          reason: `[${cancelCategory}] ${dto.reason} (Affected Orders: ${activeOrders.length}, Total Refund: Rp ${totalRefundAmount})`,
+          reason: `[${cancelCategory}] ${dto.reason} (Affected Orders: ${updatedTrip.orders.length}, Total Refund: Rp ${totalRefundAmount})`,
           evidenceUrl: dto.evidenceUrl,
         },
       });

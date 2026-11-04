@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -28,11 +29,17 @@ import { UploadController } from './upload.controller';
 import { MerchandiseModule } from './modules/merchandises/merchandise.module';
 import { BannersModule } from './modules/banners/banners.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { VouchersModule } from './modules/vouchers/vouchers.module';
+import { SocialLinksModule } from './modules/social-links/social-links.module';
+import { EmergencyModule } from './modules/emergency/emergency.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { DisbursementBanksModule } from './modules/disbursement-banks/disbursement-banks.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -59,6 +66,11 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     MerchandiseModule,
     BannersModule,
     NotificationsModule,
+    VouchersModule,
+    SocialLinksModule,
+    EmergencyModule,
+    ReportsModule,
+    DisbursementBanksModule,
   ],
   controllers: [AppController, UploadController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

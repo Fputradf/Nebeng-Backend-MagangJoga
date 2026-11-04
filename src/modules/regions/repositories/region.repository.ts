@@ -30,7 +30,9 @@ export class RegionRepository {
         longitude: data.longitude ?? null,
         radiusKm: data.radiusKm ?? 20.0,
         boundaryPolygon: data.boundaryPolygon
-          ? JSON.stringify(data.boundaryPolygon)
+          ? typeof data.boundaryPolygon === 'string'
+            ? data.boundaryPolygon
+            : JSON.stringify(data.boundaryPolygon)
           : null,
       },
       include: {
@@ -141,7 +143,9 @@ export class RegionRepository {
         ...(data.radiusKm !== undefined && { radiusKm: data.radiusKm }),
         ...(data.boundaryPolygon !== undefined && {
           boundaryPolygon: data.boundaryPolygon
-            ? JSON.stringify(data.boundaryPolygon)
+            ? typeof data.boundaryPolygon === 'string'
+              ? data.boundaryPolygon
+              : JSON.stringify(data.boundaryPolygon)
             : null,
         }),
       },

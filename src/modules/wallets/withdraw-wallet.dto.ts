@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Length, Min } from 'class-validator';
 
 export class WithdrawWalletDto {
   @ApiProperty({
@@ -10,4 +10,13 @@ export class WithdrawWalletDto {
   @IsNotEmpty()
   @Min(10000, { message: 'Minimal penarikan saldo adalah Rp 10.000' })
   amount!: number;
+
+  @ApiPropertyOptional({
+    example: '123456',
+    description: 'PIN transaksi keamanan 6 digit',
+  })
+  @IsOptional()
+  @IsString()
+  @Length(6, 6, { message: 'PIN transaksi harus 6 digit angka' })
+  pin?: string;
 }

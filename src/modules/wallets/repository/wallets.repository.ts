@@ -171,4 +171,37 @@ export class WalletsRepository {
       return { wallet, transaction };
     });
   }
+
+  async processTopUp(
+    walletId: bigint,
+    amount: number,
+    description: string,
+  ) {
+    return this.prisma.$transaction(async (tx) => {
+      const wallet = await tx.wallet.update({
+        where: { id: walletId },
+        data: {
+          balance: { increment: amount },
+        },
+      });
+
+      const transaction = await tx.walletTransaction.create({
+        data: {
+          walletId,
+          amount,
+          type: TransactionType.credit,
+          description,
+        },
+      });
+
+      const updatedWallet = await tx.wallet.findUnique({
+        where: { id: walletId },
+        include: {
+          transactions: { orderBy: { createdAt: 'desc' }, take: 20 },
+        },
+      });
+
+      return { wallet: updatedWallet, transaction };
+    });
+  }
 }

@@ -34,6 +34,15 @@ export class UserMapper {
     return {
       id: user.id ? user.id.toString() : '',
       regionId: user.regionId ? user.regionId.toString() : null,
+      regionName: user.region?.name ?? null,
+      regionCode: user.region?.code ?? null,
+      region: user.region
+        ? {
+            id: user.region.id.toString(),
+            name: user.region.name,
+            code: user.region.code,
+          }
+        : null,
       name: user.name ?? '',
       email: user.email ?? '',
       phone: user.phone ?? '',

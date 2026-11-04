@@ -4,6 +4,8 @@ import { TrackingGateway } from '../tracking/tracking.gateway';
 import { CheckpointsRepository } from './repository/checkpoints.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BadRequestException } from '@nestjs/common';
+import { NotificationHelperService } from '../notifications/notification-helper.service';
+import { SanctionService } from '../admin/sanction.service';
 
 describe('CheckpointsService (scanCheckpoint)', () => {
   let service: CheckpointsService;
@@ -13,6 +15,7 @@ describe('CheckpointsService (scanCheckpoint)', () => {
 
   const mockTrip = {
     id: '1',
+    mitraId: '2',
     originPointId: '1',
     destinationPointId: '2',
     qrCodeTrip: 'TRIP-ABCD',
@@ -74,6 +77,11 @@ describe('CheckpointsService (scanCheckpoint)', () => {
     trackingGateway = {
       emitCheckpointScanned: jest.fn(),
     };
+    const mockNotificationHelper = {
+      notifyCheckpointScanned: jest.fn(),
+      notifyEscrowReleased: jest.fn(),
+      notifyTripArrivedAtDestination: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -81,6 +89,8 @@ describe('CheckpointsService (scanCheckpoint)', () => {
         { provide: CheckpointsRepository, useValue: checkpointsRepository },
         { provide: TrackingGateway, useValue: trackingGateway },
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: NotificationHelperService, useValue: mockNotificationHelper },
+        { provide: SanctionService, useValue: { applySanction: jest.fn() } },
       ],
     }).compile();
 
@@ -146,35 +156,37 @@ describe('CheckpointsService (scanCheckpoint)', () => {
     );
   });
 
-  it('throws error when destination check-in OTP claim is wrong', async () => {
-    checkpointsRepository.findTripByQr.mockResolvedValue(mockTrip);
-    checkpointsRepository.findOrderByQr.mockResolvedValue(mockParcelOrder);
+  it('allows destination check-in for parcel without requiring OTP', async () => {
+    checkpointsRepository.findTripByQr.mockResolvedValue({
+      ...mockTrip,
+      status: 'in_transit',
+    });
+    checkpointsRepository.findOrderByQr.mockResolvedValue({
+      ...mockParcelOrder,
+      customerId: '10',
+      status: 'in_transit',
+    });
     mockPrisma.pickupPoint.findFirst.mockResolvedValue({ id: '2' });
+    mockPrisma.pricingSetting.findFirst.mockResolvedValue({
+      platformFeePercentage: 10,
+    });
+    checkpointsRepository.processCheckinDestinationAndReleaseEscrow.mockResolvedValue({
+      id: '1',
+      order: { id: '100', qrCodeTicket: 'TKT-XYZ', status: 'completed', escrowStatus: 'released' },
+    });
 
-    await expect(
-      service.scanCheckpoint(
-        { id: '1' },
-        {
-          scanType: 'checkin_destination',
-          qrCodeTrip: 'TRIP-ABCD',
-          qrCodeTicket: 'TKT-XYZ',
-          posId: '2',
-          otpClaim: '123456',
-        },
-      ),
-    ).rejects.toThrow(BadRequestException);
-    await expect(
-      service.scanCheckpoint(
-        { id: '1' },
-        {
-          scanType: 'checkin_destination',
-          qrCodeTrip: 'TRIP-ABCD',
-          qrCodeTicket: 'TKT-XYZ',
-          posId: '2',
-          otpClaim: '123456',
-        },
-      ),
-    ).rejects.toThrow('Kode OTP Klaim yang dimasukkan salah/tidak cocok.');
+    const result = await service.scanCheckpoint(
+      { id: '1' },
+      {
+        scanType: 'checkin_destination',
+        qrCodeTrip: 'TRIP-ABCD',
+        qrCodeTicket: 'TKT-XYZ',
+        posId: '2',
+      },
+    );
+
+    expect(result).toBeDefined();
+    expect(result.message).toContain('Check-in Pos Tujuan');
   });
 
   it('throws error when destination check-in is performed on an order without held escrow', async () => {

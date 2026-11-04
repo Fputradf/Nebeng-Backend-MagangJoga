@@ -74,4 +74,31 @@ export class CreateTripDto {
   @IsEnum(ServiceType)
   @IsNotEmpty()
   serviceType!: ServiceType;
+
+  @ApiProperty({
+    example: '{"type":"LineString","coordinates":[]}',
+    description: 'GeoJSON polyline rute jalan OSRM (Opsional)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  mapsPolyline?: string;
+
+  @ApiProperty({
+    example: 24.5,
+    description: 'Jarak rute perjalanan dalam kilometer (Opsional)',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  distanceKm?: number;
+
+  @ApiProperty({
+    example: 45,
+    description: 'Estimasi durasi waktu tempuh perjalanan dalam menit (Opsional)',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  estimatedDurationMinutes?: number;
 }

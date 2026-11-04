@@ -90,6 +90,11 @@ export type Trip = Prisma.TripModel
  */
 export type Order = Prisma.OrderModel
 /**
+ * Model OrderPassenger
+ * 
+ */
+export type OrderPassenger = Prisma.OrderPassengerModel
+/**
  * Model ItemOrder
  * 
  */
@@ -214,3 +219,43 @@ export type MitraSanction = Prisma.MitraSanctionModel
  * 
  */
 export type MitraSanctionAppeal = Prisma.MitraSanctionAppealModel
+/**
+ * Model Voucher
+ * 
+ */
+export type Voucher = Prisma.VoucherModel
+/**
+ * Model UserVoucher
+ * 
+ */
+export type UserVoucher = Prisma.UserVoucherModel
+/**
+ * Model VoucherRedemption
+ * 
+ */
+export type VoucherRedemption = Prisma.VoucherRedemptionModel
+/**
+ * Model SocialLink
+ * 
+ */
+export type SocialLink = Prisma.SocialLinkModel
+/**
+ * Model SosAlert
+ * 
+ */
+export type SosAlert = Prisma.SosAlertModel
+/**
+ * Model UserReport
+ * 
+ */
+export type UserReport = Prisma.UserReportModel
+/**
+ * Model DisbursementBank
+ * 
+ */
+export type DisbursementBank = Prisma.DisbursementBankModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel

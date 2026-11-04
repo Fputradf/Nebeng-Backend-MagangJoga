@@ -8,4 +8,8 @@ export class ManifestQueryDto {
   @IsOptional()
   @IsDateString()
   date?: string;
+
+  @IsOptional()
+  @IsString()
+  scope?: string;
 }

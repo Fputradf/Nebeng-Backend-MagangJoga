@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsEnum,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { Role } from '../../../generated/prisma/enums';
 
 export class CreateBannerDto {
@@ -15,14 +16,22 @@ export class CreateBannerDto {
   imageUrl: string;
 
   @IsOptional()
-  @IsUrl({ require_tld: false })
-  linkUrl?: string;
+  @Transform(({ value }) =>
+    typeof value === 'string' && value.trim() !== '' ? value.trim() : null,
+  )
+  @IsString()
+  linkUrl?: string | null;
 
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;
 
   @IsOptional()
+  @Transform(({ value }) =>
+    typeof value === 'string' && value.trim() !== ''
+      ? (value.trim().toLowerCase() as Role)
+      : null,
+  )
   @IsEnum(Role)
   targetRole?: Role | null;
 }

@@ -1,0 +1,15 @@
+-- CreateTable
+CREATE TABLE `social_links` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `platform` VARCHAR(100) NOT NULL,
+    `url` LONGTEXT NOT NULL,
+    `logo_url` LONGTEXT NULL,
+    `icon_type` VARCHAR(50) NOT NULL DEFAULT 'preset',
+    `order_index` INTEGER NOT NULL DEFAULT 0,
+    `is_active` BOOLEAN NOT NULL DEFAULT true,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+

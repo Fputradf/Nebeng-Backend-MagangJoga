@@ -12,6 +12,9 @@ export class OrderMapper {
       seatsBooked: Number(order.seatsBooked),
       totalItemsCount: Number(order.totalItemsCount),
       totalWeightKg: Number(order.totalWeightKg),
+      subtotal: order.subtotal ? Number(order.subtotal) : Number(order.totalPrice),
+      discountAmount: order.discountAmount ? Number(order.discountAmount) : 0,
+      voucherCode: order.voucherCode ?? null,
       totalPrice: Number(order.totalPrice),
       adminFeePercentage: order.adminFeePercentage
         ? Number(order.adminFeePercentage)
@@ -32,6 +35,15 @@ export class OrderMapper {
             email: order.customer.email,
           }
         : undefined,
+      passengers: order.passengers
+        ? order.passengers.map((p: any) => ({
+            id: p.id ? p.id.toString() : undefined,
+            name: p.name,
+            phone: p.phone,
+            seatNumber: p.seatNumber ? Number(p.seatNumber) : undefined,
+            isContact: Boolean(p.isContact),
+          }))
+        : [],
       itemOrders: order.itemOrders
         ? order.itemOrders.map((item: any) => ({
             id: item.id.toString(),
@@ -48,16 +60,33 @@ export class OrderMapper {
             recipientPhone: item.recipientPhone,
           }))
         : [],
-      checkpointsLogs: order.checkpointsLogs
-        ? order.checkpointsLogs.map((log: any) => ({
-            id: log.id.toString(),
-            scanType: log.scanType,
-            posName: log.pos?.name || 'Pos Checkpoint',
-            posAddress: log.pos?.address || '',
-            operatorName: log.scannedByUser?.name || 'Petugas Pos',
-            createdAt: log.createdAt,
-          }))
-        : [],
+      checkpointsLogs: [
+        ...(order.trip?.checkpointsLogs
+          ? order.trip.checkpointsLogs.map((log: any) => ({
+              id: log.id.toString(),
+              scanType: log.scanType,
+              posName: log.pos?.name || 'Pos Checkpoint',
+              posAddress: log.pos?.address || '',
+              operatorName: log.scannedByUser?.name || 'Petugas Pos',
+              createdAt: log.createdAt,
+              isTripLog: true,
+            }))
+          : []),
+        ...(order.checkpointsLogs
+          ? order.checkpointsLogs.map((log: any) => ({
+              id: log.id.toString(),
+              scanType: log.scanType,
+              posName: log.pos?.name || 'Pos Checkpoint',
+              posAddress: log.pos?.address || '',
+              operatorName: log.scannedByUser?.name || 'Petugas Pos',
+              createdAt: log.createdAt,
+              isTripLog: false,
+            }))
+          : []),
+      ].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      ),
     };
   }
 

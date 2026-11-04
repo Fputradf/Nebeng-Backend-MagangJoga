@@ -19,6 +19,8 @@ export class AdminMapper {
         regionCode: req.code,
         pickupPointsCount: req._count?.pickupPoints || 0,
         activeUserCount: req._count?.users || 0,
+        revenue: Number(req.revenue || 0),
+        totalRevenue: Number(req.totalRevenue || req.revenue || 0),
       })),
     };
   }

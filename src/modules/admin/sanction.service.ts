@@ -11,6 +11,53 @@ import {
   AppealStatus,
   UserStatus,
 } from '../../generated/prisma/enums';
+import { UpdateSanctionSettingsDto } from './dto/update-sanction-settings.dto';
+
+export const DEFAULT_SANCTION_SETTINGS = {
+  lateToleranceMinutes: 15,
+  earlyCancelHours: 4,
+  baseScore: 100,
+  warningThreshold: 80,
+  suspensionThreshold: 50,
+  policies: {
+    mitraCancelEarly: {
+      label: 'Pembatalan Dini (Mitra)',
+      description: 'Mitra membatalkan perjalanan lebih dari batas waktu awal sebelum berangkat',
+      tier1ScoreDeduction: 5,
+      tier1SuspensionDays: 0,
+      tier2ScoreDeduction: 10,
+      tier2SuspensionDays: 0,
+      autoSuspendOnTier2: false,
+    },
+    mitraCancelLate: {
+      label: 'Pembatalan Mendadak (Mitra)',
+      description: 'Mitra membatalkan perjalanan mendekati waktu keberangkatan',
+      tier1ScoreDeduction: 15,
+      tier1SuspensionDays: 0,
+      tier2ScoreDeduction: 25,
+      tier2SuspensionDays: 3,
+      autoSuspendOnTier2: true,
+    },
+    mitraNoShow: {
+      label: 'Mitra Tidak Hadir (No-Show)',
+      description: 'Mitra tidak hadir di titik jemput pada waktu keberangkatan',
+      tier1ScoreDeduction: 30,
+      tier1SuspensionDays: 1,
+      tier2ScoreDeduction: 40,
+      tier2SuspensionDays: 7,
+      autoSuspendOnTier2: true,
+    },
+    userReportViolation: {
+      label: 'Laporan Pelanggaran Pengguna',
+      description: 'Pelanggaran etika, pelecehan, atau pelanggaran keselamatan yang terverifikasi',
+      tier1ScoreDeduction: 40,
+      tier1SuspensionDays: 3,
+      tier2ScoreDeduction: 60,
+      tier2SuspensionDays: 14,
+      autoSuspendOnTier2: true,
+    },
+  },
+};
 
 export interface SanctionPolicy {
   scoreDeduction: number;
@@ -54,7 +101,7 @@ export class SanctionService {
         return { scoreDeduction: 15, suspensionDays: 0, triggerSuspend: false };
 
       case SanctionViolationType.MITRA_NO_SHOW:
-        return { scoreDeduction: 30, suspensionDays: 7, triggerSuspend: true };
+        return { scoreDeduction: 30, suspensionDays: 1, triggerSuspend: true };
 
       default:
         return { scoreDeduction: 5, suspensionDays: 0, triggerSuspend: false };
@@ -342,5 +389,142 @@ export class SanctionService {
         },
       };
     });
+  }
+
+  /**
+   * Mengambil semua permohonan banding sanksi mitra (Superadmin & Regional Admin)
+   */
+  async getAllAppeals(status?: AppealStatus) {
+    const where: any = {};
+    if (status) {
+      where.status = status;
+    }
+
+    const appeals = await (this.prisma as any).mitraSanctionAppeal.findMany({
+      where,
+      include: {
+        mitra: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
+        sanction: {
+          include: {
+            trip: {
+              select: {
+                id: true,
+                originPoint: { select: { name: true } },
+                destinationPoint: { select: { name: true } },
+                departureDate: true,
+                departureTime: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return appeals.map((a: any) => ({
+      id: a.id.toString(),
+      sanctionId: a.sanctionId.toString(),
+      mitraId: a.mitraId.toString(),
+      mitraName: a.mitra?.name || 'Mitra',
+      mitraEmail: a.mitra?.email || '-',
+      mitraPhone: a.mitra?.phone || '-',
+      violationType: a.sanction?.violationType || 'MITRA_CANCEL_LATE',
+      scoreDeduction: a.sanction?.scoreDeduction || 0,
+      tier: a.sanction?.tier || 1,
+      isSuspended: a.sanction?.isSuspended || false,
+      suspendedUntil: a.sanction?.suspendedUntil || null,
+      sanctionStatus: a.sanction?.status,
+      reason: a.reason,
+      evidenceUrl: a.evidenceUrl || '',
+      status: a.status,
+      reviewedBy: a.reviewedBy ? a.reviewedBy.toString() : null,
+      reviewNotes: a.reviewNotes || '',
+      createdAt: a.createdAt,
+      tripDetails: a.sanction?.trip
+        ? {
+            id: a.sanction.trip.id.toString(),
+            from: a.sanction.trip.originPoint?.name,
+            to: a.sanction.trip.destinationPoint?.name,
+            date: a.sanction.trip.departureDate,
+            time: a.sanction.trip.departureTime,
+          }
+        : null,
+    }));
+  }
+
+  /**
+   * Mendapatkan seluruh konfigurasi kebijakan sanksi & batas toleransi telat
+   */
+  async getSanctionSettings() {
+    try {
+      const row = await this.prisma.systemSetting.findUnique({
+        where: { key: 'sanction_settings' },
+      });
+      if (row?.value) {
+        return JSON.parse(row.value);
+      }
+    } catch {
+      // fallback
+    }
+    return DEFAULT_SANCTION_SETTINGS;
+  }
+
+  /**
+   * Mendapatkan batas toleransi keterlambatan dalam menit (default 15)
+   */
+  async getLateToleranceMinutes(): Promise<number> {
+    try {
+      const settings = await this.getSanctionSettings();
+      const val = Number(settings?.lateToleranceMinutes);
+      return !isNaN(val) && val >= 5 ? val : 15;
+    } catch {
+      return 15;
+    }
+  }
+
+  /**
+   * Memperbarui konfigurasi kebijakan sanksi & batas toleransi telat
+   */
+  async updateSanctionSettings(dto: UpdateSanctionSettingsDto) {
+    const current = await this.getSanctionSettings();
+    const updated = {
+      ...current,
+      ...dto,
+      policies: {
+        ...(current.policies || {}),
+        ...(dto.policies || {}),
+      },
+    };
+
+    if (dto.lateToleranceMinutes !== undefined) {
+      const val = Number(dto.lateToleranceMinutes);
+      if (isNaN(val) || val < 5 || val > 120) {
+        throw new BadRequestException(
+          'Toleransi keterlambatan harus berupa angka antara 5 dan 120 menit',
+        );
+      }
+      updated.lateToleranceMinutes = val;
+    }
+
+    await this.prisma.systemSetting.upsert({
+      where: { key: 'sanction_settings' },
+      create: {
+        key: 'sanction_settings',
+        value: JSON.stringify(updated),
+        description: 'Konfigurasi kebijakan sanksi dan batas toleransi keterlambatan',
+      },
+      update: {
+        value: JSON.stringify(updated),
+      },
+    });
+
+    return updated;
   }
 }

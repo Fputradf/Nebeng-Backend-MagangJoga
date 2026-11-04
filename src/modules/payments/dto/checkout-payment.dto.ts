@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsIn, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CheckoutPaymentDto {
   @ApiProperty({ example: '1', description: 'ID order yang akan dibayar' })
@@ -7,9 +7,16 @@ export class CheckoutPaymentDto {
   @IsNotEmpty()
   orderId!: string;
 
-  @ApiProperty({ example: 'BANK_TRANSFER / QRIS / MANUAL_SIMULATION' })
+  @ApiProperty({
+    example: 'WALLET',
+    description: 'Metode pembayaran yang diizinkan: BANK_TRANSFER, QRIS, WALLET',
+    enum: ['BANK_TRANSFER', 'QRIS', 'WALLET'],
+  })
   @IsString()
   @IsNotEmpty()
+  @IsIn(['BANK_TRANSFER', 'QRIS', 'WALLET'], {
+    message: 'Metode pembayaran tidak valid.',
+  })
   paymentGateway!: string;
 
   @ApiProperty({

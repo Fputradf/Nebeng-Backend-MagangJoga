@@ -6,9 +6,13 @@ export class CreatePickupPointDto {
   @IsNotEmpty()
   regionId!: string;
 
-  @ApiProperty({ example: '1', description: 'ID City' })
-  @IsNotEmpty()
-  cityId!: string;
+  @ApiPropertyOptional({
+    example: '1',
+    description: 'ID City (Opsional - otomatis ditentukan sesuai Region jika dikosongkan)',
+  })
+  @IsOptional()
+  @IsString()
+  cityId?: string;
 
   @ApiPropertyOptional({ example: '2', description: 'ID User Operator Pos' })
   @IsOptional()

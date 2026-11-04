@@ -54,12 +54,23 @@ export class VerificationService {
       }
     }
 
+    const cleanKtpNumber = dto.ktpNumber?.trim();
+    if (cleanKtpNumber) {
+      const existingProfile =
+        await this.verificationRepo.findProfileByKtpNumber(cleanKtpNumber);
+      if (existingProfile && existingProfile.userId !== userBigIntId) {
+        throw new ConflictException(
+          'Nomor NIK / KTP sudah terdaftar oleh pengguna lain.',
+        );
+      }
+    }
+
     const verification = await this.verificationRepo.createVerification({
       userId: userBigIntId,
       type: dto.type,
       files: dto.files,
       profileData: {
-        ktpNumber: dto.ktpNumber,
+        ktpNumber: cleanKtpNumber,
         fullNameKtp: dto.fullNameKtp,
         addressKtp: dto.addressKtp,
         faceImageUrl: dto.faceImageUrl,
@@ -67,6 +78,43 @@ export class VerificationService {
     });
 
     return VerificationMapper.toResponse(verification);
+  }
+
+  async checkNikAvailability(nik: string, currentUserId?: string) {
+    const cleanNik = nik?.trim();
+    if (!cleanNik || cleanNik.length !== 16) {
+      throw new BadRequestException(
+        'Format NIK tidak valid. NIK harus terdiri dari 16 digit.',
+      );
+    }
+
+    const existingProfile =
+      await this.verificationRepo.findProfileByKtpNumber(cleanNik);
+
+    if (!existingProfile) {
+      return {
+        available: true,
+        isAvailable: true,
+        message: 'Nomor NIK / KTP tersedia.',
+      };
+    }
+
+    if (
+      currentUserId &&
+      existingProfile.userId === this.safeParseBigInt(currentUserId)
+    ) {
+      return {
+        available: true,
+        isAvailable: true,
+        message: 'Nomor NIK / KTP milik pengguna saat ini.',
+      };
+    }
+
+    return {
+      available: false,
+      isAvailable: false,
+      message: 'Nomor NIK / KTP sudah terdaftar oleh pengguna lain.',
+    };
   }
 
   async getAllVerifications(status?: VerificationStatus, regionId?: string) {

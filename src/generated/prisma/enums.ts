@@ -150,7 +150,8 @@ export const TransactionType = {
   credit: 'credit',
   debit: 'debit',
   escrow_hold: 'escrow_hold',
-  escrow_release: 'escrow_release'
+  escrow_release: 'escrow_release',
+  payment: 'payment'
 } as const
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
@@ -162,6 +163,31 @@ export const RewardType = {
 } as const
 
 export type RewardType = (typeof RewardType)[keyof typeof RewardType]
+
+
+export const DiscountType = {
+  percentage: 'percentage',
+  fixed_amount: 'fixed_amount'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const VoucherClaimType = {
+  code_redemption: 'code_redemption',
+  direct_platform: 'direct_platform'
+} as const
+
+export type VoucherClaimType = (typeof VoucherClaimType)[keyof typeof VoucherClaimType]
+
+
+export const VoucherRedemptionStatus = {
+  reserved: 'reserved',
+  used: 'used',
+  released: 'released'
+} as const
+
+export type VoucherRedemptionStatus = (typeof VoucherRedemptionStatus)[keyof typeof VoucherRedemptionStatus]
 
 
 export const RedemptionStatus = {
@@ -188,7 +214,8 @@ export type NoShowAuditType = (typeof NoShowAuditType)[keyof typeof NoShowAuditT
 export const SanctionViolationType = {
   MITRA_CANCEL_EARLY: 'MITRA_CANCEL_EARLY',
   MITRA_CANCEL_LATE: 'MITRA_CANCEL_LATE',
-  MITRA_NO_SHOW: 'MITRA_NO_SHOW'
+  MITRA_NO_SHOW: 'MITRA_NO_SHOW',
+  USER_REPORT_VIOLATION: 'USER_REPORT_VIOLATION'
 } as const
 
 export type SanctionViolationType = (typeof SanctionViolationType)[keyof typeof SanctionViolationType]
@@ -213,6 +240,40 @@ export const AppealStatus = {
 export type AppealStatus = (typeof AppealStatus)[keyof typeof AppealStatus]
 
 
+export const ReportCategory = {
+  SAFETY_AND_HARASSMENT: 'SAFETY_AND_HARASSMENT',
+  FRAUD_OR_EXTORTION: 'FRAUD_OR_EXTORTION',
+  FACILITY_AND_SERVICE: 'FACILITY_AND_SERVICE',
+  CARGO_VIOLATION: 'CARGO_VIOLATION',
+  DISPUTE_NO_SHOW: 'DISPUTE_NO_SHOW',
+  VEHICLE_CONDITION: 'VEHICLE_CONDITION',
+  OTHER: 'OTHER'
+} as const
+
+export type ReportCategory = (typeof ReportCategory)[keyof typeof ReportCategory]
+
+
+export const ReportSeverity = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type ReportSeverity = (typeof ReportSeverity)[keyof typeof ReportSeverity]
+
+
+export const ReportStatus = {
+  PENDING: 'PENDING',
+  INVESTIGATING: 'INVESTIGATING',
+  RESOLVED_VALID: 'RESOLVED_VALID',
+  RESOLVED_INVALID: 'RESOLVED_INVALID',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type ReportStatus = (typeof ReportStatus)[keyof typeof ReportStatus]
+
+
 export const NotificationType = {
   order_created: 'order_created',
   order_paid: 'order_paid',
@@ -230,6 +291,9 @@ export const NotificationType = {
   verification_approved: 'verification_approved',
   verification_rejected: 'verification_rejected',
   trip_booking_request: 'trip_booking_request',
+  emergency_sos: 'emergency_sos',
+  user_report_created: 'user_report_created',
+  user_report_resolved: 'user_report_resolved',
   generic: 'generic'
 } as const
 
@@ -243,3 +307,13 @@ export const NotificationStatus = {
 } as const
 
 export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus]
+
+
+export const SosStatus = {
+  ACTIVE: 'ACTIVE',
+  INVESTIGATING: 'INVESTIGATING',
+  RESOLVED: 'RESOLVED',
+  FALSE_ALARM: 'FALSE_ALARM'
+} as const
+
+export type SosStatus = (typeof SosStatus)[keyof typeof SosStatus]

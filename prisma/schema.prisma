@@ -118,11 +118,28 @@ enum TransactionType {
   debit
   escrow_hold
   escrow_release
+  payment
 }
 
 enum RewardType {
   earn
   redeem
+}
+
+enum DiscountType {
+  percentage
+  fixed_amount
+}
+
+enum VoucherClaimType {
+  code_redemption
+  direct_platform
+}
+
+enum VoucherRedemptionStatus {
+  reserved
+  used
+  released
 }
 
 enum RedemptionStatus {
@@ -144,6 +161,7 @@ enum SanctionViolationType {
   MITRA_CANCEL_EARLY
   MITRA_CANCEL_LATE
   MITRA_NO_SHOW
+  USER_REPORT_VIOLATION
 }
 
 enum SanctionStatus {
@@ -157,6 +175,31 @@ enum AppealStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum ReportCategory {
+  SAFETY_AND_HARASSMENT
+  FRAUD_OR_EXTORTION
+  FACILITY_AND_SERVICE
+  CARGO_VIOLATION
+  DISPUTE_NO_SHOW
+  VEHICLE_CONDITION
+  OTHER
+}
+
+enum ReportSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ReportStatus {
+  PENDING
+  INVESTIGATING
+  RESOLVED_VALID
+  RESOLVED_INVALID
+  DISMISSED
 }
 
 // ------------------------------------------------------
@@ -178,6 +221,7 @@ model Region {
 
   users        User[]
   pickupPoints PickupPoint[]
+  sosAlerts    SosAlert[]
 
   @@map("regions")
 }
@@ -214,7 +258,7 @@ model User {
   passwordResetToken          String?            @map("password_reset_token")
   passwordResetTokenExpiresAt DateTime?          @map("password_reset_token_expires_at")
   avatar                      String?
-  rewardPoints                Int                @default(0) @map("reward_points")
+  rewardPoints                Int                @default(100) @map("reward_points")
   createdAt                   DateTime           @default(now()) @map("created_at")
   updatedAt                   DateTime           @updatedAt @map("updated_at")
 
@@ -245,6 +289,13 @@ model User {
   cancelledTrips          Trip[]                  @relation("CancelledBy")
   mitraSanctions          MitraSanction[]
   mitraSanctionAppeals    MitraSanctionAppeal[]
+  voucherRedemptions      VoucherRedemption[]
+  userVouchers            UserVoucher[]
+  customerSosAlerts       SosAlert[]              @relation("CustomerSosAlerts")
+  resolvedSosAlerts       SosAlert[]              @relation("ResolvedSosAlerts")
+  reportsCreated          UserReport[]            @relation("ReportsCreated")
+  reportsTargeted         UserReport[]            @relation("ReportsTargeted")
+  reportsHandled          UserReport[]            @relation("ReportsHandled")
 
   @@index([role])
   @@index([status])
@@ -255,7 +306,7 @@ model UserProfile {
   id                BigInt   @id @default(autoincrement())
   userId            BigInt   @unique @map("user_id")
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ktpNumber         String?  @map("ktp_number")
+  ktpNumber         String?  @unique @map("ktp_number")
   fullNameKtp       String?  @map("full_name_ktp")
   addressKtp        String?  @map("address_ktp") @db.Text
   faceImageUrl      String?  @map("face_image_url")
@@ -324,6 +375,7 @@ model PickupPoint {
   checkpointsLogs        CheckpointsLog[]
   merchandiseRedemptions MerchandiseRedemption[]
   noShowAuditLogs        NoShowAuditLog[]        @relation("NoShowAuditLogs")
+  userReports            UserReport[]
 
   @@map("pickup_points")
 }
@@ -368,8 +420,10 @@ model Trip {
   remainingWeightCapacityKg Decimal     @map("remaining_weight_capacity_kg") @db.Decimal(8, 2)
   qrCodeTrip                String      @unique @map("qr_code_trip")
   status                    TripStatus  @default(scheduled)
-  serviceType               ServiceType @default(mobil) @map("service_type")
+  serviceType               ServiceType @map("service_type")
   mapsPolyline              String?     @map("maps_polyline") @db.Text
+  distanceKm                Decimal?    @map("distance_km") @db.Decimal(8, 2)
+  estimatedDurationMinutes  Int?        @map("estimated_duration_minutes")
   createdAt                 DateTime    @default(now()) @map("created_at")
   updatedAt                 DateTime    @updatedAt @map("updated_at")
 
@@ -395,6 +449,8 @@ model Trip {
   reviews         TripReview[]
   noShowAuditLogs NoShowAuditLog[]
   mitraSanctions  MitraSanction[]
+  sosAlerts       SosAlert[]
+  userReports     UserReport[]
 
   @@index([departureDate, status])
   @@index([originPointId, destinationPointId])
@@ -411,8 +467,11 @@ model Order {
   seatsBooked        Int          @default(0) @map("seats_booked")
   totalItemsCount    Int          @default(0) @map("total_items_count")
   totalWeightKg      Decimal      @default(0) @map("total_weight_kg") @db.Decimal(8, 2)
+  subtotal           Decimal      @default(0.00) @map("subtotal") @db.Decimal(10, 2)
+  discountAmount     Decimal      @default(0.00) @map("discount_amount") @db.Decimal(10, 2)
   totalPrice         Decimal      @map("total_price") @db.Decimal(10, 2)
   adminFeePercentage Decimal      @default(10.00) @map("admin_fee_percentage") @db.Decimal(5, 2)
+  voucherCode        String?      @map("voucher_code") @db.VarChar(50)
   qrCodeTicket       String       @unique @map("qr_code_ticket")
   otpClaim           String?      @map("otp_claim")
   readinessStatus    String?      @map("readiness_status")
@@ -429,15 +488,33 @@ model Order {
   disputeDeadline    DateTime? @map("dispute_deadline")
   isDisputed         Boolean   @default(false) @map("is_disputed")
 
+  passengers         OrderPassenger[]
   itemOrders         ItemOrder[]
   checkpointsLogs    CheckpointsLog[]
   qrSessions         OrderQrSession[]
   payments           Payment[]
   walletTransactions WalletTransaction[]
   noShowAuditLogs    NoShowAuditLog[]
+  voucherRedemption  VoucherRedemption?
+  sosAlerts          SosAlert[]
+  userReports        UserReport[]
 
   @@index([status, escrowStatus])
   @@map("orders")
+}
+
+model OrderPassenger {
+  id         BigInt   @id @default(autoincrement())
+  orderId    BigInt   @map("order_id")
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  seatNumber Int?     @map("seat_number")
+  name       String   @map("name")
+  phone      String   @map("phone")
+  isContact  Boolean  @default(false) @map("is_contact")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("order_passengers")
 }
 
 model ItemOrder {
@@ -468,8 +545,8 @@ model CheckpointsLog {
   id              BigInt      @id @default(autoincrement())
   tripId          BigInt      @map("trip_id")
   trip            Trip        @relation(fields: [tripId], references: [id])
-  orderId         BigInt      @map("order_id")
-  order           Order       @relation(fields: [orderId], references: [id])
+  orderId         BigInt?     @map("order_id")
+  order           Order?      @relation(fields: [orderId], references: [id], onDelete: SetNull)
   posId           BigInt      @map("pos_id")
   pos             PickupPoint @relation(fields: [posId], references: [id])
   scannedByUserId BigInt?     @map("scanned_by_user_id")
@@ -581,13 +658,15 @@ model OsmRouteCache {
 // ------------------------------------------------------
 
 model Payment {
-  id             BigInt        @id @default(autoincrement())
+  id              BigInt        @id @default(autoincrement())
   orderId        BigInt        @map("order_id")
   order          Order         @relation(fields: [orderId], references: [id])
   paymentGateway String        @map("payment_gateway")
   transactionId  String        @map("transaction_id")
   amount         Decimal       @db.Decimal(10, 2)
   status         PaymentStatus
+  refundRequiredAt DateTime?    @map("refund_required_at")
+  refundNote      String?       @map("refund_note") @db.VarChar(500)
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
 
@@ -781,6 +860,9 @@ enum NotificationType {
   verification_approved
   verification_rejected
   trip_booking_request
+  emergency_sos
+  user_report_created
+  user_report_resolved
   generic
 }
 
@@ -883,7 +965,8 @@ model MitraSanction {
   createdAt      DateTime              @default(now()) @map("created_at")
   updatedAt      DateTime              @updatedAt @map("updated_at")
 
-  appeals MitraSanctionAppeal[]
+  appeals     MitraSanctionAppeal[]
+  userReports UserReport[]
 
   @@index([mitraId, status])
   @@index([violationType, createdAt])
@@ -908,3 +991,197 @@ model MitraSanctionAppeal {
   @@index([mitraId, status])
   @@map("mitra_sanction_appeals")
 }
+
+// ------------------------------------------------------
+// 12. VOUCHERS & DISCOUNTS
+// ------------------------------------------------------
+
+model Voucher {
+  id                BigInt                  @id @default(autoincrement())
+  code              String                  @unique @db.VarChar(50)
+  title             String                  @db.VarChar(150)
+  description       String?                 @db.Text
+  claimType         VoucherClaimType        @default(direct_platform) @map("claim_type")
+  appliesTo         OrderType?              @map("applies_to")
+  discountType      DiscountType            @map("discount_type")
+  discountValue     Decimal                 @map("discount_value") @db.Decimal(10, 2)
+  maxDiscountAmount Decimal?                @map("max_discount_amount") @db.Decimal(10, 2)
+  minOrderAmount    Decimal                 @default(0.00) @map("min_order_amount") @db.Decimal(10, 2)
+  usageLimit        Int?                    @map("usage_limit")
+  usagePerUserLimit Int                     @default(1) @map("usage_per_user_limit")
+  validFrom         DateTime                @map("valid_from")
+  validUntil        DateTime                @map("valid_until")
+  isActive          Boolean                 @default(true) @map("is_active")
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime                @updatedAt @map("updated_at")
+
+  redemptions       VoucherRedemption[]
+  userVouchers      UserVoucher[]
+
+  @@map("vouchers")
+}
+
+model UserVoucher {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voucherId BigInt   @map("voucher_id")
+  voucher   Voucher  @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  claimedAt DateTime @default(now()) @map("claimed_at")
+
+  @@unique([userId, voucherId])
+  @@index([userId])
+  @@index([voucherId])
+  @@map("user_vouchers")
+}
+
+model VoucherRedemption {
+  id             BigInt                  @id @default(autoincrement())
+  voucherId      BigInt                  @map("voucher_id")
+  voucher        Voucher                 @relation(fields: [voucherId], references: [id])
+  userId         BigInt                  @map("user_id")
+  user           User                    @relation(fields: [userId], references: [id])
+  orderId        BigInt                  @unique @map("order_id")
+  order          Order                   @relation(fields: [orderId], references: [id])
+  discountAmount Decimal                 @map("discount_amount") @db.Decimal(10, 2)
+  status         VoucherRedemptionStatus
+  createdAt      DateTime                @default(now()) @map("created_at")
+  updatedAt      DateTime                @updatedAt @map("updated_at")
+
+  @@index([voucherId, status])
+  @@index([userId, voucherId, status])
+  @@map("voucher_redemptions")
+}
+
+// ------------------------------------------------------
+// 11. SOCIAL MEDIA LINKS
+// ------------------------------------------------------
+
+model SocialLink {
+  id         BigInt   @id @default(autoincrement())
+  platform   String   @db.VarChar(100)
+  url        String   @db.LongText
+  logoUrl    String?  @map("logo_url") @db.LongText
+  iconType   String   @default("preset") @map("icon_type") @db.VarChar(50)
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("social_links")
+}
+
+// ------------------------------------------------------
+// 12. EMERGENCY SOS ALERTS
+// ------------------------------------------------------
+
+enum SosStatus {
+  ACTIVE
+  INVESTIGATING
+  RESOLVED
+  FALSE_ALARM
+}
+
+model SosAlert {
+  id             BigInt     @id @default(autoincrement())
+  orderId        BigInt     @map("order_id")
+  order          Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  tripId         BigInt     @map("trip_id")
+  trip           Trip       @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  customerId     BigInt     @map("customer_id")
+  customer       User       @relation("CustomerSosAlerts", fields: [customerId], references: [id], onDelete: Cascade)
+  regionId       BigInt     @map("region_id")
+  region         Region     @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  latitude       Decimal    @db.Decimal(10, 8)
+  longitude      Decimal    @db.Decimal(11, 8)
+  category       String     @default("emergency")
+  notes          String?    @db.Text
+  status         SosStatus  @default(ACTIVE)
+  resolvedById   BigInt?    @map("resolved_by_id")
+  resolvedByUser User?      @relation("ResolvedSosAlerts", fields: [resolvedById], references: [id], onDelete: SetNull)
+  resolvedAt     DateTime?  @map("resolved_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  @@index([regionId, status])
+  @@index([createdAt])
+  @@map("sos_alerts")
+}
+
+// ------------------------------------------------------
+// 13. USER REPORTS (CUSTOMER, DRIVER & POS CHECKPOINT)
+// ------------------------------------------------------
+
+model UserReport {
+  id             BigInt         @id @default(autoincrement())
+  ticketNumber   String         @unique @map("ticket_number")
+  reporterId     BigInt         @map("reporter_id")
+  reporter       User           @relation("ReportsCreated", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUserId BigInt         @map("reported_user_id")
+  reportedUser   User           @relation("ReportsTargeted", fields: [reportedUserId], references: [id], onDelete: Cascade)
+  tripId         BigInt?        @map("trip_id")
+  trip           Trip?          @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  orderId        BigInt?        @map("order_id")
+  order          Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  pickupPointId  BigInt?        @map("pickup_point_id")
+  pickupPoint    PickupPoint?   @relation(fields: [pickupPointId], references: [id], onDelete: SetNull)
+  category       ReportCategory
+  severity       ReportSeverity @default(MEDIUM)
+  description    String         @db.Text
+  evidenceUrls   Json?          @map("evidence_urls")
+  status         ReportStatus   @default(PENDING)
+  actionNotes    String?        @map("action_notes") @db.Text
+  handledById    BigInt?        @map("handled_by_id")
+  handledBy      User?          @relation("ReportsHandled", fields: [handledById], references: [id], onDelete: SetNull)
+  sanctionId     BigInt?        @map("sanction_id")
+  sanction       MitraSanction? @relation(fields: [sanctionId], references: [id], onDelete: SetNull)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  @@index([reporterId, reportedUserId])
+  @@index([status, severity])
+  @@index([tripId])
+  @@index([orderId])
+  @@index([pickupPointId])
+  @@map("user_reports")
+}
+
+// ------------------------------------------------------
+// 14. DISBURSEMENT BANKS (KONFIGURASI BANK PENCAIRAN)
+// ------------------------------------------------------
+
+model DisbursementBank {
+  id                  BigInt   @id @default(autoincrement())
+  bankCode            String   @unique @map("bank_code") @db.VarChar(50)
+  bankName            String   @map("bank_name") @db.VarChar(100)
+  accountNumberSample String?  @map("account_number_sample") @db.VarChar(50)
+  logoUrl             String?  @map("logo_url") @db.LongText
+  orderIndex          Int      @default(0) @map("order_index")
+  isActive            Boolean  @default(true) @map("is_active")
+  notes               String?  @db.VarChar(255)
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([isActive, orderIndex])
+  @@map("disbursement_banks")
+}
+
+// ------------------------------------------------------
+// 15. SYSTEM SETTINGS (KONFIGURASI SISTEM GLOBAL)
+// ------------------------------------------------------
+
+model SystemSetting {
+  id          BigInt   @id @default(autoincrement())
+  key         String   @unique @db.VarChar(100)
+  value       String   @db.Text
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+
+
+
+
+

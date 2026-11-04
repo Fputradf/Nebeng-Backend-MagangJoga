@@ -58,7 +58,7 @@ export class UploadController {
       limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB
       fileFilter: (req, file, cb) => {
         if (
-          !['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'].includes(
+          !['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'].includes(
             file.mimetype,
           )
         ) {
@@ -77,6 +77,54 @@ export class UploadController {
     }
     return {
       filePath: `/uploads/verifications/${file.filename}`,
+      fileType: file.mimetype,
+    };
+  }
+
+  @Post('appeals')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload file foto bukti banding mitra' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = path.join(
+            process.cwd(),
+            'uploads',
+            'appeals',
+          );
+          if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = path.extname(file.originalname);
+          cb(null, `appeal-${uniqueSuffix}${ext}`);
+        },
+      }),
+      limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+          return cb(
+            new BadRequestException('Format file harus berupa gambar (JPG, PNG, WEBP)'),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  uploadAppealEvidence(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File tidak ditemukan');
+    }
+    return {
+      filePath: `/uploads/appeals/${file.filename}`,
       fileType: file.mimetype,
     };
   }
@@ -119,6 +167,48 @@ export class UploadController {
     }
     return {
       filePath: `/uploads/banners/${file.filename}`,
+      fileType: file.mimetype,
+    };
+  }
+
+  @Post('social-links')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload logo icon sosial media' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = path.join(process.cwd(), 'uploads', 'social-links');
+          if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = path.extname(file.originalname);
+          cb(null, `social-${uniqueSuffix}${ext}`);
+        },
+      }),
+      limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+          return cb(new BadRequestException('Format file harus berupa gambar/vektor'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  uploadSocialIcon(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File tidak ditemukan');
+    }
+    return {
+      filePath: `/uploads/social-links/${file.filename}`,
       fileType: file.mimetype,
     };
   }

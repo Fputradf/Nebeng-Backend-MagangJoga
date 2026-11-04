@@ -1,3 +1,4 @@
+import { json, urlencoded } from 'express';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
@@ -10,11 +11,22 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 async function bootstrap() {
+  if (process.env.NODE_ENV === 'production') {
+    if (!process.env.XENDIT_SECRET_KEY || !process.env.XENDIT_CALLBACK_TOKEN) {
+      throw new Error(
+        'FATAL: XENDIT_SECRET_KEY dan XENDIT_CALLBACK_TOKEN wajib dikonfigurasi pada production environment!',
+      );
+    }
+  }
+
   (BigInt.prototype as any).toJSON = function () {
     return this.toString();
   };
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use(json({ limit: '25mb' }));
+  app.use(urlencoded({ extended: true, limit: '25mb' }));
 
   app.enableCors();
   app.setGlobalPrefix('api');

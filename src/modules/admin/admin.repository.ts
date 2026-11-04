@@ -29,6 +29,7 @@ export class AdminRepository {
       activeTripsCount,
       totalTransactionsCount,
       regionalSummary,
+      paidOrdersForRegions,
     ] = await Promise.all([
       this.prisma.order.aggregate({
         where: {
@@ -43,6 +44,7 @@ export class AdminRepository {
         },
         _sum: {
           totalPrice: true,
+          discountAmount: true,
         },
       }),
       this.prisma.trip.count({
@@ -68,17 +70,68 @@ export class AdminRepository {
           },
         },
       }),
+      this.prisma.order.findMany({
+        where: {
+          status: {
+            in: [
+              OrderStatus.paid,
+              OrderStatus.completed,
+              OrderStatus.in_transit,
+              OrderStatus.arrived_destination,
+            ],
+          },
+        },
+        select: {
+          totalPrice: true,
+          trip: {
+            select: {
+              originPoint: {
+                select: {
+                  regionId: true,
+                },
+              },
+            },
+          },
+          customer: {
+            select: {
+              regionId: true,
+            },
+          },
+        },
+      }),
     ]);
 
     const totalRevenue = Number(paidOrdersAggregate._sum.totalPrice || 0);
+    const totalDiscount = Number(paidOrdersAggregate._sum.discountAmount || 0);
     const platformCommission = totalRevenue * 0.1;
+
+    const revenuePerRegion: Record<string, number> = {};
+    for (const order of paidOrdersForRegions) {
+      const regId =
+        order.trip?.originPoint?.regionId?.toString() ||
+        order.customer?.regionId?.toString();
+      if (regId) {
+        revenuePerRegion[regId] =
+          (revenuePerRegion[regId] || 0) + Number(order.totalPrice || 0);
+      }
+    }
+
+    const regionalSummaryWithRevenue = regionalSummary.map((reg) => {
+      const regIdStr = reg.id.toString();
+      return {
+        ...reg,
+        revenue: revenuePerRegion[regIdStr] || 0,
+        totalRevenue: revenuePerRegion[regIdStr] || 0,
+      };
+    });
 
     return {
       totalRevenue,
+      totalDiscount,
       platformCommission,
       activeTripsCount,
       totalTransactionsCount,
-      regionalSummary,
+      regionalSummary: regionalSummaryWithRevenue,
     };
   }
 
