@@ -37,6 +37,8 @@ export type TripAvgAggregateOutputType = {
   seatAvailable: number | null
   maxWeightCapacityKg: runtime.Decimal | null
   remainingWeightCapacityKg: runtime.Decimal | null
+  distanceKm: runtime.Decimal | null
+  estimatedDurationMinutes: number | null
   mitraNoShowMarkedBy: number | null
   cancelledBy: number | null
 }
@@ -52,6 +54,8 @@ export type TripSumAggregateOutputType = {
   seatAvailable: number | null
   maxWeightCapacityKg: runtime.Decimal | null
   remainingWeightCapacityKg: runtime.Decimal | null
+  distanceKm: runtime.Decimal | null
+  estimatedDurationMinutes: number | null
   mitraNoShowMarkedBy: bigint | null
   cancelledBy: bigint | null
 }
@@ -74,6 +78,8 @@ export type TripMinAggregateOutputType = {
   status: $Enums.TripStatus | null
   serviceType: $Enums.ServiceType | null
   mapsPolyline: string | null
+  distanceKm: runtime.Decimal | null
+  estimatedDurationMinutes: number | null
   createdAt: Date | null
   updatedAt: Date | null
   mitraNoShowMarkedAt: Date | null
@@ -104,6 +110,8 @@ export type TripMaxAggregateOutputType = {
   status: $Enums.TripStatus | null
   serviceType: $Enums.ServiceType | null
   mapsPolyline: string | null
+  distanceKm: runtime.Decimal | null
+  estimatedDurationMinutes: number | null
   createdAt: Date | null
   updatedAt: Date | null
   mitraNoShowMarkedAt: Date | null
@@ -134,6 +142,8 @@ export type TripCountAggregateOutputType = {
   status: number
   serviceType: number
   mapsPolyline: number
+  distanceKm: number
+  estimatedDurationMinutes: number
   createdAt: number
   updatedAt: number
   mitraNoShowMarkedAt: number
@@ -159,6 +169,8 @@ export type TripAvgAggregateInputType = {
   seatAvailable?: true
   maxWeightCapacityKg?: true
   remainingWeightCapacityKg?: true
+  distanceKm?: true
+  estimatedDurationMinutes?: true
   mitraNoShowMarkedBy?: true
   cancelledBy?: true
 }
@@ -174,6 +186,8 @@ export type TripSumAggregateInputType = {
   seatAvailable?: true
   maxWeightCapacityKg?: true
   remainingWeightCapacityKg?: true
+  distanceKm?: true
+  estimatedDurationMinutes?: true
   mitraNoShowMarkedBy?: true
   cancelledBy?: true
 }
@@ -196,6 +210,8 @@ export type TripMinAggregateInputType = {
   status?: true
   serviceType?: true
   mapsPolyline?: true
+  distanceKm?: true
+  estimatedDurationMinutes?: true
   createdAt?: true
   updatedAt?: true
   mitraNoShowMarkedAt?: true
@@ -226,6 +242,8 @@ export type TripMaxAggregateInputType = {
   status?: true
   serviceType?: true
   mapsPolyline?: true
+  distanceKm?: true
+  estimatedDurationMinutes?: true
   createdAt?: true
   updatedAt?: true
   mitraNoShowMarkedAt?: true
@@ -256,6 +274,8 @@ export type TripCountAggregateInputType = {
   status?: true
   serviceType?: true
   mapsPolyline?: true
+  distanceKm?: true
+  estimatedDurationMinutes?: true
   createdAt?: true
   updatedAt?: true
   mitraNoShowMarkedAt?: true
@@ -373,6 +393,8 @@ export type TripGroupByOutputType = {
   status: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline: string | null
+  distanceKm: runtime.Decimal | null
+  estimatedDurationMinutes: number | null
   createdAt: Date
   updatedAt: Date
   mitraNoShowMarkedAt: Date | null
@@ -426,6 +448,8 @@ export type TripWhereInput = {
   status?: Prisma.EnumTripStatusFilter<"Trip"> | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFilter<"Trip"> | $Enums.ServiceType
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
+  distanceKm?: Prisma.DecimalNullableFilter<"Trip"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.IntNullableFilter<"Trip"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
@@ -450,6 +474,8 @@ export type TripWhereInput = {
   reviews?: Prisma.TripReviewListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
   mitraSanctions?: Prisma.MitraSanctionListRelationFilter
+  sosAlerts?: Prisma.SosAlertListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }
 
 export type TripOrderByWithRelationInput = {
@@ -470,6 +496,8 @@ export type TripOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   mapsPolyline?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mitraNoShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -494,6 +522,8 @@ export type TripOrderByWithRelationInput = {
   reviews?: Prisma.TripReviewOrderByRelationAggregateInput
   noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   mitraSanctions?: Prisma.MitraSanctionOrderByRelationAggregateInput
+  sosAlerts?: Prisma.SosAlertOrderByRelationAggregateInput
+  userReports?: Prisma.UserReportOrderByRelationAggregateInput
   _relevance?: Prisma.TripOrderByRelevanceInput
 }
 
@@ -518,6 +548,8 @@ export type TripWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumTripStatusFilter<"Trip"> | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFilter<"Trip"> | $Enums.ServiceType
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
+  distanceKm?: Prisma.DecimalNullableFilter<"Trip"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.IntNullableFilter<"Trip"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
@@ -542,6 +574,8 @@ export type TripWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.TripReviewListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
   mitraSanctions?: Prisma.MitraSanctionListRelationFilter
+  sosAlerts?: Prisma.SosAlertListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }, "id" | "qrCodeTrip">
 
 export type TripOrderByWithAggregationInput = {
@@ -562,6 +596,8 @@ export type TripOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   mapsPolyline?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mitraNoShowMarkedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -600,6 +636,8 @@ export type TripScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumTripStatusWithAggregatesFilter<"Trip"> | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeWithAggregatesFilter<"Trip"> | $Enums.ServiceType
   mapsPolyline?: Prisma.StringNullableWithAggregatesFilter<"Trip"> | string | null
+  distanceKm?: Prisma.DecimalNullableWithAggregatesFilter<"Trip"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.IntNullableWithAggregatesFilter<"Trip"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
   mitraNoShowMarkedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Trip"> | Date | string | null
@@ -626,6 +664,8 @@ export type TripCreateInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -648,6 +688,8 @@ export type TripCreateInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateInput = {
@@ -668,6 +710,8 @@ export type TripUncheckedCreateInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -686,6 +730,8 @@ export type TripUncheckedCreateInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripUpdateInput = {
@@ -702,6 +748,8 @@ export type TripUpdateInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -724,6 +772,8 @@ export type TripUpdateInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateInput = {
@@ -744,6 +794,8 @@ export type TripUncheckedUpdateInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -762,6 +814,8 @@ export type TripUncheckedUpdateInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateManyInput = {
@@ -782,6 +836,8 @@ export type TripCreateManyInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -808,6 +864,8 @@ export type TripUpdateManyMutationInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -836,6 +894,8 @@ export type TripUncheckedUpdateManyInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -882,6 +942,8 @@ export type TripCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   mapsPolyline?: Prisma.SortOrder
+  distanceKm?: Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mitraNoShowMarkedAt?: Prisma.SortOrder
@@ -905,6 +967,8 @@ export type TripAvgOrderByAggregateInput = {
   seatAvailable?: Prisma.SortOrder
   maxWeightCapacityKg?: Prisma.SortOrder
   remainingWeightCapacityKg?: Prisma.SortOrder
+  distanceKm?: Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrder
   mitraNoShowMarkedBy?: Prisma.SortOrder
   cancelledBy?: Prisma.SortOrder
 }
@@ -927,6 +991,8 @@ export type TripMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   mapsPolyline?: Prisma.SortOrder
+  distanceKm?: Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mitraNoShowMarkedAt?: Prisma.SortOrder
@@ -957,6 +1023,8 @@ export type TripMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   mapsPolyline?: Prisma.SortOrder
+  distanceKm?: Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mitraNoShowMarkedAt?: Prisma.SortOrder
@@ -980,6 +1048,8 @@ export type TripSumOrderByAggregateInput = {
   seatAvailable?: Prisma.SortOrder
   maxWeightCapacityKg?: Prisma.SortOrder
   remainingWeightCapacityKg?: Prisma.SortOrder
+  distanceKm?: Prisma.SortOrder
+  estimatedDurationMinutes?: Prisma.SortOrder
   mitraNoShowMarkedBy?: Prisma.SortOrder
   cancelledBy?: Prisma.SortOrder
 }
@@ -1212,6 +1282,14 @@ export type EnumTripStatusFieldUpdateOperationsInput = {
   set?: $Enums.TripStatus
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type TripCreateNestedOneWithoutOrdersInput = {
   create?: Prisma.XOR<Prisma.TripCreateWithoutOrdersInput, Prisma.TripUncheckedCreateWithoutOrdersInput>
   connectOrCreate?: Prisma.TripCreateOrConnectWithoutOrdersInput
@@ -1370,6 +1448,36 @@ export type TripUpdateOneWithoutMitraSanctionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TripUpdateToOneWithWhereWithoutMitraSanctionsInput, Prisma.TripUpdateWithoutMitraSanctionsInput>, Prisma.TripUncheckedUpdateWithoutMitraSanctionsInput>
 }
 
+export type TripCreateNestedOneWithoutSosAlertsInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutSosAlertsInput, Prisma.TripUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutSosAlertsInput
+  connect?: Prisma.TripWhereUniqueInput
+}
+
+export type TripUpdateOneRequiredWithoutSosAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutSosAlertsInput, Prisma.TripUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutSosAlertsInput
+  upsert?: Prisma.TripUpsertWithoutSosAlertsInput
+  connect?: Prisma.TripWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TripUpdateToOneWithWhereWithoutSosAlertsInput, Prisma.TripUpdateWithoutSosAlertsInput>, Prisma.TripUncheckedUpdateWithoutSosAlertsInput>
+}
+
+export type TripCreateNestedOneWithoutUserReportsInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutUserReportsInput, Prisma.TripUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutUserReportsInput
+  connect?: Prisma.TripWhereUniqueInput
+}
+
+export type TripUpdateOneWithoutUserReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.TripCreateWithoutUserReportsInput, Prisma.TripUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.TripCreateOrConnectWithoutUserReportsInput
+  upsert?: Prisma.TripUpsertWithoutUserReportsInput
+  disconnect?: Prisma.TripWhereInput | boolean
+  delete?: Prisma.TripWhereInput | boolean
+  connect?: Prisma.TripWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TripUpdateToOneWithWhereWithoutUserReportsInput, Prisma.TripUpdateWithoutUserReportsInput>, Prisma.TripUncheckedUpdateWithoutUserReportsInput>
+}
+
 export type TripCreateWithoutMitraInput = {
   id?: bigint | number
   vehicleType: $Enums.VehicleType
@@ -1384,6 +1492,8 @@ export type TripCreateWithoutMitraInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1405,6 +1515,8 @@ export type TripCreateWithoutMitraInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutMitraInput = {
@@ -1424,6 +1536,8 @@ export type TripUncheckedCreateWithoutMitraInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1442,6 +1556,8 @@ export type TripUncheckedCreateWithoutMitraInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutMitraInput = {
@@ -1468,6 +1584,8 @@ export type TripCreateWithoutMitraNoShowMarkedByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1489,6 +1607,8 @@ export type TripCreateWithoutMitraNoShowMarkedByUserInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput = {
@@ -1509,6 +1629,8 @@ export type TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1526,6 +1648,8 @@ export type TripUncheckedCreateWithoutMitraNoShowMarkedByUserInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutMitraNoShowMarkedByUserInput = {
@@ -1552,6 +1676,8 @@ export type TripCreateWithoutCancelledByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1573,6 +1699,8 @@ export type TripCreateWithoutCancelledByUserInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutCancelledByUserInput = {
@@ -1593,6 +1721,8 @@ export type TripUncheckedCreateWithoutCancelledByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1610,6 +1740,8 @@ export type TripUncheckedCreateWithoutCancelledByUserInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutCancelledByUserInput = {
@@ -1659,6 +1791,8 @@ export type TripScalarWhereInput = {
   status?: Prisma.EnumTripStatusFilter<"Trip"> | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFilter<"Trip"> | $Enums.ServiceType
   mapsPolyline?: Prisma.StringNullableFilter<"Trip"> | string | null
+  distanceKm?: Prisma.DecimalNullableFilter<"Trip"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.IntNullableFilter<"Trip"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   mitraNoShowMarkedAt?: Prisma.DateTimeNullableFilter<"Trip"> | Date | string | null
@@ -1717,6 +1851,8 @@ export type TripCreateWithoutOriginPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1738,6 +1874,8 @@ export type TripCreateWithoutOriginPointInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutOriginPointInput = {
@@ -1757,6 +1895,8 @@ export type TripUncheckedCreateWithoutOriginPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1775,6 +1915,8 @@ export type TripUncheckedCreateWithoutOriginPointInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutOriginPointInput = {
@@ -1801,6 +1943,8 @@ export type TripCreateWithoutDestinationPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1822,6 +1966,8 @@ export type TripCreateWithoutDestinationPointInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutDestinationPointInput = {
@@ -1841,6 +1987,8 @@ export type TripUncheckedCreateWithoutDestinationPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1859,6 +2007,8 @@ export type TripUncheckedCreateWithoutDestinationPointInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutDestinationPointInput = {
@@ -1917,6 +2067,8 @@ export type TripCreateWithoutOrdersInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1938,6 +2090,8 @@ export type TripCreateWithoutOrdersInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutOrdersInput = {
@@ -1958,6 +2112,8 @@ export type TripUncheckedCreateWithoutOrdersInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -1975,6 +2131,8 @@ export type TripUncheckedCreateWithoutOrdersInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutOrdersInput = {
@@ -2007,6 +2165,8 @@ export type TripUpdateWithoutOrdersInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2028,6 +2188,8 @@ export type TripUpdateWithoutOrdersInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutOrdersInput = {
@@ -2048,6 +2210,8 @@ export type TripUncheckedUpdateWithoutOrdersInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2065,6 +2229,8 @@ export type TripUncheckedUpdateWithoutOrdersInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutCheckpointsLogsInput = {
@@ -2081,6 +2247,8 @@ export type TripCreateWithoutCheckpointsLogsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2102,6 +2270,8 @@ export type TripCreateWithoutCheckpointsLogsInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -2122,6 +2292,8 @@ export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2139,6 +2311,8 @@ export type TripUncheckedCreateWithoutCheckpointsLogsInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -2171,6 +2345,8 @@ export type TripUpdateWithoutCheckpointsLogsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2192,6 +2368,8 @@ export type TripUpdateWithoutCheckpointsLogsInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -2212,6 +2390,8 @@ export type TripUncheckedUpdateWithoutCheckpointsLogsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2229,6 +2409,8 @@ export type TripUncheckedUpdateWithoutCheckpointsLogsInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutNoShowAuditLogsInput = {
@@ -2245,6 +2427,8 @@ export type TripCreateWithoutNoShowAuditLogsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2266,6 +2450,8 @@ export type TripCreateWithoutNoShowAuditLogsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutNoShowAuditLogsInput = {
@@ -2286,6 +2472,8 @@ export type TripUncheckedCreateWithoutNoShowAuditLogsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2303,6 +2491,8 @@ export type TripUncheckedCreateWithoutNoShowAuditLogsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutNoShowAuditLogsInput = {
@@ -2335,6 +2525,8 @@ export type TripUpdateWithoutNoShowAuditLogsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2356,6 +2548,8 @@ export type TripUpdateWithoutNoShowAuditLogsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutNoShowAuditLogsInput = {
@@ -2376,6 +2570,8 @@ export type TripUncheckedUpdateWithoutNoShowAuditLogsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2393,6 +2589,8 @@ export type TripUncheckedUpdateWithoutNoShowAuditLogsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutQrSessionsInput = {
@@ -2409,6 +2607,8 @@ export type TripCreateWithoutQrSessionsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2430,6 +2630,8 @@ export type TripCreateWithoutQrSessionsInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutQrSessionsInput = {
@@ -2450,6 +2652,8 @@ export type TripUncheckedCreateWithoutQrSessionsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2467,6 +2671,8 @@ export type TripUncheckedCreateWithoutQrSessionsInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutQrSessionsInput = {
@@ -2499,6 +2705,8 @@ export type TripUpdateWithoutQrSessionsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2520,6 +2728,8 @@ export type TripUpdateWithoutQrSessionsInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutQrSessionsInput = {
@@ -2540,6 +2750,8 @@ export type TripUncheckedUpdateWithoutQrSessionsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2557,6 +2769,8 @@ export type TripUncheckedUpdateWithoutQrSessionsInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutTrackingsInput = {
@@ -2573,6 +2787,8 @@ export type TripCreateWithoutTrackingsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2594,6 +2810,8 @@ export type TripCreateWithoutTrackingsInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutTrackingsInput = {
@@ -2614,6 +2832,8 @@ export type TripUncheckedCreateWithoutTrackingsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2631,6 +2851,8 @@ export type TripUncheckedCreateWithoutTrackingsInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutTrackingsInput = {
@@ -2663,6 +2885,8 @@ export type TripUpdateWithoutTrackingsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2684,6 +2908,8 @@ export type TripUpdateWithoutTrackingsInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutTrackingsInput = {
@@ -2704,6 +2930,8 @@ export type TripUncheckedUpdateWithoutTrackingsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2721,6 +2949,8 @@ export type TripUncheckedUpdateWithoutTrackingsInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutConversationsInput = {
@@ -2737,6 +2967,8 @@ export type TripCreateWithoutConversationsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2758,6 +2990,8 @@ export type TripCreateWithoutConversationsInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutConversationsInput = {
@@ -2778,6 +3012,8 @@ export type TripUncheckedCreateWithoutConversationsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2795,6 +3031,8 @@ export type TripUncheckedCreateWithoutConversationsInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutConversationsInput = {
@@ -2827,6 +3065,8 @@ export type TripUpdateWithoutConversationsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2848,6 +3088,8 @@ export type TripUpdateWithoutConversationsInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutConversationsInput = {
@@ -2868,6 +3110,8 @@ export type TripUncheckedUpdateWithoutConversationsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2885,6 +3129,8 @@ export type TripUncheckedUpdateWithoutConversationsInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutReviewsInput = {
@@ -2901,6 +3147,8 @@ export type TripCreateWithoutReviewsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2922,6 +3170,8 @@ export type TripCreateWithoutReviewsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutReviewsInput = {
@@ -2942,6 +3192,8 @@ export type TripUncheckedCreateWithoutReviewsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -2959,6 +3211,8 @@ export type TripUncheckedCreateWithoutReviewsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutReviewsInput = {
@@ -2991,6 +3245,8 @@ export type TripUpdateWithoutReviewsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3012,6 +3268,8 @@ export type TripUpdateWithoutReviewsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutReviewsInput = {
@@ -3032,6 +3290,8 @@ export type TripUncheckedUpdateWithoutReviewsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3049,6 +3309,8 @@ export type TripUncheckedUpdateWithoutReviewsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateWithoutVehicleInput = {
@@ -3065,6 +3327,8 @@ export type TripCreateWithoutVehicleInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3086,6 +3350,8 @@ export type TripCreateWithoutVehicleInput = {
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutVehicleInput = {
@@ -3105,6 +3371,8 @@ export type TripUncheckedCreateWithoutVehicleInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3123,6 +3391,8 @@ export type TripUncheckedCreateWithoutVehicleInput = {
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutVehicleInput = {
@@ -3165,6 +3435,8 @@ export type TripCreateWithoutMitraSanctionsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3186,6 +3458,8 @@ export type TripCreateWithoutMitraSanctionsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
 }
 
 export type TripUncheckedCreateWithoutMitraSanctionsInput = {
@@ -3206,6 +3480,8 @@ export type TripUncheckedCreateWithoutMitraSanctionsInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3223,6 +3499,8 @@ export type TripUncheckedCreateWithoutMitraSanctionsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
   reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
 }
 
 export type TripCreateOrConnectWithoutMitraSanctionsInput = {
@@ -3255,6 +3533,8 @@ export type TripUpdateWithoutMitraSanctionsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3276,6 +3556,8 @@ export type TripUpdateWithoutMitraSanctionsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutMitraSanctionsInput = {
@@ -3296,6 +3578,8 @@ export type TripUncheckedUpdateWithoutMitraSanctionsInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3313,6 +3597,368 @@ export type TripUncheckedUpdateWithoutMitraSanctionsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
+}
+
+export type TripCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType: $Enums.ServiceType
+  mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  cancelledAt?: Date | string | null
+  cancelReason?: string | null
+  cancelCategory?: string | null
+  mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
+  vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
+  originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
+  destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
+  cancelledByUser?: Prisma.UserCreateNestedOneWithoutCancelledTripsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTripInput
+}
+
+export type TripUncheckedCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  vehicleId: bigint | number
+  originPointId: bigint | number
+  destinationPointId: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType: $Enums.ServiceType
+  mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  cancelledAt?: Date | string | null
+  cancelledBy?: bigint | number | null
+  cancelReason?: string | null
+  cancelCategory?: string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTripInput
+}
+
+export type TripCreateOrConnectWithoutSosAlertsInput = {
+  where: Prisma.TripWhereUniqueInput
+  create: Prisma.XOR<Prisma.TripCreateWithoutSosAlertsInput, Prisma.TripUncheckedCreateWithoutSosAlertsInput>
+}
+
+export type TripUpsertWithoutSosAlertsInput = {
+  update: Prisma.XOR<Prisma.TripUpdateWithoutSosAlertsInput, Prisma.TripUncheckedUpdateWithoutSosAlertsInput>
+  create: Prisma.XOR<Prisma.TripCreateWithoutSosAlertsInput, Prisma.TripUncheckedCreateWithoutSosAlertsInput>
+  where?: Prisma.TripWhereInput
+}
+
+export type TripUpdateToOneWithWhereWithoutSosAlertsInput = {
+  where?: Prisma.TripWhereInput
+  data: Prisma.XOR<Prisma.TripUpdateWithoutSosAlertsInput, Prisma.TripUncheckedUpdateWithoutSosAlertsInput>
+}
+
+export type TripUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
+  vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
+  originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
+  destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
+  cancelledByUser?: Prisma.UserUpdateOneWithoutCancelledTripsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
+}
+
+export type TripUncheckedUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  destinationPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
+}
+
+export type TripCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType: $Enums.ServiceType
+  mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  cancelledAt?: Date | string | null
+  cancelReason?: string | null
+  cancelCategory?: string | null
+  mitra: Prisma.UserCreateNestedOneWithoutTripsAsMitraInput
+  vehicle: Prisma.VehicleCreateNestedOneWithoutTripsInput
+  originPoint: Prisma.PickupPointCreateNestedOneWithoutOriginTripsInput
+  destinationPoint: Prisma.PickupPointCreateNestedOneWithoutDestTripsInput
+  mitraNoShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutMitraNoShowMarkedTripsInput
+  cancelledByUser?: Prisma.UserCreateNestedOneWithoutCancelledTripsInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutTripInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutTripInput
+}
+
+export type TripUncheckedCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  mitraId: bigint | number
+  vehicleId: bigint | number
+  originPointId: bigint | number
+  destinationPointId: bigint | number
+  vehicleType: $Enums.VehicleType
+  departureDate: Date | string
+  departureTime: Date | string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal: number
+  seatAvailable: number
+  maxWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg: runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip: string
+  status?: $Enums.TripStatus
+  serviceType: $Enums.ServiceType
+  mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mitraNoShowMarkedAt?: Date | string | null
+  mitraNoShowMarkedBy?: bigint | number | null
+  mitraNoShowReason?: string | null
+  mitraNoShowEvidenceUrl?: string | null
+  cancelledAt?: Date | string | null
+  cancelledBy?: bigint | number | null
+  cancelReason?: string | null
+  cancelCategory?: string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTripInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutTripInput
+  qrSessions?: Prisma.TripQrSessionUncheckedCreateNestedManyWithoutTripInput
+  trackings?: Prisma.TripTrackingUncheckedCreateNestedManyWithoutTripInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutTripInput
+  reviews?: Prisma.TripReviewUncheckedCreateNestedManyWithoutTripInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutTripInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutTripInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutTripInput
+}
+
+export type TripCreateOrConnectWithoutUserReportsInput = {
+  where: Prisma.TripWhereUniqueInput
+  create: Prisma.XOR<Prisma.TripCreateWithoutUserReportsInput, Prisma.TripUncheckedCreateWithoutUserReportsInput>
+}
+
+export type TripUpsertWithoutUserReportsInput = {
+  update: Prisma.XOR<Prisma.TripUpdateWithoutUserReportsInput, Prisma.TripUncheckedUpdateWithoutUserReportsInput>
+  create: Prisma.XOR<Prisma.TripCreateWithoutUserReportsInput, Prisma.TripUncheckedCreateWithoutUserReportsInput>
+  where?: Prisma.TripWhereInput
+}
+
+export type TripUpdateToOneWithWhereWithoutUserReportsInput = {
+  where?: Prisma.TripWhereInput
+  data: Prisma.XOR<Prisma.TripUpdateWithoutUserReportsInput, Prisma.TripUncheckedUpdateWithoutUserReportsInput>
+}
+
+export type TripUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitra?: Prisma.UserUpdateOneRequiredWithoutTripsAsMitraNestedInput
+  vehicle?: Prisma.VehicleUpdateOneRequiredWithoutTripsNestedInput
+  originPoint?: Prisma.PickupPointUpdateOneRequiredWithoutOriginTripsNestedInput
+  destinationPoint?: Prisma.PickupPointUpdateOneRequiredWithoutDestTripsNestedInput
+  mitraNoShowMarkedByUser?: Prisma.UserUpdateOneWithoutMitraNoShowMarkedTripsNestedInput
+  cancelledByUser?: Prisma.UserUpdateOneWithoutCancelledTripsNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+}
+
+export type TripUncheckedUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mitraId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  destinationPointId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  vehicleType?: Prisma.EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+  departureDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  departureTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  seatTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  seatAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  remainingWeightCapacityKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  qrCodeTrip?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mitraNoShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  mitraNoShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mitraNoShowEvidenceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTripNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutTripNestedInput
+  qrSessions?: Prisma.TripQrSessionUncheckedUpdateManyWithoutTripNestedInput
+  trackings?: Prisma.TripTrackingUncheckedUpdateManyWithoutTripNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutTripNestedInput
+  reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripCreateManyMitraInput = {
@@ -3332,6 +3978,8 @@ export type TripCreateManyMitraInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3362,6 +4010,8 @@ export type TripCreateManyMitraNoShowMarkedByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3391,6 +4041,8 @@ export type TripCreateManyCancelledByUserInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3416,6 +4068,8 @@ export type TripUpdateWithoutMitraInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3437,6 +4091,8 @@ export type TripUpdateWithoutMitraInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutMitraInput = {
@@ -3456,6 +4112,8 @@ export type TripUncheckedUpdateWithoutMitraInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3474,6 +4132,8 @@ export type TripUncheckedUpdateWithoutMitraInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutMitraInput = {
@@ -3493,6 +4153,8 @@ export type TripUncheckedUpdateManyWithoutMitraInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3519,6 +4181,8 @@ export type TripUpdateWithoutMitraNoShowMarkedByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3540,6 +4204,8 @@ export type TripUpdateWithoutMitraNoShowMarkedByUserInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput = {
@@ -3560,6 +4226,8 @@ export type TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3577,6 +4245,8 @@ export type TripUncheckedUpdateWithoutMitraNoShowMarkedByUserInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserInput = {
@@ -3597,6 +4267,8 @@ export type TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3622,6 +4294,8 @@ export type TripUpdateWithoutCancelledByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3643,6 +4317,8 @@ export type TripUpdateWithoutCancelledByUserInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutCancelledByUserInput = {
@@ -3663,6 +4339,8 @@ export type TripUncheckedUpdateWithoutCancelledByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3680,6 +4358,8 @@ export type TripUncheckedUpdateWithoutCancelledByUserInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutCancelledByUserInput = {
@@ -3700,6 +4380,8 @@ export type TripUncheckedUpdateManyWithoutCancelledByUserInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3728,6 +4410,8 @@ export type TripCreateManyOriginPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3757,6 +4441,8 @@ export type TripCreateManyDestinationPointInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -3783,6 +4469,8 @@ export type TripUpdateWithoutOriginPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3804,6 +4492,8 @@ export type TripUpdateWithoutOriginPointInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutOriginPointInput = {
@@ -3823,6 +4513,8 @@ export type TripUncheckedUpdateWithoutOriginPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3841,6 +4533,8 @@ export type TripUncheckedUpdateWithoutOriginPointInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutOriginPointInput = {
@@ -3860,6 +4554,8 @@ export type TripUncheckedUpdateManyWithoutOriginPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3886,6 +4582,8 @@ export type TripUpdateWithoutDestinationPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3907,6 +4605,8 @@ export type TripUpdateWithoutDestinationPointInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutDestinationPointInput = {
@@ -3926,6 +4626,8 @@ export type TripUncheckedUpdateWithoutDestinationPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3944,6 +4646,8 @@ export type TripUncheckedUpdateWithoutDestinationPointInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutDestinationPointInput = {
@@ -3963,6 +4667,8 @@ export type TripUncheckedUpdateManyWithoutDestinationPointInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3992,6 +4698,8 @@ export type TripCreateManyVehicleInput = {
   status?: $Enums.TripStatus
   serviceType: $Enums.ServiceType
   mapsPolyline?: string | null
+  distanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mitraNoShowMarkedAt?: Date | string | null
@@ -4018,6 +4726,8 @@ export type TripUpdateWithoutVehicleInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4039,6 +4749,8 @@ export type TripUpdateWithoutVehicleInput = {
   reviews?: Prisma.TripReviewUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateWithoutVehicleInput = {
@@ -4058,6 +4770,8 @@ export type TripUncheckedUpdateWithoutVehicleInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4076,6 +4790,8 @@ export type TripUncheckedUpdateWithoutVehicleInput = {
   reviews?: Prisma.TripReviewUncheckedUpdateManyWithoutTripNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutTripNestedInput
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutTripNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutTripNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTripNestedInput
 }
 
 export type TripUncheckedUpdateManyWithoutVehicleInput = {
@@ -4095,6 +4811,8 @@ export type TripUncheckedUpdateManyWithoutVehicleInput = {
   status?: Prisma.EnumTripStatusFieldUpdateOperationsInput | $Enums.TripStatus
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   mapsPolyline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  distanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mitraNoShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4121,6 +4839,8 @@ export type TripCountOutputType = {
   reviews: number
   noShowAuditLogs: number
   mitraSanctions: number
+  sosAlerts: number
+  userReports: number
 }
 
 export type TripCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4132,6 +4852,8 @@ export type TripCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviews?: boolean | TripCountOutputTypeCountReviewsArgs
   noShowAuditLogs?: boolean | TripCountOutputTypeCountNoShowAuditLogsArgs
   mitraSanctions?: boolean | TripCountOutputTypeCountMitraSanctionsArgs
+  sosAlerts?: boolean | TripCountOutputTypeCountSosAlertsArgs
+  userReports?: boolean | TripCountOutputTypeCountUserReportsArgs
 }
 
 /**
@@ -4200,6 +4922,20 @@ export type TripCountOutputTypeCountMitraSanctionsArgs<ExtArgs extends runtime.T
   where?: Prisma.MitraSanctionWhereInput
 }
 
+/**
+ * TripCountOutputType without action
+ */
+export type TripCountOutputTypeCountSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SosAlertWhereInput
+}
+
+/**
+ * TripCountOutputType without action
+ */
+export type TripCountOutputTypeCountUserReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
 
 export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4219,6 +4955,8 @@ export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   serviceType?: boolean
   mapsPolyline?: boolean
+  distanceKm?: boolean
+  estimatedDurationMinutes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   mitraNoShowMarkedAt?: boolean
@@ -4243,6 +4981,8 @@ export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviews?: boolean | Prisma.Trip$reviewsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Trip$noShowAuditLogsArgs<ExtArgs>
   mitraSanctions?: boolean | Prisma.Trip$mitraSanctionsArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Trip$sosAlertsArgs<ExtArgs>
+  userReports?: boolean | Prisma.Trip$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.TripCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trip"]>
 
@@ -4266,6 +5006,8 @@ export type TripSelectScalar = {
   status?: boolean
   serviceType?: boolean
   mapsPolyline?: boolean
+  distanceKm?: boolean
+  estimatedDurationMinutes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   mitraNoShowMarkedAt?: boolean
@@ -4278,7 +5020,7 @@ export type TripSelectScalar = {
   cancelCategory?: boolean
 }
 
-export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mitraId" | "vehicleId" | "originPointId" | "destinationPointId" | "vehicleType" | "departureDate" | "departureTime" | "price" | "seatTotal" | "seatAvailable" | "maxWeightCapacityKg" | "remainingWeightCapacityKg" | "qrCodeTrip" | "status" | "serviceType" | "mapsPolyline" | "createdAt" | "updatedAt" | "mitraNoShowMarkedAt" | "mitraNoShowMarkedBy" | "mitraNoShowReason" | "mitraNoShowEvidenceUrl" | "cancelledAt" | "cancelledBy" | "cancelReason" | "cancelCategory", ExtArgs["result"]["trip"]>
+export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mitraId" | "vehicleId" | "originPointId" | "destinationPointId" | "vehicleType" | "departureDate" | "departureTime" | "price" | "seatTotal" | "seatAvailable" | "maxWeightCapacityKg" | "remainingWeightCapacityKg" | "qrCodeTrip" | "status" | "serviceType" | "mapsPolyline" | "distanceKm" | "estimatedDurationMinutes" | "createdAt" | "updatedAt" | "mitraNoShowMarkedAt" | "mitraNoShowMarkedBy" | "mitraNoShowReason" | "mitraNoShowEvidenceUrl" | "cancelledAt" | "cancelledBy" | "cancelReason" | "cancelCategory", ExtArgs["result"]["trip"]>
 export type TripInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mitra?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleDefaultArgs<ExtArgs>
@@ -4294,6 +5036,8 @@ export type TripInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviews?: boolean | Prisma.Trip$reviewsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Trip$noShowAuditLogsArgs<ExtArgs>
   mitraSanctions?: boolean | Prisma.Trip$mitraSanctionsArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Trip$sosAlertsArgs<ExtArgs>
+  userReports?: boolean | Prisma.Trip$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.TripCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -4314,6 +5058,8 @@ export type $TripPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviews: Prisma.$TripReviewPayload<ExtArgs>[]
     noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
     mitraSanctions: Prisma.$MitraSanctionPayload<ExtArgs>[]
+    sosAlerts: Prisma.$SosAlertPayload<ExtArgs>[]
+    userReports: Prisma.$UserReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -4333,6 +5079,8 @@ export type $TripPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: $Enums.TripStatus
     serviceType: $Enums.ServiceType
     mapsPolyline: string | null
+    distanceKm: runtime.Decimal | null
+    estimatedDurationMinutes: number | null
     createdAt: Date
     updatedAt: Date
     mitraNoShowMarkedAt: Date | null
@@ -4697,6 +5445,8 @@ export interface Prisma__TripClient<T, Null = never, ExtArgs extends runtime.Typ
   reviews<T extends Prisma.Trip$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   noShowAuditLogs<T extends Prisma.Trip$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mitraSanctions<T extends Prisma.Trip$mitraSanctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$mitraSanctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MitraSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sosAlerts<T extends Prisma.Trip$sosAlertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$sosAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SosAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userReports<T extends Prisma.Trip$userReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trip$userReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4743,6 +5493,8 @@ export interface TripFieldRefs {
   readonly status: Prisma.FieldRef<"Trip", 'TripStatus'>
   readonly serviceType: Prisma.FieldRef<"Trip", 'ServiceType'>
   readonly mapsPolyline: Prisma.FieldRef<"Trip", 'String'>
+  readonly distanceKm: Prisma.FieldRef<"Trip", 'Decimal'>
+  readonly estimatedDurationMinutes: Prisma.FieldRef<"Trip", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Trip", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Trip", 'DateTime'>
   readonly mitraNoShowMarkedAt: Prisma.FieldRef<"Trip", 'DateTime'>
@@ -5328,6 +6080,54 @@ export type Trip$mitraSanctionsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.MitraSanctionScalarFieldEnum | Prisma.MitraSanctionScalarFieldEnum[]
+}
+
+/**
+ * Trip.sosAlerts
+ */
+export type Trip$sosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SosAlert
+   */
+  select?: Prisma.SosAlertSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SosAlert
+   */
+  omit?: Prisma.SosAlertOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SosAlertInclude<ExtArgs> | null
+  where?: Prisma.SosAlertWhereInput
+  orderBy?: Prisma.SosAlertOrderByWithRelationInput | Prisma.SosAlertOrderByWithRelationInput[]
+  cursor?: Prisma.SosAlertWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SosAlertScalarFieldEnum | Prisma.SosAlertScalarFieldEnum[]
+}
+
+/**
+ * Trip.userReports
+ */
+export type Trip$userReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
 }
 
 /**

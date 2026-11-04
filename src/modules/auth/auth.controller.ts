@@ -4,6 +4,7 @@ import {
   Body,
   Get,
   Patch,
+  Query,
   UseGuards,
   Request,
   HttpCode,
@@ -14,6 +15,7 @@ import { Throttle } from '@nestjs/throttler';
 import {
   ApiTags,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiBearerAuth,
   ApiUnauthorizedResponse,
@@ -50,6 +52,15 @@ export class AuthController {
   })
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
+  }
+
+  @Get('check-nik')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Mengecek ketersediaan NIK / KTP (Public)' })
+  @ApiQuery({ name: 'nik', required: true, description: '16 digit NIK KTP' })
+  @ApiResponse({ status: 200, description: 'Status ketersediaan NIK' })
+  checkNik(@Query('nik') nik: string) {
+    return this.authService.checkNik(nik);
   }
 
   @Post('login')

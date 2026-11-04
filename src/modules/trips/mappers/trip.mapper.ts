@@ -23,6 +23,13 @@ export class TripMapper {
       qrCodeTrip: trip.qrCodeTrip,
       status: trip.status,
       mapsPolyline: trip.mapsPolyline ?? null,
+      distanceKm: trip.distanceKm ? Number(trip.distanceKm) : null,
+      estimatedDurationMinutes: trip.estimatedDurationMinutes
+        ? Number(trip.estimatedDurationMinutes)
+        : null,
+      estimatedDurationFormatted: trip.estimatedDurationMinutes
+        ? `${Math.floor(Number(trip.estimatedDurationMinutes) / 60) > 0 ? `${Math.floor(Number(trip.estimatedDurationMinutes) / 60)} Jam ` : ''}${Number(trip.estimatedDurationMinutes) % 60} Menit`
+        : null,
       totalEscrow: trip.orders
         ? trip.orders.reduce((sum: number, order: any) => {
             if (order.status !== 'cancelled') {
@@ -39,6 +46,27 @@ export class TripMapper {
             name: trip.mitra.name,
             phone: trip.mitra.phone,
             avatar: trip.mitra.avatar ?? null,
+            homeRegionId: trip.mitra.regionId ? trip.mitra.regionId.toString() : null,
+            homeRegionName: trip.mitra.region?.name ?? null,
+            rating:
+              trip.mitra.reviewsReceived && trip.mitra.reviewsReceived.length > 0
+                ? Number(
+                    (
+                      trip.mitra.reviewsReceived.reduce(
+                        (acc: number, r: any) => acc + (Number(r.rating) || 0),
+                        0,
+                      ) / trip.mitra.reviewsReceived.length
+                    ).toFixed(1),
+                  )
+                : trip.mitra.rating != null
+                ? Number(Number(trip.mitra.rating).toFixed(1))
+                : null,
+            totalReviews:
+              trip.mitra.reviewsReceived != null
+                ? trip.mitra.reviewsReceived.length
+                : trip.mitra.totalReviews != null
+                ? Number(trip.mitra.totalReviews)
+                : 0,
           }
         : undefined,
       vehicle: trip.vehicle
@@ -50,6 +78,8 @@ export class TripMapper {
             name: trip.originPoint.name,
             qrCodePos: trip.originPoint.qrCodePos,
             address: trip.originPoint.address,
+            regionId: trip.originPoint.regionId ? trip.originPoint.regionId.toString() : null,
+            regionName: trip.originPoint.region?.name ?? null,
             lat: trip.originPoint.latitude
               ? Number(trip.originPoint.latitude)
               : null,
@@ -64,6 +94,8 @@ export class TripMapper {
             name: trip.destinationPoint.name,
             qrCodePos: trip.destinationPoint.qrCodePos,
             address: trip.destinationPoint.address,
+            regionId: trip.destinationPoint.regionId ? trip.destinationPoint.regionId.toString() : null,
+            regionName: trip.destinationPoint.region?.name ?? null,
             lat: trip.destinationPoint.latitude
               ? Number(trip.destinationPoint.latitude)
               : null,
@@ -73,6 +105,45 @@ export class TripMapper {
           }
         : undefined,
       serviceType: trip.serviceType,
+      orders: trip.orders
+        ? trip.orders.map((o: any) => ({
+            id: o.id.toString(),
+            customerId: o.customerId ? o.customerId.toString() : null,
+            type: o.type,
+            seatsBooked: o.seatsBooked,
+            totalItemsCount: o.totalItemsCount,
+            totalWeightKg: o.totalWeightKg ? Number(o.totalWeightKg) : 0,
+            totalPrice: Number(o.totalPrice || 0),
+            status: o.status,
+            escrowStatus: o.escrowStatus,
+            qrCodeTicket: o.qrCodeTicket,
+            customer: o.customer
+              ? {
+                  id: o.customer.id.toString(),
+                  name: o.customer.name,
+                  phone: o.customer.phone,
+                  avatar: o.customer.avatar ?? null,
+                  email: o.customer.email,
+                }
+              : null,
+            passengers: o.passengers
+              ? o.passengers.map((p: any) => ({
+                  id: p.id.toString(),
+                  name: p.name,
+                  phone: p.phone,
+                  seatNumber: p.seatNumber,
+                  isContact: p.isContact,
+                }))
+              : [],
+            checkpointsLogs: o.checkpointsLogs
+              ? o.checkpointsLogs.map((l: any) => ({
+                  id: l.id.toString(),
+                  scanType: l.scanType,
+                  createdAt: l.createdAt,
+                }))
+              : [],
+          }))
+        : undefined,
     };
   }
 

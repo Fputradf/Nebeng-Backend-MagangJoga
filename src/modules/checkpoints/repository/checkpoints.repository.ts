@@ -847,10 +847,26 @@ export class CheckpointsRepository {
     });
   }
 
-  async getManifestForPos(posId: bigint | bigint[], dateStr: string) {
+  async getManifestForPos(
+    posId: bigint | bigint[],
+    dateStr: string,
+    scope?: string,
+  ) {
     const startOfDay = new Date(`${dateStr}T00:00:00.000Z`);
     const endOfDay = new Date(`${dateStr}T23:59:59.999Z`);
     const posIdArray = Array.isArray(posId) ? posId : [posId];
+
+    const departureDateFilter: any = {};
+    if (scope === 'upcoming') {
+      departureDateFilter.gte = startOfDay;
+    } else if (scope === 'future') {
+      const tomorrow = new Date(startOfDay);
+      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+      departureDateFilter.gte = tomorrow;
+    } else {
+      departureDateFilter.gte = startOfDay;
+      departureDateFilter.lte = endOfDay;
+    }
 
     const trips = await this.prisma.trip.findMany({
       where: {
@@ -858,12 +874,14 @@ export class CheckpointsRepository {
           { originPointId: { in: posIdArray } },
           { destinationPointId: { in: posIdArray } },
         ],
-        departureDate: {
-          gte: startOfDay,
-          lte: endOfDay,
-        },
+        departureDate: departureDateFilter,
         status: {
-          in: [TripStatus.scheduled, TripStatus.in_origin_pos, TripStatus.in_transit, TripStatus.mitra_no_show],
+          in: [
+            TripStatus.scheduled,
+            TripStatus.in_origin_pos,
+            TripStatus.in_transit,
+            TripStatus.mitra_no_show,
+          ],
         },
       },
       include: {
@@ -882,9 +900,10 @@ export class CheckpointsRepository {
           orderBy: { createdAt: 'desc' },
         },
       },
-      orderBy: {
-        departureTime: 'asc',
-      },
+      orderBy: [
+        { departureDate: 'asc' },
+        { departureTime: 'asc' },
+      ],
     });
 
     return trips;

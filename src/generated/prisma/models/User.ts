@@ -350,6 +350,11 @@ export type UserWhereInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealListRelationFilter
   voucherRedemptions?: Prisma.VoucherRedemptionListRelationFilter
   userVouchers?: Prisma.UserVoucherListRelationFilter
+  customerSosAlerts?: Prisma.SosAlertListRelationFilter
+  resolvedSosAlerts?: Prisma.SosAlertListRelationFilter
+  reportsCreated?: Prisma.UserReportListRelationFilter
+  reportsTargeted?: Prisma.UserReportListRelationFilter
+  reportsHandled?: Prisma.UserReportListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -400,6 +405,11 @@ export type UserOrderByWithRelationInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealOrderByRelationAggregateInput
   voucherRedemptions?: Prisma.VoucherRedemptionOrderByRelationAggregateInput
   userVouchers?: Prisma.UserVoucherOrderByRelationAggregateInput
+  customerSosAlerts?: Prisma.SosAlertOrderByRelationAggregateInput
+  resolvedSosAlerts?: Prisma.SosAlertOrderByRelationAggregateInput
+  reportsCreated?: Prisma.UserReportOrderByRelationAggregateInput
+  reportsTargeted?: Prisma.UserReportOrderByRelationAggregateInput
+  reportsHandled?: Prisma.UserReportOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -454,6 +464,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealListRelationFilter
   voucherRedemptions?: Prisma.VoucherRedemptionListRelationFilter
   userVouchers?: Prisma.UserVoucherListRelationFilter
+  customerSosAlerts?: Prisma.SosAlertListRelationFilter
+  resolvedSosAlerts?: Prisma.SosAlertListRelationFilter
+  reportsCreated?: Prisma.UserReportListRelationFilter
+  reportsTargeted?: Prisma.UserReportListRelationFilter
+  reportsHandled?: Prisma.UserReportListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -551,6 +566,11 @@ export type UserCreateInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -600,6 +620,11 @@ export type UserUncheckedCreateInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUpdateInput = {
@@ -649,6 +674,11 @@ export type UserUpdateInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -698,6 +728,11 @@ export type UserUncheckedUpdateInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1349,6 +1384,80 @@ export type UserUpdateOneRequiredWithoutVoucherRedemptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVoucherRedemptionsInput, Prisma.UserUpdateWithoutVoucherRedemptionsInput>, Prisma.UserUncheckedUpdateWithoutVoucherRedemptionsInput>
 }
 
+export type UserCreateNestedOneWithoutCustomerSosAlertsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedCreateWithoutCustomerSosAlertsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerSosAlertsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutResolvedSosAlertsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedCreateWithoutResolvedSosAlertsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResolvedSosAlertsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCustomerSosAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedCreateWithoutCustomerSosAlertsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerSosAlertsInput
+  upsert?: Prisma.UserUpsertWithoutCustomerSosAlertsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCustomerSosAlertsInput, Prisma.UserUpdateWithoutCustomerSosAlertsInput>, Prisma.UserUncheckedUpdateWithoutCustomerSosAlertsInput>
+}
+
+export type UserUpdateOneWithoutResolvedSosAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedCreateWithoutResolvedSosAlertsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResolvedSosAlertsInput
+  upsert?: Prisma.UserUpsertWithoutResolvedSosAlertsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResolvedSosAlertsInput, Prisma.UserUpdateWithoutResolvedSosAlertsInput>, Prisma.UserUncheckedUpdateWithoutResolvedSosAlertsInput>
+}
+
+export type UserCreateNestedOneWithoutReportsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReportsTargetedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsTargetedInput, Prisma.UserUncheckedCreateWithoutReportsTargetedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsTargetedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReportsHandledInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsHandledInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReportsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutReportsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsCreatedInput, Prisma.UserUpdateWithoutReportsCreatedInput>, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+}
+
+export type UserUpdateOneRequiredWithoutReportsTargetedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsTargetedInput, Prisma.UserUncheckedCreateWithoutReportsTargetedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsTargetedInput
+  upsert?: Prisma.UserUpsertWithoutReportsTargetedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsTargetedInput, Prisma.UserUpdateWithoutReportsTargetedInput>, Prisma.UserUncheckedUpdateWithoutReportsTargetedInput>
+}
+
+export type UserUpdateOneWithoutReportsHandledNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsHandledInput
+  upsert?: Prisma.UserUpsertWithoutReportsHandledInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsHandledInput, Prisma.UserUpdateWithoutReportsHandledInput>, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+}
+
 export type UserCreateWithoutRegionInput = {
   id?: bigint | number
   name: string
@@ -1395,6 +1504,11 @@ export type UserCreateWithoutRegionInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutRegionInput = {
@@ -1443,6 +1557,11 @@ export type UserUncheckedCreateWithoutRegionInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutRegionInput = {
@@ -1540,6 +1659,11 @@ export type UserCreateWithoutProfileInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1588,6 +1712,11 @@ export type UserUncheckedCreateWithoutProfileInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1652,6 +1781,11 @@ export type UserUpdateWithoutProfileInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1700,6 +1834,11 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutVerificationsInput = {
@@ -1748,6 +1887,11 @@ export type UserCreateWithoutVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -1796,6 +1940,11 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -1849,6 +1998,11 @@ export type UserCreateWithoutApprovedVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
@@ -1897,6 +2051,11 @@ export type UserUncheckedCreateWithoutApprovedVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutApprovedVerificationsInput = {
@@ -1961,6 +2120,11 @@ export type UserUpdateWithoutVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -2009,6 +2173,11 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutApprovedVerificationsInput = {
@@ -2068,6 +2237,11 @@ export type UserUpdateWithoutApprovedVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
@@ -2116,6 +2290,11 @@ export type UserUncheckedUpdateWithoutApprovedVerificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutAssignedPickupPointsInput = {
@@ -2164,6 +2343,11 @@ export type UserCreateWithoutAssignedPickupPointsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
@@ -2212,6 +2396,11 @@ export type UserUncheckedCreateWithoutAssignedPickupPointsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedPickupPointsInput = {
@@ -2276,6 +2465,11 @@ export type UserUpdateWithoutAssignedPickupPointsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
@@ -2324,6 +2518,11 @@ export type UserUncheckedUpdateWithoutAssignedPickupPointsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutTripsAsMitraInput = {
@@ -2372,6 +2571,11 @@ export type UserCreateWithoutTripsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutTripsAsMitraInput = {
@@ -2420,6 +2624,11 @@ export type UserUncheckedCreateWithoutTripsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutTripsAsMitraInput = {
@@ -2473,6 +2682,11 @@ export type UserCreateWithoutMitraNoShowMarkedTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput = {
@@ -2521,6 +2735,11 @@ export type UserUncheckedCreateWithoutMitraNoShowMarkedTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutMitraNoShowMarkedTripsInput = {
@@ -2574,6 +2793,11 @@ export type UserCreateWithoutCancelledTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutCancelledTripsInput = {
@@ -2622,6 +2846,11 @@ export type UserUncheckedCreateWithoutCancelledTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutCancelledTripsInput = {
@@ -2686,6 +2915,11 @@ export type UserUpdateWithoutTripsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
@@ -2734,6 +2968,11 @@ export type UserUncheckedUpdateWithoutTripsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutMitraNoShowMarkedTripsInput = {
@@ -2793,6 +3032,11 @@ export type UserUpdateWithoutMitraNoShowMarkedTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput = {
@@ -2841,6 +3085,11 @@ export type UserUncheckedUpdateWithoutMitraNoShowMarkedTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutCancelledTripsInput = {
@@ -2900,6 +3149,11 @@ export type UserUpdateWithoutCancelledTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCancelledTripsInput = {
@@ -2948,6 +3202,11 @@ export type UserUncheckedUpdateWithoutCancelledTripsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutOrdersAsCustomerInput = {
@@ -2996,6 +3255,11 @@ export type UserCreateWithoutOrdersAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
@@ -3044,6 +3308,11 @@ export type UserUncheckedCreateWithoutOrdersAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutOrdersAsCustomerInput = {
@@ -3097,6 +3366,11 @@ export type UserCreateWithoutNoShowMarkedOrdersInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutNoShowMarkedOrdersInput = {
@@ -3145,6 +3419,11 @@ export type UserUncheckedCreateWithoutNoShowMarkedOrdersInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutNoShowMarkedOrdersInput = {
@@ -3209,6 +3488,11 @@ export type UserUpdateWithoutOrdersAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
@@ -3257,6 +3541,11 @@ export type UserUncheckedUpdateWithoutOrdersAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutNoShowMarkedOrdersInput = {
@@ -3316,6 +3605,11 @@ export type UserUpdateWithoutNoShowMarkedOrdersInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoShowMarkedOrdersInput = {
@@ -3364,6 +3658,11 @@ export type UserUncheckedUpdateWithoutNoShowMarkedOrdersInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutCheckpointsScannedInput = {
@@ -3412,6 +3711,11 @@ export type UserCreateWithoutCheckpointsScannedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
@@ -3460,6 +3764,11 @@ export type UserUncheckedCreateWithoutCheckpointsScannedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutCheckpointsScannedInput = {
@@ -3524,6 +3833,11 @@ export type UserUpdateWithoutCheckpointsScannedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
@@ -3572,6 +3886,11 @@ export type UserUncheckedUpdateWithoutCheckpointsScannedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutNoShowAuditLogsOperatorInput = {
@@ -3620,6 +3939,11 @@ export type UserCreateWithoutNoShowAuditLogsOperatorInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput = {
@@ -3668,6 +3992,11 @@ export type UserUncheckedCreateWithoutNoShowAuditLogsOperatorInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutNoShowAuditLogsOperatorInput = {
@@ -3732,6 +4061,11 @@ export type UserUpdateWithoutNoShowAuditLogsOperatorInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput = {
@@ -3780,6 +4114,11 @@ export type UserUncheckedUpdateWithoutNoShowAuditLogsOperatorInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionsInput = {
@@ -3828,6 +4167,11 @@ export type UserCreateWithoutPushSubscriptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -3876,6 +4220,11 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -3940,6 +4289,11 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -3988,6 +4342,11 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -4036,6 +4395,11 @@ export type UserCreateWithoutWalletInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -4084,6 +4448,11 @@ export type UserUncheckedCreateWithoutWalletInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -4148,6 +4517,11 @@ export type UserUpdateWithoutWalletInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -4196,6 +4570,11 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutRewardTransactionsInput = {
@@ -4244,6 +4623,11 @@ export type UserCreateWithoutRewardTransactionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutRewardTransactionsInput = {
@@ -4292,6 +4676,11 @@ export type UserUncheckedCreateWithoutRewardTransactionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutRewardTransactionsInput = {
@@ -4356,6 +4745,11 @@ export type UserUpdateWithoutRewardTransactionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
@@ -4404,6 +4798,11 @@ export type UserUncheckedUpdateWithoutRewardTransactionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutConversationsAsCustomerInput = {
@@ -4452,6 +4851,11 @@ export type UserCreateWithoutConversationsAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
@@ -4500,6 +4904,11 @@ export type UserUncheckedCreateWithoutConversationsAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsCustomerInput = {
@@ -4553,6 +4962,11 @@ export type UserCreateWithoutConversationsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
@@ -4601,6 +5015,11 @@ export type UserUncheckedCreateWithoutConversationsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutConversationsAsMitraInput = {
@@ -4665,6 +5084,11 @@ export type UserUpdateWithoutConversationsAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
@@ -4713,6 +5137,11 @@ export type UserUncheckedUpdateWithoutConversationsAsCustomerInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutConversationsAsMitraInput = {
@@ -4772,6 +5201,11 @@ export type UserUpdateWithoutConversationsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
@@ -4820,6 +5254,11 @@ export type UserUncheckedUpdateWithoutConversationsAsMitraInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutSentMessagesInput = {
@@ -4868,6 +5307,11 @@ export type UserCreateWithoutSentMessagesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -4916,6 +5360,11 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -4980,6 +5429,11 @@ export type UserUpdateWithoutSentMessagesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -5028,6 +5482,11 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {
@@ -5076,6 +5535,11 @@ export type UserCreateWithoutReviewsGivenInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutReviewsGivenInput = {
@@ -5124,6 +5588,11 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutReviewsGivenInput = {
@@ -5177,6 +5646,11 @@ export type UserCreateWithoutReviewsReceivedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutReviewsReceivedInput = {
@@ -5225,6 +5699,11 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutReviewsReceivedInput = {
@@ -5289,6 +5768,11 @@ export type UserUpdateWithoutReviewsGivenInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsGivenInput = {
@@ -5337,6 +5821,11 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUpsertWithoutReviewsReceivedInput = {
@@ -5396,6 +5885,11 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -5444,6 +5938,11 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutVehiclesInput = {
@@ -5492,6 +5991,11 @@ export type UserCreateWithoutVehiclesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutVehiclesInput = {
@@ -5540,6 +6044,11 @@ export type UserUncheckedCreateWithoutVehiclesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutVehiclesInput = {
@@ -5604,6 +6113,11 @@ export type UserUpdateWithoutVehiclesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVehiclesInput = {
@@ -5652,6 +6166,11 @@ export type UserUncheckedUpdateWithoutVehiclesInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutMerchandiseRedemptionsInput = {
@@ -5700,6 +6219,11 @@ export type UserCreateWithoutMerchandiseRedemptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
@@ -5748,6 +6272,11 @@ export type UserUncheckedCreateWithoutMerchandiseRedemptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutMerchandiseRedemptionsInput = {
@@ -5812,6 +6341,11 @@ export type UserUpdateWithoutMerchandiseRedemptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
@@ -5860,6 +6394,11 @@ export type UserUncheckedUpdateWithoutMerchandiseRedemptionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutNotificationPreferenceInput = {
@@ -5908,6 +6447,11 @@ export type UserCreateWithoutNotificationPreferenceInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
@@ -5956,6 +6500,11 @@ export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationPreferenceInput = {
@@ -6020,6 +6569,11 @@ export type UserUpdateWithoutNotificationPreferenceInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
@@ -6068,6 +6622,11 @@ export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutDeviceTokensInput = {
@@ -6116,6 +6675,11 @@ export type UserCreateWithoutDeviceTokensInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutDeviceTokensInput = {
@@ -6164,6 +6728,11 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutDeviceTokensInput = {
@@ -6228,6 +6797,11 @@ export type UserUpdateWithoutDeviceTokensInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceTokensInput = {
@@ -6276,6 +6850,11 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutNotificationLogsInput = {
@@ -6324,6 +6903,11 @@ export type UserCreateWithoutNotificationLogsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationLogsInput = {
@@ -6372,6 +6956,11 @@ export type UserUncheckedCreateWithoutNotificationLogsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationLogsInput = {
@@ -6436,6 +7025,11 @@ export type UserUpdateWithoutNotificationLogsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationLogsInput = {
@@ -6484,6 +7078,11 @@ export type UserUncheckedUpdateWithoutNotificationLogsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutUserNotificationsInput = {
@@ -6532,6 +7131,11 @@ export type UserCreateWithoutUserNotificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutUserNotificationsInput = {
@@ -6580,6 +7184,11 @@ export type UserUncheckedCreateWithoutUserNotificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutUserNotificationsInput = {
@@ -6644,6 +7253,11 @@ export type UserUpdateWithoutUserNotificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserNotificationsInput = {
@@ -6692,6 +7306,11 @@ export type UserUncheckedUpdateWithoutUserNotificationsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutMitraSanctionsInput = {
@@ -6740,6 +7359,11 @@ export type UserCreateWithoutMitraSanctionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutMitraSanctionsInput = {
@@ -6788,6 +7412,11 @@ export type UserUncheckedCreateWithoutMitraSanctionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutMitraSanctionsInput = {
@@ -6852,6 +7481,11 @@ export type UserUpdateWithoutMitraSanctionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMitraSanctionsInput = {
@@ -6900,6 +7534,11 @@ export type UserUncheckedUpdateWithoutMitraSanctionsInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutMitraSanctionAppealsInput = {
@@ -6948,6 +7587,11 @@ export type UserCreateWithoutMitraSanctionAppealsInput = {
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutMitraSanctionAppealsInput = {
@@ -6996,6 +7640,11 @@ export type UserUncheckedCreateWithoutMitraSanctionAppealsInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutMitraSanctionAppealsInput = {
@@ -7060,6 +7709,11 @@ export type UserUpdateWithoutMitraSanctionAppealsInput = {
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMitraSanctionAppealsInput = {
@@ -7108,6 +7762,11 @@ export type UserUncheckedUpdateWithoutMitraSanctionAppealsInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutUserVouchersInput = {
@@ -7156,6 +7815,11 @@ export type UserCreateWithoutUserVouchersInput = {
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutUserVouchersInput = {
@@ -7204,6 +7868,11 @@ export type UserUncheckedCreateWithoutUserVouchersInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutUserVouchersInput = {
@@ -7268,6 +7937,11 @@ export type UserUpdateWithoutUserVouchersInput = {
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserVouchersInput = {
@@ -7316,6 +7990,11 @@ export type UserUncheckedUpdateWithoutUserVouchersInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserCreateWithoutVoucherRedemptionsInput = {
@@ -7364,6 +8043,11 @@ export type UserCreateWithoutVoucherRedemptionsInput = {
   mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
   userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
 }
 
 export type UserUncheckedCreateWithoutVoucherRedemptionsInput = {
@@ -7412,6 +8096,11 @@ export type UserUncheckedCreateWithoutVoucherRedemptionsInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
   userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
 }
 
 export type UserCreateOrConnectWithoutVoucherRedemptionsInput = {
@@ -7476,6 +8165,11 @@ export type UserUpdateWithoutVoucherRedemptionsInput = {
   mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVoucherRedemptionsInput = {
@@ -7524,6 +8218,1151 @@ export type UserUncheckedUpdateWithoutVoucherRedemptionsInput = {
   mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserCreateWithoutCustomerSosAlertsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
+}
+
+export type UserUncheckedCreateWithoutCustomerSosAlertsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
+}
+
+export type UserCreateOrConnectWithoutCustomerSosAlertsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedCreateWithoutCustomerSosAlertsInput>
+}
+
+export type UserCreateWithoutResolvedSosAlertsInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
+}
+
+export type UserUncheckedCreateWithoutResolvedSosAlertsInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
+}
+
+export type UserCreateOrConnectWithoutResolvedSosAlertsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedCreateWithoutResolvedSosAlertsInput>
+}
+
+export type UserUpsertWithoutCustomerSosAlertsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedUpdateWithoutCustomerSosAlertsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedCreateWithoutCustomerSosAlertsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCustomerSosAlertsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCustomerSosAlertsInput, Prisma.UserUncheckedUpdateWithoutCustomerSosAlertsInput>
+}
+
+export type UserUpdateWithoutCustomerSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCustomerSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUpsertWithoutResolvedSosAlertsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedUpdateWithoutResolvedSosAlertsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedCreateWithoutResolvedSosAlertsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutResolvedSosAlertsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutResolvedSosAlertsInput, Prisma.UserUncheckedUpdateWithoutResolvedSosAlertsInput>
+}
+
+export type UserUpdateWithoutResolvedSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutResolvedSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserCreateWithoutReportsCreatedInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
+}
+
+export type UserUncheckedCreateWithoutReportsCreatedInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
+}
+
+export type UserCreateOrConnectWithoutReportsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+}
+
+export type UserCreateWithoutReportsTargetedInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.UserReportCreateNestedManyWithoutHandledByInput
+}
+
+export type UserUncheckedCreateWithoutReportsTargetedInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.UserReportUncheckedCreateNestedManyWithoutHandledByInput
+}
+
+export type UserCreateOrConnectWithoutReportsTargetedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsTargetedInput, Prisma.UserUncheckedCreateWithoutReportsTargetedInput>
+}
+
+export type UserCreateWithoutReportsHandledInput = {
+  id?: bigint | number
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  region?: Prisma.RegionCreateNestedOneWithoutUsersInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportCreateNestedManyWithoutReportedUserInput
+}
+
+export type UserUncheckedCreateWithoutReportsHandledInput = {
+  id?: bigint | number
+  regionId?: bigint | number | null
+  name: string
+  email: string
+  phone: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.UserStatus
+  statusVerification?: $Enums.VerificationStatus
+  pinHash?: string | null
+  refreshToken?: string | null
+  passwordResetToken?: string | null
+  passwordResetTokenExpiresAt?: Date | string | null
+  avatar?: string | null
+  rewardPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedCreateNestedManyWithoutOperatorInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  approvedVerifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutApprovedByUserInput
+  tripsAsMitra?: Prisma.TripUncheckedCreateNestedManyWithoutMitraInput
+  ordersAsCustomer?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutScannedByUserInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedCreateNestedManyWithoutUserInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedCreateNestedManyWithoutCustomerInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedCreateNestedManyWithoutMitraInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviewsGiven?: Prisma.TripReviewUncheckedCreateNestedManyWithoutReviewerInput
+  reviewsReceived?: Prisma.TripReviewUncheckedCreateNestedManyWithoutRevieweeInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutUserInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedCreateNestedManyWithoutUserInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  notificationLogs?: Prisma.NotificationLogUncheckedCreateNestedManyWithoutUserInput
+  userNotifications?: Prisma.UserNotificationUncheckedCreateNestedManyWithoutUserInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutNoShowMarkedByUserInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutMitraNoShowMarkedByUserInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOperatorInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  cancelledTrips?: Prisma.TripUncheckedCreateNestedManyWithoutCancelledByUserInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedCreateNestedManyWithoutMitraInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedCreateNestedManyWithoutMitraInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedCreateNestedManyWithoutUserInput
+  userVouchers?: Prisma.UserVoucherUncheckedCreateNestedManyWithoutUserInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutCustomerInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutResolvedByUserInput
+  reportsCreated?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTargeted?: Prisma.UserReportUncheckedCreateNestedManyWithoutReportedUserInput
+}
+
+export type UserCreateOrConnectWithoutReportsHandledInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+}
+
+export type UserUpsertWithoutReportsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsCreatedInput, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsCreatedInput, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+}
+
+export type UserUpdateWithoutReportsCreatedInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsCreatedInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUpsertWithoutReportsTargetedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsTargetedInput, Prisma.UserUncheckedUpdateWithoutReportsTargetedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsTargetedInput, Prisma.UserUncheckedCreateWithoutReportsTargetedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsTargetedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsTargetedInput, Prisma.UserUncheckedUpdateWithoutReportsTargetedInput>
+}
+
+export type UserUpdateWithoutReportsTargetedInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsTargetedInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
+}
+
+export type UserUpsertWithoutReportsHandledInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsHandledInput, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsHandledInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsHandledInput, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+}
+
+export type UserUpdateWithoutReportsHandledInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutUsersNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsHandledInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  regionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  statusVerification?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  pinHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  assignedPickupPoints?: Prisma.PickupPointUncheckedUpdateManyWithoutOperatorNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  approvedVerifications?: Prisma.VerificationUncheckedUpdateManyWithoutApprovedByUserNestedInput
+  tripsAsMitra?: Prisma.TripUncheckedUpdateManyWithoutMitraNestedInput
+  ordersAsCustomer?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkpointsScanned?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutScannedByUserNestedInput
+  rewardTransactions?: Prisma.RewardTransactionUncheckedUpdateManyWithoutUserNestedInput
+  conversationsAsCustomer?: Prisma.ConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  conversationsAsMitra?: Prisma.ConversationUncheckedUpdateManyWithoutMitraNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviewsGiven?: Prisma.TripReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewsReceived?: Prisma.TripReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutUserNestedInput
+  merchandiseRedemptions?: Prisma.MerchandiseRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  notificationLogs?: Prisma.NotificationLogUncheckedUpdateManyWithoutUserNestedInput
+  userNotifications?: Prisma.UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+  noShowMarkedOrders?: Prisma.OrderUncheckedUpdateManyWithoutNoShowMarkedByUserNestedInput
+  mitraNoShowMarkedTrips?: Prisma.TripUncheckedUpdateManyWithoutMitraNoShowMarkedByUserNestedInput
+  noShowAuditLogsOperator?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOperatorNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  cancelledTrips?: Prisma.TripUncheckedUpdateManyWithoutCancelledByUserNestedInput
+  mitraSanctions?: Prisma.MitraSanctionUncheckedUpdateManyWithoutMitraNestedInput
+  mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
+  voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
+  userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
 }
 
 export type UserCreateManyRegionInput = {
@@ -7591,6 +9430,11 @@ export type UserUpdateWithoutRegionInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRegionInput = {
@@ -7639,6 +9483,11 @@ export type UserUncheckedUpdateWithoutRegionInput = {
   mitraSanctionAppeals?: Prisma.MitraSanctionAppealUncheckedUpdateManyWithoutMitraNestedInput
   voucherRedemptions?: Prisma.VoucherRedemptionUncheckedUpdateManyWithoutUserNestedInput
   userVouchers?: Prisma.UserVoucherUncheckedUpdateManyWithoutUserNestedInput
+  customerSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutCustomerNestedInput
+  resolvedSosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutResolvedByUserNestedInput
+  reportsCreated?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTargeted?: Prisma.UserReportUncheckedUpdateManyWithoutReportedUserNestedInput
+  reportsHandled?: Prisma.UserReportUncheckedUpdateManyWithoutHandledByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRegionInput = {
@@ -7692,6 +9541,11 @@ export type UserCountOutputType = {
   mitraSanctionAppeals: number
   voucherRedemptions: number
   userVouchers: number
+  customerSosAlerts: number
+  resolvedSosAlerts: number
+  reportsCreated: number
+  reportsTargeted: number
+  reportsHandled: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -7721,6 +9575,11 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   mitraSanctionAppeals?: boolean | UserCountOutputTypeCountMitraSanctionAppealsArgs
   voucherRedemptions?: boolean | UserCountOutputTypeCountVoucherRedemptionsArgs
   userVouchers?: boolean | UserCountOutputTypeCountUserVouchersArgs
+  customerSosAlerts?: boolean | UserCountOutputTypeCountCustomerSosAlertsArgs
+  resolvedSosAlerts?: boolean | UserCountOutputTypeCountResolvedSosAlertsArgs
+  reportsCreated?: boolean | UserCountOutputTypeCountReportsCreatedArgs
+  reportsTargeted?: boolean | UserCountOutputTypeCountReportsTargetedArgs
+  reportsHandled?: boolean | UserCountOutputTypeCountReportsHandledArgs
 }
 
 /**
@@ -7915,6 +9774,41 @@ export type UserCountOutputTypeCountUserVouchersArgs<ExtArgs extends runtime.Typ
   where?: Prisma.UserVoucherWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCustomerSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SosAlertWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountResolvedSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SosAlertWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsTargetedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsHandledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -7964,6 +9858,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   mitraSanctionAppeals?: boolean | Prisma.User$mitraSanctionAppealsArgs<ExtArgs>
   voucherRedemptions?: boolean | Prisma.User$voucherRedemptionsArgs<ExtArgs>
   userVouchers?: boolean | Prisma.User$userVouchersArgs<ExtArgs>
+  customerSosAlerts?: boolean | Prisma.User$customerSosAlertsArgs<ExtArgs>
+  resolvedSosAlerts?: boolean | Prisma.User$resolvedSosAlertsArgs<ExtArgs>
+  reportsCreated?: boolean | Prisma.User$reportsCreatedArgs<ExtArgs>
+  reportsTargeted?: boolean | Prisma.User$reportsTargetedArgs<ExtArgs>
+  reportsHandled?: boolean | Prisma.User$reportsHandledArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -8021,6 +9920,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   mitraSanctionAppeals?: boolean | Prisma.User$mitraSanctionAppealsArgs<ExtArgs>
   voucherRedemptions?: boolean | Prisma.User$voucherRedemptionsArgs<ExtArgs>
   userVouchers?: boolean | Prisma.User$userVouchersArgs<ExtArgs>
+  customerSosAlerts?: boolean | Prisma.User$customerSosAlertsArgs<ExtArgs>
+  resolvedSosAlerts?: boolean | Prisma.User$resolvedSosAlertsArgs<ExtArgs>
+  reportsCreated?: boolean | Prisma.User$reportsCreatedArgs<ExtArgs>
+  reportsTargeted?: boolean | Prisma.User$reportsTargetedArgs<ExtArgs>
+  reportsHandled?: boolean | Prisma.User$reportsHandledArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -8057,6 +9961,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     mitraSanctionAppeals: Prisma.$MitraSanctionAppealPayload<ExtArgs>[]
     voucherRedemptions: Prisma.$VoucherRedemptionPayload<ExtArgs>[]
     userVouchers: Prisma.$UserVoucherPayload<ExtArgs>[]
+    customerSosAlerts: Prisma.$SosAlertPayload<ExtArgs>[]
+    resolvedSosAlerts: Prisma.$SosAlertPayload<ExtArgs>[]
+    reportsCreated: Prisma.$UserReportPayload<ExtArgs>[]
+    reportsTargeted: Prisma.$UserReportPayload<ExtArgs>[]
+    reportsHandled: Prisma.$UserReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -8446,6 +10355,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   mitraSanctionAppeals<T extends Prisma.User$mitraSanctionAppealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitraSanctionAppealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MitraSanctionAppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   voucherRedemptions<T extends Prisma.User$voucherRedemptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$voucherRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VoucherRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userVouchers<T extends Prisma.User$userVouchersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userVouchersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserVoucherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customerSosAlerts<T extends Prisma.User$customerSosAlertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customerSosAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SosAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  resolvedSosAlerts<T extends Prisma.User$resolvedSosAlertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resolvedSosAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SosAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsCreated<T extends Prisma.User$reportsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsTargeted<T extends Prisma.User$reportsTargetedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsTargetedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsHandled<T extends Prisma.User$reportsHandledArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsHandledArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9537,6 +11451,126 @@ export type User$userVouchersArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.UserVoucherScalarFieldEnum | Prisma.UserVoucherScalarFieldEnum[]
+}
+
+/**
+ * User.customerSosAlerts
+ */
+export type User$customerSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SosAlert
+   */
+  select?: Prisma.SosAlertSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SosAlert
+   */
+  omit?: Prisma.SosAlertOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SosAlertInclude<ExtArgs> | null
+  where?: Prisma.SosAlertWhereInput
+  orderBy?: Prisma.SosAlertOrderByWithRelationInput | Prisma.SosAlertOrderByWithRelationInput[]
+  cursor?: Prisma.SosAlertWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SosAlertScalarFieldEnum | Prisma.SosAlertScalarFieldEnum[]
+}
+
+/**
+ * User.resolvedSosAlerts
+ */
+export type User$resolvedSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SosAlert
+   */
+  select?: Prisma.SosAlertSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SosAlert
+   */
+  omit?: Prisma.SosAlertOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SosAlertInclude<ExtArgs> | null
+  where?: Prisma.SosAlertWhereInput
+  orderBy?: Prisma.SosAlertOrderByWithRelationInput | Prisma.SosAlertOrderByWithRelationInput[]
+  cursor?: Prisma.SosAlertWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SosAlertScalarFieldEnum | Prisma.SosAlertScalarFieldEnum[]
+}
+
+/**
+ * User.reportsCreated
+ */
+export type User$reportsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
+}
+
+/**
+ * User.reportsTargeted
+ */
+export type User$reportsTargetedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
+}
+
+/**
+ * User.reportsHandled
+ */
+export type User$reportsHandledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
 }
 
 /**

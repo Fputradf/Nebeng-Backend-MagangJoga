@@ -273,7 +273,13 @@ export class OrdersRepository {
             include: {
               originPoint: true,
               destinationPoint: true,
-              mitra: true,
+              mitra: {
+                include: {
+                  reviewsReceived: {
+                    select: { rating: true },
+                  },
+                },
+              },
             },
           },
           customer: true,
@@ -296,7 +302,13 @@ export class OrdersRepository {
           include: {
             originPoint: true,
             destinationPoint: true,
-            mitra: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
             vehicle: true,
             checkpointsLogs: {
               include: {
@@ -336,7 +348,13 @@ export class OrdersRepository {
               },
             },
             destinationPoint: true,
-            mitra: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
             vehicle: true,
             checkpointsLogs: {
               include: {
@@ -367,7 +385,20 @@ export class OrdersRepository {
       include: {
         customer: true,
         passengers: true,
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
+            vehicle: true,
+          },
+        },
       },
     });
   }
@@ -385,7 +416,20 @@ export class OrdersRepository {
         ...(escrowStatus && { escrowStatus }),
       },
       include: {
-        trip: true,
+        trip: {
+          include: {
+            originPoint: true,
+            destinationPoint: true,
+            mitra: {
+              include: {
+                reviewsReceived: {
+                  select: { rating: true },
+                },
+              },
+            },
+            vehicle: true,
+          },
+        },
         itemOrders: true,
       },
     });

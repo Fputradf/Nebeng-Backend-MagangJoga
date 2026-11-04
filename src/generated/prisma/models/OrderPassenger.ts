@@ -488,14 +488,6 @@ export type OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput = {
   deleteMany?: Prisma.OrderPassengerScalarWhereInput | Prisma.OrderPassengerScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type OrderPassengerCreateWithoutOrderInput = {
   id?: bigint | number
   seatNumber?: number | null

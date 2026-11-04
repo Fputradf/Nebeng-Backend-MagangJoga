@@ -12,6 +12,19 @@ export class UserResponseDto {
   @ApiPropertyOptional({ example: '1' })
   regionId?: string | null;
 
+  @ApiPropertyOptional({ example: 'Solo Raya' })
+  regionName?: string | null;
+
+  @ApiPropertyOptional({ example: 'SLO' })
+  regionCode?: string | null;
+
+  @ApiPropertyOptional()
+  region?: {
+    id: string;
+    name: string;
+    code: string;
+  } | null;
+
   @ApiProperty({ example: 'Jhons' })
   name!: string;
 

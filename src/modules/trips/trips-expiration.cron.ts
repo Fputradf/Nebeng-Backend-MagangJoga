@@ -36,15 +36,16 @@ export class TripsExpirationCron {
   async handleExpiredTrips() {
     try {
       const now = new Date();
-      const TOLERANCE_MINUTES = 15;
-      const TOLERANCE_MS = TOLERANCE_MINUTES * 60 * 1000;
+      const toleranceMinutes = await this.sanctionService.getLateToleranceMinutes();
+      const toleranceMs = toleranceMinutes * 60 * 1000;
 
-      // Cari trip yang masih scheduled dengan departureDate <= hari ini
+      // Cari trip yang masih scheduled dengan departureDate <= hari esok (mengantisipasi offset WIB +7)
+      const lookAheadDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
       const scheduledTrips = await this.prisma.trip.findMany({
         where: {
           status: TripStatus.scheduled,
           departureDate: {
-            lte: now,
+            lte: lookAheadDate,
           },
         },
         include: {
@@ -81,16 +82,17 @@ export class TripsExpirationCron {
               : timeIso.substring(0, 8);
           }
 
-          const departureDateTime = new Date(`${datePart}T${timePart}Z`);
+          // Gunakan offset WIB (+07:00) yang konsisten
+          const departureDateTime = new Date(`${datePart}T${timePart}+07:00`);
           if (isNaN(departureDateTime.getTime())) {
             continue;
           }
 
           const expirationThreshold = new Date(
-            departureDateTime.getTime() + TOLERANCE_MS,
+            departureDateTime.getTime() + toleranceMs,
           );
 
-          // Hanya proses jika sudah lewat toleransi 15 menit
+          // Hanya proses jika sudah lewat toleransi waktu
           if (now < expirationThreshold) {
             continue;
           }
@@ -103,13 +105,17 @@ export class TripsExpirationCron {
                 status: TripStatus.cancelled,
               },
             });
+            await this.prisma.tripQrSession.updateMany({
+              where: { tripId: trip.id, isUsed: false },
+              data: { isUsed: true, expiredAt: now },
+            });
             this.logger.log(
-              `Trip #${trip.id} otomatis dibatalkan (toleransi 15 menit terlewat tanpa pesanan aktif).`,
+              `Trip #${trip.id} otomatis dibatalkan (toleransi ${toleranceMinutes} menit terlewat tanpa pesanan aktif).`,
             );
             continue;
           }
 
-          // B. Trip Memiliki Order Aktif -> Mitra No-Show & Skenario C
+          // B. Trip Memiliki Order Aktif -> Mitra No-Show & Pembatalan Otomatis
           await this.prisma.$transaction(async (tx) => {
             const activeOrders = trip.orders;
 
@@ -125,34 +131,34 @@ export class TripsExpirationCron {
                 adminFeePercentage,
               });
 
-              // Skenario C: Refund HANYA untuk customer yang sudah check-in di pos asal
-              if (isCustomerCheckedIn) {
-                let customerWallet = await tx.wallet.findUnique({
-                  where: { userId: order.customerId },
-                });
-                if (!customerWallet) {
-                  customerWallet = await tx.wallet.create({
-                    data: {
-                      userId: order.customerId,
-                      balance: 0,
-                      heldEscrowBalance: 0,
-                    },
-                  });
-                }
-                await tx.wallet.update({
-                  where: { id: customerWallet.id },
-                  data: { balance: { increment: financials.customerPaid } },
-                });
-                await tx.walletTransaction.create({
+              // Refund dana ke Customer karena trip gagal berangkat tepat waktu
+              let customerWallet = await tx.wallet.findUnique({
+                where: { userId: order.customerId },
+              });
+              if (!customerWallet) {
+                customerWallet = await tx.wallet.create({
                   data: {
-                    walletId: customerWallet.id,
-                    orderId: order.id,
-                    amount: financials.customerPaid,
-                    type: TransactionType.credit,
-                    description: `Refund (Mitra No-Show, Customer Hadir di Pos) #${order.id}`,
+                    userId: order.customerId,
+                    balance: 0,
+                    heldEscrowBalance: 0,
                   },
                 });
               }
+              await tx.wallet.update({
+                where: { id: customerWallet.id },
+                data: { balance: { increment: financials.customerPaid } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: customerWallet.id,
+                  orderId: order.id,
+                  amount: financials.customerPaid,
+                  type: TransactionType.credit,
+                  description: isCustomerCheckedIn
+                    ? `Refund (Mitra No-Show, Customer Hadir di Pos) #${order.id}`
+                    : `Refund Otomatis (Trip Batal Melebihi Toleransi ${toleranceMinutes} Mnt) #${order.id}`,
+                },
+              });
 
               // Tarik dana escrow mitra
               const mitraWallet = await tx.wallet.findUnique({
@@ -171,27 +177,28 @@ export class TripsExpirationCron {
                     orderId: order.id,
                     amount: financials.netMitra,
                     type: TransactionType.debit,
-                    description: `Penarikan Escrow (Mitra No-Show) #${order.id}`,
+                    description: `Penarikan Escrow (Mitra No-Show/Batal) #${order.id}`,
                   },
                 });
               }
 
-              // Update status order
+              // Update status order menjadi cancelled
               await tx.order.update({
                 where: { id: order.id },
                 data: {
-                  status: isCustomerCheckedIn
-                    ? OrderStatus.cancelled
-                    : OrderStatus.no_show,
+                  status: OrderStatus.cancelled,
                   escrowStatus: EscrowStatus.refunded,
-                  ...(isCustomerCheckedIn
-                    ? {}
-                    : {
-                        noShowMarkedAt: now,
-                        noShowReason:
-                          'Customer tidak hadir / check in di pos asal saat jadwal trip',
-                      }),
+                  noShowMarkedAt: now,
+                  noShowReason: isCustomerCheckedIn
+                    ? 'Mitra tidak hadir di pos asal melewati batas toleransi'
+                    : `Otomatis tercancel: Mitra & customer tidak hadir melewati toleransi ${toleranceMinutes} menit`,
                 },
+              });
+
+              // Nonaktifkan QR Session Order
+              await tx.orderQrSession.updateMany({
+                where: { orderId: order.id, isUsed: false },
+                data: { isUsed: true, expiredAt: now },
               });
 
               // Release voucher jika ada
@@ -201,6 +208,12 @@ export class TripsExpirationCron {
               });
             }
 
+            // Nonaktifkan QR Session Trip
+            await tx.tripQrSession.updateMany({
+              where: { tripId: trip.id, isUsed: false },
+              data: { isUsed: true, expiredAt: now },
+            });
+
             // Update status trip ke mitra_no_show
             await tx.trip.update({
               where: { id: trip.id },
@@ -208,7 +221,7 @@ export class TripsExpirationCron {
                 status: TripStatus.mitra_no_show,
                 mitraNoShowMarkedAt: now,
                 mitraNoShowReason:
-                  'Mitra tidak hadir ke pos asal melewati toleransi 15 menit',
+                  `Mitra tidak hadir ke pos asal melewati toleransi ${toleranceMinutes} menit`,
               },
             });
 
@@ -239,7 +252,7 @@ export class TripsExpirationCron {
           }
 
           this.logger.log(
-            `Trip #${trip.id} otomatis diproses mitra_no_show setelah lewat toleransi 15 menit. Mitra disanksi suspend 1 hari.`,
+            `Trip #${trip.id} otomatis diproses mitra_no_show setelah lewat toleransi ${toleranceMinutes} menit. Mitra disanksi suspend 1 hari.`,
           );
         } catch (tripErr: any) {
           this.logger.error(
@@ -307,7 +320,7 @@ export class TripsExpirationCron {
               : timeIso.substring(0, 8);
           }
 
-          const departureDateTime = new Date(`${datePart}T${timePart}Z`);
+          const departureDateTime = new Date(`${datePart}T${timePart}+07:00`);
           if (isNaN(departureDateTime.getTime())) continue;
 
           // Selisih menit dari sekarang hingga waktu keberangkatan

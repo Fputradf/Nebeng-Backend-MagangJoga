@@ -30,7 +30,7 @@ export class BannersRepository {
   async create(data: {
     title: string;
     imageUrl: string;
-    linkUrl?: string;
+    linkUrl?: string | null;
     isActive?: boolean;
     targetRole?: Role | null;
   }) {
@@ -44,7 +44,7 @@ export class BannersRepository {
     data: {
       title?: string;
       imageUrl?: string;
-      linkUrl?: string;
+      linkUrl?: string | null;
       isActive?: boolean;
       targetRole?: Role | null;
     },

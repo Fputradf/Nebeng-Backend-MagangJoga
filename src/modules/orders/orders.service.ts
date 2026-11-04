@@ -250,11 +250,30 @@ export class OrdersService {
           );
         }
 
+        const parcelBaseFare = Number(parcelPricing.baseFare);
+        const parcelFarePerKm = Number(parcelPricing.farePerKm) || 1000;
+        let tripDistanceKm = 10;
+        if (trip.originPoint && trip.destinationPoint) {
+          const oLat = Number(trip.originPoint.latitude || 0);
+          const oLng = Number(trip.originPoint.longitude || 0);
+          const dLat = Number(trip.destinationPoint.latitude || 0);
+          const dLng = Number(trip.destinationPoint.longitude || 0);
+          if (oLat && dLat) {
+            const R = 6371;
+            const dL = ((dLat - oLat) * Math.PI) / 180;
+            const dG = ((dLng - oLng) * Math.PI) / 180;
+            const a =
+              Math.sin(dL / 2) * Math.sin(dL / 2) +
+              Math.cos((oLat * Math.PI) / 180) *
+                Math.cos((dLat * Math.PI) / 180) *
+                Math.sin(dG / 2) *
+                Math.sin(dG / 2);
+            tripDistanceKm = Math.max(1, Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 1.3));
+          }
+        }
+
         const itemBaseRate =
-          Number(trip.price) > 0
-            ? Number(trip.price)
-            : Number(parcelPricing.baseFare) +
-              (Number(parcelPricing.farePerKm) || 2000);
+          parcelBaseFare + Math.round(tripDistanceKm * parcelFarePerKm);
 
         const singleItemPrice = itemBaseRate * item.quantity;
         totalPrice += singleItemPrice;

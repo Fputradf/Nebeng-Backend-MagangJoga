@@ -7,6 +7,7 @@ import {
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @WebSocketGateway({
   cors: {
@@ -20,7 +21,10 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
 
   private readonly logger = new Logger(NotificationsGateway.name);
 
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private prisma: PrismaService,
+  ) {}
 
   private extractToken(client: Socket): string | null {
     const raw =
@@ -60,8 +64,36 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
       await client.join(roomName);
       this.logger.log(`Client ${client.id} joined room ${roomName}`);
 
-      // Send initial unread count
-      // This will be handled by the frontend when it connects
+      // Check if user is regional admin, admin, or pos operator
+      if (payload.role === 'regional' || payload.role === 'admin' || payload.role === 'operator') {
+        const user = await this.prisma.user.findUnique({
+          where: { id: BigInt(userId) },
+          select: {
+            regionId: true,
+            role: true,
+            assignedPickupPoints: { select: { id: true, regionId: true } },
+          },
+        });
+
+        if (user?.regionId) {
+          const regionRoom = `admin_region_${user.regionId}`;
+          await client.join(regionRoom);
+          this.logger.log(`Client ${client.id} joined regional room ${regionRoom}`);
+        }
+        if (payload.role === 'admin') {
+          await client.join('role_admin');
+          this.logger.log(`Admin client ${client.id} joined room role_admin`);
+        }
+        if (payload.role === 'operator') {
+          await client.join('role_operator');
+          for (const pos of user?.assignedPickupPoints || []) {
+            if (pos.regionId) {
+              await client.join(`admin_region_${pos.regionId}`);
+            }
+          }
+          this.logger.log(`Operator client ${client.id} joined room role_operator`);
+        }
+      }
     } catch (error) {
       this.logger.warn(`Socket connection rejected: ${error.message}`);
       client.disconnect(true);
@@ -85,5 +117,22 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     this.server.to(`user_${userId}`).emit('notification:unread-count', {
       unreadCount,
     });
+  }
+
+  // Method to emit SOS alert to regional admins, superadmins, and pos operators
+  async emitSosAlertToRegion(regionId: string, sosAlert: any) {
+    this.logger.log(`Emitting emergency:sos_alert to admin_region_${regionId}, role_admin, and role_operator`);
+    this.server.to(`admin_region_${regionId}`).emit('emergency:sos_alert', sosAlert);
+    this.server.to('role_admin').emit('emergency:sos_alert', sosAlert);
+    this.server.to('role_operator').emit('emergency:sos_alert', sosAlert);
+  }
+
+  // Method to emit SOS resolved to regional admins, superadmins, pos operators, and customer
+  async emitSosResolvedToRegion(regionId: string, customerId: string, sosAlert: any) {
+    this.logger.log(`Emitting emergency:sos_resolved to admin_region_${regionId}, role_admin, role_operator, and user_${customerId}`);
+    this.server.to(`admin_region_${regionId}`).emit('emergency:sos_resolved', sosAlert);
+    this.server.to('role_admin').emit('emergency:sos_resolved', sosAlert);
+    this.server.to('role_operator').emit('emergency:sos_resolved', sosAlert);
+    this.server.to(`user_${customerId}`).emit('emergency:sos_resolved', sosAlert);
   }
 }

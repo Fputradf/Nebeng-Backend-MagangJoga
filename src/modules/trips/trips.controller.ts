@@ -22,7 +22,7 @@ import { CancelTripByMitraDto } from './dto/cancel-trip-by-mitra.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { Role } from '../../generated/prisma/enums';
+import { Role, ServiceType } from '../../generated/prisma/enums';
 import { GetUser } from '../../common/decorators/get-user.decorators';
 
 @ApiTags('Trips')
@@ -72,6 +72,21 @@ export class TripsController {
     @Query() query: QueryTripDto,
   ) {
     return this.tripsService.getTripsByMitra(String(userId), query);
+  }
+
+  @Get('estimate-fare')
+  @ApiOperation({ summary: 'Estimasi tarif perjalanan dan rute berdasarkan jarak (OSRM)' })
+  @ApiResponse({ status: 200, description: 'Estimasi tarif dan rute berhasil dihitung' })
+  async estimateFare(
+    @Query('originPointId') originPointId: string,
+    @Query('destinationPointId') destinationPointId: string,
+    @Query('serviceType') serviceType: ServiceType,
+  ) {
+    return this.tripsService.estimateTripFare(
+      originPointId,
+      destinationPointId,
+      serviceType || ServiceType.motor,
+    );
   }
 
   @Get(':id')

@@ -353,10 +353,15 @@ export class CheckpointsService {
         console.log('    Current:', targetPosId);
       }
 
-      // Cegah check-in origin jika trip sudah selesai atau dibatalkan
-      if (trip.status === TripStatus.completed || trip.status === TripStatus.cancelled) {
+      // Cegah check-in origin jika trip sudah selesai, dibatalkan, atau mitra tidak hadir
+      if (
+        trip.status === TripStatus.completed ||
+        trip.status === TripStatus.cancelled ||
+        trip.status === TripStatus.mitra_no_show ||
+        trip.status === TripStatus.cancelled_by_mitra
+      ) {
         throw new BadRequestException(
-          'Trip ini sudah selesai atau dibatalkan. Tidak dapat melakukan check-in origin.',
+          'Trip ini sudah tidak aktif (selesai, dibatalkan, atau mitra tidak hadir melewati batas toleransi).',
         );
       }
 
@@ -438,19 +443,6 @@ export class CheckpointsService {
         throw new BadRequestException(
           'Trip ini sudah selesai. Tidak dapat melakukan check-in destination lagi.',
         );
-      }
-
-      if (order.type === OrderType.parcel) {
-        if (!dto.otpClaim) {
-          throw new BadRequestException(
-            'Kode OTP Klaim penerima wajib diisi untuk penyerahan paket.',
-          );
-        }
-        if (order.otpClaim !== dto.otpClaim) {
-          throw new BadRequestException(
-            'Kode OTP Klaim yang dimasukkan salah/tidak cocok.',
-          );
-        }
       }
 
       const serviceType =
@@ -569,14 +561,6 @@ export class CheckpointsService {
 
     if (!trip) {
       throw new NotFoundException('Trip terkait tidak ditemukan.');
-    }
-
-    if (
-      order.type === OrderType.parcel &&
-      order.otpClaim &&
-      order.otpClaim !== otpClaim
-    ) {
-      throw new BadRequestException('Kode OTP Klaim paket tidak cocok.');
     }
 
     const pricingSetting = await this.prisma.pricingSetting.findFirst({
@@ -818,6 +802,7 @@ export class CheckpointsService {
     const trips = await this.checkpointsRepository.getManifestForPos(
       targetPosIds,
       dateStr,
+      query.scope,
     );
 
     const now = new Date();
@@ -889,6 +874,9 @@ export class CheckpointsService {
           ? `${trip.vehicle.model} (${trip.vehicle.plateNumber})`
           : 'Kendaraan Resmi',
         vehicleType: trip.vehicleType,
+        departureDate: trip.departureDate
+          ? trip.departureDate.toISOString().split('T')[0]
+          : null,
         departureTime: trip.departureTime,
         status: trip.status,
         originPoint: trip.originPoint.name,
@@ -903,6 +891,7 @@ export class CheckpointsService {
     return {
       posId: targetPosId ? targetPosId.toString() : '',
       date: dateStr,
+      scope: query.scope || 'date',
       availablePos: assignedPoints.map((p) => ({
         id: p.id.toString(),
         name: p.name,

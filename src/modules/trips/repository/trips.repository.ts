@@ -18,7 +18,14 @@ export class TripsRepository {
     return this.prisma.trip.create({
       data,
       include: {
-        mitra: true,
+        mitra: {
+          include: {
+            region: true,
+            reviewsReceived: {
+              select: { rating: true },
+            },
+          },
+        },
         vehicle: true,
         originPoint: {
           include: { region: true },
@@ -63,11 +70,31 @@ export class TripsRepository {
         skip,
         take: limit,
         include: {
-          mitra: true,
+          mitra: {
+            include: {
+              reviewsReceived: {
+                select: { rating: true },
+              },
+            },
+          },
           vehicle: true,
           originPoint: { include: { region: true } },
           destinationPoint: { include: { region: true } },
-          orders: true,
+          orders: {
+            include: {
+              customer: {
+                select: {
+                  id: true,
+                  name: true,
+                  phone: true,
+                  avatar: true,
+                  email: true,
+                },
+              },
+              passengers: true,
+              checkpointsLogs: true,
+            },
+          },
         },
         orderBy: [{ departureDate: 'asc' }, { departureTime: 'asc' }],
       }),
@@ -84,13 +111,35 @@ export class TripsRepository {
     return this.prisma.trip.findUnique({
       where: { id: parsedId },
       include: {
-        mitra: true,
+        mitra: {
+          include: {
+            region: true,
+            reviewsReceived: {
+              select: { rating: true },
+            },
+          },
+        },
         vehicle: true,
         originPoint: {
           include: { region: true },
         },
         destinationPoint: {
           include: { region: true },
+        },
+        orders: {
+          include: {
+            customer: {
+              select: {
+                id: true,
+                name: true,
+                phone: true,
+                avatar: true,
+                email: true,
+              },
+            },
+            passengers: true,
+            checkpointsLogs: true,
+          },
         },
       },
     });
@@ -120,7 +169,14 @@ export class TripsRepository {
       where: { id: parsedId },
       data,
       include: {
-        mitra: true,
+        mitra: {
+          include: {
+            region: true,
+            reviewsReceived: {
+              select: { rating: true },
+            },
+          },
+        },
         vehicle: true,
         originPoint: {
           include: { region: true },

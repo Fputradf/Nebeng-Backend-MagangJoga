@@ -30,6 +30,16 @@ export class VerificationRepository {
     });
   }
 
+  async findProfileByKtpNumber(ktpNumber: string) {
+    if (!ktpNumber) return null;
+    const cleanKtp = ktpNumber.trim();
+    if (!cleanKtp) return null;
+    return this.prisma.userProfile.findFirst({
+      where: { ktpNumber: cleanKtp },
+      include: { user: true },
+    });
+  }
+
   async createVerification(data: {
     userId: bigint;
     type: VerificationType;

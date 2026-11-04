@@ -207,6 +207,7 @@ export class PaymentsService {
               trip: {
                 include: {
                   originPoint: { include: { region: true } },
+                  mitra: { include: { region: true } },
                 },
               },
             },
@@ -239,12 +240,16 @@ export class PaymentsService {
     operatorUserIdStr: string,
     page: number = 1,
     limit: number = 10,
+    month?: number,
+    year?: number,
   ) {
-    const { payments, totalItems, assignedPos } =
+    const { payments, totalItems, assignedPos, totalRevenue } =
       await this.paymentsRepository.getPaymentsByOperator(
         operatorUserIdStr,
         page,
         limit,
+        month,
+        year,
       );
 
     const formattedTransactions = payments.map((p) => ({
@@ -282,11 +287,6 @@ export class PaymentsService {
           }
         : null,
     }));
-
-    const totalRevenue = formattedTransactions.reduce(
-      (acc, curr) => acc + curr.amount,
-      0,
-    );
 
     return {
       posSummary: assignedPos

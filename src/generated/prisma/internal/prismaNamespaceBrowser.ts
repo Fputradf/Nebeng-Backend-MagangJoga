@@ -90,7 +90,11 @@ export const ModelName = {
   Voucher: 'Voucher',
   UserVoucher: 'UserVoucher',
   VoucherRedemption: 'VoucherRedemption',
-  SocialLink: 'SocialLink'
+  SocialLink: 'SocialLink',
+  SosAlert: 'SosAlert',
+  UserReport: 'UserReport',
+  DisbursementBank: 'DisbursementBank',
+  SystemSetting: 'SystemSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -256,6 +260,8 @@ export const TripScalarFieldEnum = {
   status: 'status',
   serviceType: 'serviceType',
   mapsPolyline: 'mapsPolyline',
+  distanceKm: 'distanceKm',
+  estimatedDurationMinutes: 'estimatedDurationMinutes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
@@ -749,12 +755,91 @@ export const SocialLinkScalarFieldEnum = {
 export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof typeof SocialLinkScalarFieldEnum]
 
 
+export const SosAlertScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  tripId: 'tripId',
+  customerId: 'customerId',
+  regionId: 'regionId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  category: 'category',
+  notes: 'notes',
+  status: 'status',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SosAlertScalarFieldEnum = (typeof SosAlertScalarFieldEnum)[keyof typeof SosAlertScalarFieldEnum]
+
+
+export const UserReportScalarFieldEnum = {
+  id: 'id',
+  ticketNumber: 'ticketNumber',
+  reporterId: 'reporterId',
+  reportedUserId: 'reportedUserId',
+  tripId: 'tripId',
+  orderId: 'orderId',
+  pickupPointId: 'pickupPointId',
+  category: 'category',
+  severity: 'severity',
+  description: 'description',
+  evidenceUrls: 'evidenceUrls',
+  status: 'status',
+  actionNotes: 'actionNotes',
+  handledById: 'handledById',
+  sanctionId: 'sanctionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserReportScalarFieldEnum = (typeof UserReportScalarFieldEnum)[keyof typeof UserReportScalarFieldEnum]
+
+
+export const DisbursementBankScalarFieldEnum = {
+  id: 'id',
+  bankCode: 'bankCode',
+  bankName: 'bankName',
+  accountNumberSample: 'accountNumberSample',
+  logoUrl: 'logoUrl',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisbursementBankScalarFieldEnum = (typeof DisbursementBankScalarFieldEnum)[keyof typeof DisbursementBankScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -1044,4 +1129,58 @@ export const SocialLinkOrderByRelevanceFieldEnum = {
 } as const
 
 export type SocialLinkOrderByRelevanceFieldEnum = (typeof SocialLinkOrderByRelevanceFieldEnum)[keyof typeof SocialLinkOrderByRelevanceFieldEnum]
+
+
+export const SosAlertOrderByRelevanceFieldEnum = {
+  category: 'category',
+  notes: 'notes'
+} as const
+
+export type SosAlertOrderByRelevanceFieldEnum = (typeof SosAlertOrderByRelevanceFieldEnum)[keyof typeof SosAlertOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const UserReportOrderByRelevanceFieldEnum = {
+  ticketNumber: 'ticketNumber',
+  description: 'description',
+  actionNotes: 'actionNotes'
+} as const
+
+export type UserReportOrderByRelevanceFieldEnum = (typeof UserReportOrderByRelevanceFieldEnum)[keyof typeof UserReportOrderByRelevanceFieldEnum]
+
+
+export const DisbursementBankOrderByRelevanceFieldEnum = {
+  bankCode: 'bankCode',
+  bankName: 'bankName',
+  accountNumberSample: 'accountNumberSample',
+  logoUrl: 'logoUrl',
+  notes: 'notes'
+} as const
+
+export type DisbursementBankOrderByRelevanceFieldEnum = (typeof DisbursementBankOrderByRelevanceFieldEnum)[keyof typeof DisbursementBankOrderByRelevanceFieldEnum]
+
+
+export const SystemSettingOrderByRelevanceFieldEnum = {
+  key: 'key',
+  value: 'value',
+  description: 'description'
+} as const
+
+export type SystemSettingOrderByRelevanceFieldEnum = (typeof SystemSettingOrderByRelevanceFieldEnum)[keyof typeof SystemSettingOrderByRelevanceFieldEnum]
 

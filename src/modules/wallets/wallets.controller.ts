@@ -84,6 +84,6 @@ export class WalletsController {
     @GetUser('id') userId: string,
     @Body() dto: WithdrawWalletDto,
   ) {
-    return this.walletService.requestWithdrawal(String(userId), dto.amount);
+    return this.walletService.requestWithdrawal(String(userId), dto.amount, dto.pin);
   }
 }

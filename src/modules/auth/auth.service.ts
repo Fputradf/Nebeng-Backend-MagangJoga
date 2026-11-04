@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -248,5 +252,22 @@ export class AuthService {
     await this.userRepository.resetToken(user.id.toString());
 
     return { message: 'Kata sandi berhasil diperbarui.' };
+  }
+
+  async checkNik(nik: string) {
+    const cleanNik = nik?.trim();
+    if (!cleanNik || cleanNik.length !== 16) {
+      throw new BadRequestException(
+        'Format NIK tidak valid. NIK harus terdiri dari 16 digit.',
+      );
+    }
+    const existing = await this.userRepository.findProfileByKtpNumber(cleanNik);
+    return {
+      available: !existing,
+      isAvailable: !existing,
+      message: existing
+        ? 'Nomor NIK / KTP sudah terdaftar oleh pengguna lain.'
+        : 'Nomor NIK / KTP tersedia.',
+    };
   }
 }

@@ -217,3 +217,23 @@ export type VoucherRedemption = Prisma.VoucherRedemptionModel
  * 
  */
 export type SocialLink = Prisma.SocialLinkModel
+/**
+ * Model SosAlert
+ * 
+ */
+export type SosAlert = Prisma.SosAlertModel
+/**
+ * Model UserReport
+ * 
+ */
+export type UserReport = Prisma.UserReportModel
+/**
+ * Model DisbursementBank
+ * 
+ */
+export type DisbursementBank = Prisma.DisbursementBankModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel

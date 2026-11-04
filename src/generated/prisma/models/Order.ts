@@ -419,6 +419,8 @@ export type OrderWhereInput = {
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
   voucherRedemption?: Prisma.XOR<Prisma.VoucherRedemptionNullableScalarRelationFilter, Prisma.VoucherRedemptionWhereInput> | null
+  sosAlerts?: Prisma.SosAlertListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }
 
 export type OrderOrderByWithRelationInput = {
@@ -457,6 +459,8 @@ export type OrderOrderByWithRelationInput = {
   walletTransactions?: Prisma.WalletTransactionOrderByRelationAggregateInput
   noShowAuditLogs?: Prisma.NoShowAuditLogOrderByRelationAggregateInput
   voucherRedemption?: Prisma.VoucherRedemptionOrderByWithRelationInput
+  sosAlerts?: Prisma.SosAlertOrderByRelationAggregateInput
+  userReports?: Prisma.UserReportOrderByRelationAggregateInput
   _relevance?: Prisma.OrderOrderByRelevanceInput
 }
 
@@ -499,6 +503,8 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   walletTransactions?: Prisma.WalletTransactionListRelationFilter
   noShowAuditLogs?: Prisma.NoShowAuditLogListRelationFilter
   voucherRedemption?: Prisma.XOR<Prisma.VoucherRedemptionNullableScalarRelationFilter, Prisma.VoucherRedemptionWhereInput> | null
+  sosAlerts?: Prisma.SosAlertListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
 }, "id" | "qrCodeTicket">
 
 export type OrderOrderByWithAggregationInput = {
@@ -596,6 +602,8 @@ export type OrderCreateInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateInput = {
@@ -631,6 +639,8 @@ export type OrderUncheckedCreateInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUpdateInput = {
@@ -666,6 +676,8 @@ export type OrderUpdateInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateInput = {
@@ -701,6 +713,8 @@ export type OrderUncheckedUpdateInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyInput = {
@@ -1172,6 +1186,36 @@ export type OrderUpdateOneRequiredWithoutVoucherRedemptionNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutVoucherRedemptionInput, Prisma.OrderUpdateWithoutVoucherRedemptionInput>, Prisma.OrderUncheckedUpdateWithoutVoucherRedemptionInput>
 }
 
+export type OrderCreateNestedOneWithoutSosAlertsInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutSosAlertsInput, Prisma.OrderUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutSosAlertsInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutSosAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutSosAlertsInput, Prisma.OrderUncheckedCreateWithoutSosAlertsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutSosAlertsInput
+  upsert?: Prisma.OrderUpsertWithoutSosAlertsInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutSosAlertsInput, Prisma.OrderUpdateWithoutSosAlertsInput>, Prisma.OrderUncheckedUpdateWithoutSosAlertsInput>
+}
+
+export type OrderCreateNestedOneWithoutUserReportsInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutUserReportsInput, Prisma.OrderUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutUserReportsInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneWithoutUserReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutUserReportsInput, Prisma.OrderUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutUserReportsInput
+  upsert?: Prisma.OrderUpsertWithoutUserReportsInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutUserReportsInput, Prisma.OrderUpdateWithoutUserReportsInput>, Prisma.OrderUncheckedUpdateWithoutUserReportsInput>
+}
+
 export type OrderCreateWithoutCustomerInput = {
   id?: bigint | number
   type: $Enums.OrderType
@@ -1204,6 +1248,8 @@ export type OrderCreateWithoutCustomerInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCustomerInput = {
@@ -1238,6 +1284,8 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCustomerInput = {
@@ -1282,6 +1330,8 @@ export type OrderCreateWithoutNoShowMarkedByUserInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
@@ -1316,6 +1366,8 @@ export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutNoShowMarkedByUserInput = {
@@ -1422,6 +1474,8 @@ export type OrderCreateWithoutTripInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutTripInput = {
@@ -1456,6 +1510,8 @@ export type OrderUncheckedCreateWithoutTripInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutTripInput = {
@@ -1516,6 +1572,8 @@ export type OrderCreateWithoutPassengersInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutPassengersInput = {
@@ -1550,6 +1608,8 @@ export type OrderUncheckedCreateWithoutPassengersInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutPassengersInput = {
@@ -1600,6 +1660,8 @@ export type OrderUpdateWithoutPassengersInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutPassengersInput = {
@@ -1634,6 +1696,8 @@ export type OrderUncheckedUpdateWithoutPassengersInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutItemOrdersInput = {
@@ -1668,6 +1732,8 @@ export type OrderCreateWithoutItemOrdersInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutItemOrdersInput = {
@@ -1702,6 +1768,8 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutItemOrdersInput = {
@@ -1752,6 +1820,8 @@ export type OrderUpdateWithoutItemOrdersInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutItemOrdersInput = {
@@ -1786,6 +1856,8 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutCheckpointsLogsInput = {
@@ -1820,6 +1892,8 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
@@ -1854,6 +1928,8 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCheckpointsLogsInput = {
@@ -1904,6 +1980,8 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
@@ -1938,6 +2016,8 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutNoShowAuditLogsInput = {
@@ -1972,6 +2052,8 @@ export type OrderCreateWithoutNoShowAuditLogsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
@@ -2006,6 +2088,8 @@ export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutNoShowAuditLogsInput = {
@@ -2056,6 +2140,8 @@ export type OrderUpdateWithoutNoShowAuditLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
@@ -2090,6 +2176,8 @@ export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutQrSessionsInput = {
@@ -2124,6 +2212,8 @@ export type OrderCreateWithoutQrSessionsInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutQrSessionsInput = {
@@ -2158,6 +2248,8 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutQrSessionsInput = {
@@ -2208,6 +2300,8 @@ export type OrderUpdateWithoutQrSessionsInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutQrSessionsInput = {
@@ -2242,6 +2336,8 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutPaymentsInput = {
@@ -2276,6 +2372,8 @@ export type OrderCreateWithoutPaymentsInput = {
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutPaymentsInput = {
@@ -2310,6 +2408,8 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutPaymentsInput = {
@@ -2360,6 +2460,8 @@ export type OrderUpdateWithoutPaymentsInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutPaymentsInput = {
@@ -2394,6 +2496,8 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutWalletTransactionsInput = {
@@ -2428,6 +2532,8 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
@@ -2462,6 +2568,8 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutWalletTransactionsInput = {
@@ -2512,6 +2620,8 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -2546,6 +2656,8 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutVoucherRedemptionInput = {
@@ -2580,6 +2692,8 @@ export type OrderCreateWithoutVoucherRedemptionInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutVoucherRedemptionInput = {
@@ -2614,6 +2728,8 @@ export type OrderUncheckedCreateWithoutVoucherRedemptionInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
   walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutVoucherRedemptionInput = {
@@ -2664,6 +2780,8 @@ export type OrderUpdateWithoutVoucherRedemptionInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutVoucherRedemptionInput = {
@@ -2698,6 +2816,328 @@ export type OrderUncheckedUpdateWithoutVoucherRedemptionInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutSosAlertsInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutSosAlertsInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutSosAlertsInput, Prisma.OrderUncheckedCreateWithoutSosAlertsInput>
+}
+
+export type OrderUpsertWithoutSosAlertsInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutSosAlertsInput, Prisma.OrderUncheckedUpdateWithoutSosAlertsInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutSosAlertsInput, Prisma.OrderUncheckedCreateWithoutSosAlertsInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutSosAlertsInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutSosAlertsInput, Prisma.OrderUncheckedUpdateWithoutSosAlertsInput>
+}
+
+export type OrderUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutSosAlertsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  trip: Prisma.TripCreateNestedOneWithoutOrdersInput
+  customer: Prisma.UserCreateNestedOneWithoutOrdersAsCustomerInput
+  noShowMarkedByUser?: Prisma.UserCreateNestedOneWithoutNoShowMarkedOrdersInput
+  passengers?: Prisma.OrderPassengerCreateNestedManyWithoutOrderInput
+  itemOrders?: Prisma.ItemOrderCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutUserReportsInput = {
+  id?: bigint | number
+  tripId: bigint | number
+  customerId: bigint | number
+  type: $Enums.OrderType
+  seatsBooked?: number
+  totalItemsCount?: number
+  totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: string | null
+  qrCodeTicket: string
+  otpClaim?: string | null
+  readinessStatus?: string | null
+  status?: $Enums.OrderStatus
+  escrowStatus?: $Enums.EscrowStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  noShowMarkedAt?: Date | string | null
+  noShowMarkedBy?: bigint | number | null
+  noShowReason?: string | null
+  disputeDeadline?: Date | string | null
+  isDisputed?: boolean
+  passengers?: Prisma.OrderPassengerUncheckedCreateNestedManyWithoutOrderInput
+  itemOrders?: Prisma.ItemOrderUncheckedCreateNestedManyWithoutOrderInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedCreateNestedManyWithoutOrderInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrderInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedCreateNestedManyWithoutOrderInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedCreateNestedManyWithoutOrderInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedCreateNestedOneWithoutOrderInput
+  sosAlerts?: Prisma.SosAlertUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutUserReportsInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutUserReportsInput, Prisma.OrderUncheckedCreateWithoutUserReportsInput>
+}
+
+export type OrderUpsertWithoutUserReportsInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutUserReportsInput, Prisma.OrderUncheckedUpdateWithoutUserReportsInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutUserReportsInput, Prisma.OrderUncheckedCreateWithoutUserReportsInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutUserReportsInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutUserReportsInput, Prisma.OrderUncheckedUpdateWithoutUserReportsInput>
+}
+
+export type OrderUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  trip?: Prisma.TripUpdateOneRequiredWithoutOrdersNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutOrdersAsCustomerNestedInput
+  noShowMarkedByUser?: Prisma.UserUpdateOneWithoutNoShowMarkedOrdersNestedInput
+  passengers?: Prisma.OrderPassengerUpdateManyWithoutOrderNestedInput
+  itemOrders?: Prisma.ItemOrderUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutUserReportsInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  tripId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  customerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  type?: Prisma.EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+  seatsBooked?: Prisma.IntFieldUpdateOperationsInput | number
+  totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  voucherCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrCodeTicket?: Prisma.StringFieldUpdateOperationsInput | string
+  otpClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readinessStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  escrowStatus?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  noShowMarkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  noShowMarkedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  noShowReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  disputeDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isDisputed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passengers?: Prisma.OrderPassengerUncheckedUpdateManyWithoutOrderNestedInput
+  itemOrders?: Prisma.ItemOrderUncheckedUpdateManyWithoutOrderNestedInput
+  checkpointsLogs?: Prisma.CheckpointsLogUncheckedUpdateManyWithoutOrderNestedInput
+  qrSessions?: Prisma.OrderQrSessionUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
+  voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyCustomerInput = {
@@ -2784,6 +3224,8 @@ export type OrderUpdateWithoutCustomerInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCustomerInput = {
@@ -2818,6 +3260,8 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutCustomerInput = {
@@ -2878,6 +3322,8 @@ export type OrderUpdateWithoutNoShowMarkedByUserInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
@@ -2912,6 +3358,8 @@ export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput = {
@@ -2998,6 +3446,8 @@ export type OrderUpdateWithoutTripInput = {
   walletTransactions?: Prisma.WalletTransactionUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutTripInput = {
@@ -3032,6 +3482,8 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   walletTransactions?: Prisma.WalletTransactionUncheckedUpdateManyWithoutOrderNestedInput
   noShowAuditLogs?: Prisma.NoShowAuditLogUncheckedUpdateManyWithoutOrderNestedInput
   voucherRedemption?: Prisma.VoucherRedemptionUncheckedUpdateOneWithoutOrderNestedInput
+  sosAlerts?: Prisma.SosAlertUncheckedUpdateManyWithoutOrderNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutTripInput = {
@@ -3073,6 +3525,8 @@ export type OrderCountOutputType = {
   payments: number
   walletTransactions: number
   noShowAuditLogs: number
+  sosAlerts: number
+  userReports: number
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3083,6 +3537,8 @@ export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   payments?: boolean | OrderCountOutputTypeCountPaymentsArgs
   walletTransactions?: boolean | OrderCountOutputTypeCountWalletTransactionsArgs
   noShowAuditLogs?: boolean | OrderCountOutputTypeCountNoShowAuditLogsArgs
+  sosAlerts?: boolean | OrderCountOutputTypeCountSosAlertsArgs
+  userReports?: boolean | OrderCountOutputTypeCountUserReportsArgs
 }
 
 /**
@@ -3144,6 +3600,20 @@ export type OrderCountOutputTypeCountNoShowAuditLogsArgs<ExtArgs extends runtime
   where?: Prisma.NoShowAuditLogWhereInput
 }
 
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountSosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SosAlertWhereInput
+}
+
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountUserReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
 
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3181,6 +3651,8 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
   voucherRedemption?: boolean | Prisma.Order$voucherRedemptionArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Order$sosAlertsArgs<ExtArgs>
+  userReports?: boolean | Prisma.Order$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
 
@@ -3226,6 +3698,8 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   walletTransactions?: boolean | Prisma.Order$walletTransactionsArgs<ExtArgs>
   noShowAuditLogs?: boolean | Prisma.Order$noShowAuditLogsArgs<ExtArgs>
   voucherRedemption?: boolean | Prisma.Order$voucherRedemptionArgs<ExtArgs>
+  sosAlerts?: boolean | Prisma.Order$sosAlertsArgs<ExtArgs>
+  userReports?: boolean | Prisma.Order$userReportsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -3243,6 +3717,8 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
     noShowAuditLogs: Prisma.$NoShowAuditLogPayload<ExtArgs>[]
     voucherRedemption: Prisma.$VoucherRedemptionPayload<ExtArgs> | null
+    sosAlerts: Prisma.$SosAlertPayload<ExtArgs>[]
+    userReports: Prisma.$UserReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
@@ -3620,6 +4096,8 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   walletTransactions<T extends Prisma.Order$walletTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   noShowAuditLogs<T extends Prisma.Order$noShowAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$noShowAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoShowAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   voucherRedemption<T extends Prisma.Order$voucherRedemptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$voucherRedemptionArgs<ExtArgs>>): Prisma.Prisma__VoucherRedemptionClient<runtime.Types.Result.GetResult<Prisma.$VoucherRedemptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sosAlerts<T extends Prisma.Order$sosAlertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$sosAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SosAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userReports<T extends Prisma.Order$userReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$userReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4224,6 +4702,54 @@ export type Order$voucherRedemptionArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.VoucherRedemptionInclude<ExtArgs> | null
   where?: Prisma.VoucherRedemptionWhereInput
+}
+
+/**
+ * Order.sosAlerts
+ */
+export type Order$sosAlertsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SosAlert
+   */
+  select?: Prisma.SosAlertSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SosAlert
+   */
+  omit?: Prisma.SosAlertOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SosAlertInclude<ExtArgs> | null
+  where?: Prisma.SosAlertWhereInput
+  orderBy?: Prisma.SosAlertOrderByWithRelationInput | Prisma.SosAlertOrderByWithRelationInput[]
+  cursor?: Prisma.SosAlertWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SosAlertScalarFieldEnum | Prisma.SosAlertScalarFieldEnum[]
+}
+
+/**
+ * Order.userReports
+ */
+export type Order$userReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
 }
 
 /**

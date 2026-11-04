@@ -4,6 +4,7 @@ import {
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { WalletsRepository } from './repository/wallets.repository';
 import { WalletMapper } from './mappers/wallet.mapper';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -79,7 +80,7 @@ export class WalletsService {
     return WalletMapper.toResponse(updatedWallet);
   }
 
-  async requestWithdrawal(userIdStr: string, amount: number) {
+  async requestWithdrawal(userIdStr: string, amount: number, pin?: string) {
     const withdrawEnabled = this.configService.get<string>('WITHDRAW_ENABLED') === 'true';
     if (!withdrawEnabled) {
       throw new ServiceUnavailableException(
@@ -98,6 +99,21 @@ export class WalletsService {
       throw new BadRequestException('Format ID User tidak valid.');
     }
 
+    const user = await this.prisma.user.findUnique({
+      where: { id: parsedUserId },
+      select: { pinHash: true },
+    });
+
+    if (user?.pinHash) {
+      if (!pin) {
+        throw new BadRequestException('PIN transaksi wajib dimasukkan.');
+      }
+      const isPinValid = await bcrypt.compare(pin, user.pinHash);
+      if (!isPinValid) {
+        throw new BadRequestException('PIN transaksi yang dimasukkan salah.');
+      }
+    }
+
     const profile = await this.prisma.userProfile.findUnique({
       where: { userId: parsedUserId },
     });
@@ -106,6 +122,29 @@ export class WalletsService {
       throw new BadRequestException(
         'Informasi rekening bank belum diisi. Silakan lengkapi profil rekening Anda terlebih dahulu.',
       );
+    }
+
+    const userBankCodeOrName = (profile.bankName || '').trim();
+    const totalActiveBanks = await this.prisma.disbursementBank.count({
+      where: { isActive: true },
+    });
+
+    if (totalActiveBanks > 0) {
+      const activeBank = await this.prisma.disbursementBank.findFirst({
+        where: {
+          isActive: true,
+          OR: [
+            { bankCode: userBankCodeOrName.toUpperCase() },
+            { bankName: { contains: userBankCodeOrName } },
+          ],
+        },
+      });
+
+      if (!activeBank) {
+        throw new BadRequestException(
+          `Bank "${profile.bankName}" saat ini tidak didukung untuk pencairan atau dinonaktifkan oleh Administrator. Harap perbarui informasi rekening bank ke daftar bank yang aktif.`,
+        );
+      }
     }
 
     let wallet = await this.walletRepository.findByUserId(userIdStr);

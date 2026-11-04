@@ -34,6 +34,23 @@ export class QueryTripDto {
   @IsString()
   regionId?: string;
 
+  @ApiPropertyOptional({ description: 'Filter ID Region Pos Keberangkatan / Asal' })
+  @IsOptional()
+  @IsString()
+  originRegionId?: string;
+
+  @ApiPropertyOptional({ description: 'Filter ID Region Pos Tujuan / Kedatangan' })
+  @IsOptional()
+  @IsString()
+  destinationRegionId?: string;
+
+  @ApiPropertyOptional({
+    description: 'Lingkup filter region: "all" (asal/tujuan), "origin" (pos asal), atau "destination" (pos tujuan)',
+  })
+  @IsOptional()
+  @IsString()
+  scope?: string;
+
   @ApiPropertyOptional({ enum: TripStatus, description: 'Filter Status Trip' })
   @IsOptional()
   @IsEnum(TripStatus)

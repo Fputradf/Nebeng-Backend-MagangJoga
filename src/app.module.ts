@@ -31,6 +31,9 @@ import { BannersModule } from './modules/banners/banners.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { VouchersModule } from './modules/vouchers/vouchers.module';
 import { SocialLinksModule } from './modules/social-links/social-links.module';
+import { EmergencyModule } from './modules/emergency/emergency.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { DisbursementBanksModule } from './modules/disbursement-banks/disbursement-banks.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -65,6 +68,9 @@ import { SocialLinksModule } from './modules/social-links/social-links.module';
     NotificationsModule,
     VouchersModule,
     SocialLinksModule,
+    EmergencyModule,
+    ReportsModule,
+    DisbursementBanksModule,
   ],
   controllers: [AppController, UploadController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

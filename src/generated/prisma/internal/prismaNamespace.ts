@@ -436,7 +436,11 @@ export const ModelName = {
   Voucher: 'Voucher',
   UserVoucher: 'UserVoucher',
   VoucherRedemption: 'VoucherRedemption',
-  SocialLink: 'SocialLink'
+  SocialLink: 'SocialLink',
+  SosAlert: 'SosAlert',
+  UserReport: 'UserReport',
+  DisbursementBank: 'DisbursementBank',
+  SystemSetting: 'SystemSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -452,7 +456,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "orderPassenger" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "userVoucher" | "voucherRedemption" | "socialLink"
+    modelProps: "region" | "city" | "user" | "userProfile" | "verification" | "verificationFile" | "pickupPoint" | "pricingSetting" | "trip" | "order" | "orderPassenger" | "itemOrder" | "checkpointsLog" | "noShowAuditLog" | "pushSubscription" | "tripQrSession" | "orderQrSession" | "tripTracking" | "osmRouteCache" | "payment" | "wallet" | "walletTransaction" | "rewardTransaction" | "conversation" | "message" | "tripReview" | "vehicle" | "merchandiseItem" | "merchandiseRedemption" | "banner" | "notificationPreference" | "deviceToken" | "notificationLog" | "userNotification" | "mitraSanction" | "mitraSanctionAppeal" | "voucher" | "userVoucher" | "voucherRedemption" | "socialLink" | "sosAlert" | "userReport" | "disbursementBank" | "systemSetting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3096,6 +3100,270 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SosAlert: {
+      payload: Prisma.$SosAlertPayload<ExtArgs>
+      fields: Prisma.SosAlertFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SosAlertFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SosAlertFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        findFirst: {
+          args: Prisma.SosAlertFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SosAlertFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        findMany: {
+          args: Prisma.SosAlertFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>[]
+        }
+        create: {
+          args: Prisma.SosAlertCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        createMany: {
+          args: Prisma.SosAlertCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SosAlertDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        update: {
+          args: Prisma.SosAlertUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        deleteMany: {
+          args: Prisma.SosAlertDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SosAlertUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SosAlertUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SosAlertPayload>
+        }
+        aggregate: {
+          args: Prisma.SosAlertAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSosAlert>
+        }
+        groupBy: {
+          args: Prisma.SosAlertGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SosAlertGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SosAlertCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SosAlertCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserReport: {
+      payload: Prisma.$UserReportPayload<ExtArgs>
+      fields: Prisma.UserReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        findFirst: {
+          args: Prisma.UserReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        findMany: {
+          args: Prisma.UserReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>[]
+        }
+        create: {
+          args: Prisma.UserReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        createMany: {
+          args: Prisma.UserReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UserReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        update: {
+          args: Prisma.UserReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UserReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserReportPayload>
+        }
+        aggregate: {
+          args: Prisma.UserReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserReport>
+        }
+        groupBy: {
+          args: Prisma.UserReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserReportCountAggregateOutputType> | number
+        }
+      }
+    }
+    DisbursementBank: {
+      payload: Prisma.$DisbursementBankPayload<ExtArgs>
+      fields: Prisma.DisbursementBankFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DisbursementBankFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DisbursementBankFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        findFirst: {
+          args: Prisma.DisbursementBankFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DisbursementBankFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        findMany: {
+          args: Prisma.DisbursementBankFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>[]
+        }
+        create: {
+          args: Prisma.DisbursementBankCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        createMany: {
+          args: Prisma.DisbursementBankCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DisbursementBankDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        update: {
+          args: Prisma.DisbursementBankUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        deleteMany: {
+          args: Prisma.DisbursementBankDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DisbursementBankUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DisbursementBankUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisbursementBankPayload>
+        }
+        aggregate: {
+          args: Prisma.DisbursementBankAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDisbursementBank>
+        }
+        groupBy: {
+          args: Prisma.DisbursementBankGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisbursementBankGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DisbursementBankCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisbursementBankCountAggregateOutputType> | number
+        }
+      }
+    }
+    SystemSetting: {
+      payload: Prisma.$SystemSettingPayload<ExtArgs>
+      fields: Prisma.SystemSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.SystemSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        findMany: {
+          args: Prisma.SystemSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+        }
+        create: {
+          args: Prisma.SystemSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        createMany: {
+          args: Prisma.SystemSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SystemSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        update: {
+          args: Prisma.SystemSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SystemSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.SystemSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemSetting>
+        }
+        groupBy: {
+          args: Prisma.SystemSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemSettingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3282,6 +3550,8 @@ export const TripScalarFieldEnum = {
   status: 'status',
   serviceType: 'serviceType',
   mapsPolyline: 'mapsPolyline',
+  distanceKm: 'distanceKm',
+  estimatedDurationMinutes: 'estimatedDurationMinutes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   mitraNoShowMarkedAt: 'mitraNoShowMarkedAt',
@@ -3775,12 +4045,91 @@ export const SocialLinkScalarFieldEnum = {
 export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof typeof SocialLinkScalarFieldEnum]
 
 
+export const SosAlertScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  tripId: 'tripId',
+  customerId: 'customerId',
+  regionId: 'regionId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  category: 'category',
+  notes: 'notes',
+  status: 'status',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SosAlertScalarFieldEnum = (typeof SosAlertScalarFieldEnum)[keyof typeof SosAlertScalarFieldEnum]
+
+
+export const UserReportScalarFieldEnum = {
+  id: 'id',
+  ticketNumber: 'ticketNumber',
+  reporterId: 'reporterId',
+  reportedUserId: 'reportedUserId',
+  tripId: 'tripId',
+  orderId: 'orderId',
+  pickupPointId: 'pickupPointId',
+  category: 'category',
+  severity: 'severity',
+  description: 'description',
+  evidenceUrls: 'evidenceUrls',
+  status: 'status',
+  actionNotes: 'actionNotes',
+  handledById: 'handledById',
+  sanctionId: 'sanctionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserReportScalarFieldEnum = (typeof UserReportScalarFieldEnum)[keyof typeof UserReportScalarFieldEnum]
+
+
+export const DisbursementBankScalarFieldEnum = {
+  id: 'id',
+  bankCode: 'bankCode',
+  bankName: 'bankName',
+  accountNumberSample: 'accountNumberSample',
+  logoUrl: 'logoUrl',
+  orderIndex: 'orderIndex',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisbursementBankScalarFieldEnum = (typeof DisbursementBankScalarFieldEnum)[keyof typeof DisbursementBankScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -4072,6 +4421,60 @@ export const SocialLinkOrderByRelevanceFieldEnum = {
 export type SocialLinkOrderByRelevanceFieldEnum = (typeof SocialLinkOrderByRelevanceFieldEnum)[keyof typeof SocialLinkOrderByRelevanceFieldEnum]
 
 
+export const SosAlertOrderByRelevanceFieldEnum = {
+  category: 'category',
+  notes: 'notes'
+} as const
+
+export type SosAlertOrderByRelevanceFieldEnum = (typeof SosAlertOrderByRelevanceFieldEnum)[keyof typeof SosAlertOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const UserReportOrderByRelevanceFieldEnum = {
+  ticketNumber: 'ticketNumber',
+  description: 'description',
+  actionNotes: 'actionNotes'
+} as const
+
+export type UserReportOrderByRelevanceFieldEnum = (typeof UserReportOrderByRelevanceFieldEnum)[keyof typeof UserReportOrderByRelevanceFieldEnum]
+
+
+export const DisbursementBankOrderByRelevanceFieldEnum = {
+  bankCode: 'bankCode',
+  bankName: 'bankName',
+  accountNumberSample: 'accountNumberSample',
+  logoUrl: 'logoUrl',
+  notes: 'notes'
+} as const
+
+export type DisbursementBankOrderByRelevanceFieldEnum = (typeof DisbursementBankOrderByRelevanceFieldEnum)[keyof typeof DisbursementBankOrderByRelevanceFieldEnum]
+
+
+export const SystemSettingOrderByRelevanceFieldEnum = {
+  key: 'key',
+  value: 'value',
+  description: 'description'
+} as const
+
+export type SystemSettingOrderByRelevanceFieldEnum = (typeof SystemSettingOrderByRelevanceFieldEnum)[keyof typeof SystemSettingOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -4296,6 +4699,48 @@ export type EnumVoucherRedemptionStatusFieldRefInput<$PrismaModel> = FieldRefInp
 
 
 /**
+ * Reference to a field of type 'SosStatus'
+ */
+export type EnumSosStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SosStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ReportCategory'
+ */
+export type EnumReportCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'ReportSeverity'
+ */
+export type EnumReportSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportSeverity'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'ReportStatus'
+ */
+export type EnumReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportStatus'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4492,6 +4937,10 @@ export type GlobalOmitConfig = {
   userVoucher?: Prisma.UserVoucherOmit
   voucherRedemption?: Prisma.VoucherRedemptionOmit
   socialLink?: Prisma.SocialLinkOmit
+  sosAlert?: Prisma.SosAlertOmit
+  userReport?: Prisma.UserReportOmit
+  disbursementBank?: Prisma.DisbursementBankOmit
+  systemSetting?: Prisma.SystemSettingOmit
 }
 
 /* Types for Logging */
