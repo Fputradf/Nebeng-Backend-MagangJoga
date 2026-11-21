@@ -10,11 +10,40 @@ import { PaymentsRepository } from './repository/payments.repository';
 import { OrdersRepository } from '../orders/repository/orders.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CheckoutPaymentDto } from './dto/checkout-payment.dto';
-import { OrderStatus, Role, ServiceType, TransactionType } from '../../generated/prisma/enums';
+import { OrderStatus, PaymentStatus, Role, ServiceType, TransactionType } from '../../generated/prisma/enums';
 import { randomBytes, timingSafeEqual } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { computeOrderFinancials } from '../../common/utils/financial.util';
+import { PaymentActiveMode, UpdatePaymentModeConfigDto } from './dto/payment-config.dto';
+import { SubmitManualPaymentDto, VerifyManualPaymentDto } from './dto/submit-manual-payment.dto';
+
+export const DEFAULT_PAYMENT_CONFIG = {
+  activeMode: PaymentActiveMode.MANUAL, // MUTUALLY EXCLUSIVE DEFAULT: OPSI B
+  gateway: {
+    provider: 'XENDIT',
+    environment: 'sandbox',
+    status: 'inactive',
+    enabledChannels: ['QRIS', 'EWALLET', 'VIRTUAL_ACCOUNT'],
+    xenditSecretKey: '',
+    xenditCallbackToken: '',
+  },
+  manual: {
+    bankName: 'Bank Central Asia (BCA)',
+    accountNumber: '8830192837',
+    accountHolder: 'PT NEBENG INDONESIA DIGITAL',
+    qrisImageUrl: '',
+    qrisPayload:
+      '00020101021226680016ID.CO.NEBENG011893600999999999999902150000000000000000303UMI51440014ID.LINKAJA.WWW02150000000000000000303UMI5204549953033605802ID5919NEBENG OWNER STORE6007JAKARTA61051234062070703A016304E07B',
+    transferGuide: [
+      'Buka aplikasi m-Banking (BCA, Mandiri, BRI, BNI) atau aplikasi e-wallet pilihan Anda.',
+      'Pilih menu Transfer Rekening Bank Resmi atau Scan Barcode QRIS Statis Pemilik.',
+      'Masukkan nominal tagihan tepat hingga digit terakhir sesuai ringkasan tagihan.',
+      'Unggah foto struk/tangkapan layar bukti pembayaran pada form, lalu klik Konfirmasi Pembayaran.',
+    ],
+    autoVerifyManual: false,
+  },
+};
 
 @Injectable()
 export class PaymentsService {
@@ -307,12 +336,451 @@ export class PaymentsService {
   }
 
   /**
+   * 0. PENGATURAN MODE PEMBAYARAN TUNGGAL (MUTUALLY EXCLUSIVE)
+   */
+  async getRawPaymentConfig(): Promise<typeof DEFAULT_PAYMENT_CONFIG> {
+    const setting = await this.prisma.systemSetting.findUnique({
+      where: { key: 'payment_mode_config' },
+    });
+
+    let config = DEFAULT_PAYMENT_CONFIG;
+    if (setting?.value) {
+      try {
+        const parsed = JSON.parse(setting.value);
+        config = {
+          ...DEFAULT_PAYMENT_CONFIG,
+          ...parsed,
+          gateway: {
+            ...DEFAULT_PAYMENT_CONFIG.gateway,
+            ...(parsed.gateway || {}),
+          },
+          manual: {
+            ...DEFAULT_PAYMENT_CONFIG.manual,
+            ...(parsed.manual || {}),
+          },
+        };
+      } catch (e) {
+        console.error('Gagal parse payment_mode_config:', e);
+      }
+    } else {
+      // Seed default ke database (Opsi B: Transfer Manual aktif)
+      try {
+        if (this.prisma.systemSetting?.create) {
+          await this.prisma.systemSetting.create({
+            data: {
+              key: 'payment_mode_config',
+              value: JSON.stringify(DEFAULT_PAYMENT_CONFIG),
+              description:
+                'Konfigurasi mode pembayaran tunggal mutually exclusive (Gateway vs Manual)',
+            },
+          });
+        }
+      } catch {}
+    }
+
+    return config;
+  }
+
+  async getPaymentConfig(isSuperadmin: boolean = false) {
+    const config = await this.getRawPaymentConfig();
+
+    if (!isSuperadmin) {
+      // Mask / sembunyikan kredensial sensitif untuk customer
+      return {
+        activeMode: config.activeMode,
+        gateway: {
+          provider: config.gateway?.provider || 'XENDIT',
+          environment: config.gateway?.environment || 'sandbox',
+          enabledChannels: config.gateway?.enabledChannels || [
+            'QRIS',
+            'EWALLET',
+            'VIRTUAL_ACCOUNT',
+          ],
+        },
+        manual: {
+          bankName: config.manual?.bankName,
+          accountNumber: config.manual?.accountNumber,
+          accountHolder: config.manual?.accountHolder,
+          qrisImageUrl: config.manual?.qrisImageUrl,
+          qrisPayload: config.manual?.qrisPayload,
+          transferGuide: config.manual?.transferGuide,
+        },
+      };
+    }
+
+    return config;
+  }
+
+  async updatePaymentConfig(dto: UpdatePaymentModeConfigDto) {
+    const current = await this.getRawPaymentConfig();
+
+    // MUTUALLY EXCLUSIVE RULE: Hanya SALAH SATU metode pembayaran yang boleh aktif
+    const nextMode = dto.activeMode;
+    const isManual = nextMode === PaymentActiveMode.MANUAL;
+
+    const updated = {
+      ...current,
+      activeMode: nextMode,
+      gateway: {
+        ...current.gateway,
+        status: isManual ? 'inactive' : 'active',
+        ...(dto.gatewayProvider ? { provider: dto.gatewayProvider } : {}),
+        ...(dto.xenditSecretKey !== undefined
+          ? { xenditSecretKey: dto.xenditSecretKey }
+          : {}),
+        ...(dto.xenditCallbackToken !== undefined
+          ? { xenditCallbackToken: dto.xenditCallbackToken }
+          : {}),
+      },
+      manual: {
+        ...current.manual,
+        status: isManual ? 'active' : 'inactive',
+        ...(dto.manualBankName ? { bankName: dto.manualBankName } : {}),
+        ...(dto.manualAccountNumber
+          ? { accountNumber: dto.manualAccountNumber }
+          : {}),
+        ...(dto.manualAccountHolder
+          ? { accountHolder: dto.manualAccountHolder }
+          : {}),
+        ...(dto.manualQrisImageUrl !== undefined
+          ? { qrisImageUrl: dto.manualQrisImageUrl }
+          : {}),
+        ...(dto.manualQrisPayload !== undefined
+          ? { qrisPayload: dto.manualQrisPayload }
+          : {}),
+        ...(dto.transferGuide
+          ? {
+              transferGuide: Array.isArray(dto.transferGuide)
+                ? dto.transferGuide
+                : [dto.transferGuide],
+            }
+          : {}),
+        ...(dto.autoVerifyManual !== undefined
+          ? { autoVerifyManual: dto.autoVerifyManual }
+          : {}),
+      },
+    };
+
+    await this.prisma.systemSetting.upsert({
+      where: { key: 'payment_mode_config' },
+      create: {
+        key: 'payment_mode_config',
+        value: JSON.stringify(updated),
+        description:
+          'Konfigurasi mode pembayaran tunggal mutually exclusive (Gateway vs Manual)',
+      },
+      update: {
+        value: JSON.stringify(updated),
+      },
+    });
+
+    return {
+      message: `Pengaturan pembayaran berhasil diperbarui. Mode aktif: ${
+        nextMode === PaymentActiveMode.MANUAL
+          ? 'Opsi B (Transfer Manual & QRIS Statis Pemilik)'
+          : 'Opsi A (Payment Gateway Otomatis)'
+      }.`,
+      config: updated,
+    };
+  }
+
+  /**
+   * PENGELOLAAN PEMBAYARAN MANUAL OLEH CUSTOMER & ADMIN
+   */
+  async submitManualPayment(userIdStr: string, dto: SubmitManualPaymentDto) {
+    const parsedOrderId = this.safeParseBigInt(dto.orderId);
+    if (!parsedOrderId) {
+      throw new BadRequestException('ID Order tidak valid.');
+    }
+
+    const order = await this.prisma.order.findUnique({
+      where: { id: parsedOrderId },
+      include: {
+        customer: true,
+        trip: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Data pesanan tidak ditemukan.');
+    }
+
+    if (order.customerId.toString() !== userIdStr) {
+      throw new ForbiddenException('Anda tidak berhak membayar pesanan ini.');
+    }
+
+    if (order.status !== OrderStatus.pending_payment) {
+      throw new BadRequestException(
+        `Pesanan tidak dapat dibayar karena status saat ini: ${order.status}`,
+      );
+    }
+
+    if (!dto.proofUrl) {
+      throw new BadRequestException('Struk / bukti transfer wajib diunggah.');
+    }
+
+    const transactionId = `MANUAL-${Date.now()}-${randomBytes(3).toString('hex').toUpperCase()}`;
+
+    // Cek apakah sudah pernah ada pembayaran pending untuk order ini
+    const existingPayment = await this.prisma.payment.findFirst({
+      where: { orderId: order.id, status: PaymentStatus.pending },
+    });
+
+    let payment;
+    if (existingPayment) {
+      payment = await this.prisma.payment.update({
+        where: { id: existingPayment.id },
+        data: {
+          paymentGateway: 'MANUAL_TRANSFER',
+          transactionId,
+          amount: order.totalPrice,
+          proofUrl: dto.proofUrl,
+          senderName: dto.senderName,
+          bankName: dto.bankName,
+          senderAccount: dto.senderAccount,
+          notes: dto.notes,
+        },
+      });
+    } else {
+      payment = await this.prisma.payment.create({
+        data: {
+          orderId: order.id,
+          paymentGateway: 'MANUAL_TRANSFER',
+          transactionId,
+          amount: order.totalPrice,
+          status: PaymentStatus.pending,
+          proofUrl: dto.proofUrl,
+          senderName: dto.senderName,
+          bankName: dto.bankName,
+          senderAccount: dto.senderAccount,
+          notes: dto.notes,
+        },
+      });
+    }
+
+    const config = await this.getRawPaymentConfig();
+    if (config.manual.autoVerifyManual) {
+      await this.verifyManualPayment(userIdStr, payment.id.toString(), {
+        approved: true,
+        reviewNotes: 'Verifikasi instan sistem otomatis aktif',
+      });
+      return {
+        success: true,
+        status: 'PAID',
+        message: 'Bukti transfer berhasil diverifikasi secara instan. Tagihan lunas!',
+        paymentId: payment.id.toString(),
+      };
+    }
+
+    return {
+      success: true,
+      status: 'PENDING_VERIFICATION',
+      message:
+        'Bukti pembayaran berhasil diunggah! Sistem & Petugas akan segera memverifikasi struk Anda.',
+      paymentId: payment.id.toString(),
+    };
+  }
+
+  async verifyManualPayment(
+    adminUserIdStr: string,
+    paymentIdStr: string,
+    dto: VerifyManualPaymentDto,
+  ) {
+    const parsedPaymentId = this.safeParseBigInt(paymentIdStr);
+    if (!parsedPaymentId) {
+      throw new BadRequestException('ID Pembayaran tidak valid.');
+    }
+
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: parsedPaymentId },
+      include: {
+        order: {
+          include: { trip: true, customer: true },
+        },
+      },
+    });
+
+    if (!payment) {
+      throw new NotFoundException('Data pembayaran tidak ditemukan.');
+    }
+
+    if (payment.status === PaymentStatus.success) {
+      return {
+        message: 'Pembayaran ini sudah pernah diverifikasi lunas.',
+        payment: {
+          id: payment.id.toString(),
+          orderId: payment.orderId.toString(),
+          status: payment.status,
+        },
+      };
+    }
+
+    if (dto.approved) {
+      const order = payment.order;
+      const adminFeePercentage = Number(order.adminFeePercentage || 10);
+      const financials = computeOrderFinancials({
+        subtotal: (order as any).subtotal || order.totalPrice,
+        totalPrice: order.totalPrice,
+        discountAmount: (order as any).discountAmount,
+        adminFeePercentage,
+      });
+      const mitraUserId = order.trip.mitraId.toString();
+
+      await this.paymentsRepository.processCheckoutTransaction(
+        order.id.toString(),
+        mitraUserId,
+        payment.paymentGateway || 'MANUAL_TRANSFER',
+        payment.transactionId,
+        financials.customerPaid,
+        financials.fee,
+        financials.netMitra,
+        true,
+        ...(financials.discount > 0 ? [financials.adminNet] : []),
+      );
+
+      const updatedPayment = await this.prisma.payment.update({
+        where: { id: payment.id },
+        data: {
+          status: PaymentStatus.success,
+          notes: dto.reviewNotes || payment.notes,
+        },
+      });
+
+      await this.notificationHelper.notifyOrderPaid(
+        order.customerId.toString(),
+        order.id.toString(),
+        financials.customerPaid,
+      );
+
+      return {
+        success: true,
+        message: 'Pembayaran manual berhasil diverifikasi dan pesanan lunas!',
+        payment: {
+          id: updatedPayment.id.toString(),
+          orderId: order.id.toString(),
+          status: updatedPayment.status,
+        },
+      };
+    } else {
+      const updatedPayment = await this.prisma.payment.update({
+        where: { id: payment.id },
+        data: {
+          status: PaymentStatus.failed,
+          notes: dto.reviewNotes || 'Bukti transfer ditolak oleh administrator.',
+        },
+      });
+
+      return {
+        success: false,
+        message: 'Pembayaran manual ditolak.',
+        payment: {
+          id: updatedPayment.id.toString(),
+          orderId: payment.orderId.toString(),
+          status: updatedPayment.status,
+        },
+      };
+    }
+  }
+
+  async getManualPayments(
+    page: number = 1,
+    limit: number = 20,
+    status?: string,
+  ) {
+    const skip = (page - 1) * limit;
+    const where: any = {
+      paymentGateway: 'MANUAL_TRANSFER',
+    };
+    if (status && Object.values(PaymentStatus).includes(status as any)) {
+      where.status = status as PaymentStatus;
+    }
+
+    const [payments, totalItems] = await Promise.all([
+      this.prisma.payment.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          order: {
+            include: {
+              customer: true,
+              trip: {
+                include: {
+                  originPoint: true,
+                  destinationPoint: true,
+                  mitra: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.payment.count({ where }),
+    ]);
+
+    return {
+      pagination: {
+        totalItems,
+        totalPages: Math.ceil(totalItems / limit),
+        currentPage: page,
+        limit,
+      },
+      data: payments.map((p) => ({
+        id: p.id.toString(),
+        orderId: p.orderId.toString(),
+        amount: Number(p.amount),
+        paymentGateway: p.paymentGateway,
+        transactionId: p.transactionId,
+        status: p.status,
+        proofUrl: p.proofUrl,
+        senderName: p.senderName,
+        bankName: p.bankName,
+        senderAccount: p.senderAccount,
+        notes: p.notes,
+        createdAt: p.createdAt,
+        order: p.order
+          ? {
+              id: p.order.id.toString(),
+              type: p.order.type,
+              totalPrice: Number(p.order.totalPrice),
+              status: p.order.status,
+              customer: p.order.customer
+                ? {
+                    id: p.order.customer.id.toString(),
+                    name: p.order.customer.name,
+                    email: p.order.customer.email,
+                    phone: p.order.customer.phone,
+                  }
+                : null,
+              trip: p.order.trip
+                ? {
+                    id: p.order.trip.id.toString(),
+                    origin: p.order.trip.originPoint?.name,
+                    destination: p.order.trip.destinationPoint?.name,
+                  }
+                : null,
+            }
+          : null,
+      })),
+    };
+  }
+
+  /**
    * 1. MEMBUAT INVOICE XENDIT (Dipanggil saat Customer klik Bayar)
    */
   async createXenditInvoice(currentUserIdStr: string, orderIdStr: string) {
     const parsedOrderId = this.safeParseBigInt(orderIdStr);
     if (!parsedOrderId) {
       throw new BadRequestException('ID Order tidak valid.');
+    }
+
+    // CEK MODE AKTIF: Pada Opsi B, sistem sama sekali TIDAK BOLEH memanggil gateway
+    const config = await this.getRawPaymentConfig();
+    if (config.activeMode === PaymentActiveMode.MANUAL) {
+      throw new BadRequestException(
+        'Metode pembayaran gateway saat ini dinonaktifkan oleh administrator. Silakan lakukan pembayaran via Transfer Rekening Manual & QRIS Statis Pemilik.',
+      );
     }
 
     // Cari data order beserta customer dan trip
@@ -590,13 +1058,44 @@ export class PaymentsService {
     if (!order) throw new NotFoundException('Order tidak ditemukan');
 
     if (order.status === OrderStatus.paid) {
-      return { status: 'PAID', message: 'Sudah dibayar' };
+      return { status: 'PAID', message: 'Tagihan lunas terverifikasi' };
     }
 
+    if (order.status === OrderStatus.cancelled) {
+      return { status: 'CANCELLED', message: 'Pesanan telah dibatalkan' };
+    }
+
+    // Ambil record pembayaran terbaru untuk order ini
     const payment = await this.prisma.payment.findFirst({
-      where: { orderId: parsedOrderId, status: 'pending' },
+      where: { orderId: parsedOrderId },
       orderBy: { createdAt: 'desc' },
     });
+
+    const config = await this.getRawPaymentConfig();
+
+    // ATURAN MUTUALLY EXCLUSIVE: Pada Opsi B (Transfer Manual & QRIS Statis),
+    // sistem sama sekali TIDAK BOLEH memanggil API gateway agar tidak memicu error!
+    if (
+      config.activeMode === PaymentActiveMode.MANUAL ||
+      payment?.paymentGateway === 'MANUAL_TRANSFER'
+    ) {
+      if (payment?.status === PaymentStatus.success) {
+        return {
+          status: 'PAID',
+          message: 'Pembayaran transfer manual telah diverifikasi dan lunas!',
+        };
+      }
+      if (payment?.status === PaymentStatus.pending) {
+        return {
+          status: 'PENDING_VERIFICATION',
+          message: 'Bukti transfer sedang diverifikasi oleh admin / sistem',
+        };
+      }
+      return {
+        status: 'PENDING',
+        message: 'Menunggu transfer bank atau scan QRIS statis pemilik',
+      };
+    }
 
     if (
       !payment ||
@@ -606,7 +1105,11 @@ export class PaymentsService {
       return { status: 'PENDING', message: 'Menunggu pembayaran' };
     }
 
-    const secretKey = process.env.XENDIT_SECRET_KEY || '';
+    const secretKey =
+      config.gateway?.xenditSecretKey || process.env.XENDIT_SECRET_KEY || '';
+    if (!secretKey) {
+      return { status: 'PENDING', message: 'Menunggu pembayaran' };
+    }
     const basicAuth = Buffer.from(`${secretKey}:`).toString('base64');
 
     try {
@@ -621,7 +1124,9 @@ export class PaymentsService {
       if (data.status === 'PAID' || data.status === 'SETTLED') {
         // Trigger manual sinkronisasi sama seperti Webhook
         await this.handleXenditWebhook(
-          process.env.XENDIT_CALLBACK_TOKEN || '',
+          config.gateway?.xenditCallbackToken ||
+            process.env.XENDIT_CALLBACK_TOKEN ||
+            '',
           {
             status: 'PAID',
             external_id: `ORDER-${order.id.toString()}`,
