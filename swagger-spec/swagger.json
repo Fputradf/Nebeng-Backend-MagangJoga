@@ -3726,6 +3726,183 @@
         ]
       }
     },
+    "/api/payments/config": {
+      "get": {
+        "operationId": "PaymentsController_getPaymentConfig",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Mendapatkan informasi konfigurasi metode pembayaran yang sedang aktif",
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/payments/admin/config": {
+      "get": {
+        "operationId": "PaymentsController_getPaymentConfigAdmin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mendapatkan seluruh konfigurasi gateway & manual untuk Superadmin",
+        "tags": [
+          "Payments"
+        ]
+      },
+      "patch": {
+        "operationId": "PaymentsController_updatePaymentConfigAdmin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePaymentModeConfigDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Memperbarui mode pembayaran tunggal mutually exclusive (Superadmin)",
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/payments/manual/submit": {
+      "post": {
+        "operationId": "PaymentsController_submitManualPayment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitManualPaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Customer mengirimkan struk bukti pembayaran manual & QRIS statis",
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/payments/admin/manual-payments": {
+      "get": {
+        "operationId": "PaymentsController_getManualPaymentsAdmin",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Melihat daftar pembayaran manual yang butuh verifikasi (Superadmin)",
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/payments/admin/manual-payments/{id}/verify": {
+      "patch": {
+        "operationId": "PaymentsController_verifyManualPaymentAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyManualPaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Verifikasi atau tolak pembayaran manual order (Superadmin)",
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
     "/api/payments/checkout": {
       "post": {
         "operationId": "PaymentsController_checkoutPayment",
@@ -7107,6 +7284,124 @@
         },
         "required": [
           "amount"
+        ]
+      },
+      "UpdatePaymentModeConfigDto": {
+        "type": "object",
+        "properties": {
+          "activeMode": {
+            "type": "string",
+            "description": "Mode pembayaran yang aktif (Mutually Exclusive)",
+            "enum": [
+              "GATEWAY",
+              "MANUAL"
+            ],
+            "example": "MANUAL"
+          },
+          "gatewayProvider": {
+            "type": "string",
+            "description": "Provider Gateway Otomatis (XENDIT / MIDTRANS)"
+          },
+          "xenditSecretKey": {
+            "type": "string",
+            "description": "Secret Key Payment Gateway"
+          },
+          "xenditCallbackToken": {
+            "type": "string",
+            "description": "Callback Verification Token"
+          },
+          "manualBankName": {
+            "type": "string",
+            "description": "Nama Bank Tujuan Transfer Manual"
+          },
+          "manualAccountNumber": {
+            "type": "string",
+            "description": "Nomor Rekening Tujuan Transfer Manual"
+          },
+          "manualAccountHolder": {
+            "type": "string",
+            "description": "Nama Pemilik Rekening (a/n)"
+          },
+          "manualQrisImageUrl": {
+            "type": "string",
+            "description": "Gambar atau Data URL QRIS Statis Pemilik"
+          },
+          "manualQrisPayload": {
+            "type": "string",
+            "description": "Raw QRIS String / Payload untuk QR generator lokal"
+          },
+          "transferGuide": {
+            "description": "Daftar instruksi / panduan transfer",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "autoVerifyManual": {
+            "type": "boolean",
+            "description": "Otomatis setujui bukti manual untuk keperluan testing/demo"
+          }
+        },
+        "required": [
+          "activeMode"
+        ]
+      },
+      "SubmitManualPaymentDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "ID Order yang dibayar",
+            "example": "1"
+          },
+          "proofUrl": {
+            "type": "string",
+            "description": "Bukti transfer (Base64 Data URL atau URL gambar struk)",
+            "example": "data:image/jpeg;base64,..."
+          },
+          "senderName": {
+            "type": "string",
+            "description": "Nama pengirim di rekening/e-wallet",
+            "example": "Budi Santoso"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "Bank atau Saluran Pembayaran (contoh: BCA Manual, QRIS Statis)",
+            "example": "BCA Manual"
+          },
+          "senderAccount": {
+            "type": "string",
+            "description": "Nomor rekening atau nomor HP pengirim",
+            "example": "1234567890"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Catatan tambahan dari customer"
+          }
+        },
+        "required": [
+          "orderId",
+          "proofUrl",
+          "senderName",
+          "bankName"
+        ]
+      },
+      "VerifyManualPaymentDto": {
+        "type": "object",
+        "properties": {
+          "approved": {
+            "type": "boolean",
+            "description": "Persetujuan verifikasi (true = terima, false = tolak)",
+            "example": true
+          },
+          "reviewNotes": {
+            "type": "string",
+            "description": "Catatan review atau alasan penolakan",
+            "example": "Dana telah diterima di rekening BCA"
+          }
+        },
+        "required": [
+          "approved"
         ]
       },
       "CheckoutPaymentDto": {

@@ -107,6 +107,15 @@ export class CheckpointsService {
       throw new BadRequestException('ID Operator tidak valid');
     }
 
+    if (providedPosId) {
+      const assignedTarget = await this.prisma.pickupPoint.findFirst({
+        where: { id: BigInt(providedPosId), operatorId: parsedOperatorId },
+      });
+      if (assignedTarget) {
+        return assignedTarget.id.toString();
+      }
+    }
+
     const assignedPos = await this.prisma.pickupPoint.findFirst({
       where: { operatorId: parsedOperatorId },
     });

@@ -665,6 +665,11 @@ model Payment {
   transactionId  String        @map("transaction_id")
   amount         Decimal       @db.Decimal(10, 2)
   status         PaymentStatus
+  proofUrl       String?       @map("proof_url") @db.LongText
+  senderName     String?       @map("sender_name") @db.VarChar(100)
+  bankName       String?       @map("bank_name") @db.VarChar(100)
+  senderAccount  String?       @map("sender_account") @db.VarChar(100)
+  notes          String?       @map("notes") @db.Text
   refundRequiredAt DateTime?    @map("refund_required_at")
   refundNote      String?       @map("refund_note") @db.VarChar(500)
   createdAt      DateTime      @default(now()) @map("created_at")

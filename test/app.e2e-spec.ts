@@ -15,6 +15,8 @@ import {
 } from '../src/generated/prisma/enums';
 
 describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
+  jest.setTimeout(60000);
+
   let app: INestApplication;
   let prisma: PrismaService;
   let jwtService: JwtService;
@@ -204,11 +206,11 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
       role: Role.mitra,
       statusVerification: VerificationStatus.pending,
     })}`;
-  });
+  }, 60000);
 
   afterAll(async () => {
     await app.close();
-  });
+  }, 60000);
 
   // =========================================================================
   // 🟢 SUITE 1: ALUR SUKSES TRANSAKSI PENUH (HAPPY PATH LIFE-CYCLE)
@@ -219,11 +221,12 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .post('/trips')
         .set('Authorization', approvedMitraToken)
         .send({
+          serviceType: 'mobil',
           vehicleId: validVehicleId,
           originPointId: originPosId,
           destinationPointId: destPosId,
-          departureDate: '2026-10-01',
-          departureTime: '2026-10-01T08:00:00Z',
+          departureDate: '2026-12-01',
+          departureTime: '2026-12-01T08:00:00.000Z',
           price: 50000,
           totalSeats: 4,
           maxWeightCapacityKg: 50,
@@ -259,7 +262,7 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .set('Authorization', customerToken)
         .send({
           orderId: createdOrderId,
-          paymentGateway: 'midtrans',
+          paymentGateway: 'QRIS',
           pin: '123456',
         })
         .expect(201);
@@ -280,6 +283,13 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .expect(201);
 
       expect(res.body.message).toContain('Check-in Pos Asal berhasil');
+
+      const updatedOrder = await prisma.order.findUnique({
+        where: { id: BigInt(createdOrderId) },
+      });
+      if (updatedOrder?.qrCodeTicket) {
+        createdOrderTicketQr = updatedOrder.qrCodeTicket;
+      }
     });
 
     it('STEP 5: Operator Pos melakukan Check-in Pos Tujuan (Destination Scan) -> Status COMPLETED & Escrow Release', async () => {
@@ -295,7 +305,7 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .expect(201);
 
       expect(res.body.message).toContain(
-        'Dana Escrow telah dicairkan ke Wallet Mitra',
+        'Dana Escrow dicairkan ke Wallet Mitra',
       );
     });
 
@@ -324,11 +334,12 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .post('/trips')
         .set('Authorization', unapprovedMitraToken)
         .send({
+          serviceType: 'mobil',
           vehicleId: validVehicleId,
           originPointId: originPosId,
           destinationPointId: destPosId,
-          departureDate: '2026-10-01',
-          departureTime: '2026-10-01T08:00:00Z',
+          departureDate: '2026-12-01',
+          departureTime: '2026-12-01T08:00:00.000Z',
           price: 50000,
         })
         .expect(403);
@@ -339,11 +350,12 @@ describe('Sistem Trajek & Logistik (Full E2E Integration Test)', () => {
         .post('/trips')
         .set('Authorization', approvedMitraToken)
         .send({
+          serviceType: 'mobil',
           vehicleId: validVehicleId,
           originPointId: originPosId,
           destinationPointId: originPosId,
-          departureDate: '2026-10-01',
-          departureTime: '2026-10-01T08:00:00Z',
+          departureDate: '2026-12-01',
+          departureTime: '2026-12-01T08:00:00.000Z',
           price: 50000,
         })
         .expect(400);

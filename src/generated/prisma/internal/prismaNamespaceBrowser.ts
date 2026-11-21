@@ -448,6 +448,11 @@ export const PaymentScalarFieldEnum = {
   transactionId: 'transactionId',
   amount: 'amount',
   status: 'status',
+  proofUrl: 'proofUrl',
+  senderName: 'senderName',
+  bankName: 'bankName',
+  senderAccount: 'senderAccount',
+  notes: 'notes',
   refundRequiredAt: 'refundRequiredAt',
   refundNote: 'refundNote',
   createdAt: 'createdAt',
@@ -1004,6 +1009,11 @@ export type OsmRouteCacheOrderByRelevanceFieldEnum = (typeof OsmRouteCacheOrderB
 export const PaymentOrderByRelevanceFieldEnum = {
   paymentGateway: 'paymentGateway',
   transactionId: 'transactionId',
+  proofUrl: 'proofUrl',
+  senderName: 'senderName',
+  bankName: 'bankName',
+  senderAccount: 'senderAccount',
+  notes: 'notes',
   refundNote: 'refundNote'
 } as const
 

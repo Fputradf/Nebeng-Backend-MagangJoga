@@ -92,12 +92,18 @@ export class CheckpointsRepository {
           expiredAt: tokenExpiry,
         },
       });
-      // 3. Update order dengan kode QR tujuan baru & status checked_in_origin
+      // 3. Update order dengan kode QR tujuan baru & status in_transit
       await tx.order.update({
         where: { id: orderId },
         data: {
-          status: OrderStatus.checked_in_origin,
+          status: OrderStatus.in_transit,
           qrCodeTicket: nextDestQrToken, // Rotasi QR tiket
+        },
+      });
+      await tx.trip.update({
+        where: { id: tripId },
+        data: {
+          status: TripStatus.in_transit,
         },
       });
       // 4. Simpan segel fisik jika pengiriman paket barang
