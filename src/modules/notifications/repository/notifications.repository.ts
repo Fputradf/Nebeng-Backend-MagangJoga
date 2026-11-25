@@ -195,6 +195,18 @@ export class NotificationsRepository {
     return result.count;
   }
 
+  async deleteOldUserNotifications(beforeDate: Date): Promise<number> {
+    const result = await this.prisma.userNotification.deleteMany({
+      where: {
+        createdAt: {
+          lt: beforeDate,
+        },
+      },
+    });
+
+    return result.count;
+  }
+
   // User Notification methods
   async getUserNotifications(
     userId: string,
