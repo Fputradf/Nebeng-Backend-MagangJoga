@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   UseGuards,
   Query,
   Headers,
@@ -23,11 +24,112 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../generated/prisma/enums';
 import { GetUser } from '../../common/decorators/get-user.decorators';
 import { CreateXenditInvoiceDto } from './dto/create-xendit-invoice.dto';
+import { UpdatePaymentModeConfigDto } from './dto/payment-config.dto';
+import {
+  SubmitManualPaymentDto,
+  VerifyManualPaymentDto,
+} from './dto/submit-manual-payment.dto';
 
 @ApiTags('Payments')
 @Controller('payments') // <-- Hapus @UseGuards di sini agar tidak memblokir webhook
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
+
+  /**
+   * Pengaturan Mode Pembayaran Aktif untuk Checkout UI (Publik / Customer)
+   */
+  @Get('config')
+  @ApiOperation({
+    summary: 'Mendapatkan informasi konfigurasi metode pembayaran yang sedang aktif',
+  })
+  async getPaymentConfig() {
+    return this.paymentsService.getPaymentConfig(false);
+  }
+
+  /**
+   * Panel Superadmin: Ambil Pengaturan Pembayaran Lengkap
+   */
+  @Get('admin/config')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Mendapatkan seluruh konfigurasi gateway & manual untuk Superadmin',
+  })
+  async getPaymentConfigAdmin() {
+    return this.paymentsService.getPaymentConfig(true);
+  }
+
+  /**
+   * Panel Superadmin: Simpan Mode Pembayaran (Mutually Exclusive)
+   */
+  @Patch('admin/config')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Memperbarui mode pembayaran tunggal mutually exclusive (Superadmin)',
+  })
+  async updatePaymentConfigAdmin(@Body() dto: UpdatePaymentModeConfigDto) {
+    return this.paymentsService.updatePaymentConfig(dto);
+  }
+
+  /**
+   * Customer: Upload Struk Bukti Transfer Manual / QRIS Statis
+   */
+  @Post('manual/submit')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.customer)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Customer mengirimkan struk bukti pembayaran manual & QRIS statis',
+  })
+  async submitManualPayment(
+    @GetUser('id') userId: string,
+    @Body() dto: SubmitManualPaymentDto,
+  ) {
+    return this.paymentsService.submitManualPayment(String(userId), dto);
+  }
+
+  /**
+   * Admin: Daftar Bukti Pembayaran Manual untuk Diverifikasi
+   */
+  @Get('admin/manual-payments')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Melihat daftar pembayaran manual yang butuh verifikasi (Superadmin)',
+  })
+  async getManualPaymentsAdmin(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+    @Query('status') status?: string,
+  ) {
+    return this.paymentsService.getManualPayments(Number(page), Number(limit), status);
+  }
+
+  /**
+   * Admin: Verifikasi / Tolak Bukti Pembayaran Manual
+   */
+  @Patch('admin/manual-payments/:id/verify')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Verifikasi atau tolak pembayaran manual order (Superadmin)',
+  })
+  async verifyManualPaymentAdmin(
+    @GetUser('id') adminId: string,
+    @Param('id') paymentId: string,
+    @Body() dto: VerifyManualPaymentDto,
+  ) {
+    return this.paymentsService.verifyManualPayment(
+      String(adminId),
+      paymentId,
+      dto,
+    );
+  }
 
   /**
    * 1. Checkout Simulasi PIN (Hanya Customer Login)
