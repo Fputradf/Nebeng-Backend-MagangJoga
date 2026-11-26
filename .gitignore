@@ -6,6 +6,7 @@
 # Uploaded files
 uploads/avatars/
 uploads/verifications/
+uploads/payments/
 
 # Logs
 logs
@@ -60,3 +61,4 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
+src/generated/prisma/**/*.js

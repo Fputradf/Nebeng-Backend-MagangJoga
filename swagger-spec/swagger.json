@@ -35,6 +35,26 @@
         ]
       }
     },
+    "/api/uploads/payment-proof": {
+      "post": {
+        "operationId": "UploadController_uploadPaymentProof",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload foto struk bukti pembayaran manual",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    },
     "/api/uploads/appeals": {
       "post": {
         "operationId": "UploadController_uploadAppealEvidence",
