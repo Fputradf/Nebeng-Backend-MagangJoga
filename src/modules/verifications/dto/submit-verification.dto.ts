@@ -23,8 +23,8 @@ export class VerifiactionFileDto {
   })
   @IsString()
   @IsNotEmpty()
-  @IsIn(['image/jpg', 'image/png', 'application/pdf', 'image/jpeg'], {
-    message: 'Tipe file tidak valid. hanya diperbolehkan jpep, jpg, png, pdf',
+  @IsIn(['image/jpg', 'image/png', 'application/pdf', 'image/jpeg', 'image/webp'], {
+    message: 'Tipe file tidak valid. hanya diperbolehkan jpeg, jpg, png, webp, pdf',
   })
   fileType!: string;
 }

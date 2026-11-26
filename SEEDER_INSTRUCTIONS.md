@@ -45,6 +45,8 @@ npx prisma db seed
   - `Terminal Jombor` (Sleman)
   - `Stasiun Tugu Yogyakarta` (Kota Yogyakarta)
   - `Bandar Udara Adisutjipto` (Sleman) ✈️
+  - `Pos Mitra Kantor 2 (Banguntapan)` (Tegalpasar, Jl. Kanoman, Modalan, Banguntapan, Bantul)
+  - `Pos Mitra Kantor 1 Seven Inc` (Jl. Raya Janti Gg. Harjuna No.59, Karangjambe, Banguntapan, Bantul)
 - **Area Surakarta:**
   - `Terminal Tirtonadi`
   - `Stasiun Solo Balapan`

@@ -98,7 +98,7 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "node -r dotenv/config run-seed.js"
+    "seed": "npx ts-node prisma/seed.ts"
   },
   "allowScripts": {
     "bcrypt@6.0.0": true,

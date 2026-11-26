@@ -399,6 +399,38 @@ async function main() {
   });
   console.log(`✅ Pickup Point Jogja 4 dibuat: ${pickupPointJogja4.name} (Valid di D.I. Yogyakarta)`);
 
+  const pickupPointJogja5 = await prisma.pickupPoint.create({
+    data: {
+      regionId: regionJogja.id,
+      cityId: jogjaCity.id,
+      operatorId: operatorJogja.id,
+      name: 'Pos Mitra Kantor 2 (Banguntapan)',
+      address:
+        'Tegalpasar, Jl. Kanoman, RT.08/RW20, Modalan, Banguntapan, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55198',
+      latitude: -7.7986,
+      longitude: 110.4098,
+      qrCodePos: generateQr('POS'),
+      isActive: true,
+    },
+  });
+  console.log(`✅ Pickup Point Jogja 5 dibuat: ${pickupPointJogja5.name}`);
+
+  const pickupPointJogja6 = await prisma.pickupPoint.create({
+    data: {
+      regionId: regionJogja.id,
+      cityId: jogjaCity.id,
+      operatorId: operatorJogja.id,
+      name: 'Pos Mitra Kantor 1 Seven Inc',
+      address:
+        'Jl. Raya Janti Gg. Harjuna No.59, Jaranan, Karangjambe, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55198',
+      latitude: -7.7945,
+      longitude: 110.4062,
+      qrCodePos: generateQr('POS'),
+      isActive: true,
+    },
+  });
+  console.log(`✅ Pickup Point Jogja 6 dibuat: ${pickupPointJogja6.name}`);
+
   // Solo Pickup Points
   const pickupPointSolo1 = await prisma.pickupPoint.create({
     data: {
@@ -1201,6 +1233,8 @@ async function main() {
   console.log(`   - ${pickupPointJogja2.name} (Sleman)`);
   console.log(`   - ${pickupPointJogja3.name} (Kota Yogyakarta)`);
   console.log(`   - ${pickupPointJogja4.name} (Sleman - Adisutjipto) ✈️`);
+  console.log(`   - ${pickupPointJogja5.name} (Banguntapan, Bantul)`);
+  console.log(`   - ${pickupPointJogja6.name} (Banguntapan, Bantul)`);
   console.log('─'.repeat(55));
 }
 

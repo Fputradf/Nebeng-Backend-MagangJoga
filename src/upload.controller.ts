@@ -55,7 +55,7 @@ export class UploadController {
           cb(null, `verif-${uniqueSuffix}${ext}`);
         },
       }),
-      limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB
+      limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
       fileFilter: (req, file, cb) => {
         if (
           !['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'].includes(
@@ -77,6 +77,52 @@ export class UploadController {
     }
     return {
       filePath: `/uploads/verifications/${file.filename}`,
+      fileType: file.mimetype,
+    };
+  }
+
+  @Post('payment-proof')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload foto struk bukti pembayaran manual' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadPath = path.join(process.cwd(), 'uploads', 'payments');
+          if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = path.extname(file.originalname) || '.jpg';
+          cb(null, `proof-${uniqueSuffix}${ext}`);
+        },
+      }),
+      limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+          return cb(
+            new BadRequestException(
+              'Format berkas bukti harus berupa gambar (JPG, PNG, atau WEBP)',
+            ),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  uploadPaymentProof(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File bukti pembayaran tidak ditemukan');
+    }
+    return {
+      filePath: `/uploads/payments/${file.filename}`,
       fileType: file.mimetype,
     };
   }
@@ -194,7 +240,7 @@ export class UploadController {
           cb(null, `social-${uniqueSuffix}${ext}`);
         },
       }),
-      limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB
+      limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
       fileFilter: (req, file, cb) => {
         if (!file.mimetype.startsWith('image/')) {
           return cb(new BadRequestException('Format file harus berupa gambar/vektor'), false);
