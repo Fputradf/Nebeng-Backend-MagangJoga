@@ -1,5 +1,6 @@
 export interface ComputeOrderFinancialsInput {
   subtotal: number | string | any;
+  customerFee?: number | string | any;
   totalPrice?: number | string | any;
   discountAmount?: number | string | any;
   adminFeePercentage: number | string | any;
@@ -7,6 +8,7 @@ export interface ComputeOrderFinancialsInput {
 
 export interface OrderFinancials {
   subtotal: number;
+  customerFee: number;
   fee: number;
   netMitra: number;
   discount: number;
@@ -16,16 +18,17 @@ export interface OrderFinancials {
 
 /**
  * Helper tunggal kalkulasi keuangan order.
- * - Customer bayar totalPrice = subtotal - discount.
+ * - Customer bayar totalPrice = subtotal + customerFee - discount.
  * - Fee admin dan bagian mitra dihitung dari SUBTOTAL:
  *   fee = Math.round(subtotal * adminFeePercentage / 100);
  *   netMitra = subtotal - fee;
- *   adminNet = totalPrice - netMitra (bisa negatif jika subsidi diskon > fee).
+ *   adminNet = totalPrice - netMitra (bisa negatif jika subsidi diskon > fee + customerFee).
  */
 export function computeOrderFinancials(
   input: ComputeOrderFinancialsInput,
 ): OrderFinancials {
   const rawSubtotal = Number(input.subtotal) || 0;
+  const customerFee = Math.max(0, Number(input.customerFee) || 0);
   const rawTotalPrice =
     input.totalPrice !== undefined && input.totalPrice !== null
       ? Number(input.totalPrice)
@@ -42,13 +45,13 @@ export function computeOrderFinancials(
   if (rawDiscount !== undefined) {
     discount = Math.max(0, rawDiscount);
   } else if (rawTotalPrice !== undefined) {
-    discount = Math.max(0, subtotal - rawTotalPrice);
+    discount = Math.max(0, subtotal + customerFee - rawTotalPrice);
   }
 
   const customerPaid =
     rawTotalPrice !== undefined
       ? rawTotalPrice
-      : Math.max(0, subtotal - discount);
+      : Math.max(0, subtotal + customerFee - discount);
 
   const adminFeePercentage = Number(input.adminFeePercentage) || 0;
   const fee = Math.round((subtotal * adminFeePercentage) / 100);
@@ -57,6 +60,7 @@ export function computeOrderFinancials(
 
   return {
     subtotal,
+    customerFee,
     fee,
     netMitra,
     discount,

@@ -135,6 +135,7 @@ export class OrdersService {
     let totalWeightKg = 0;
     let totalPrice = 0;
     let adminFeePercentage = 10;
+    let customerFee = 0;
     let otpClaim: string | null = null;
     const itemsDataProcessed: any[] = [];
     const passengersDataProcessed: any[] = [];
@@ -149,6 +150,9 @@ export class OrdersService {
       adminFeePercentage = pricingSetting
         ? Number(pricingSetting.adminFeePercentage)
         : 10;
+      customerFee = pricingSetting
+        ? Number((pricingSetting as any).customerServiceFee || 0)
+        : 0;
 
       const baseFare = pricingSetting ? Number(pricingSetting.baseFare) : 5000;
       const farePerKm = pricingSetting
@@ -222,6 +226,9 @@ export class OrdersService {
       adminFeePercentage = defaultParcelSetting
         ? Number(defaultParcelSetting.adminFeePercentage)
         : 12;
+      customerFee = defaultParcelSetting
+        ? Number((defaultParcelSetting as any).customerServiceFee || 0)
+        : 0;
 
       for (const item of dto.items) {
         const itemTotalWeight = item.weightPerItemKg * item.quantity;
@@ -302,7 +309,8 @@ export class OrdersService {
       totalItemsCount,
       totalWeightKg,
       subtotal: totalPrice,
-      totalPrice,
+      customerFee,
+      totalPrice: totalPrice + customerFee,
       qrCodeTicket,
       otpClaim,
       adminFeePercentage,
@@ -338,6 +346,29 @@ export class OrdersService {
     }
 
     return OrderMapper.toResponse(order);
+  }
+
+  async getCustomerServiceFees() {
+    const settings = await this.prisma.pricingSetting.findMany({
+      where: {
+        serviceType: {
+          in: [ServiceType.motor, ServiceType.mobil, ServiceType.barang],
+        },
+      },
+      select: {
+        serviceType: true,
+        customerServiceFee: true,
+      },
+    });
+
+    const fees = { motor: 0, mobil: 0, barang: 0 };
+    for (const s of settings) {
+      const val = Number((s as any).customerServiceFee || 0);
+      if (s.serviceType === ServiceType.motor) fees.motor = val;
+      else if (s.serviceType === ServiceType.mobil) fees.mobil = val;
+      else if (s.serviceType === ServiceType.barang) fees.barang = val;
+    }
+    return fees;
   }
 
   async cancelOrder(currentUser: any, orderIdStr: string) {
@@ -381,6 +412,7 @@ export class OrdersService {
         const adminFeePercentage = Number(order.adminFeePercentage || 10);
         const financials = computeOrderFinancials({
           subtotal: (order as any).subtotal || order.totalPrice,
+          customerFee: (order as any).customerFee,
           totalPrice: order.totalPrice,
           discountAmount: (order as any).discountAmount,
           adminFeePercentage,

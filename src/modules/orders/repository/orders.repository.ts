@@ -183,7 +183,8 @@ export class OrdersRepository {
         voucherIdToRedeem = BigInt(voucher.id);
         voucherCodeToSave = voucher.code;
         discountAmount = calculation.discountAmount;
-        finalTotalPrice = calculation.totalPrice;
+        finalTotalPrice =
+          calculation.totalPrice + Number(orderData.customerFee || 0);
       }
 
       const updateTripResult = await tx.trip.updateMany({
@@ -215,6 +216,7 @@ export class OrdersRepository {
           adminFeePercentage: orderData.adminFeePercentage,
           totalWeightKg: orderData.totalWeightKg,
           subtotal: orderData.subtotal,
+          customerFee: orderData.customerFee ?? 0,
           discountAmount: discountAmount,
           voucherCode: voucherCodeToSave,
           totalPrice: finalTotalPrice,

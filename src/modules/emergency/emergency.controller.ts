@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -50,6 +51,27 @@ export class EmergencyController {
   @ApiResponse({ status: 200, description: 'Daftar insiden SOS aktif' })
   async getActiveSos(@GetUser() user: any) {
     return this.emergencyService.getActiveSosByRegion(user);
+  }
+
+  @Get('sos/logs')
+  @Roles(Role.regional, Role.admin, Role.operator)
+  @ApiOperation({
+    summary: 'Riwayat Lengkap Log Darurat SOS (Aktif, Selesai, Alarm Palsu) dengan filter & paginasi',
+  })
+  @ApiResponse({ status: 200, description: 'Daftar riwayat log darurat SOS' })
+  async getSosLogs(
+    @GetUser() user: any,
+    @Query('status') status?: string,
+    @Query('search') search?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.emergencyService.getSosLogs(user, {
+      status,
+      search,
+      page: page ? Number(page) : 1,
+      limit: limit ? Number(limit) : 15,
+    });
   }
 
   @Patch('sos/:id/resolve')

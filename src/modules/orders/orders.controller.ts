@@ -53,6 +53,16 @@ export class OrdersController {
     return this.ordersService.getMyOrders(String(user));
   }
 
+  @Get('customer-fee')
+  @Roles(Role.customer, Role.mitra, Role.operator, Role.regional, Role.admin)
+  @ApiOperation({
+    summary: 'Konfigurasi biaya layanan customer per jenis layanan',
+  })
+  @ApiResponse({ status: 200, description: 'Konfigurasi biaya layanan customer' })
+  async getCustomerServiceFees() {
+    return this.ordersService.getCustomerServiceFees();
+  }
+
   @Get(':id')
   @Roles(Role.customer, Role.mitra, Role.operator, Role.regional, Role.admin)
   @ApiOperation({

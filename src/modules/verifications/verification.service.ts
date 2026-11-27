@@ -77,6 +77,21 @@ export class VerificationService {
       },
     });
 
+    try {
+      await this.notificationHelper.notifyAdminsKycSubmitted({
+        userId,
+        userName:
+          verification.user?.profile?.fullNameKtp ||
+          verification.user?.name ||
+          'Pengguna',
+        userRole: verification.user?.role || 'customer',
+        verificationType: verification.type,
+        verificationId: verification.id.toString(),
+      });
+    } catch {
+      // Jangan gagalkan pengajuan verifikasi jika notifikasi admin gagal
+    }
+
     return VerificationMapper.toResponse(verification);
   }
 

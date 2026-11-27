@@ -80,6 +80,7 @@ describe('PaymentsService (checkoutPayment)', () => {
     const mockNotificationHelper = {
       notifyOrderPaid: jest.fn(),
       notifyPaymentSuccess: jest.fn(),
+      notifyAdminsManualPaymentSubmitted: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({

@@ -1,4 +1,4 @@
-﻿import { SanctionService } from '../admin/sanction.service';
+import { SanctionService } from '../admin/sanction.service';
 import {
   Controller,
   Get,
@@ -41,6 +41,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { GetUser } from '../../common/decorators/get-user.decorators';
+import {
+  IMAGE_RESIZE_PRESETS,
+  resizeUploadedImage,
+} from '../../common/utils/image-resize.util';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -232,6 +236,7 @@ export class UserController {
       throw new BadRequestException('File gambar tidak ditemukan');
     }
 
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.avatar);
     const userId = req.user.id || req.user.sub;
     const filePath = `/uploads/avatars/${file.filename}`;
 

@@ -10,13 +10,13 @@ import { PaymentsRepository } from './repository/payments.repository';
 import { OrdersRepository } from '../orders/repository/orders.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CheckoutPaymentDto } from './dto/checkout-payment.dto';
-import { OrderStatus, PaymentStatus, Role, ServiceType, TransactionType } from '../../generated/prisma/enums';
+import { EscrowStatus, OrderStatus, PaymentStatus, Role, ServiceType, TransactionType, TripStatus } from '../../generated/prisma/enums';
 import { randomBytes, timingSafeEqual } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { NotificationHelperService } from '../notifications/notification-helper.service';
 import { computeOrderFinancials } from '../../common/utils/financial.util';
 import { PaymentActiveMode, UpdatePaymentModeConfigDto } from './dto/payment-config.dto';
-import { SubmitManualPaymentDto, VerifyManualPaymentDto } from './dto/submit-manual-payment.dto';
+import { SubmitManualPaymentDto, UpdateManualPaymentStatusDto, VerifyManualPaymentDto } from './dto/submit-manual-payment.dto';
 
 export const DEFAULT_PAYMENT_CONFIG = {
   activeMode: PaymentActiveMode.MANUAL, // MUTUALLY EXCLUSIVE DEFAULT: OPSI B
@@ -149,6 +149,7 @@ export class PaymentsService {
 
     const financials = computeOrderFinancials({
       subtotal: (order as any).subtotal || order.totalPrice,
+      customerFee: (order as any).customerFee,
       totalPrice: order.totalPrice,
       discountAmount: (order as any).discountAmount,
       adminFeePercentage,
@@ -166,7 +167,9 @@ export class PaymentsService {
         financials.fee,
         financials.netMitra,
         false, // isWebhook = false untuk checkout langsung
-        ...(financials.discount > 0 ? [financials.adminNet] : []),
+        ...(financials.discount > 0 || financials.customerFee > 0
+          ? [financials.adminNet]
+          : []),
       );
 
     await this.notificationHelper.notifyOrderPaid(
@@ -572,6 +575,18 @@ export class PaymentsService {
       };
     }
 
+    try {
+      await this.notificationHelper.notifyAdminsManualPaymentSubmitted({
+        orderId: order.id.toString(),
+        paymentId: payment.id.toString(),
+        customerName: order.customer?.name || dto.senderName || 'Pelanggan',
+        amount: Number(order.totalPrice || 0),
+        bankName: dto.bankName,
+      });
+    } catch {
+      // Jangan gagalkan upload bukti pembayaran jika notifikasi admin gagal
+    }
+
     return {
       success: true,
       status: 'PENDING_VERIFICATION',
@@ -620,6 +635,7 @@ export class PaymentsService {
       const adminFeePercentage = Number(order.adminFeePercentage || 10);
       const financials = computeOrderFinancials({
         subtotal: (order as any).subtotal || order.totalPrice,
+        customerFee: (order as any).customerFee,
         totalPrice: order.totalPrice,
         discountAmount: (order as any).discountAmount,
         adminFeePercentage,
@@ -635,7 +651,9 @@ export class PaymentsService {
         financials.fee,
         financials.netMitra,
         true,
-        ...(financials.discount > 0 ? [financials.adminNet] : []),
+        ...(financials.discount > 0 || financials.customerFee > 0
+          ? [financials.adminNet]
+          : []),
       );
 
       const updatedPayment = await this.prisma.payment.update({
@@ -680,6 +698,240 @@ export class PaymentsService {
         },
       };
     }
+  }
+
+  async updateManualPaymentStatus(
+    adminUserIdStr: string,
+    paymentIdStr: string,
+    dto: UpdateManualPaymentStatusDto,
+  ) {
+    const parsedPaymentId = this.safeParseBigInt(paymentIdStr);
+    if (!parsedPaymentId) {
+      throw new BadRequestException('ID Pembayaran tidak valid.');
+    }
+
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: parsedPaymentId },
+      include: {
+        order: {
+          include: { trip: true, customer: true },
+        },
+      },
+    });
+
+    if (!payment) {
+      throw new NotFoundException('Data pembayaran tidak ditemukan.');
+    }
+
+    const targetStatus = dto.status as PaymentStatus;
+    if (payment.status === targetStatus) {
+      const updated = dto.reviewNotes
+        ? await this.prisma.payment.update({
+            where: { id: payment.id },
+            data: { notes: dto.reviewNotes },
+          })
+        : payment;
+
+      return {
+        success: true,
+        message: 'Status pembayaran tidak berubah.',
+        payment: {
+          id: updated.id.toString(),
+          orderId: updated.orderId.toString(),
+          status: updated.status,
+        },
+      };
+    }
+
+    // Jika target adalah Lunas (success), gunakan alur verifikasi standar
+    if (targetStatus === PaymentStatus.success) {
+      if (payment.order.status !== OrderStatus.pending_payment) {
+        throw new BadRequestException(
+          'Order tidak lagi dalam status menunggu pembayaran sehingga tidak dapat diubah menjadi Lunas.',
+        );
+      }
+      if (payment.order.trip.status !== TripStatus.scheduled) {
+        throw new BadRequestException(
+          'Trip sudah berjalan atau dibatalkan sehingga pembayaran tidak dapat diubah menjadi Lunas.',
+        );
+      }
+
+      if (payment.status === PaymentStatus.failed) {
+        await this.prisma.payment.update({
+          where: { id: payment.id },
+          data: { status: PaymentStatus.pending },
+        });
+      }
+
+      return this.verifyManualPayment(adminUserIdStr, paymentIdStr, {
+        approved: true,
+        reviewNotes: dto.reviewNotes || 'Status diubah menjadi Lunas oleh Superadmin',
+      });
+    }
+
+    // Jika dari pending -> failed
+    if (payment.status === PaymentStatus.pending && targetStatus === PaymentStatus.failed) {
+      return this.verifyManualPayment(adminUserIdStr, paymentIdStr, {
+        approved: false,
+        reviewNotes: dto.reviewNotes || 'Status diubah menjadi Ditolak oleh Superadmin',
+      });
+    }
+
+    // Jika dari success -> pending / failed, lakukan reversal escrow & order
+    if (payment.status === PaymentStatus.success) {
+      const order = payment.order;
+      if (
+        order.status !== OrderStatus.paid ||
+        order.escrowStatus !== EscrowStatus.held
+      ) {
+        throw new BadRequestException(
+          'Order sudah diproses lebih lanjut atau escrow sudah dilepas, status pembayaran Lunas tidak dapat diubah.',
+        );
+      }
+
+      const adminFeePercentage = Number(order.adminFeePercentage || 10);
+      const financials = computeOrderFinancials({
+        subtotal: (order as any).subtotal || order.totalPrice,
+        customerFee: (order as any).customerFee,
+        totalPrice: order.totalPrice,
+        discountAmount: (order as any).discountAmount,
+        adminFeePercentage,
+      });
+
+      const updatedPayment = await this.prisma.$transaction(async (tx) => {
+        const mitraWallet = await tx.wallet.findUnique({
+          where: { userId: order.trip.mitraId },
+        });
+        if (mitraWallet && financials.netMitra > 0) {
+          await tx.wallet.update({
+            where: { id: mitraWallet.id },
+            data: {
+              heldEscrowBalance: { decrement: financials.netMitra },
+            },
+          });
+          await tx.walletTransaction.create({
+            data: {
+              walletId: mitraWallet.id,
+              orderId: order.id,
+              amount: financials.netMitra,
+              type: TransactionType.debit,
+              description: `Reversal Escrow Order #${order.id.toString()} (Edit status pembayaran manual)`,
+            },
+          });
+        }
+
+        const systemAdminIdEnv = process.env.SYSTEM_ADMIN_USER_ID;
+        const parsedSystemAdminId = systemAdminIdEnv
+          ? this.safeParseBigInt(systemAdminIdEnv)
+          : null;
+        const adminUser = parsedSystemAdminId
+          ? await tx.user.findUnique({ where: { id: parsedSystemAdminId } })
+          : await tx.user.findFirst({
+              where: { role: 'admin' },
+              orderBy: { id: 'asc' },
+            });
+
+        if (adminUser) {
+          const adminWallet = await tx.wallet.findUnique({
+            where: { userId: adminUser.id },
+          });
+          const effectiveAdminNet =
+            financials.discount > 0 || financials.customerFee > 0
+              ? financials.adminNet
+              : financials.fee;
+
+          if (adminWallet && effectiveAdminNet !== 0) {
+            if (effectiveAdminNet > 0) {
+              await tx.wallet.update({
+                where: { id: adminWallet.id },
+                data: { balance: { decrement: effectiveAdminNet } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: adminWallet.id,
+                  orderId: order.id,
+                  amount: effectiveAdminNet,
+                  type: TransactionType.debit,
+                  description: `Reversal Admin Fee Order #${order.id.toString()} (Edit status pembayaran manual)`,
+                },
+              });
+            } else {
+              const subsidy = Math.abs(effectiveAdminNet);
+              await tx.wallet.update({
+                where: { id: adminWallet.id },
+                data: { balance: { increment: subsidy } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: adminWallet.id,
+                  orderId: order.id,
+                  amount: subsidy,
+                  type: TransactionType.credit,
+                  description: `Reversal Subsidi Voucher Order #${order.id.toString()} (Edit status pembayaran manual)`,
+                },
+              });
+            }
+          }
+        }
+
+        await tx.order.update({
+          where: { id: order.id },
+          data: {
+            status: OrderStatus.pending_payment,
+            escrowStatus: EscrowStatus.pending,
+          },
+        });
+
+        await tx.orderQrSession.deleteMany({
+          where: {
+            orderId: order.id,
+            scanPhase: 'checkin_origin',
+            isUsed: false,
+          },
+        });
+
+        return tx.payment.update({
+          where: { id: payment.id },
+          data: {
+            status: targetStatus,
+            notes:
+              dto.reviewNotes ||
+              `Status diubah dari Lunas ke ${targetStatus === PaymentStatus.pending ? 'Menunggu' : 'Ditolak'} oleh Superadmin`,
+          },
+        });
+      });
+
+      return {
+        success: true,
+        message: 'Status pembayaran berhasil diperbarui dan escrow dikembalikan.',
+        payment: {
+          id: updatedPayment.id.toString(),
+          orderId: payment.orderId.toString(),
+          status: updatedPayment.status,
+        },
+      };
+    }
+
+    // Transisi antar status non-success (misal failed -> pending)
+    const updatedPayment = await this.prisma.payment.update({
+      where: { id: payment.id },
+      data: {
+        status: targetStatus,
+        notes:
+          dto.reviewNotes ||
+          `Status diubah ke ${targetStatus === PaymentStatus.pending ? 'Menunggu' : 'Ditolak'} oleh Superadmin`,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Status pembayaran manual berhasil diperbarui.',
+      payment: {
+        id: updatedPayment.id.toString(),
+        orderId: payment.orderId.toString(),
+        status: updatedPayment.status,
+      },
+    };
   }
 
   async getManualPayments(
@@ -1010,6 +1262,7 @@ export class PaymentsService {
     const adminFeePercentage = Number(order.adminFeePercentage || 10);
     const financials = computeOrderFinancials({
       subtotal: (order as any).subtotal || order.totalPrice,
+      customerFee: (order as any).customerFee,
       totalPrice: order.totalPrice,
       discountAmount: (order as any).discountAmount,
       adminFeePercentage,
@@ -1031,7 +1284,9 @@ export class PaymentsService {
       financials.fee,
       financials.netMitra,
       true, // isWebhook = true untuk webhook Xendit
-      ...(financials.discount > 0 ? [financials.adminNet] : []),
+      ...(financials.discount > 0 || financials.customerFee > 0
+        ? [financials.adminNet]
+        : []),
     );
 
     await this.notificationHelper.notifyOrderPaid(

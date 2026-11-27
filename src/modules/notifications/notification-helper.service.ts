@@ -1,12 +1,84 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
-import { NotificationType } from '../../generated/prisma/enums';
+import { NotificationType, Role, UserStatus } from '../../generated/prisma/enums';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class NotificationHelperService {
   private readonly logger = new Logger(NotificationHelperService.name);
 
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  private async notifySuperadmins(
+    type: NotificationType,
+    payload: { title: string; body: string; data: Record<string, any> },
+  ) {
+    const admins = await this.prisma.user.findMany({
+      where: { role: Role.admin, status: UserStatus.active },
+      select: { id: true },
+    });
+
+    if (admins.length === 0) return;
+
+    await Promise.allSettled(
+      admins.map((admin) =>
+        this.notificationsService.sendNotification({
+          userId: admin.id.toString(),
+          type,
+          payload,
+        }),
+      ),
+    );
+  }
+
+  async notifyAdminsKycSubmitted(params: {
+    userId: string;
+    userName: string;
+    userRole: string;
+    verificationType: string;
+    verificationId: string;
+  }) {
+    const roleLabel =
+      params.userRole === 'mitra' ? 'Mitra/Driver' : params.userRole || 'Pengguna';
+    return this.notifySuperadmins(NotificationType.generic, {
+      title: 'Pengajuan Verifikasi KYC Baru',
+      body: `${params.userName} (${roleLabel}) mengajukan verifikasi ${params.verificationType.toUpperCase()} dan menunggu peninjauan.`,
+      data: {
+        type: 'kyc_verification_submitted',
+        verificationId: params.verificationId,
+        applicantUserId: params.userId,
+        verificationType: params.verificationType,
+        priority: 'high',
+        actionUrl: '/admin/verifikasi-kyc',
+      },
+    });
+  }
+
+  async notifyAdminsManualPaymentSubmitted(params: {
+    orderId: string;
+    paymentId: string;
+    customerName: string;
+    amount: number;
+    bankName?: string;
+  }) {
+    const formattedAmount = Number(params.amount || 0).toLocaleString('id-ID');
+    const bankSuffix = params.bankName ? ` (${params.bankName})` : '';
+    return this.notifySuperadmins(NotificationType.generic, {
+      title: 'Verifikasi Bukti Pembayaran Baru',
+      body: `${params.customerName} mengunggah bukti pembayaran manual sebesar Rp ${formattedAmount} untuk Order #${params.orderId}${bankSuffix}.`,
+      data: {
+        type: 'manual_payment_submitted',
+        orderId: params.orderId,
+        paymentId: params.paymentId,
+        amount: params.amount,
+        priority: 'high',
+        actionUrl: '/admin/pembayaran',
+      },
+    });
+  }
 
   async notifyOrderCreated(userId: string, orderId: string, tripDetails: any) {
     return this.notificationsService.sendNotification({

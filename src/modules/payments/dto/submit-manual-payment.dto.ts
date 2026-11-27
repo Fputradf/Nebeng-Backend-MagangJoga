@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class SubmitManualPaymentDto {
@@ -42,6 +42,25 @@ export class VerifyManualPaymentDto {
   approved: boolean;
 
   @ApiPropertyOptional({ description: 'Catatan review atau alasan penolakan', example: 'Dana telah diterima di rekening BCA' })
+  @IsOptional()
+  @IsString()
+  reviewNotes?: string;
+}
+
+export class UpdateManualPaymentStatusDto {
+  @ApiProperty({
+    description: 'Status pembayaran baru (pending, success, failed)',
+    enum: ['pending', 'success', 'failed'],
+    example: 'success',
+  })
+  @IsNotEmpty()
+  @IsIn(['pending', 'success', 'failed'])
+  status: 'pending' | 'success' | 'failed';
+
+  @ApiPropertyOptional({
+    description: 'Catatan perubahan status oleh admin',
+    example: 'Status diperbarui oleh Superadmin',
+  })
   @IsOptional()
   @IsString()
   reviewNotes?: string;

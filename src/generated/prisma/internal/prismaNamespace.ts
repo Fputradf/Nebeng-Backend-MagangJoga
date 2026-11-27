@@ -3525,6 +3525,7 @@ export const PricingSettingScalarFieldEnum = {
   farePerKg: 'farePerKg',
   maxWeightKg: 'maxWeightKg',
   adminFeePercentage: 'adminFeePercentage',
+  customerServiceFee: 'customerServiceFee',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3576,6 +3577,7 @@ export const OrderScalarFieldEnum = {
   totalItemsCount: 'totalItemsCount',
   totalWeightKg: 'totalWeightKg',
   subtotal: 'subtotal',
+  customerFee: 'customerFee',
   discountAmount: 'discountAmount',
   totalPrice: 'totalPrice',
   adminFeePercentage: 'adminFeePercentage',

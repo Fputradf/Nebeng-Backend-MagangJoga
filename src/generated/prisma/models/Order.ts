@@ -34,6 +34,7 @@ export type OrderAvgAggregateOutputType = {
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
   subtotal: runtime.Decimal | null
+  customerFee: runtime.Decimal | null
   discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
@@ -48,6 +49,7 @@ export type OrderSumAggregateOutputType = {
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
   subtotal: runtime.Decimal | null
+  customerFee: runtime.Decimal | null
   discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
@@ -63,6 +65,7 @@ export type OrderMinAggregateOutputType = {
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
   subtotal: runtime.Decimal | null
+  customerFee: runtime.Decimal | null
   discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
@@ -90,6 +93,7 @@ export type OrderMaxAggregateOutputType = {
   totalItemsCount: number | null
   totalWeightKg: runtime.Decimal | null
   subtotal: runtime.Decimal | null
+  customerFee: runtime.Decimal | null
   discountAmount: runtime.Decimal | null
   totalPrice: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
@@ -117,6 +121,7 @@ export type OrderCountAggregateOutputType = {
   totalItemsCount: number
   totalWeightKg: number
   subtotal: number
+  customerFee: number
   discountAmount: number
   totalPrice: number
   adminFeePercentage: number
@@ -145,6 +150,7 @@ export type OrderAvgAggregateInputType = {
   totalItemsCount?: true
   totalWeightKg?: true
   subtotal?: true
+  customerFee?: true
   discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
@@ -159,6 +165,7 @@ export type OrderSumAggregateInputType = {
   totalItemsCount?: true
   totalWeightKg?: true
   subtotal?: true
+  customerFee?: true
   discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
@@ -174,6 +181,7 @@ export type OrderMinAggregateInputType = {
   totalItemsCount?: true
   totalWeightKg?: true
   subtotal?: true
+  customerFee?: true
   discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
@@ -201,6 +209,7 @@ export type OrderMaxAggregateInputType = {
   totalItemsCount?: true
   totalWeightKg?: true
   subtotal?: true
+  customerFee?: true
   discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
@@ -228,6 +237,7 @@ export type OrderCountAggregateInputType = {
   totalItemsCount?: true
   totalWeightKg?: true
   subtotal?: true
+  customerFee?: true
   discountAmount?: true
   totalPrice?: true
   adminFeePercentage?: true
@@ -342,6 +352,7 @@ export type OrderGroupByOutputType = {
   totalItemsCount: number
   totalWeightKg: runtime.Decimal
   subtotal: runtime.Decimal
+  customerFee: runtime.Decimal
   discountAmount: runtime.Decimal
   totalPrice: runtime.Decimal
   adminFeePercentage: runtime.Decimal
@@ -392,6 +403,7 @@ export type OrderWhereInput = {
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -432,6 +444,7 @@ export type OrderOrderByWithRelationInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -477,6 +490,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -516,6 +530,7 @@ export type OrderOrderByWithAggregationInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -551,6 +566,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   totalItemsCount?: Prisma.IntWithAggregatesFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalWithAggregatesFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -576,6 +592,7 @@ export type OrderCreateInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -615,6 +632,7 @@ export type OrderUncheckedCreateInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -650,6 +668,7 @@ export type OrderUpdateInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -689,6 +708,7 @@ export type OrderUncheckedUpdateInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -726,6 +746,7 @@ export type OrderCreateManyInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -751,6 +772,7 @@ export type OrderUpdateManyMutationInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -777,6 +799,7 @@ export type OrderUncheckedUpdateManyInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -820,6 +843,7 @@ export type OrderCountOrderByAggregateInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -846,6 +870,7 @@ export type OrderAvgOrderByAggregateInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -861,6 +886,7 @@ export type OrderMaxOrderByAggregateInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -888,6 +914,7 @@ export type OrderMinOrderByAggregateInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -914,6 +941,7 @@ export type OrderSumOrderByAggregateInput = {
   totalItemsCount?: Prisma.SortOrder
   totalWeightKg?: Prisma.SortOrder
   subtotal?: Prisma.SortOrder
+  customerFee?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
@@ -1223,6 +1251,7 @@ export type OrderCreateWithoutCustomerInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1260,6 +1289,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1305,6 +1335,7 @@ export type OrderCreateWithoutNoShowMarkedByUserInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1343,6 +1374,7 @@ export type OrderUncheckedCreateWithoutNoShowMarkedByUserInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1408,6 +1440,7 @@ export type OrderScalarWhereInput = {
   totalItemsCount?: Prisma.IntFilter<"Order"> | number
   totalWeightKg?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFilter<"Order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1449,6 +1482,7 @@ export type OrderCreateWithoutTripInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1486,6 +1520,7 @@ export type OrderUncheckedCreateWithoutTripInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1547,6 +1582,7 @@ export type OrderCreateWithoutPassengersInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1585,6 +1621,7 @@ export type OrderUncheckedCreateWithoutPassengersInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1635,6 +1672,7 @@ export type OrderUpdateWithoutPassengersInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1673,6 +1711,7 @@ export type OrderUncheckedUpdateWithoutPassengersInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1707,6 +1746,7 @@ export type OrderCreateWithoutItemOrdersInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1745,6 +1785,7 @@ export type OrderUncheckedCreateWithoutItemOrdersInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1795,6 +1836,7 @@ export type OrderUpdateWithoutItemOrdersInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1833,6 +1875,7 @@ export type OrderUncheckedUpdateWithoutItemOrdersInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1867,6 +1910,7 @@ export type OrderCreateWithoutCheckpointsLogsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1905,6 +1949,7 @@ export type OrderUncheckedCreateWithoutCheckpointsLogsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1955,6 +2000,7 @@ export type OrderUpdateWithoutCheckpointsLogsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1993,6 +2039,7 @@ export type OrderUncheckedUpdateWithoutCheckpointsLogsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2027,6 +2074,7 @@ export type OrderCreateWithoutNoShowAuditLogsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2065,6 +2113,7 @@ export type OrderUncheckedCreateWithoutNoShowAuditLogsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2115,6 +2164,7 @@ export type OrderUpdateWithoutNoShowAuditLogsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2153,6 +2203,7 @@ export type OrderUncheckedUpdateWithoutNoShowAuditLogsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2187,6 +2238,7 @@ export type OrderCreateWithoutQrSessionsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2225,6 +2277,7 @@ export type OrderUncheckedCreateWithoutQrSessionsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2275,6 +2328,7 @@ export type OrderUpdateWithoutQrSessionsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2313,6 +2367,7 @@ export type OrderUncheckedUpdateWithoutQrSessionsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2347,6 +2402,7 @@ export type OrderCreateWithoutPaymentsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2385,6 +2441,7 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2435,6 +2492,7 @@ export type OrderUpdateWithoutPaymentsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2473,6 +2531,7 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2507,6 +2566,7 @@ export type OrderCreateWithoutWalletTransactionsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2545,6 +2605,7 @@ export type OrderUncheckedCreateWithoutWalletTransactionsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2595,6 +2656,7 @@ export type OrderUpdateWithoutWalletTransactionsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2633,6 +2695,7 @@ export type OrderUncheckedUpdateWithoutWalletTransactionsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2667,6 +2730,7 @@ export type OrderCreateWithoutVoucherRedemptionInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2705,6 +2769,7 @@ export type OrderUncheckedCreateWithoutVoucherRedemptionInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2755,6 +2820,7 @@ export type OrderUpdateWithoutVoucherRedemptionInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2793,6 +2859,7 @@ export type OrderUncheckedUpdateWithoutVoucherRedemptionInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2827,6 +2894,7 @@ export type OrderCreateWithoutSosAlertsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2865,6 +2933,7 @@ export type OrderUncheckedCreateWithoutSosAlertsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2915,6 +2984,7 @@ export type OrderUpdateWithoutSosAlertsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2953,6 +3023,7 @@ export type OrderUncheckedUpdateWithoutSosAlertsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2987,6 +3058,7 @@ export type OrderCreateWithoutUserReportsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3025,6 +3097,7 @@ export type OrderUncheckedCreateWithoutUserReportsInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3075,6 +3148,7 @@ export type OrderUpdateWithoutUserReportsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3113,6 +3187,7 @@ export type OrderUncheckedUpdateWithoutUserReportsInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3148,6 +3223,7 @@ export type OrderCreateManyCustomerInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3175,6 +3251,7 @@ export type OrderCreateManyNoShowMarkedByUserInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3199,6 +3276,7 @@ export type OrderUpdateWithoutCustomerInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3236,6 +3314,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3272,6 +3351,7 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3297,6 +3377,7 @@ export type OrderUpdateWithoutNoShowMarkedByUserInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3335,6 +3416,7 @@ export type OrderUncheckedUpdateWithoutNoShowMarkedByUserInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3371,6 +3453,7 @@ export type OrderUncheckedUpdateManyWithoutNoShowMarkedByUserInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3396,6 +3479,7 @@ export type OrderCreateManyTripInput = {
   totalItemsCount?: number
   totalWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3421,6 +3505,7 @@ export type OrderUpdateWithoutTripInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3458,6 +3543,7 @@ export type OrderUncheckedUpdateWithoutTripInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3494,6 +3580,7 @@ export type OrderUncheckedUpdateManyWithoutTripInput = {
   totalItemsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalWeightKg?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -3624,6 +3711,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   totalItemsCount?: boolean
   totalWeightKg?: boolean
   subtotal?: boolean
+  customerFee?: boolean
   discountAmount?: boolean
   totalPrice?: boolean
   adminFeePercentage?: boolean
@@ -3667,6 +3755,7 @@ export type OrderSelectScalar = {
   totalItemsCount?: boolean
   totalWeightKg?: boolean
   subtotal?: boolean
+  customerFee?: boolean
   discountAmount?: boolean
   totalPrice?: boolean
   adminFeePercentage?: boolean
@@ -3685,7 +3774,7 @@ export type OrderSelectScalar = {
   isDisputed?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "subtotal" | "discountAmount" | "totalPrice" | "adminFeePercentage" | "voucherCode" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt" | "noShowMarkedAt" | "noShowMarkedBy" | "noShowReason" | "disputeDeadline" | "isDisputed", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "customerId" | "type" | "seatsBooked" | "totalItemsCount" | "totalWeightKg" | "subtotal" | "customerFee" | "discountAmount" | "totalPrice" | "adminFeePercentage" | "voucherCode" | "qrCodeTicket" | "otpClaim" | "readinessStatus" | "status" | "escrowStatus" | "createdAt" | "updatedAt" | "noShowMarkedAt" | "noShowMarkedBy" | "noShowReason" | "disputeDeadline" | "isDisputed", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -3729,6 +3818,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     totalItemsCount: number
     totalWeightKg: runtime.Decimal
     subtotal: runtime.Decimal
+    customerFee: runtime.Decimal
     discountAmount: runtime.Decimal
     totalPrice: runtime.Decimal
     adminFeePercentage: runtime.Decimal
@@ -4135,6 +4225,7 @@ export interface OrderFieldRefs {
   readonly totalItemsCount: Prisma.FieldRef<"Order", 'Int'>
   readonly totalWeightKg: Prisma.FieldRef<"Order", 'Decimal'>
   readonly subtotal: Prisma.FieldRef<"Order", 'Decimal'>
+  readonly customerFee: Prisma.FieldRef<"Order", 'Decimal'>
   readonly discountAmount: Prisma.FieldRef<"Order", 'Decimal'>
   readonly totalPrice: Prisma.FieldRef<"Order", 'Decimal'>
   readonly adminFeePercentage: Prisma.FieldRef<"Order", 'Decimal'>

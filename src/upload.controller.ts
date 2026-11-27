@@ -20,6 +20,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import {
+  IMAGE_RESIZE_PRESETS,
+  resizeUploadedImage,
+} from './common/utils/image-resize.util';
+import {
   ApiTags,
   ApiOperation,
   ApiBearerAuth,
@@ -71,10 +75,11 @@ export class UploadController {
       },
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('File tidak ditemukan');
     }
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.default);
     return {
       filePath: `/uploads/verifications/${file.filename}`,
       fileType: file.mimetype,
@@ -117,10 +122,11 @@ export class UploadController {
       },
     }),
   )
-  uploadPaymentProof(@UploadedFile() file: Express.Multer.File) {
+  async uploadPaymentProof(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('File bukti pembayaran tidak ditemukan');
     }
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.proof);
     return {
       filePath: `/uploads/payments/${file.filename}`,
       fileType: file.mimetype,
@@ -165,10 +171,11 @@ export class UploadController {
       },
     }),
   )
-  uploadAppealEvidence(@UploadedFile() file: Express.Multer.File) {
+  async uploadAppealEvidence(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('File tidak ditemukan');
     }
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.default);
     return {
       filePath: `/uploads/appeals/${file.filename}`,
       fileType: file.mimetype,
@@ -207,10 +214,11 @@ export class UploadController {
       },
     }),
   )
-  uploadBanner(@UploadedFile() file: Express.Multer.File) {
+  async uploadBanner(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('File tidak ditemukan');
     }
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.banner);
     return {
       filePath: `/uploads/banners/${file.filename}`,
       fileType: file.mimetype,
@@ -249,10 +257,11 @@ export class UploadController {
       },
     }),
   )
-  uploadSocialIcon(@UploadedFile() file: Express.Multer.File) {
+  async uploadSocialIcon(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('File tidak ditemukan');
     }
+    await resizeUploadedImage(file, IMAGE_RESIZE_PRESETS.logo);
     return {
       filePath: `/uploads/social-links/${file.filename}`,
       fileType: file.mimetype,

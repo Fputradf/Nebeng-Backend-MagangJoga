@@ -13,6 +13,7 @@ export class OrderMapper {
       totalItemsCount: Number(order.totalItemsCount),
       totalWeightKg: Number(order.totalWeightKg),
       subtotal: order.subtotal ? Number(order.subtotal) : Number(order.totalPrice),
+      customerFee: order.customerFee ? Number(order.customerFee) : 0,
       discountAmount: order.discountAmount ? Number(order.discountAmount) : 0,
       voucherCode: order.voucherCode ?? null,
       totalPrice: Number(order.totalPrice),

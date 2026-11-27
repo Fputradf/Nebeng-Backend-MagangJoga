@@ -389,6 +389,7 @@ model PricingSetting {
   farePerKg          Decimal?    @map("fare_per_kg") @db.Decimal(10, 2)
   maxWeightKg        Decimal?    @map("max_weight_kg") @db.Decimal(8, 2)
   adminFeePercentage Decimal     @map("admin_fee_percentage") @db.Decimal(5, 2)
+  customerServiceFee Decimal     @default(0.00) @map("customer_service_fee") @db.Decimal(10, 2)
   createdAt          DateTime    @default(now()) @map("created_at")
   updatedAt          DateTime    @updatedAt @map("updated_at")
 
@@ -468,6 +469,7 @@ model Order {
   totalItemsCount    Int          @default(0) @map("total_items_count")
   totalWeightKg      Decimal      @default(0) @map("total_weight_kg") @db.Decimal(8, 2)
   subtotal           Decimal      @default(0.00) @map("subtotal") @db.Decimal(10, 2)
+  customerFee        Decimal      @default(0.00) @map("customer_fee") @db.Decimal(10, 2)
   discountAmount     Decimal      @default(0.00) @map("discount_amount") @db.Decimal(10, 2)
   totalPrice         Decimal      @map("total_price") @db.Decimal(10, 2)
   adminFeePercentage Decimal      @default(10.00) @map("admin_fee_percentage") @db.Decimal(5, 2)

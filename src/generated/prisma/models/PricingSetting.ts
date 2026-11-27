@@ -33,6 +33,7 @@ export type PricingSettingAvgAggregateOutputType = {
   farePerKg: runtime.Decimal | null
   maxWeightKg: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  customerServiceFee: runtime.Decimal | null
 }
 
 export type PricingSettingSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type PricingSettingSumAggregateOutputType = {
   farePerKg: runtime.Decimal | null
   maxWeightKg: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  customerServiceFee: runtime.Decimal | null
 }
 
 export type PricingSettingMinAggregateOutputType = {
@@ -53,6 +55,7 @@ export type PricingSettingMinAggregateOutputType = {
   farePerKg: runtime.Decimal | null
   maxWeightKg: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  customerServiceFee: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +69,7 @@ export type PricingSettingMaxAggregateOutputType = {
   farePerKg: runtime.Decimal | null
   maxWeightKg: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal | null
+  customerServiceFee: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -79,6 +83,7 @@ export type PricingSettingCountAggregateOutputType = {
   farePerKg: number
   maxWeightKg: number
   adminFeePercentage: number
+  customerServiceFee: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +97,7 @@ export type PricingSettingAvgAggregateInputType = {
   farePerKg?: true
   maxWeightKg?: true
   adminFeePercentage?: true
+  customerServiceFee?: true
 }
 
 export type PricingSettingSumAggregateInputType = {
@@ -101,6 +107,7 @@ export type PricingSettingSumAggregateInputType = {
   farePerKg?: true
   maxWeightKg?: true
   adminFeePercentage?: true
+  customerServiceFee?: true
 }
 
 export type PricingSettingMinAggregateInputType = {
@@ -112,6 +119,7 @@ export type PricingSettingMinAggregateInputType = {
   farePerKg?: true
   maxWeightKg?: true
   adminFeePercentage?: true
+  customerServiceFee?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -125,6 +133,7 @@ export type PricingSettingMaxAggregateInputType = {
   farePerKg?: true
   maxWeightKg?: true
   adminFeePercentage?: true
+  customerServiceFee?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -138,6 +147,7 @@ export type PricingSettingCountAggregateInputType = {
   farePerKg?: true
   maxWeightKg?: true
   adminFeePercentage?: true
+  customerServiceFee?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -238,6 +248,7 @@ export type PricingSettingGroupByOutputType = {
   farePerKg: runtime.Decimal | null
   maxWeightKg: runtime.Decimal | null
   adminFeePercentage: runtime.Decimal
+  customerServiceFee: runtime.Decimal
   createdAt: Date
   updatedAt: Date
   _count: PricingSettingCountAggregateOutputType | null
@@ -274,6 +285,7 @@ export type PricingSettingWhereInput = {
   farePerKg?: Prisma.DecimalNullableFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.DecimalNullableFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PricingSetting"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PricingSetting"> | Date | string
 }
@@ -287,6 +299,7 @@ export type PricingSettingOrderByWithRelationInput = {
   farePerKg?: Prisma.SortOrderInput | Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrderInput | Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -304,6 +317,7 @@ export type PricingSettingWhereUniqueInput = Prisma.AtLeast<{
   farePerKg?: Prisma.DecimalNullableFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.DecimalNullableFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"PricingSetting"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PricingSetting"> | Date | string
 }, "id" | "serviceType_size">
@@ -317,6 +331,7 @@ export type PricingSettingOrderByWithAggregationInput = {
   farePerKg?: Prisma.SortOrderInput | Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrderInput | Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PricingSettingCountOrderByAggregateInput
@@ -338,6 +353,7 @@ export type PricingSettingScalarWhereWithAggregatesInput = {
   farePerKg?: Prisma.DecimalNullableWithAggregatesFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.DecimalNullableWithAggregatesFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalWithAggregatesFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalWithAggregatesFilter<"PricingSetting"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PricingSetting"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PricingSetting"> | Date | string
 }
@@ -351,6 +367,7 @@ export type PricingSettingCreateInput = {
   farePerKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -364,6 +381,7 @@ export type PricingSettingUncheckedCreateInput = {
   farePerKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -377,6 +395,7 @@ export type PricingSettingUpdateInput = {
   farePerKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -390,6 +409,7 @@ export type PricingSettingUncheckedUpdateInput = {
   farePerKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -403,6 +423,7 @@ export type PricingSettingCreateManyInput = {
   farePerKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -416,6 +437,7 @@ export type PricingSettingUpdateManyMutationInput = {
   farePerKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -429,6 +451,7 @@ export type PricingSettingUncheckedUpdateManyInput = {
   farePerKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   maxWeightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   adminFeePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customerServiceFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -447,6 +470,7 @@ export type PricingSettingCountOrderByAggregateInput = {
   farePerKg?: Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -458,6 +482,7 @@ export type PricingSettingAvgOrderByAggregateInput = {
   farePerKg?: Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
 }
 
 export type PricingSettingMaxOrderByAggregateInput = {
@@ -469,6 +494,7 @@ export type PricingSettingMaxOrderByAggregateInput = {
   farePerKg?: Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -482,6 +508,7 @@ export type PricingSettingMinOrderByAggregateInput = {
   farePerKg?: Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -493,6 +520,7 @@ export type PricingSettingSumOrderByAggregateInput = {
   farePerKg?: Prisma.SortOrder
   maxWeightKg?: Prisma.SortOrder
   adminFeePercentage?: Prisma.SortOrder
+  customerServiceFee?: Prisma.SortOrder
 }
 
 export type EnumServiceTypeFieldUpdateOperationsInput = {
@@ -514,6 +542,7 @@ export type PricingSettingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   farePerKg?: boolean
   maxWeightKg?: boolean
   adminFeePercentage?: boolean
+  customerServiceFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["pricingSetting"]>
@@ -529,11 +558,12 @@ export type PricingSettingSelectScalar = {
   farePerKg?: boolean
   maxWeightKg?: boolean
   adminFeePercentage?: boolean
+  customerServiceFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PricingSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "serviceType" | "size" | "baseFare" | "farePerKm" | "farePerKg" | "maxWeightKg" | "adminFeePercentage" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingSetting"]>
+export type PricingSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "serviceType" | "size" | "baseFare" | "farePerKm" | "farePerKg" | "maxWeightKg" | "adminFeePercentage" | "customerServiceFee" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingSetting"]>
 
 export type $PricingSettingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PricingSetting"
@@ -547,6 +577,7 @@ export type $PricingSettingPayload<ExtArgs extends runtime.Types.Extensions.Inte
     farePerKg: runtime.Decimal | null
     maxWeightKg: runtime.Decimal | null
     adminFeePercentage: runtime.Decimal
+    customerServiceFee: runtime.Decimal
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["pricingSetting"]>
@@ -926,6 +957,7 @@ export interface PricingSettingFieldRefs {
   readonly farePerKg: Prisma.FieldRef<"PricingSetting", 'Decimal'>
   readonly maxWeightKg: Prisma.FieldRef<"PricingSetting", 'Decimal'>
   readonly adminFeePercentage: Prisma.FieldRef<"PricingSetting", 'Decimal'>
+  readonly customerServiceFee: Prisma.FieldRef<"PricingSetting", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"PricingSetting", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PricingSetting", 'DateTime'>
 }

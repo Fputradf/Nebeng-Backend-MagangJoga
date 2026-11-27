@@ -5,6 +5,7 @@ import {
   ValidateNested,
   IsString,
   IsIn,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -56,6 +57,18 @@ export class UpdatePricingPolicyDto {
   @IsNumber()
   @Min(0)
   parcelFeePercent!: number;
+
+  @ApiProperty({ example: 2000, required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  rideCustomerFee?: number;
+
+  @ApiProperty({ example: 2000, required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  parcelCustomerFee?: number;
 
   @ApiProperty({ type: [ParcelMatrixDto] })
   @IsArray()

@@ -147,6 +147,7 @@ export class AdminRepository {
       farePerKg: setting.farePerKg ? Number(setting.farePerKg) : null,
       maxWeightKg: setting.maxWeightKg ? Number(setting.maxWeightKg) : null,
       adminFeePercentage: Number(setting.adminFeePercentage),
+      customerServiceFee: Number((setting as any).customerServiceFee || 0),
     }));
   }
 
@@ -164,6 +165,7 @@ export class AdminRepository {
           farePerKg: null,
           maxWeightKg: null,
           adminFeePercentage: dto.rideFeePercent,
+          customerServiceFee: dto.rideCustomerFee ?? 0,
         },
       });
     } else {
@@ -176,6 +178,7 @@ export class AdminRepository {
           farePerKg: null,
           maxWeightKg: null,
           adminFeePercentage: dto.rideFeePercent,
+          customerServiceFee: dto.rideCustomerFee ?? 0,
         },
       });
     }
@@ -193,6 +196,7 @@ export class AdminRepository {
           farePerKg: null,
           maxWeightKg: null,
           adminFeePercentage: dto.rideFeePercent,
+          customerServiceFee: dto.rideCustomerFee ?? 0,
         },
       });
     } else {
@@ -205,6 +209,7 @@ export class AdminRepository {
           farePerKg: null,
           maxWeightKg: null,
           adminFeePercentage: dto.rideFeePercent,
+          customerServiceFee: dto.rideCustomerFee ?? 0,
         },
       });
     }
@@ -239,6 +244,7 @@ export class AdminRepository {
         farePerKg: null,
         maxWeightKg: item.maxWeightKg,
         adminFeePercentage: dto.parcelFeePercent,
+        customerServiceFee: dto.parcelCustomerFee ?? 0,
       };
     });
 

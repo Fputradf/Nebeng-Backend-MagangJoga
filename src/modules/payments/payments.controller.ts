@@ -27,6 +27,7 @@ import { CreateXenditInvoiceDto } from './dto/create-xendit-invoice.dto';
 import { UpdatePaymentModeConfigDto } from './dto/payment-config.dto';
 import {
   SubmitManualPaymentDto,
+  UpdateManualPaymentStatusDto,
   VerifyManualPaymentDto,
 } from './dto/submit-manual-payment.dto';
 
@@ -125,6 +126,28 @@ export class PaymentsController {
     @Body() dto: VerifyManualPaymentDto,
   ) {
     return this.paymentsService.verifyManualPayment(
+      String(adminId),
+      paymentId,
+      dto,
+    );
+  }
+
+  /**
+   * Admin: Ubah Status Pembayaran Manual Secara Langsung (Edit Status)
+   */
+  @Patch('admin/manual-payments/:id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.admin)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Mengubah status pembayaran manual (pending, success, failed) oleh Superadmin',
+  })
+  async updateManualPaymentStatusAdmin(
+    @GetUser('id') adminId: string,
+    @Param('id') paymentId: string,
+    @Body() dto: UpdateManualPaymentStatusDto,
+  ) {
+    return this.paymentsService.updateManualPaymentStatus(
       String(adminId),
       paymentId,
       dto,

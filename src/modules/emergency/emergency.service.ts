@@ -338,21 +338,21 @@ export class EmergencyService {
   }
 
   /**
-   * Ambil daftar insiden SOS aktif di wilayah kerja Admin Regional, Superadmin, atau Mitra Pos
+   * Helper resolusi regionId berdasarkan role user (admin = semua wilayah)
    */
-  async getActiveSosByRegion(user: any) {
+  private async resolveTargetRegionId(user: any): Promise<bigint | null> {
     const userId = BigInt(user.sub || user.id);
     const userRole = user.role;
-
-    let targetRegionId: bigint | null = null;
 
     if (userRole === 'regional') {
       const dbUser = await this.prisma.user.findUnique({
         where: { id: userId },
         select: { regionId: true },
       });
-      targetRegionId = dbUser?.regionId || null;
-    } else if (userRole === 'operator') {
+      return dbUser?.regionId || null;
+    }
+
+    if (userRole === 'operator') {
       const dbUser = await this.prisma.user.findUnique({
         where: { id: userId },
         select: {
@@ -360,12 +360,89 @@ export class EmergencyService {
           assignedPickupPoints: { select: { regionId: true } },
         },
       });
-      targetRegionId =
+      return (
         dbUser?.regionId ||
         dbUser?.assignedPickupPoints?.[0]?.regionId ||
-        null;
+        null
+      );
     }
-    // Jika userRole === 'admin' (superadmin), targetRegionId tetap null sehingga melihat seluruh wilayah
+
+    return null;
+  }
+
+  private getSosInclude() {
+    return {
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          email: true,
+        },
+      },
+      order: {
+        select: {
+          id: true,
+          qrCodeTicket: true,
+          type: true,
+          status: true,
+        },
+      },
+      trip: {
+        include: {
+          mitra: {
+            select: {
+              id: true,
+              name: true,
+              phone: true,
+            },
+          },
+          vehicle: {
+            select: {
+              type: true,
+              model: true,
+              plateNumber: true,
+              color: true,
+            },
+          },
+          originPoint: {
+            select: {
+              id: true,
+              name: true,
+              address: true,
+            },
+          },
+          destinationPoint: {
+            select: {
+              id: true,
+              name: true,
+              address: true,
+            },
+          },
+        },
+      },
+      region: {
+        select: {
+          id: true,
+          name: true,
+          code: true,
+        },
+      },
+      resolvedByUser: {
+        select: {
+          id: true,
+          name: true,
+          role: true,
+        },
+      },
+    };
+  }
+
+  /**
+   * Ambil daftar insiden SOS aktif di wilayah kerja Admin Regional, Superadmin, atau Mitra Pos
+   */
+  async getActiveSosByRegion(user: any) {
+    const targetRegionId = await this.resolveTargetRegionId(user);
 
     const whereClause: any = {
       status: {
@@ -380,62 +457,95 @@ export class EmergencyService {
     const activeAlerts = await this.prisma.sosAlert.findMany({
       where: whereClause,
       orderBy: { createdAt: 'desc' },
-      include: {
-        customer: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            email: true,
-          },
-        },
-        trip: {
-          include: {
-            mitra: {
-              select: {
-                id: true,
-                name: true,
-                phone: true,
-              },
-            },
-            vehicle: {
-              select: {
-                type: true,
-                model: true,
-                plateNumber: true,
-                color: true,
-              },
-            },
-            originPoint: {
-              select: {
-                id: true,
-                name: true,
-                address: true,
-              },
-            },
-            destinationPoint: {
-              select: {
-                id: true,
-                name: true,
-                address: true,
-              },
-            },
-          },
-        },
-        region: {
-          select: {
-            id: true,
-            name: true,
-            code: true,
-          },
-        },
-      },
+      include: this.getSosInclude(),
     });
 
     return {
       success: true,
       count: activeAlerts.length,
       data: this.serializeBigInt(activeAlerts),
+    };
+  }
+
+  /**
+   * Ambil riwayat lengkap log darurat SOS dengan filter status, pencarian, dan paginasi
+   */
+  async getSosLogs(
+    user: any,
+    params: { status?: string; search?: string; page?: number; limit?: number },
+  ) {
+    const targetRegionId = await this.resolveTargetRegionId(user);
+    const page = Math.max(1, Number(params.page) || 1);
+    const limit = Math.min(50, Math.max(1, Number(params.limit) || 15));
+    const skip = (page - 1) * limit;
+
+    const baseWhere: any = {};
+    if (targetRegionId) {
+      baseWhere.regionId = targetRegionId;
+    }
+
+    const whereClause: any = { ...baseWhere };
+    const statusParam = params.status?.trim().toUpperCase();
+    if (
+      statusParam &&
+      statusParam !== 'ALL' &&
+      Object.values(SosStatus).includes(statusParam as SosStatus)
+    ) {
+      whereClause.status = statusParam as SosStatus;
+    }
+
+    const search = params.search?.trim();
+    if (search) {
+      const orConditions: any[] = [
+        { category: { contains: search } },
+        { notes: { contains: search } },
+        { customer: { name: { contains: search } } },
+        { customer: { phone: { contains: search } } },
+        { order: { qrCodeTicket: { contains: search } } },
+        { trip: { mitra: { name: { contains: search } } } },
+        { trip: { vehicle: { plateNumber: { contains: search } } } },
+        { region: { name: { contains: search } } },
+      ];
+      if (/^\d+$/.test(search)) {
+        orConditions.push({ id: BigInt(search) });
+        orConditions.push({ orderId: BigInt(search) });
+        orConditions.push({ tripId: BigInt(search) });
+      }
+      whereClause.OR = orConditions;
+    }
+
+    const [logs, total, activeCount, investigatingCount, resolvedCount, falseAlarmCount] =
+      await Promise.all([
+        this.prisma.sosAlert.findMany({
+          where: whereClause,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: limit,
+          include: this.getSosInclude(),
+        }),
+        this.prisma.sosAlert.count({ where: whereClause }),
+        this.prisma.sosAlert.count({ where: { ...baseWhere, status: SosStatus.ACTIVE } }),
+        this.prisma.sosAlert.count({ where: { ...baseWhere, status: SosStatus.INVESTIGATING } }),
+        this.prisma.sosAlert.count({ where: { ...baseWhere, status: SosStatus.RESOLVED } }),
+        this.prisma.sosAlert.count({ where: { ...baseWhere, status: SosStatus.FALSE_ALARM } }),
+      ]);
+
+    return {
+      success: true,
+      data: this.serializeBigInt(logs),
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+      },
+      summary: {
+        total: activeCount + investigatingCount + resolvedCount + falseAlarmCount,
+        active: activeCount,
+        investigating: investigatingCount,
+        resolved: resolvedCount,
+        falseAlarm: falseAlarmCount,
+      },
     };
   }
 
